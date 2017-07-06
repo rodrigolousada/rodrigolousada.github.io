@@ -1,0 +1,143 @@
+/*---------------------------------------------------------*/
+/*------------------------GENERAL--------------------------*/
+/*---------------------------------------------------------*/
+
+body {
+  width:100%;
+  height:100%;
+  background-color:#ffffff;
+  background-repeat:no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align:center;
+}
+
+h1, h2, h3{
+  color: #000000;
+  font-family: verdana;
+}
+
+div.main {
+  position:absolute;
+  top:32%;
+  left:50%;
+  -ms-transform:translate(-50%,-50%);
+  -webkit-transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%);
+}
+
+/*---------------------------------------------------------*/
+/*-----------------------MY PICTURE------------------------*/
+/*---------------------------------------------------------*/
+
+.mypic {
+  width: 150px;
+	height: 150px;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+}
+
+
+/*---------------------------------------------------------*/
+/*------------------SOCIAL NETWORKS------------------------*/
+/*---------------------------------------------------------*/
+
+.logos {
+  width:20px;
+}
+
+div.social_networks {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+/* Icons */
+
+div.social_networks a {
+  color:#fff;
+  background: #000000;
+  border-radius:4px;
+  text-align:center;
+  text-decoration:none;
+  font-family:fontawesome;
+  position: relative;
+  display: inline-block;
+  width:40px;
+  height:28px;
+  padding-top:8px;
+  margin:0 2px;
+  -o-transition:all .5s;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  transition: all .5s;
+   -webkit-font-smoothing: antialiased;
+}
+
+div.social_networks a:hover {
+  background: #cda435;
+}
+
+/* pop-up text */
+
+div.social_networks a span {
+  color:#fff;
+  position:absolute;
+  font-family:sans-serif;
+  bottom:0;
+  left:-25px;
+  right:-25px;
+  padding:5px 7px;
+  z-index:10;
+  font-size:14px;
+  border-radius:2px;
+  background:#cda435;
+  visibility:hidden;
+  opacity:0;
+  -o-transition:all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -moz-transition: all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* pop-up text arrow */
+
+div.social_networks a span:before {
+  content:'';
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #cda435;
+  position:absolute;
+  bottom:-5px;
+  left:40px;
+}
+
+/* text pops up when icon is in hover state */
+
+div.social_networks a:hover span {
+  bottom:50px;
+  visibility:visible;
+  opacity:1;
+}
+
+
+/*---------------------------------------------------------*/
+/*----------------------MY PROJECTS------------------------*/
+/*---------------------------------------------------------*/
+
+div.projects {
+  margin-top: 40px;
+}
+
+div.projects a {
+  display: block;
+  position: relative;
+  font-family: verdana;
+}
+
+div.projects a:link    { color:#000000; background-color:transparent; text-decoration:none }
+div.projects a:visited { color:#000000; background-color:transparent; text-decoration:none }
+div.projects a:hover   { color:#cda435; background-color:transparent; text-decoration:none }
+div.projects a:active  { color:#cda435; background-color:transparent; text-decoration:none }
