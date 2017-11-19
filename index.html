@@ -1,33 +1,284 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Rodrigo Lousada Website</title>
+<html lang="en">
 
-  <link rel="shortcut icon" href="ist.ico" type="image/x-icon" style="height:2px; width:1x;">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <base target="_blank">
-</head>
-<body background='background.jpg'>
-  <div class="main">
-    <div class="id">
-      <h1>Rodrigo Manuel Lopes da Silva Lousada</h1>
-      <img class="mypic" src="mypic.jpg" class="img-circle">
-    </div>
+  <head>
 
-    <div class="social_networks">
-      <a href="https://www.facebook.com/rodrigo.lousada.5"><span>Facebook</span><img class="logos" src="logos/facebook-logo.png"></a>
-      <a href="https://twitter.com/rodriigolousada"><span>Twitter</span><img class="logos" src="logos/twitter-logo.png"></a>
-      <a href="https://www.linkedin.com/in/rodrigo-lousada-359685117?authType=NAME_SEARCH&authToken=2oZc"><span>LinkedIn</span><img class="logos" src="logos/linkedin-logo.png"></a>
-      <a href="https://github.com/rodrigolousada"><span>Github</span><img class="logos" src="logos/github-logo.png"></a>
-      <a href="https://www.instagram.com/rodrigolousada/"><span>Instagram</span><img class="logos" src="logos/instagram-logo.png"></a>
-    </div>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Rodrigo Lousada Personal Website">
+    <meta name="author" content="Rodrigo Lousada">
 
-    <div class="projects">
-      <h3>My Web Projects</h3>
-      <a href="http://web.ist.utl.pt/~ist181115/IPM/">IPM</a>
-      <a href="http://web.ist.utl.pt/~ist181115/CG/">Space Invaders</a>
-    </div>
-  </div>
-</body>
+    <title>Rodrigo Lousada Website</title>
+
+    <link rel="shortcut icon" href="man.ico" type="image/x-icon" style="height:2px; width:2px;">
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle">
+      <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
+          <i class="fa fa-times"></i>
+        </a>
+        <li class="sidebar-brand">
+          <a class="js-scroll-trigger" href="#top">Rodrigo Lousada</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="#top">Home</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="#about">About</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="#services">Working On</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="#portfolio">Portfolio</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="#contact" onclick=$( "#menu-close").click();>Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="header" id="top">
+      <div class="text-vertical-center text-white">
+        <h1>Rodrigo Lousada</h1>
+        <h3>Team Leader of Communications &#64; SINFO</h3>
+        <br>
+        <a href="#about" class="btn btn-dark btn-lg js-scroll-trigger">Find Out More</a>
+      </div>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+      <div class="container text-center">
+        <h2>I'm a Portuguese Computer Science and Engineering Student!</h2>
+        <p class="lead">Currently looking for summer interships abroad!</p>
+      </div>
+      <!-- /.container -->
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="services bg-primary text-white">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-lg-10 mx-auto">
+            <h2>Working On</h2>
+            <hr class="small">
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <div class="service-item">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-power-off fa-stack-1x text-primary"></i>
+                  </span>
+                  <h4>
+                    <strong>SINFO</strong>
+                  </h4>
+                  <p>Team Leader of Social Networks</p>
+                  <a href="https://sinfo.org/" target="_blank" class="btn btn-light">Learn More</a>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <div class="service-item">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-laptop fa-stack-1x text-primary"></i>
+                  </span>
+                  <h4>
+                    <strong>Instituto Superior Técnico</strong>
+                  </h4>
+                  <p>Master's degree in Information Systems and Computer Engineering</p>
+                  <a href="https://fenix.tecnico.ulisboa.pt/cursos/meic-a" target="_blank" class="btn btn-light">Learn More</a>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <div class="service-item">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-code fa-stack-1x text-primary"></i>
+                  </span>
+                  <h4>
+                    <strong>CoderDojo LX</strong>
+                  </h4>
+                  <p>Volunteer</p>
+                  <a href="http://www.coderdojo-lx.pt/inicio" target="_blank" class="btn btn-light">Learn More</a>
+                </div>
+              </div>
+            </div>
+            <!-- /.row (nested) -->
+          </div>
+          <!-- /.col-lg-10 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container -->
+    </section>
+
+    <!-- Callout -->
+    <aside class="callout_1">
+      <div class="text-vertical-center">
+        <!-- h1>Download my CV</h1 -->
+      </div>
+    </aside>
+
+    <!-- Portfolio -->
+    <!-- <section id="portfolio" class="portfolio">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 mx-auto text-center">
+            <h2>Portfolio</h2>
+            <hr class="small">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="portfolio-item">
+                  <a target="_blank" href="https://github.com/rodrigolousada/CG-Space-Invaders">
+                    <img class="img-portfolio img-fluid" src="img/portfolio-SpaceInvaders.jpg">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="portfolio-item">
+                  <a href="#">
+                    <img class="img-portfolio img-fluid" src="img/portfolio-2.jpg">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="portfolio-item">
+                  <a href="#">
+                    <img class="img-portfolio img-fluid" src="img/portfolio-3.jpg">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="portfolio-item">
+                  <a target="_blank" href="http://web.ist.utl.pt/~ist181115/IPM/">
+                    <img class="img-portfolio img-fluid" src="img/portfolio-IPM.jpg">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </.row (nested)> to comment
+            <a href="#" class="btn btn-dark">View More Items</a>
+          </div>
+        </div>
+        </.col-lg-10> to comment
+        </.row> to comment
+      </div>
+      </.container> to comment
+    </section> -->
+
+    <!-- Map -->
+    <!--section id="contact" class="map">
+      <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5348.7158711966995!2d-9.14143738426068!3d38.73578668478916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1933a24aa81f17%3A0x880c7c731a54423!2sInstituto+Superior+T%C3%A9cnico!5e0!3m2!1spt-PT!2spt!4v1511062935896"></iframe>
+      <br/>
+      <small>
+        <a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5348.7158711966995!2d-9.14143738426068!3d38.73578668478916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1933a24aa81f17%3A0x880c7c731a54423!2sInstituto+Superior+T%C3%A9cnico!5e0!3m2!1spt-PT!2spt!4v1511062935896"></a>
+      </small>
+    </section-->
+
+    <!-- Callout 2 -->
+    <!--aside class="callout_2">
+      <div class="text-vertical-center">
+        <h1>Challenge me!</h1>
+      </div>
+    </aside -->
+
+    <!-- Call to Action -->
+    <aside id="contact" class="call-to-action bg-primary text-white">
+      <div class="container text-center">
+        <h3>Download my Curriculum Vitae now!</h3>
+        <a href="RodrigoLousadaCV.pdf" target="_blank" class="btn btn-lg btn-dark">Download CV</a>
+      </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 mx-auto text-center">
+            <h4>
+              <strong>Rodrigo Lousada</strong>
+            </h4>
+            <!-- <p>Address to insert
+              <br>Zip-code to insert</p> -->
+            <ul class="list-unstyled">
+              <li>
+                <i class="fa fa-phone fa-fw"></i>
+                (+351) 911 184 298</li>
+              <li>
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <a href="mailto:rodrigo.m.lousada@gmail.com">rodrigo.m.lousada@gmail.com</a>
+              </li>
+              <li>
+                <i class="fa fa-envelope-o fa-fw"></i>
+                <a href="mailto:rodrigo.lousada@sinfo.org">rodrigo.lousada@sinfo.org</a>
+              </li>
+            </ul>
+            <br>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <a href="https://www.facebook.com/rodrigo.lousada.5" target="_blank">
+                  <i class="fa fa-facebook fa-fw fa-3x"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://www.linkedin.com/in/rodrigo-lousada-359685117?authType=NAME_SEARCH&authToken=2oZc" target="_blank">
+                  <i class="fa fa-linkedin fa-fw fa-3x"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://twitter.com/rodriigolousada" target="_blank">
+                  <i class="fa fa-twitter fa-fw fa-3x"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://www.instagram.com/rodrigolousada/" target="_blank">
+                  <i class="fa fa-instagram fa-fw fa-3x"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://github.com/rodrigolousada" target="_blank">
+                  <i class="fa fa-github fa-fw fa-3x"></i>
+                </a>
+              </li>
+            </ul>
+            <hr class="small">
+            <p class="text-muted">Copyright &copy; rodrigolousada.github.io</p>
+          </div>
+        </div>
+      </div>
+      <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
+        <i class="fa fa-chevron-up fa-fw fa-1x"></i>
+      </a>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/stylish-portfolio.js"></script>
+
+  </body>
+
 </html>
