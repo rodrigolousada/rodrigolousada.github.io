@@ -66,7 +66,7 @@
      typed.typed({
        strings: ["Rodrigo Lousada", "Engineer", "Developer", "Data Scientist", "Rodrigo Lousada"],
        typeSpeed: 50,
-       loop: false,
+       loop: true,
      });
    });
 
