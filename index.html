@@ -2,401 +2,820 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Rodrigo Lousada Personal Website">
-  <meta name="author" content="Rodrigo Lousada">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Rodrigo Lousada Website</title>
+  <title>Rodrigo Lousada</title>
+  <meta content="Rodrigo Lousada Personal Website" name="description">
+  <meta content="data scientist;data engineer;python;rodrigo lousada" name="keywords">
 
-  <link rel="shortcut icon" href="man.ico" type="image/x-icon" style="height:2px; width:2px;">
-  <!-- Bootstrap Core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Custom Fonts -->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
-    rel="stylesheet" type="text/css">
-  <link href="vendor/academicons/css/academicons.min.css" rel="stylesheet" type="text/css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link href="css/stylish-portfolio.css" rel="stylesheet">
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: iPortfolio
+  * Updated: Jul 27 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
-  <!-- Navigation -->
-  <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle">
-    <i class="fa fa-bars"></i>
-  </a>
-  <nav id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
-        <i class="fa fa-times"></i>
-      </a>
-      <li class="sidebar-brand">
-        <a class="js-scroll-trigger" href="#top">Rodrigo Lousada</a>
-      </li>
-      <li>
-        <a class="js-scroll-trigger" href="#top">Home</a>
-      </li>
-      <!-- <li>
-          <a class="js-scroll-trigger" href="blog/index.html">Blog</a>
-        </li> -->
-      <li>
-        <a class="js-scroll-trigger" href="#about">My Path</a>
-      </li>
-      <li>
-        <a class="js-scroll-trigger" href="#contact" onclick=$("#menu-close").click();>CV</a>
-      </li>
-      <li>
-        <a class="js-scroll-trigger" href="#footer">Contact Me</a>
-      </li>
-    </ul>
-  </nav>
 
-  <!-- Header -->
-  <header class="header" id="top">
-    <div class="text-vertical-center text-white">
-      <h1><span class="typed"></span></h1>
-      <h3>Data Specialist &#64; <img src="img/ibm-logo-white.png" alt="ibm" height=26px> </h3>
-      <br>
-      <a href="#about" class="btn btn-dark btn-lg js-scroll-trigger">Find Out More</a>
-    </div>
-  </header>
+  <!-- ======= Mobile nav toggle button ======= -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
-  <!-- About -->
-  <!-- <section id="about" class="about">
-      <div class="container text-center">
-        <h2>Who Am I?</h2>
-        <p class="lead">I took my Bachelors in <b>Computer Science and Engineering</b> at <a href="https://tecnico.ulisboa.pt/en/">Instituto Superior Técnico</a>, University of Lisbon, Portugal.
-              <br>i tooke my Masters in <b>Information Systems and Computer Engineering</b>, specializing in <b>Artificial Intelligence</b>. </p>
-        <p class="lead">I did my <b>ERASMUS</b> in Berlin at <a href="https://www.tu-berlin.de/menue/home/">Technische Universität Berlin</a> and <a href="https://www.hu-berlin.de/en">Humboldt-Universität zu Berlin</a>.</p>
-        <p class="lead">I was also a <b>Coordinator</b> at <a href="https://sinfo.org/">SINFO</a>, a student organization responsible for the best FREE tech conference in Portugal.</p>
-        <p class="lead">Volunteer experience at <a href="https://coderdojo.com//">CoderDojo</a> and <a href="https://websummit.com/">Web Summit</a>.</p>
-        <p class="lead">I joined <a href="https://www.ibm.com/pt-en">IBM</a> as A Cognitive Consultant looking forward to learn and apply my knowledge on <b>AI & Machine Learning</b>.</p>
-        <p class="lead">Available to live abroad and face new challenges.</p>
-        <p class="lead">Check my previous experience at:</p>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="https://www.linkedin.com/in/rodrigolousada" target="_blank">
-              <i class="fa fa-linkedin-square fa-fw fa-4x"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="https://github.com/rodrigolousada" target="_blank">
-              <i class="fa fa-github fa-fw fa-4x"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="https://scholar.google.com/citations?user=adsARIgAAAAJ&hl=pt-PT" target="_blank">
-              <i class="ai ai-google-scholar ai-fw ai-4x"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section> -->
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="d-flex flex-column">
 
-
-  <!-- About-->
-  <section class="page-section" id="about">
-    <div class="container text-center">
-      <br>
-      <h2>My Path</h2>
-      <br>
-      <ul class="timeline">
-        <li>
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/ist-logo.png" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>2014 - 2017</h4>
-              <h4 class="subheading">BSc Student @ <a href="https://tecnico.ulisboa.pt/en/">Instituto Superior
-                  Técnico</a>, University of Lisbon</h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted">Bachelors in <b>Computer Science and Engineering</b></p>
-            </div>
-          </div>
-        </li>
-        <li class="timeline-inverted">
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/sinfo-logo.jpg" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>2015-2018</h4>
-              <h4 class="subheading">Tech Event Organizer @ <a href="https://sinfo.org/">SINFO</a> </h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted">From <b>Social Media Manger</b> to <b>Coordinator</b> of the biggest Free Tech
-                conference in Portugal!</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/tu-logo.png" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>Spring 2018</h4>
-              <h4 class="subheading">ERASMUS Student @ <a href="https://www.tu-berlin.de/menue/home/">Technische
-                  Universität Berlin</a></h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted"><b>ERASMUS</b> Semester in Master of <b>Informatiks</b></p>
-            </div>
-          </div>
-        </li>
-        <li class="timeline-inverted">
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/humboldt-logo.png" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>June 2018</h4>
-              <h4 class="subheading">ERASMUS Student @ <a href="https://www.hu-berlin.de/en">Humboldt-Universität zu
-                  Berlin</a></h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted"><b>Scientific Writing</b> course</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/ist-logo.png" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>2017 - 2020</h4>
-              <h4 class="subheading">MSc Student @ <a href="https://tecnico.ulisboa.pt/en/">Instituto Superior
-                  Técnico</a>, University of Lisbon</h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted">Masters in <b>Information Systems and Computer Engineering</b>, specializing in
-                <b>Artificial Intelligence</b> and <b>Data Science</b></p>
-            </div>
-          </div>
-        </li>
-        <li class="timeline-inverted">
-          <div class="timeline-image"><img class="rounded-circle img-fluid" src="img/ibm-logo.png" alt="" /></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4>April 2020 - Present</h4>
-              <h4 class="subheading">Cognitive Consultant @ <a href="https://www.ibm.com/pt-en">IBM Portugal</a></h4>
-            </div>
-            <div class="timeline-body">
-              <p class="text-muted"><b>Cognitive Care Services</b> team <br>& <b>Data Analytics</b> team</p>
-            </div>
-          </div>
-        </li>
-        <li class="timeline-inverted">
-          <div class="timeline-image" background-color="black">
-            <h4>
-              Be Part
-              <br />
-              Of My
-              <br />
-              Story!
-            </h4>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="container text-center">
-      <p class="lead">Volunteer experience at <a href="https://coderdojo.com//">CoderDojo</a> and <a
-          href="https://websummit.com/">Web Summit</a>.</p>
-      <p class="lead">Check my previous experience at:</p>
-      <ul class="list-inline">
-        <li class="list-inline-item">
-          <a href="https://www.linkedin.com/in/rodrigolousada" target="_blank">
-            <i class="fa fa-linkedin-square fa-fw fa-4x"></i>
-          </a>
-        </li>
-        <li class="list-inline-item">
-          <a href="https://github.com/rodrigolousada" target="_blank">
-            <i class="fa fa-github fa-fw fa-4x"></i>
-          </a>
-        </li>
-        <li class="list-inline-item">
-          <a href="https://scholar.google.com/citations?user=adsARIgAAAAJ&hl=pt-PT" target="_blank">
-            <i class="ai ai-google-scholar ai-fw ai-4x"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- Callout -->
-  <aside class="callout_1">
-    <div class="text-vertical-center">
-      <!-- h1>Download my CV</h1 -->
-    </div>
-  </aside>
-
-  <!-- Call to Action -->
-  <aside id="contact" class="call-to-action bg-primary text-white">
-    <div class="container text-center">
-      <h3>Want to Know More?</h3>
-      <a href="CV.pdf" target="_blank" class="btn btn-lg btn-dark">Download CV</a>
-      <!-- <a href="http://vizualize.me/rodrigolousada" target="_blank" class="btn btn-lg btn-dark">Vizualize Me</a> -->
-    </div>
-  </aside>
-
-  <!-- Portfolio -->
-  <!-- <section id="portfolio" class="portfolio">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-10 mx-auto text-center">
-            <h2>Portfolio</h2>
-            <hr class="small">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="portfolio-item">
-                  <a target="_blank" href="https://github.com/rodrigolousada/CG-Space-Invaders">
-                    <img class="img-portfolio img-fluid" src="img/portfolio-SpaceInvaders.png">
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="portfolio-item">
-                  <a target="_blank" href="#">
-                    <img class="img-portfolio img-fluid" src="img/portfolio-3.jpg">
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="portfolio-item">
-                  <a target="_blank" href="https://rodrigolousada.me/Nobels_Information_Visualization/">
-                    <img class="img-portfolio img-fluid" src="img/potfolio-NobelPrizes.png">
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="portfolio-item">
-                  <a target="_blank" href="http://web.ist.utl.pt/~ist181115/IPM/BARISTA5/frame.html">
-                    <img class="img-portfolio img-fluid" src="img/portfolio-BarISTa.png">
-                  </a>
-                </div>
-              </div>
-            </div>
-            <a href="#" class="btn btn-dark">View More Items</a>
-          </div>
+      <div class="profile">
+        <img src="assets/img/profile-img-0.jpg" alt="" class="img-fluid rounded-circle">
+        <h1 class="text-light"><a href="index.html">Rodrigo Lousada</a></h1>
+        <div class="social-links mt-3 text-center">
+          <a href="https://github.com/rodrigolousada" target="_blank" class="github"><i class="bx bxl-github"></i></a>
+          <a href="https://www.linkedin.com/in/rodrigo-lousada-359685117?authType=NAME_SEARCH&authToken=2oZc" target="_blank" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+          <a href="https://www.instagram.com/rodrigolousada/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="https://twitter.com/rodriigolousada" target="_blank"  class="twitter"><i class="bx bxl-twitter"></i></a>
+          <a href="https://www.facebook.com/rodrigo.lousada.5" target="_blank"  class="facebook"><i class="bx bxl-facebook"></i></a>
+          <!-- <a href="https://scholar.google.com/citations?user=adsARIgAAAAJ&hl=pt-PT" target="_blank"  class="google-scholar"><i class="bx bxl-google-scholar"></i></a> -->
         </div>
       </div>
-    </section> -->
 
-  <!-- Map -->
-  <section id="contact" class="map">
-    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99645.72198466603!2d-9.28442392360806!3d38.69647946157116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x167467b913bd9adb!2sCompanhia%20Ibm%20Portuguesa%2C%20S.A.!5e0!3m2!1spt-PT!2spt!4v1603144327697!5m2!1spt-PT!2spt"></iframe>
-    <br />
-    <small>
-      <a
-        href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99645.72198466603!2d-9.28442392360806!3d38.69647946157116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x167467b913bd9adb!2sCompanhia%20Ibm%20Portuguesa%2C%20S.A.!5e0!3m2!1spt-PT!2spt!4v1603144327697!5m2!1spt-PT!2spt"></a>
-    </small>
-  </section>
+      <nav id="navbar" class="nav-menu navbar">
+        <ul>
+          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
+          <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
+          <!-- <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li> -->
+          <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>
+          <li><a href="#organizations" class="nav-link scrollto"><i class="bx bx-building"></i> <span>Organizations</span></a></li>
+          <!-- <li><a href="#testimonials" class="nav-link scrollto"><i class="bx bx-chat"></i> <span>Testimonials</span></a></li> -->
+          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+    </div>
+  </header><!-- End Header -->
 
-  <!-- Footer -->
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+      <h1>Rodrigo Lousada</h1>
+      <p>I'm a <span class="typed" data-typed-items="Consulting Lead, Data Specialist, Developer"></span></p>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>About</h2>
+          <p>Hey there! I'm Rodrigo Lousada, and I'm all about crunching data, building stuff, and making tech do the heavy lifting. By day, I'm an AI enthusiast at IBM, specializing in chatbots, GenAI and all things automation. When I'm not glued to my laptop, you'll find me exploring the vibrant streets of Lisbon, playing sports or diving headfirst into a good tv show. I'm all about learning new stuff. Let's chat tech, data, or anything nerdy. I'm all ears!</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4" data-aos="fade-right">
+            <img src="assets/img/profile-img-2.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+            <h3>Consulting Lead (Chatbot & GenAI Teams) at <img src="assets/img/ibm-logo.png" alt="ibm" height="22px" style="margin-bottom: 5px;"></h3>
+            <!-- <h3>Consulting Lead (Chatbot & GenAI Teams) &#64; <img src="assets/img/ibm-logo.png" alt="ibm" height=26px></h3> -->
+            <p class="fst-italic">
+              Right now, I'm rocking the role of Consulting Lead on the Chatbot Team at IBM. It's all about bringing some serious AI magic into the world of banking. My days are a mix of brainstorming with the team, leading them on our solutions development, and sometimes just a touch of coffee-fueled debugging. Lisbon is my basecamp, but with a hybrid work setup, I've got the freedom to work from anywhere with Wi-Fi. So, if you're ever in Lisbon, hit me up for some tech talk or a coffee hang!
+            </p>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Position:</strong> <span>Consulting Lead</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Team:</strong> <span>Consulting - Automation - Chatbots</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Work Regiment:</strong> <span>Hybrid (Mostly Remote)</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Office:</strong> <span>Lisbon, Portugal</span></li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Since:</strong> <span>April 2020</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Expertise:</strong> <span>AI and Advanced Analytics</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Sector:</strong> <span>Banking</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Honors:</strong> <span>Top Talent &amp; Gold Champion Learner</span></li>
+                </ul>
+              </div>
+            </div>
+            <!-- <p>
+              Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+              Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis culpa magni laudantium dolores.
+            </p> -->
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Facts Section ======= -->
+    <!-- <section id="facts" class="facts">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Facts</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row no-gutters">
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up">
+            <div class="count-box">
+              <i class="bi bi-emoji-smile"></i>
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Happy Clients</strong> consequuntur quae</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="count-box">
+              <i class="bi bi-journal-richtext"></i>
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Projects</strong> adipisci atque cum quia aut</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="count-box">
+              <i class="bi bi-headset"></i>
+              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Hours Of Support</strong> aut commodi quaerat</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="300">
+            <div class="count-box">
+              <i class="bi bi-people"></i>
+              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Hard Workers</strong> rerum asperiores dolor</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>End Facts Section -->
+
+    <!-- ======= Skills Section ======= -->
+    <section id="skills" class="skills section-bg">
+      <div class="container">
+
+        <div class="section-title"> 
+          <h2>Roles</h2>
+          <p>Throughout my career and experiences, I've developed a diverse skill set and a passion for tackling challenges in different domains. Here are some of the roles where my work fits best:</p>
+        </div>
+
+        <div class="row skills-content">
+
+          <div class="col-lg-6" data-aos="fade-up">
+
+            <div class="progress">
+              <span class="skill">Data Scientist <i class="val">95%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Data Analyst <i class="val">100%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Project Manager <i class="val">85%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Product Designer <i class="val">70%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="progress">
+              <span class="skill">Software Engineer<i class="val">80%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Data Engineer <i class="val">90%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Sales <i class="val">55%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Tech Consultant <i class="val">100%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Skills Section -->
+
+    <!-- ======= Resume Section ======= -->
+    <section id="resume" class="resume">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Resume</h2>
+          <a class="downloadable" target="_blank" href="./assets/CV_Rodrigo_Lousada.pdf">Download full version <i width="2px" class="bx bx-download"></i></a>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6" data-aos="fade-up">
+            <h3 class="resume-title">Sumary</h3>
+            <div class="resume-item pb-0">
+              <h4>Rodrigo Lousada</h4>
+              <p><em>Innovative and data-driven Data Specialist with 3+ years of experience in Data Science, Data Analytics, and Data Engineering projects. Consulting Lead with 1+ year experience. </em></p>
+              <ul>
+                <li>Lisbon, Portugal</li>
+                <li>(+351) 911 184 298</li>
+                <li>rodrigo.m.lousada@gmail.com</li>
+              </ul>
+            </div>
+
+            <h3 class="resume-title">Education</h3>
+            <div class="resume-item">
+              <h4>MSc. Computer Science &amp; Engineering</h4>
+              <h5>Grade: 17/20</h5>
+              <p><em>Instituto Superior Técnico, University of Lisbon</em></p>
+              <p>Major in Artificial Intelligence and Machine Learning with minor in Data Science. Spent an Exchange Semester in Berlin taking Data Science classes in TU Berlin and Humboldt University.</p>
+            </div>
+            <div class="resume-item">
+              <h4>Business Summer School</h4>
+              <p><em>AESE Business School</em></p>
+              <p>Intensive course on a multitude of Business topics, such as Management, Operations, Economics, Accounting, and HR. Pitched solution on reducing truck driver’s loneliness to major truck and distribution company in Portugal (Luís Simões).</p>
+            </div>
+
+            <h3 class="resume-title">Certifications</h3>
+            <div class="resume-item">
+              <h4>AWS Cloud Practicioner</h4>
+             </div>
+            <div class="resume-item">
+              <h4>IBM Cloud Pak for Data</h4>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="resume-title">Professional Experience</h3>
+            <div class="resume-item">
+              <h4>Consulting Lead - Chatbot Team</h4>
+              <h5>April 2020 - Present</h5>
+              <p><em>IBM Consulting, Lisbon, Portugal </em></p>
+              <ul>
+                <li>Contributed to 9+ NPS scores by building complete chatbot solutions that go from ideation to performance monitoring.</li>
+                <li>Doubled FTE savings to the call center of a major Portuguese bank, by leading the project with a data-driven approach. </li>
+                <li>Reduced 70% of team’s workload, by automating weekly tasks of the chat/voicebot projects.</li>
+                <li>Designed dozens of new features for IBMs SaaS for Automation.</li>
+                <li>Lead and mentor a team of 4-6 developers.</li>
+                <li>and more...</li>
+              </ul>
+            </div>
+            <div class="resume-item">
+              <h4>Thesis Researcher | Data Scientist</h4>
+              <h5>Sep 2018 - Nov 2020</h5>
+              <p><em>IT - Instituto de Telecomunicações, Lisbon, Portugal</em></p>
+              <ul>
+                <li>Achieved over 48% accuracy, 100% ROR and 1.90 Sharpe Ratio by designing an automatic trading system that exploited a custom Machine Learning algorithm to trade SPY options.</li>
+              </ul>
+            </div>
+            <div class="resume-item">
+              <h4>Event Coordinator</h4>
+              <h5>Apr 2016 - Mar 2019</h5>
+              <p><em>SINFO, Lisbon, Portugal</em></p>
+              <ul>
+                <li>Generated over 7000€ in funding from tech sponsors.</li>
+                <li>10x engagement on social media with 10k+ followers across platforms.</li>
+                <li>Recruited and formed more than 10 new volunteers.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Resume Section -->
+
+    <!-- ======= Portfolio Section ======= -->
+    <!-- <section id="portfolio" class="portfolio section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Portfolio</h2>
+          <p>Here, you'll discover a blend of side projects, university endeavors, and publicly accessible IBM projects. While I can't showcase all my work due to confidentiality, these selections offer a compelling snapshot of my skills and passion for technology. Dive in and explore!</p>
+        </div>
+
+        <div class="row" data-aos="fade-up">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active">All</li>
+              <li data-filter=".filter-app">Machine Learning</li>
+              <li data-filter=".filter-card">Data Visualization</li>
+              <li data-filter=".filter-web">Web</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-2.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-4.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-4.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 2"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-5.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-5.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 2"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-6.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-6.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 3"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-7.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 1"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-8.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 3"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portfolio-9.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="assets/img/portfolio/portfolio-9.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>End Portfolio Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>What you can expect</h2>
+          <p>When collaborating with me, you'll discover a diverse set of qualities that can be observed on my  <a href="#resume">resume</a> and have also been assessed through the <a target="_blank" href="./assets/CliftonStrengths.pdf">Clifton Strengths</a> test:</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="bi bi-battery-charging"></i></div>
+            <h4 class="title"><a href="#services">Achiever</a></h4>
+            <p class="description">Take immense satisfaction in being busy and productive. Great stamina to work on demanding and complex topics. Thrive in high pressure tasks with a deep focus on the goal.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon"><i class="bi bi-eye"></i></div>
+            <h4 class="title"><a href="#services">Vision &amp; Futurism</a></h4>
+            <p class="description">Futuristic mindset that comes into play often, envising innovative solutions and strategies. Right now, focusing on delivering GenerativeAI solutions to maximize clients' efficiency.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon"><i class="bi bi-book"></i></div>
+            <h4 class="title"><a href="#services">Curiosity &amp; Learning</a></h4>
+            <p class="description">Great desire to learn and improve continuously. The process of seeking new innovative solutions get's me excited, which led to being recognized as an <a href="https://www.linkedin.com/posts/rodrigolousada_proud-to-share-the-achievement-of-ibm-gold-activity-6877567810462109696-h2bd?utm_source=share&utm_medium=member_desktop">IBM Gold Champion Learner</a>.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon"><i class="bi bi-lightbulb"></i></div>
+            <h4 class="title"><a href="#services">Ideation &amp; Collaboration</a></h4>
+            <p class="description">Always collecting ideas. Conducting <a target="_blank" href="https://www.credly.com/badges/69638961-524c-4698-b6d8-39fa785f0307">Design Thinking</a> and Brainstorming sessions in order to extract from teammates the brightest ideas, while polishing them with critical thinking.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon"><i class="bi bi-binoculars"></i></div>
+            <h4 class="title"><a href="#services">Leadership &amp; Individualization</a></h4>
+            <p class="description">Skilled in recognizing teammates' unique strenghts and weaknesses. Present leader with great communication skills. Passioned about knowledge sharing and mentorship.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="500">
+              <div class="icon"><i class="bi bi-bar-chart"></i></div>
+            <h4 class="title"><a href="#services">Data-driven</a></h4>
+            <p class="description">Coming across a variety of data roles, the decision making process is generally based on data with clearly defined KPIs. Experienced on analysing, interpreting and showcasing data.</p>
+            </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="600">
+            <div class="icon"><img src="https://images.credly.com/size/680x680/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png" width="65px"/></div>
+            <h4 class="title"><a href="#services">Cloud Experience</a></h4>
+            <p class="description">Experience with cloud providers such as AWS, Azure and IBM Cloud. Certified as <a target="_blank" href="https://www.credly.com/badges/706fb657-6baf-4b0b-8768-c323057900cf">AWS Cloud Practicioner</a></p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="700">
+            <div class="icon"><i class="bi bi-briefcase"></i></div>
+            <h4 class="title"><a href="#services">Ownership &amp; Trust</a></h4>
+            <p class="description">Embrace accountability, ensuring project success, and taking full responsibility for tasks completion and teams management.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="800">
+            <div class="icon"><i class="bi bi-robot"></i></div>
+            <h4 class="title"><a href="#services">Automation</a></h4>
+            <p class="description">Always looking for boring and repetitive tasks to automate. This resulted in reduced workload up to 70%. </p>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+    <!-- ======= Organizations Section ======= -->
+    <section id="organizations" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Organizations</h2>
+          <p>Along the years I had the pleasure to work with the following organizations.</p>
+        </div>
+
+        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  At IBM, we tackle complex <b>business challenges</b> and drive meaningful <b>transformation</b> for our <b>clients</b>, by harnessing IBM's <b>expertise</b>, <b>tech</b>, and <b>global reach</b>.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/ibm-logo.png" class="testimonial-img" alt="">
+                <h3>IBM Consulting</h3>
+                <h4>Consulting Lead</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Under the supervision of <b>Prof. Rui Neves</b> I had the pleasure to research on the application of <b>Machine Learning</b> algorithms to automate trading in <b>Financial Markets</b>                
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/it-logo.png" class="testimonial-img" alt="">
+                <h3>Instituto de Telecomunicações</h3>
+                <h4>Data Science Researcher</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  SINFO made me learn how to organize a <b>large scale event</b>, <b>lead diverse teams</b>, and create a <b>diverse skill set</b> of hard and soft skills. Forever an enthusiast of this event.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/sinfo-logo.jpg" class="testimonial-img" alt="">
+                <h3>SINFO</h3>
+                <h4>Event Coordinator</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="400">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Apart from the many <b>skills</b> and ability to <b>adapt</b> to any programming language or architecture, IST shapes us into <b>competent</b>, <b>resilient</b>, and <b>hardworking</b> professionals
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/ist-logo.png" class="testimonial-img" alt="">
+                <h3>Instituto Superior Técnico</h3>
+                <h4>Student</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="500">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  At TU, my journey was tailored to explore <b>innovative teaching methods</b> within Data Science, including topics such as <b>Data</b>, <b>ML algorithms</b> and <b>Computer Vision</b>.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/tu-logo.png" class="testimonial-img" alt="">
+                <h3>TU Berlin</h3>
+                <h4>Student</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="600">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  I joined Humboldt University to learn <b>Scientific Writing</b>, drawn by its distinguished legacy of research, which includes luminaries like <b>Albert Einstein</b> and <b>Max Born</b><i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/humboldt-logo.png" class="testimonial-img" alt="">
+                <h3>Humboldt University</h3>
+                <h4>Student</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="700">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  As an Engineer, AESE was a great opportunity to diverse my skillset by learning more about <b>Business</b> and <b>Management</b>, while applying the <b>Harvard case method</b>.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/organizations/aese-logo.png" class="testimonial-img" alt="">
+                <h3>AESE Business School</h3>
+                <h4>Student</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Testimonials Section -->
+
+    <!-- ======= Testimonials Section =======->
+    <section id="testimonials" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Testimonials</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+              </div>
+            </div><!-- End testimonial item - ->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+              </div>
+            </div><!-- End testimonial item - ->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+              </div>
+            </div><!-- End testimonial item - ->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+              </div>
+            </div><!-- End testimonial item - ->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item" data-aos="fade-up" data-aos-delay="400">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+              </div>
+            </div><!-- End testimonial item - ->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Testimonials Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+          <p>Please don't hesitate to reach out; I'd love to have a conversation about anything under the vast word cloud of topics below.</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+          <div class="col-lg-5 d-flex align-items-stretch">
+            <div class="info">
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>rodrigo.m.lousada@gmail.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+351 911 184 298</p>
+              </div>
+
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>IBM Location:</h4>
+                <p>R. Mar da China 3, 1990-137 Lisboa</p>
+              </div>
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99645.72198466603!2d-9.28442392360806!3d38.69647946157116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x167467b913bd9adb!2sCompanhia%20Ibm%20Portuguesa%2C%20S.A.!5e0!3m2!1spt-PT!2spt!4v1603144327697!5m2!1spt-PT!2spt" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <!-- <img src="assets/img/word_cloud.jpg">> -->
+          </div>
+          <!-- <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name">Your Name</label>
+                  <input type="text" name="name" class="form-control" id="name" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="name">Your Email</label>
+                  <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">Subject</label>
+                <input type="text" class="form-control" name="subject" id="subject" required>
+              </div>
+              <div class="form-group">
+                <label for="name">Message</label>
+                <textarea class="form-control" name="message" rows="10" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div> -->
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-10 mx-auto text-center">
-          <h4>
-            <strong>Rodrigo Lousada</strong>
-          </h4>
-          <!-- <p>Address to insert
-              <br>Zip-code to insert</p> -->
-          <ul class="list-unstyled">
-            <li>
-              <i class="fa fa-phone fa-fw"></i>
-              (+351) 911 184 298
-            </li>
-            <li>
-              <b>Personal</b>
-              <i class="fa fa-envelope-o fa-fw"></i>
-              <a href="mailto:rodrigo.m.lousada@gmail.com">rodrigo.m.lousada@gmail.com</a>
-            </li>
-            <li>
-              <b>IBM</b>
-              <i class="fa fa-envelope-o fa-fw"></i>
-              <a href="mailto:rodrigo.lousada1@ibm.com">rodrigo.lousada1@ibm.com</a>
-            </li>
-            <li>
-              <b>University</b>
-              <i class="fa fa-envelope-o fa-fw"></i>
-              <a href="mailto:rodrigo.lousada@tecnico.ulisboa.pt">rodrigo.lousada@tecnico.ulisboa.pt</a>
-            </li>
-          </ul>
-          <br>
-          <ul class="list-inline">
-            <li class="list-inline-item">
-              <a href="https://www.facebook.com/rodrigo.lousada.5" target="_blank">
-                <i class="fa fa-facebook fa-fw fa-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://www.linkedin.com/in/rodrigo-lousada-359685117?authType=NAME_SEARCH&authToken=2oZc"
-                target="_blank">
-                <i class="fa fa-linkedin fa-fw fa-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://twitter.com/rodriigolousada" target="_blank">
-                <i class="fa fa-twitter fa-fw fa-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://www.instagram.com/rodrigolousada/" target="_blank">
-                <i class="fa fa-instagram fa-fw fa-3x"></i>
-              </a>
-            </li>
-            <br>
-            <li class="list-inline-item">
-              <a href="https://github.com/rodrigolousada" target="_blank">
-                <i class="fa fa-github fa-fw fa-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href=" https://www.researchgate.net/profile/Rodrigo_Lousada/research" target="_blank">
-                <i class="ai ai-researchgate ai-fw ai-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://orcid.org/0000-0002-5662-9452" target="_blank">
-                <i class="ai ai-orcid ai-fw ai-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://publons.com/researcher/1766032/rodrigo-lousada/" target="_blank">
-                <i class="ai ai-publons ai-fw ai-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://scholar.google.com/citations?user=adsARIgAAAAJ&hl=pt-PT" target="_blank">
-                <i class="ai ai-google-scholar ai-fw ai-3x"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://scholar.google.com/citations?user=adsARIgAAAAJ&hl=pt-PT" target="_blank">
-                <i class="ai ai-credly ai-fw ai-3x"></i>
-              </a>
-            </li>
-          </ul>
-          <hr class="small">
-          <p class="text-muted">Copyright &copy; rodrigolousada.github.io</p>
-        </div>
+      <div class="copyright">
+        &copy; Copyright <strong><span>iPortfolio</span></strong>
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
-    <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
-      <i class="fa fa-chevron-up fa-fw fa-1x"></i>
-    </a>
-  </footer>
+  </footer><!-- End  Footer -->
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Custom scripts for this template -->
-  <script src="js/typed.js"></script>
-  <script src="js/stylish-portfolio.js"></script>
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
 
 </body>
 
