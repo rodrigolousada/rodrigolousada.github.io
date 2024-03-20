@@ -3,5 +3,7 @@
 Personal Website designed for potential recruiters. Redirects to social accounts.
 
 ### Resources:
-* [Start Bootstrap - Stylish Portfolio](https://startbootstrap.com/template-overviews/stylish-portfolio/)
-* [Stylish Portfolio](http://startbootstrap.com/template-overviews/stylish-portfolio/)
+Template Name: iPortfolio
+Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
+Author: BootstrapMade.com
+License: https://bootstrapmade.com/license/
