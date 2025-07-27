@@ -284,6 +284,45 @@ h6 {
   border-bottom: 3px solid #149ddd;
 }
 
+#hero .hero-tagline {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  font-family: "Open Sans", sans-serif;
+}
+
+#hero .hero-cta .btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#hero .hero-cta .btn-primary {
+  background: #149ddd;
+  border: 2px solid #149ddd;
+}
+
+#hero .hero-cta .btn-primary:hover {
+  background: transparent;
+  color: #149ddd;
+}
+
+#hero .hero-cta .btn-outline-light {
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+#hero .hero-cta .btn-outline-light:hover {
+  background: #fff;
+  color: #040b14;
+}
+
 @media (min-width: 1024px) {
   #hero {
     background-attachment: fixed;
@@ -300,6 +339,30 @@ h6 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
+  }
+  
+  #hero .hero-tagline {
+    font-size: 16px;
+  }
+  
+  #hero .hero-cta .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .about .achievement-item {
+    margin-bottom: 10px;
+    padding: 8px;
+  }
+  
+  .about .achievement-item i {
+    font-size: 20px;
+    margin-right: 8px;
+  }
+  
+  .about .achievement-item span {
+    font-size: 13px;
   }
 }
 
@@ -376,6 +439,41 @@ section {
 
 .about .content p:last-child {
   margin-bottom: 0;
+}
+
+.about .achievements h4 {
+  font-weight: 600;
+  color: #173b6c;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.about .achievement-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(20, 157, 221, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.about .achievement-item:hover {
+  background: rgba(20, 157, 221, 0.1);
+  transform: translateX(5px);
+}
+
+.about .achievement-item i {
+  font-size: 24px;
+  margin-right: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.about .achievement-item span {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #272829;
 }
 
 /*--------------------------------------------------------------
