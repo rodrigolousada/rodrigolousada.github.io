@@ -340,6 +340,11 @@ h6 {
 }
 
 @media (max-width: 768px) {
+  #hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
   #hero h1 {
     font-size: 28px;
     line-height: 36px;
@@ -1120,6 +1125,9 @@ section {
   font-size: 16px;
   font-weight: 500;
   transition: all 0.3s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .contact-details a:hover {
@@ -1374,6 +1382,14 @@ section {
   
   .opportunities-list {
     margin-bottom: 25px;
+  }
+  
+  .contact-details a {
+    font-size: 14px;
+  }
+  
+  .contact-details .email-method a {
+    font-size: 13px;
   }
 }
 
