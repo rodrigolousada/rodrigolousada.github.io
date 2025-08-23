@@ -1016,185 +1016,370 @@ section {
 # Contact
 --------------------------------------------------------------*/
 .contact {
-  padding-bottom: 130px;
+  padding-bottom: 10px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.contact .info {
-  padding: 30px;
+
+/* New Contact Section Styles */
+.contact-card,
+.opportunities-card {
   background: #fff;
-  width: 100%;
-  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
-.contact .info i {
+.contact-card:hover,
+.opportunities-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
+}
+
+.contact-header,
+.opportunities-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.contact-header h3,
+.opportunities-header h3 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #050d18;
+  margin-bottom: 12px;
+}
+
+.contact-header p,
+.opportunities-header p {
+  font-size: 15px;
+  color: #6c757d;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contact-methods {
+  margin-bottom: 30px;
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.contact-method.email-method {
+  border-color: #ffb347;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(255, 179, 71, 0.1);
+}
+
+.contact-method:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #149ddd 0%, #37b3ed 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 25px rgba(20, 157, 221, 0.3);
+}
+
+.contact-icon i {
   font-size: 20px;
+  color: #fff;
+}
+
+.contact-details h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #050d18;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-details a {
   color: #149ddd;
-  float: left;
-  width: 44px;
-  height: 44px;
-  background: #dff3fc;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.contact-details a:hover {
+  color: #37b3ed;
+  text-decoration: underline;
+}
+
+.contact-details span {
+  color: #173b6c;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.contact-details small {
+  display: block;
+  color: #6c757d;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.contact-details .badge {
+  background: linear-gradient(135deg, #ffb347 0%, #ffa500 100%) !important;
+  color: #000 !important;
+  font-size: 8px !important;
+  font-weight: 600 !important;
+  padding: 3px 6px !important;
+  border-radius: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.4px !important;
+  margin-left: 8px !important;
+  vertical-align: middle !important;
+  box-shadow: 0 2px 6px rgba(255, 179, 71, 0.3) !important;
+}
+
+
+
+.social-section {
+  text-align: center;
+}
+
+.social-section h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #050d18;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.social-grid {
   display: flex;
   justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  transition: all 0.3s ease-in-out;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.contact .info h4 {
-  padding: 0 0 0 60px;
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #050d18;
-}
-
-.contact .info p {
-  padding: 0 0 10px 60px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #173b6c;
-}
-
-.contact .info .email p {
-  padding-top: 5px;
-}
-
-.contact .info .social-links {
-  padding-left: 60px;
-}
-
-.contact .info .social-links a {
-  font-size: 18px;
-  display: inline-block;
+.social-link {
+  width: 50px;
+  height: 50px;
   background: #333;
   color: #fff;
-  line-height: 1;
-  padding: 8px 0;
   border-radius: 50%;
-  text-align: center;
-  width: 36px;
-  height: 36px;
-  transition: 0.3s;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 20px;
 }
 
-.contact .info .social-links a:hover {
-  background: #149ddd;
+.social-link:hover {
+  transform: translateY(-3px);
   color: #fff;
 }
 
-.contact .info .email:hover i,
-.contact .info .address:hover i,
-.contact .info .phone:hover i {
-  background: #149ddd;
-  color: #fff;
+.social-link.github:hover {
+  background: #333;
+  box-shadow: 0 8px 25px rgba(51, 51, 51, 0.4);
 }
 
-.contact .php-email-form {
-  width: 100%;
-  padding: 30px;
-  background: #fff;
-  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.12);
+.social-link.linkedin:hover {
+  background: #0077b5;
+  box-shadow: 0 8px 25px rgba(0, 119, 181, 0.4);
 }
 
-.contact .php-email-form .form-group {
-  padding-bottom: 8px;
+.social-link.twitter:hover {
+  background: #1da1f2;
+  box-shadow: 0 8px 25px rgba(29, 161, 242, 0.4);
 }
 
-.contact .php-email-form .validate {
-  display: none;
-  color: red;
-  margin: 0 0 15px 0;
-  font-weight: 400;
-  font-size: 13px;
+.social-link.instagram:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  box-shadow: 0 8px 25px rgba(220, 39, 67, 0.4);
 }
 
-.contact .php-email-form .error-message {
-  display: none;
-  color: #fff;
-  background: #ed3c0d;
-  text-align: left;
-  padding: 15px;
-  font-weight: 600;
+.opportunities-list {
+  margin-bottom: 30px;
 }
 
-.contact .php-email-form .error-message br+br {
-  margin-top: 25px;
-}
-
-.contact .php-email-form .sent-message {
-  display: none;
-  color: #fff;
-  background: #18d26e;
-  text-align: center;
-  padding: 15px;
-  font-weight: 600;
-}
-
-.contact .php-email-form .loading {
-  display: none;
-  background: #fff;
-  text-align: center;
-  padding: 15px;
-}
-
-.contact .php-email-form .loading:before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin: 0 10px -6px 0;
-  border: 3px solid #18d26e;
-  border-top-color: #eee;
-  animation: animate-loading 1s linear infinite;
-}
-
-.contact .php-email-form .form-group {
-  margin-bottom: 15px;
-}
-
-.contact .php-email-form label {
-  padding-bottom: 8px;
-}
-
-.contact .php-email-form input,
-.contact .php-email-form textarea {
-  border-radius: 0;
-  box-shadow: none;
-  font-size: 14px;
-}
-
-.contact .php-email-form input {
-  height: 44px;
-}
-
-.contact .php-email-form textarea {
-  padding: 10px 15px;
-}
-
-.contact .php-email-form button[type=submit] {
-  background: #149ddd;
+/* CTA Button Styles */
+.cta-button {
+  background: linear-gradient(135deg, #149ddd 0%, #37b3ed 100%);
   border: 0;
-  padding: 10px 24px;
+  padding: 18px 40px;
   color: #fff;
-  transition: 0.4s;
-  border-radius: 4px;
+  transition: all 0.4s ease;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 18px;
+  box-shadow: 0 8px 25px rgba(20, 157, 221, 0.3);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: inline-block;
+  text-decoration: none;
 }
 
-.contact .php-email-form button[type=submit]:hover {
-  background: #37b3ed;
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(20, 157, 221, 0.4);
+  color: #fff;
 }
 
-@keyframes animate-loading {
-  0% {
-    transform: rotate(0deg);
+.cta-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cta-button:hover:before {
+  left: 100%;
+}
+
+.cta-subtitle {
+  font-size: 14px;
+  color: #6c757d;
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+}
+
+.opportunity-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.opportunity-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.opportunity-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+}
+
+.opportunity-icon i {
+  font-size: 22px;
+  color: #fff;
+}
+
+.opportunity-content h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #050d18;
+  margin-bottom: 8px;
+}
+
+.opportunity-content p {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .contact-card,
+  .opportunities-card {
+    padding: 25px;
+    margin-bottom: 60px;
   }
-
-  100% {
-    transform: rotate(360deg);
+  
+  .contact-header h3,
+  .opportunities-header h3 {
+    font-size: 24px;
+  }
+  
+  .contact-method,
+  .opportunity-item {
+    padding: 15px;
+  }
+  
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+  }
+  
+  .social-grid {
+    gap: 10px;
+  }
+  
+  .social-link {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  .contact .section-title {
+    margin-bottom: 30px;
+  }
+  
+  .contact-header,
+  .opportunities-header {
+    margin-bottom: 25px;
+  }
+  
+  .contact-methods {
+    margin-bottom: 25px;
+  }
+  
+  .opportunities-list {
+    margin-bottom: 25px;
   }
 }
+
+
+
+
 
 /*--------------------------------------------------------------
 # Breadcrumbs
