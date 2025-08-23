@@ -293,6 +293,16 @@ h6 {
   font-family: "Open Sans", sans-serif;
 }
 
+#hero .hero-subtitle {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 30px;
+  opacity: 0.8;
+  font-family: "Open Sans", sans-serif;
+  font-style: italic;
+}
+
 #hero .hero-cta .btn {
   padding: 12px 30px;
   font-size: 16px;
@@ -343,6 +353,11 @@ h6 {
   
   #hero .hero-tagline {
     font-size: 16px;
+  }
+  
+  #hero .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
   }
   
   #hero .hero-cta .btn {
@@ -409,71 +424,120 @@ section {
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
-.about .content h3 {
-  font-weight: 700;
-  font-size: 26px;
-  color: #173b6c;
+/* About Section Styling */
+.about .section-title {
+  margin-bottom: 0px;
 }
 
-.about .content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.about .content ul li {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.about .content ul strong {
-  margin-right: 10px;
-}
-
-.about .content ul i {
-  font-size: 16px;
-  margin-right: 5px;
+.about .section-title h2 {
   color: #149ddd;
-  line-height: 0;
+  margin-bottom: 15px;
 }
 
-.about .content p:last-child {
+.about .section-title p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6c757d;
+}
+
+.about .content h3 {
+  color: #272829;
+  margin-bottom: 12px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.about .content h4 {
+  color: #495057;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.about .content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #495057;
   margin-bottom: 0;
 }
 
-.about .achievements h4 {
-  font-weight: 600;
-  color: #173b6c;
-  margin-bottom: 20px;
-  font-size: 20px;
+.about .fst-italic {
+  font-style: italic;
+  color: #6c757d;
 }
 
-.about .achievement-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: rgba(20, 157, 221, 0.05);
+/* Current Role */
+.current-role {
+  margin-bottom: 25px;
+}
+
+/* Previous Role */
+.previous-role {
+  margin-bottom: 25px;
+}
+
+/* Career Goals */
+.career-goals {
+  background: #f8f9fa;
+  padding: 20px;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  margin-bottom: 25px;
 }
 
-.about .achievement-item:hover {
-  background: rgba(20, 157, 221, 0.1);
-  transform: translateX(5px);
+.career-goals h4 {
+  color: #149ddd;
+  margin-bottom: 12px;
 }
 
-.about .achievement-item i {
-  font-size: 24px;
-  margin-right: 12px;
-  margin-top: 2px;
-  flex-shrink: 0;
+/* Role Achievements */
+.role-achievements {
+  margin-top: 15px;
 }
 
-.about .achievement-item span {
+.role-achievements h5 {
+  color: #149ddd;
   font-size: 14px;
-  line-height: 1.5;
-  color: #272829;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.role-achievements .achievement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.role-achievements .achievement-list li {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #495057;
+  margin-bottom: 6px;
+  padding-left: 0;
+}
+
+.role-achievements .achievement-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Remove old achievement styles */
+.key-achievements,
+.achievement-grid {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .career-goals {
+    padding: 15px;
+  }
+  
+  .achievement-item {
+    padding: 8px 0;
+  }
+  
+  .achievement-item span {
+    font-size: 12px;
+  }
 }
 
 /*--------------------------------------------------------------
