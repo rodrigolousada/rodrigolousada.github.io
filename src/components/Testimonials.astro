@@ -1,0 +1,28 @@
+---
+// Quote drawn from a real recommendation letter (08/02/2024). Only the text is
+// used here — the signed PDF (and signature) is never published.
+const quote = {
+  text: '"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career."',
+  name: 'António Pedro Cerejeira',
+  role: 'IBM Senior Manager, Service Line Director',
+};
+---
+
+<section class="mx-auto max-w-3xl px-6 py-14">
+  <h2 class="mb-6 font-mono text-sm tracking-widest text-[var(--color-accent)]">
+    WHAT PEOPLE SAY
+  </h2>
+
+  <blockquote class="flex items-start gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] font-mono text-xs font-semibold text-[var(--color-text)]">
+      APC
+    </div>
+    <div>
+      <p class="text-[var(--color-text)]">{quote.text}</p>
+      <footer class="mt-4 text-sm">
+        <span class="font-medium text-[var(--color-text)]">{quote.name}</span>
+        <span class="text-[var(--color-muted)]"> — {quote.role}</span>
+      </footer>
+    </div>
+  </blockquote>
+</section>

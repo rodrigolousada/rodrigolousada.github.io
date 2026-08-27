@@ -1,0 +1,75 @@
+---
+const stats = [
+  { value: '4–6', label: 'developers led across 2 concurrent teams' },
+  { value: '2x', label: 'FTE savings delivered on a 50k+ calls/month operation' },
+  { value: '70%', label: 'team workload cut through automation' },
+];
+---
+
+<section class="relative overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute left-1/2 top-[-10%] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-[var(--color-accent)]/20 blur-[120px]"></div>
+    <div class="absolute right-[-10%] top-[30%] h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/10 blur-[120px]"></div>
+    <div
+      class="absolute inset-0 opacity-[0.05]"
+      style="background-image: linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px); background-size: 48px 48px;"
+    >
+    </div>
+  </div>
+
+  <div class="mx-auto flex min-h-[78vh] max-w-3xl flex-col justify-center px-6 py-24">
+    <div class="mb-8 flex items-center gap-4">
+      <img
+        src="/img/profile.jpg"
+        alt="Rodrigo Lousada"
+        class="h-16 w-16 rounded-full object-cover ring-2 ring-[var(--color-accent)]/40"
+      />
+      <div>
+        <p class="font-mono text-sm tracking-wide text-[var(--color-accent)]">Rodrigo Lousada</p>
+        <p class="text-sm text-[var(--color-muted)]">Software Engineer · Berlin, Germany</p>
+      </div>
+    </div>
+
+    <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:text-5xl md:text-6xl">
+      I lead engineering teams that ship.
+    </h1>
+
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
+      Software Engineer at Klarna, Berlin. Previously led a 4–6 person team across
+      two concurrent GenAI &amp; chatbot workstreams at IBM Consulting. Now looking
+      for Engineering Manager / Tech Lead roles.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-4">
+      <a
+        href="#projects"
+        class="rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
+      >
+        View projects
+      </a>
+      <a
+        href="#contact"
+        class="rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+      >
+        Get in touch
+      </a>
+      <a
+        href="/CV_Rodrigo_Lousada.pdf"
+        class="text-sm font-medium text-[var(--color-muted)] underline decoration-[var(--color-border)] underline-offset-4 transition hover:text-[var(--color-text)]"
+      >
+        Download CV
+      </a>
+    </div>
+
+    <dl class="mt-16 grid grid-cols-1 gap-6 border-t border-[var(--color-border)] pt-10 sm:grid-cols-3">
+      {
+        stats.map((stat) => (
+          <div>
+            <dt class="text-3xl font-bold text-[var(--color-text)]">{stat.value}</dt>
+            <dd class="mt-1 text-sm text-[var(--color-muted)]">{stat.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

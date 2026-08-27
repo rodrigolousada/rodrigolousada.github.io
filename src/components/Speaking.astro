@@ -1,0 +1,39 @@
+---
+const topics = [
+  'Leading engineering teams without a formal manager title',
+  'GenAI agents in production: lessons from building on graph databases',
+  'From consulting to product engineering: what changes, what doesn’t',
+];
+---
+
+<section id="speaking" class="mx-auto max-w-3xl px-6 py-14">
+  <div class="mb-6 flex items-center gap-3">
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">SPEAKING</h2>
+    <span class="rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+      Draft section
+    </span>
+  </div>
+
+  <p class="max-w-xl text-[var(--color-muted)]">
+    Open to conference and meetup talks on engineering leadership and applied
+    GenAI. No talks booked yet — topics below are a starting point.
+  </p>
+
+  <ul class="mt-6 space-y-3">
+    {
+      topics.map((topic) => (
+        <li class="flex gap-2 text-[var(--color-text)]">
+          <span class="text-[var(--color-accent)]">▸</span>
+          <span>{topic}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a
+    href="#contact"
+    class="mt-6 inline-block text-sm font-medium text-[var(--color-accent)] underline underline-offset-4"
+  >
+    Invite me to speak →
+  </a>
+</section>

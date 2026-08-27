@@ -1,0 +1,185 @@
+---
+import { careerPath, sideProjects } from '../data/projects';
+import { focusCategories } from '../data/focus';
+---
+
+<section id="projects" class="mx-auto max-w-3xl px-6 py-14">
+  <h2 class="mb-12 font-mono text-sm tracking-widest text-[var(--color-accent)]">
+    PROJECTS
+  </h2>
+
+  <div class="relative space-y-4 border-l border-[var(--color-border)] pl-6 sm:pl-8">
+    {
+      careerPath.map((stop, i) => (
+        <div class="relative">
+          <span class="absolute -left-[31px] top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-[var(--color-bg)] bg-[var(--color-accent)] sm:-left-[39px]" />
+
+          <button
+            type="button"
+            onclick={`document.getElementById('career-modal-${i}').showModal()`}
+            class="group flex w-full items-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left transition hover:border-[var(--color-accent)] sm:p-5"
+          >
+            <div class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg p-1.5 ${stop.chipClass}`}>
+              <img
+                src={stop.logo}
+                alt={`${stop.org} logo`}
+                class="h-full w-full object-contain"
+                style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+              />
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <p class="font-semibold text-[var(--color-text)]">{stop.org}</p>
+              <p class="text-xs text-[var(--color-muted)]">{stop.period}</p>
+            </div>
+
+            <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+              View →
+            </span>
+          </button>
+
+          <dialog
+            id={`career-modal-${i}`}
+            class="m-auto w-[min(90vw,32rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+          >
+            <div class="overflow-hidden rounded-xl">
+              <div class={`relative flex h-24 items-center justify-center ${stop.chipClass}`}>
+                <img
+                  src={stop.logo}
+                  alt={`${stop.org} logo`}
+                  class="h-10 w-auto object-contain"
+                  style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+                />
+                <form method="dialog" class="absolute right-3 top-3">
+                  <button
+                    aria-label="Close"
+                    class="flex h-7 w-7 items-center justify-center rounded-full bg-black/30 text-white transition hover:bg-black/50"
+                  >
+                    ✕
+                  </button>
+                </form>
+              </div>
+
+              <div class="p-6">
+                <div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span class="text-sm font-medium text-[var(--color-text)]">{stop.org}</span>
+                  <span class="text-sm text-[var(--color-muted)]">· {stop.period}</span>
+                </div>
+                <p class="text-[var(--color-muted)]">{stop.role}</p>
+
+                <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">KPIs</p>
+                <ul class="mt-2 space-y-1.5">
+                  {stop.kpis.map((kpi) => (
+                    <li class="flex gap-2 text-[var(--color-text)]">
+                      <span class="text-[var(--color-accent)]">▸</span>
+                      <span>{kpi}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Projects</p>
+                <ul class="mt-2 space-y-1.5">
+                  {stop.projects.map((project) => (
+                    <li class="flex gap-2 text-[var(--color-text)]">
+                      <span class="text-[var(--color-accent)]">▸</span>
+                      <span>{project}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div class="mt-5 flex flex-wrap gap-2">
+                  {stop.stack.map((tech) => (
+                    <span class="rounded border border-[var(--color-border)] px-2 py-0.5 font-mono text-xs text-[var(--color-muted)]">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                  Focus this era
+                </p>
+                <div class="flex h-5 w-full overflow-hidden rounded-full bg-[var(--color-border)]">
+                  {focusCategories
+                    .filter((cat) => (stop.focus[cat.id] ?? 0) > 0)
+                    .map((cat, ci, arr) => {
+                      const value = stop.focus[cat.id] ?? 0;
+                      const rounding =
+                        (ci === 0 ? 'rounded-l-full ' : '') + (ci === arr.length - 1 ? 'rounded-r-full' : '');
+                      return (
+                        <div
+                          class={`flex items-center justify-center ${rounding}`}
+                          style={`width:${value}%; background-color:${cat.color}; margin-right:${ci === arr.length - 1 ? 0 : '2px'};`}
+                          title={`${cat.label}: ${value}%`}
+                        >
+                          {value >= 15 && <span class="select-none text-[9px] font-semibold text-white">{value}%</span>}
+                        </div>
+                      );
+                    })}
+                </div>
+                <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+                  {focusCategories.map((cat) => (
+                    <div class="flex items-center gap-1.5">
+                      <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${cat.color};`} />
+                      <span class="text-[11px] text-[var(--color-muted)]">{cat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </dialog>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-14">
+    <h3 class="mb-1 text-sm font-medium tracking-wide text-[var(--color-muted)]">
+      SIDE PROJECTS
+    </h3>
+    <p class="mb-6 text-xs text-[var(--color-muted)]/70">
+      Draft placeholders below — swap for real projects (or remove this section) before publishing.
+    </p>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {
+        sideProjects.map((sp) => (
+          <div class="relative overflow-hidden rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            {sp.placeholder && (
+              <span class="absolute right-3 top-3 rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+                Example
+              </span>
+            )}
+            <div class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br ${sp.cover} font-mono text-xs font-bold text-[var(--color-text)]`}>
+              {sp.initials}
+            </div>
+            <h4 class="font-semibold text-[var(--color-text)]">{sp.title}</h4>
+            <p class="mt-1.5 text-sm text-[var(--color-muted)]">{sp.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  dialog[open] {
+    animation: dialog-in 0.15s ease-out;
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLDialogElement>('dialog').forEach((dialog) => {
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  });
+</script>
