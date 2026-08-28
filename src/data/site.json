@@ -242,6 +242,10 @@
       "Leading engineering teams without a formal manager title",
       "GenAI agents in production: lessons from building on graph databases",
       "From consulting to product engineering: what changes, what doesn’t"
+    ],
+    "talks": [
+      { "photo": null, "caption": "[Add a photo from a past talk]", "placeholder": true, "rotate": -4 },
+      { "photo": null, "caption": "[Add a photo from a past talk]", "placeholder": true, "rotate": 3 }
     ]
   },
 
