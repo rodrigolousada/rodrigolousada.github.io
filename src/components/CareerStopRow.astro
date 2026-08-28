@@ -51,7 +51,7 @@ const { stop, modalId, showLine = true } = Astro.props;
       onclick={`document.getElementById('${modalId}').showModal()`}
       class="group flex w-full items-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left transition hover:border-[var(--color-accent)] sm:p-5"
     >
-      <div class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg p-1.5 ${stop.chipClass}`}>
+      <div class={`flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1.5 ${stop.chipClass}`}>
         <img
           src={stop.logo}
           alt={`${stop.org} logo`}
@@ -75,7 +75,7 @@ const { stop, modalId, showLine = true } = Astro.props;
       class="m-auto w-[min(90vw,32rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
     >
       <div class="overflow-hidden rounded-xl">
-        <div class={`relative flex h-24 items-center justify-center ${stop.chipClass}`}>
+        <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>
           <img
             src={stop.logo}
             alt={`${stop.org} logo`}
