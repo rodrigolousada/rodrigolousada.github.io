@@ -248,6 +248,17 @@
     }
   },
 
+  "organizations": [
+    { "name": "Klarna", "logo": "/img/klarna-logo.svg", "logoScale": 1.6 },
+    { "name": "IBM", "logo": "/img/ibm-logo.png" },
+    { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg" },
+    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png" },
+    { "name": "SINFO", "logo": "/img/sinfo-logo.jpg" },
+    { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png" },
+    { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg" },
+    { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png" }
+  ],
+
   "testimonial": {
     "text": "\"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career.\"",
     "name": "António Pedro Cerejeira",

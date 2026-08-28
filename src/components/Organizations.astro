@@ -1,0 +1,24 @@
+---
+import site from '../data/site.json';
+const { organizations } = site;
+---
+
+<section class="mx-auto max-w-3xl px-6 py-14">
+  <p class="mb-8 text-center font-mono text-xs tracking-widest text-[var(--color-muted)]">
+    ASSOCIATED WITH
+  </p>
+
+  <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+    {
+      organizations.map((org) => (
+        <img
+          src={org.logo}
+          alt={org.name}
+          title={org.name}
+          class="h-6 w-auto object-contain opacity-40 brightness-0 invert transition hover:opacity-90 sm:h-7"
+          style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
+        />
+      ))
+    }
+  </div>
+</section>
