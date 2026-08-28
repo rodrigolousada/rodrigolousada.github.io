@@ -71,7 +71,7 @@
     },
     "sinfo": {
       "name": "SINFO",
-      "logo": "/img/sinfo-logo.jpg",
+      "logo": "/img/sinfo-logo.svg",
       "chipClass": "bg-[#2a5a8a]"
     }
   },
@@ -195,7 +195,7 @@
     {
       "org": "SINFO",
       "title": "Project Manager / Event Coordinator",
-      "logo": "/img/sinfo-logo.jpg",
+      "logo": "/img/sinfo-logo.svg",
       "chipClass": "bg-[#2a5a8a]",
       "period": "2016 — 2019",
       "role": "Project Manager / Event Coordinator — recruited and led volunteer teams for a large student-run tech conference",
@@ -281,11 +281,11 @@
     { "name": "IBM", "logo": "/img/ibm-logo.png" },
     { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg" },
     { "name": "Bankinter", "logo": "/img/bankinter-logo.svg" },
-    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png" },
-    { "name": "SINFO", "logo": "/img/sinfo-logo.jpg" },
-    { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png" },
-    { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg" },
-    { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png" }
+    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png", "logoScale": 1.3 },
+    { "name": "SINFO", "logo": "/img/sinfo-logo.svg" },
+    { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png", "logoScale": 1.3 },
+    { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg", "logoScale": 1.4 },
+    { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png", "logoScale": 1.6 }
   ],
 
   "testimonial": {
