@@ -1,0 +1,199 @@
+{
+  "site": {
+    "title": "Rodrigo Lousada — Software Engineer & Engineering Team Lead",
+    "description": "Software Engineer at Klarna with a track record leading engineering teams (4-6 developers across 2 concurrent teams at IBM). Open to Engineering Manager / Tech Lead roles.",
+    "url": "https://rodrigolousada.me",
+    "jobTitle": "Software Engineer",
+    "worksFor": "Klarna",
+    "email": "rodrigo.m.lousada@gmail.com",
+    "github": "https://github.com/rodrigolousada",
+    "linkedin": "https://www.linkedin.com/in/rodrigo-lousada-359685117",
+    "cvPath": "/CV_Rodrigo_Lousada.pdf",
+    "cliftonStrengthsPath": "/CliftonStrengths.pdf"
+  },
+
+  "nav": {
+    "initials": "RL",
+    "links": [
+      { "href": "#about", "label": "About" },
+      { "href": "#projects", "label": "Projects" },
+      { "href": "#speaking", "label": "Speaking" },
+      { "href": "#contact", "label": "Contact" }
+    ]
+  },
+
+  "hero": {
+    "name": "Rodrigo Lousada",
+    "roleLine": "Software Engineer · Berlin, Germany",
+    "headline": "I lead engineering teams that ship.",
+    "subline": "Software Engineer at Klarna, Berlin. Previously led a 4–6 person team across two concurrent GenAI & chatbot workstreams at IBM Consulting. Now looking for Engineering Manager / Tech Lead roles.",
+    "stats": [
+      { "value": "4–6", "label": "developers led across 2 concurrent teams" },
+      { "value": "2x", "label": "FTE savings delivered on a 50k+ calls/month operation" },
+      { "value": "70%", "label": "team workload cut through automation" }
+    ]
+  },
+
+  "about": {
+    "lookingFor": "Engineering Manager / Tech Lead roles — Berlin/EU or remote-first, fintech or scale-up.",
+    "intro": "Technical depth + a pull toward leading teams, since before I had the title to match it.",
+    "timeline": [
+      {
+        "period": "2016–19",
+        "role": "Project Manager, SINFO",
+        "detail": "Led volunteer teams for a large student-run tech conference."
+      },
+      {
+        "period": "2018–20",
+        "role": "Thesis Researcher, Instituto de Telecomunicações",
+        "detail": "ML trading model — Mixture of Experts, 1.90 Sharpe ratio."
+      },
+      {
+        "period": "2020–24",
+        "role": "Consulting Lead, IBM",
+        "detail": "Led & mentored 4–6 devs across 2 concurrent teams."
+      },
+      {
+        "period": "2024–now",
+        "role": "Software Engineer, Klarna",
+        "detail": "Rotated across Search, Product, DevOps, Knowledge Management → now Referrals & Deals."
+      }
+    ],
+    "strengths": ["Achiever", "Futuristic", "Learner", "Individualization", "Ideation"]
+  },
+
+  "focusCategories": [
+    { "id": "pm", "label": "Project Managing", "color": "#3987e5" },
+    { "id": "swe", "label": "Software Engineering", "color": "#d95926" },
+    { "id": "analytics", "label": "Data Analytics", "color": "#199e70" },
+    { "id": "de", "label": "Data Engineering", "color": "#c98500" },
+    { "id": "ds", "label": "Data Science", "color": "#d55181" }
+  ],
+
+  "careerPath": [
+    {
+      "org": "Klarna",
+      "title": "Full-Stack Engineer",
+      "logo": "/img/klarna-logo.svg",
+      "logoScale": 1.6,
+      "logoInvert": true,
+      "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
+      "period": "2024 — Present",
+      "role": "Full-stack engineer, rotating across 4+ teams — now on Referrals & Deals",
+      "kpis": ["Built a GenAI agent automating data modeling into Neo4j", "Cut a Qliksense app’s footprint 53%+"],
+      "projects": ["Search → Product → DevOps → Knowledge Management → Referrals & Deals"],
+      "stack": ["Neo4j", "FastAPI", "TypeScript", "React", "GenAI / LLMs"],
+      "focus": { "pm": 5, "swe": 65, "analytics": 10, "de": 15, "ds": 5 }
+    },
+    {
+      "org": "IBM Consulting",
+      "title": "Tech Consulting Lead",
+      "logo": "/img/ibm-logo.png",
+      "logoInvert": true,
+      "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
+      "period": "2020 — 2024",
+      "role": "Consulting Lead — led a 4–6 person team across 2 concurrent teams",
+      "kpis": [
+        "Doubled FTE savings",
+        "70% workload cut via automation",
+        "9+ NPS",
+        "10+ features shipped, 8+ demos pitched"
+      ],
+      "projects": ["Chatbot & GenAI delivery for a bank’s 50k+ calls/month call center"],
+      "stack": ["Python", "Data Pipelines", "Chat/Voicebot", "GenAI", "Agile"],
+      "focus": { "pm": 35, "swe": 25, "analytics": 15, "de": 15, "ds": 10 }
+    },
+    {
+      "org": "Instituto de Telecomunicações",
+      "title": "Data Scientist Researcher",
+      "logo": "/img/it-logo.png",
+      "chipClass": "bg-white",
+      "period": "2018 — 2020",
+      "role": "Thesis Researcher / Data Scientist",
+      "kpis": ["48%+ decision accuracy", "100% Return on Risk", "1.90 Sharpe ratio"],
+      "projects": ["ML trading simulator for SPY options — Mixture of Experts model using Random Forests"],
+      "stack": ["Python", "Random Forests", "Time Series", "scikit-learn"],
+      "focus": { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60 }
+    }
+  ],
+
+  "careerPathMore": [
+    {
+      "org": "SINFO",
+      "title": "Project Manager / Event Coordinator",
+      "logo": "/img/sinfo-logo.jpg",
+      "chipClass": "bg-white",
+      "period": "2016 — 2019",
+      "role": "Project Manager / Event Coordinator — recruited and led volunteer teams for a large student-run tech conference",
+      "kpis": ["Recruited 10+ volunteers", "Raised €7,000+ in sponsorship", "10x social media engagement on 10k+ follower accounts"],
+      "projects": ["Organized SINFO's annual tech conference — volunteer recruitment, sponsorship, and social media"],
+      "stack": ["Event Management", "Sponsorship", "Social Media", "Team Leadership"],
+      "focus": { "pm": 85, "swe": 5, "analytics": 10, "de": 0, "ds": 0 }
+    }
+  ],
+
+  "sideProjects": [
+    {
+      "title": "[Example] OSS contribution — Neo4j tooling",
+      "description": "Placeholder: co-maintaining a small open-source graph/GenAI-tooling project.",
+      "initials": "OSS",
+      "cover": "from-emerald-500/30 to-transparent",
+      "placeholder": true
+    },
+    {
+      "title": "[Example] Small team-shipped build",
+      "description": "Placeholder: a weekend project run with 2–3 collaborators, written up afterward.",
+      "initials": "RUN",
+      "cover": "from-amber-500/30 to-transparent",
+      "placeholder": true
+    }
+  ],
+
+  "speaking": {
+    "intro": "Open to conference and meetup talks on engineering leadership and applied GenAI. No talks booked yet — topics below are a starting point.",
+    "topics": [
+      "Leading engineering teams without a formal manager title",
+      "GenAI agents in production: lessons from building on graph databases",
+      "From consulting to product engineering: what changes, what doesn’t"
+    ]
+  },
+
+  "contact": {
+    "intro": "Open to Engineering Manager / Tech Lead opportunities, speaking invitations, and interesting conversations.",
+    "personal": {
+      "name": "Rodrigo Lousada",
+      "tagline": "Open to EM / Tech Lead roles",
+      "stripColor": "bg-blue-600",
+      "backColor": "bg-blue-600",
+      "backTitle": "Rodrigo Lousada",
+      "backSubtitle": "personal card",
+      "links": [
+        { "type": "mail", "href": "mailto:rodrigo.m.lousada+pw@gmail.com", "value": "rodrigo.m.lousada+pw@gmail.com" },
+        { "type": "linkedin", "href": "https://www.linkedin.com/in/rodrigo-lousada-359685117", "value": "in/rodrigo-lousada" },
+        { "type": "github", "href": "https://github.com/rodrigolousada", "value": "@rodrigolousada" }
+      ]
+    },
+    "klarna": {
+      "name": "Rodrigo Lousada",
+      "tagline": "Software Engineer · Referrals & Deals",
+      "stripColor": "bg-[#ffb3c7]",
+      "backColor": "bg-[#ffb3c7]",
+      "logo": "/img/klarna-logo.svg",
+      "links": [
+        { "type": "mail", "href": "mailto:rodrigo.lousada+pw@klarna.com", "value": "rodrigo.lousada+pw@klarna.com" }
+      ]
+    }
+  },
+
+  "testimonial": {
+    "text": "\"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career.\"",
+    "name": "António Pedro Cerejeira",
+    "role": "IBM Senior Manager, Service Line Director",
+    "initials": "APC"
+  },
+
+  "footer": {
+    "name": "Rodrigo Lousada",
+    "location": "Berlin, Germany"
+  }
+}

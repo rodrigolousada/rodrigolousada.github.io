@@ -1,21 +1,7 @@
 ---
-const icons = {
-  mail: 'M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67zm21-2.34v-.33a3 3 0 00-3-3h-15a3 3 0 00-3 3v.33l9.72 5.982a1.5 1.5 0 001.56 0L22.5 6.33z',
-  linkedin:
-    'M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zM8.34 18v-8.4H5.67V18h2.67zm-1.34-9.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM18.34 18v-4.6c0-2.46-1.31-3.6-3.06-3.6-1.41 0-2.04.78-2.39 1.32V9.6H10.2c.04.78 0 8.4 0 8.4h2.69v-4.7c0-.25.02-.5.1-.68.2-.5.66-1.03 1.44-1.03 1.02 0 1.43.78 1.43 1.92V18h2.68z',
-  github:
-    'M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.3 9.3 0 015 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.42.21 2.47.1 2.73.65.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0022 12.25C22 6.58 17.52 2 12 2z',
-};
-
-const personalLinks = [
-  { icon: icons.mail, href: 'mailto:rodrigo.m.lousada+pw@gmail.com', value: 'rodrigo.m.lousada+pw@gmail.com' },
-  { icon: icons.linkedin, href: 'https://www.linkedin.com/in/rodrigo-lousada-359685117', value: 'in/rodrigo-lousada' },
-  { icon: icons.github, href: 'https://github.com/rodrigolousada', value: '@rodrigolousada' },
-];
-
-const klarnaLinks = [
-  { icon: icons.mail, href: 'mailto:rodrigo.lousada+pw@klarna.com', value: 'rodrigo.lousada+pw@klarna.com' },
-];
+import site from '../data/site.json';
+import { icons } from '../data/icons';
+const { contact } = site;
 ---
 
 <section id="contact" class="mx-auto max-w-3xl px-6 py-14">
@@ -23,10 +9,7 @@ const klarnaLinks = [
     GET IN TOUCH
   </h2>
 
-  <p class="max-w-xl text-[var(--color-muted)]">
-    Open to <span class="text-[var(--color-text)]">Engineering Manager / Tech Lead</span> opportunities,
-    speaking invitations, and interesting conversations.
-  </p>
+  <p class="max-w-xl text-[var(--color-muted)]">{contact.intro}</p>
 
   <div id="card-grid" class="mt-8 grid grid-cols-1 gap-5 [perspective:1200px] sm:grid-cols-2">
     <!-- Personal card -->
@@ -37,18 +20,18 @@ const klarnaLinks = [
       aria-label="Flip personal card"
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
-        <div class="absolute inset-y-0 left-0 w-2.5 bg-blue-600"></div>
+        <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.personal.stripColor}`}></div>
         <div class="flex h-full flex-col justify-between py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
-            <img src="/img/profile.jpg" alt="Rodrigo Lousada" class="h-12 w-12 rounded-md object-cover" />
+            <img src="/img/profile.jpg" alt={contact.personal.name} class="h-12 w-12 rounded-md object-cover" />
             <div>
-              <p class="text-lg font-semibold">Rodrigo Lousada</p>
-              <p class="text-xs text-neutral-500">Open to EM / Tech Lead roles</p>
+              <p class="text-lg font-semibold">{contact.personal.name}</p>
+              <p class="text-xs text-neutral-500">{contact.personal.tagline}</p>
             </div>
           </div>
           <div class="space-y-1.5">
             {
-              personalLinks.map((link) => (
+              contact.personal.links.map((link) => (
                 <a
                   href={link.href}
                   target={link.href.startsWith('http') ? '_blank' : undefined}
@@ -56,7 +39,7 @@ const klarnaLinks = [
                   class="card-link flex items-center gap-2 text-sm text-neutral-600 transition hover:text-blue-600"
                 >
                   <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0 fill-current">
-                    <path d={link.icon} />
+                    <path d={icons[link.type]} />
                   </svg>
                   <span class="truncate">{link.value}</span>
                 </a>
@@ -67,9 +50,9 @@ const klarnaLinks = [
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-neutral-400">click me to rotate ↻</span>
       </div>
 
-      <div class="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-blue-600 shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
-        <p class="font-display text-2xl font-bold text-white">Rodrigo Lousada</p>
-        <p class="mt-1 font-mono text-xs uppercase tracking-widest text-blue-100">personal card</p>
+      <div class={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)] ${contact.personal.backColor}`}>
+        <p class="font-display text-2xl font-bold text-white">{contact.personal.backTitle}</p>
+        <p class="mt-1 font-mono text-xs uppercase tracking-widest text-blue-100">{contact.personal.backSubtitle}</p>
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-white/50">click me to rotate ↻</span>
       </div>
     </button>
@@ -83,24 +66,24 @@ const klarnaLinks = [
       aria-label="Flip Klarna card"
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
-        <div class="absolute inset-y-0 left-0 w-2.5 bg-[#ffb3c7]"></div>
+        <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.klarna.stripColor}`}></div>
         <div class="flex h-full flex-col justify-between py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
-            <img src="/img/profile.jpg" alt="Rodrigo Lousada" class="h-12 w-12 rounded-md object-cover" />
+            <img src="/img/profile.jpg" alt={contact.klarna.name} class="h-12 w-12 rounded-md object-cover" />
             <div>
-              <p class="text-lg font-semibold">Rodrigo Lousada</p>
-              <p class="text-xs text-neutral-500">Software Engineer · Referrals &amp; Deals</p>
+              <p class="text-lg font-semibold">{contact.klarna.name}</p>
+              <p class="text-xs text-neutral-500">{contact.klarna.tagline}</p>
             </div>
           </div>
           <div class="space-y-1.5">
             {
-              klarnaLinks.map((link) => (
+              contact.klarna.links.map((link) => (
                 <a
                   href={link.href}
                   class="card-link flex items-center gap-2 text-sm text-neutral-600 transition hover:text-pink-500"
                 >
                   <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0 fill-current">
-                    <path d={link.icon} />
+                    <path d={icons[link.type]} />
                   </svg>
                   <span class="truncate">{link.value}</span>
                 </a>
@@ -111,8 +94,8 @@ const klarnaLinks = [
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-neutral-400">click me to rotate ↻</span>
       </div>
 
-      <div class="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-[#ffb3c7] shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
-        <img src="/img/klarna-logo.svg" alt="Klarna" class="h-16 w-auto" />
+      <div class={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)] ${contact.klarna.backColor}`}>
+        <img src={contact.klarna.logo} alt="Klarna" class="h-16 w-auto" />
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-neutral-600/70">click me to rotate ↻</span>
       </div>
     </button>

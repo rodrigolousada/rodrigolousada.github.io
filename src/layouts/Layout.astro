@@ -1,30 +1,25 @@
 ---
 import '../styles/global.css';
+import site from '../data/site.json';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const {
-  title = 'Rodrigo Lousada — Software Engineer & Engineering Team Lead',
-  description = 'Software Engineer at Klarna with a track record leading engineering teams (4-6 developers across 2 concurrent teams at IBM). Open to Engineering Manager / Tech Lead roles.',
-} = Astro.props;
+const { title = site.site.title, description = site.site.description } = Astro.props;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Rodrigo Lousada',
-  jobTitle: 'Software Engineer',
-  url: 'https://rodrigolousada.me',
-  email: 'mailto:rodrigo.m.lousada@gmail.com',
-  sameAs: [
-    'https://github.com/rodrigolousada',
-    'https://www.linkedin.com/in/rodrigo-lousada-359685117',
-  ],
+  name: site.hero.name,
+  jobTitle: site.site.jobTitle,
+  url: site.site.url,
+  email: `mailto:${site.site.email}`,
+  sameAs: [site.site.github, site.site.linkedin],
   worksFor: {
     '@type': 'Organization',
-    name: 'Klarna',
+    name: site.site.worksFor,
   },
 };
 ---
@@ -47,7 +42,7 @@ const jsonLd = {
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://rodrigolousada.me/img/profile.jpg" />
+    <meta property="og:image" content={`${site.site.url}/img/profile.jpg`} />
     <meta name="twitter:card" content="summary" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

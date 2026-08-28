@@ -1,9 +1,6 @@
 ---
-const stats = [
-  { value: '4–6', label: 'developers led across 2 concurrent teams' },
-  { value: '2x', label: 'FTE savings delivered on a 50k+ calls/month operation' },
-  { value: '70%', label: 'team workload cut through automation' },
-];
+import site from '../data/site.json';
+const { hero } = site;
 ---
 
 <section class="relative overflow-hidden">
@@ -21,23 +18,21 @@ const stats = [
     <div class="mb-8 flex items-center gap-4">
       <img
         src="/img/profile.jpg"
-        alt="Rodrigo Lousada"
+        alt={hero.name}
         class="h-16 w-16 rounded-full object-cover ring-2 ring-[var(--color-accent)]/40"
       />
       <div>
-        <p class="font-mono text-sm tracking-wide text-[var(--color-accent)]">Rodrigo Lousada</p>
-        <p class="text-sm text-[var(--color-muted)]">Software Engineer · Berlin, Germany</p>
+        <p class="font-mono text-sm tracking-wide text-[var(--color-accent)]">{hero.name}</p>
+        <p class="text-sm text-[var(--color-muted)]">{hero.roleLine}</p>
       </div>
     </div>
 
     <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:text-5xl md:text-6xl">
-      I lead engineering teams that ship.
+      {hero.headline}
     </h1>
 
     <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
-      Software Engineer at Klarna, Berlin. Previously led a 4–6 person team across
-      two concurrent GenAI &amp; chatbot workstreams at IBM Consulting. Now looking
-      for Engineering Manager / Tech Lead roles.
+      {hero.subline}
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -54,7 +49,7 @@ const stats = [
         Get in touch
       </a>
       <a
-        href="/CV_Rodrigo_Lousada.pdf"
+        href={site.site.cvPath}
         class="text-sm font-medium text-[var(--color-muted)] underline decoration-[var(--color-border)] underline-offset-4 transition hover:text-[var(--color-text)]"
       >
         Download CV
@@ -63,7 +58,7 @@ const stats = [
 
     <dl class="mt-16 grid grid-cols-1 gap-6 border-t border-[var(--color-border)] pt-10 sm:grid-cols-3">
       {
-        stats.map((stat) => (
+        hero.stats.map((stat) => (
           <div>
             <dt class="text-3xl font-bold text-[var(--color-text)]">{stat.value}</dt>
             <dd class="mt-1 text-sm text-[var(--color-muted)]">{stat.label}</dd>

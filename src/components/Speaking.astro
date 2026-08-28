@@ -1,9 +1,6 @@
 ---
-const topics = [
-  'Leading engineering teams without a formal manager title',
-  'GenAI agents in production: lessons from building on graph databases',
-  'From consulting to product engineering: what changes, what doesn’t',
-];
+import site from '../data/site.json';
+const { speaking } = site;
 ---
 
 <section id="speaking" class="mx-auto max-w-3xl px-6 py-14">
@@ -14,14 +11,11 @@ const topics = [
     </span>
   </div>
 
-  <p class="max-w-xl text-[var(--color-muted)]">
-    Open to conference and meetup talks on engineering leadership and applied
-    GenAI. No talks booked yet — topics below are a starting point.
-  </p>
+  <p class="max-w-xl text-[var(--color-muted)]">{speaking.intro}</p>
 
   <ul class="mt-6 space-y-3">
     {
-      topics.map((topic) => (
+      speaking.topics.map((topic) => (
         <li class="flex gap-2 text-[var(--color-text)]">
           <span class="text-[var(--color-accent)]">▸</span>
           <span>{topic}</span>

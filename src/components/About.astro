@@ -1,28 +1,6 @@
 ---
-const timeline = [
-  {
-    period: '2016–19',
-    role: 'Project Manager, SINFO',
-    detail: 'Led volunteer teams for a large student-run tech conference.',
-  },
-  {
-    period: '2018–20',
-    role: 'Thesis Researcher, Instituto de Telecomunicações',
-    detail: 'ML trading model — Mixture of Experts, 1.90 Sharpe ratio.',
-  },
-  {
-    period: '2020–24',
-    role: 'Consulting Lead, IBM',
-    detail: 'Led & mentored 4–6 devs across 2 concurrent teams.',
-  },
-  {
-    period: '2024–now',
-    role: 'Software Engineer, Klarna',
-    detail: 'Rotated across Search, Product, DevOps, Knowledge Management → now Referrals & Deals.',
-  },
-];
-
-const strengths = ['Achiever', 'Futuristic', 'Learner', 'Individualization', 'Ideation'];
+import site from '../data/site.json';
+const { about } = site;
 ---
 
 <section id="about" class="mx-auto max-w-3xl px-6 py-14">
@@ -32,19 +10,15 @@ const strengths = ['Achiever', 'Futuristic', 'Learner', 'Individualization', 'Id
 
   <div class="mb-8 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-surface)] px-5 py-4">
     <p class="text-[var(--color-text)]">
-      <span class="font-semibold">Looking for:</span> Engineering Manager / Tech Lead
-      roles — Berlin/EU or remote-first, fintech or scale-up.
+      <span class="font-semibold">Looking for:</span> {about.lookingFor}
     </p>
   </div>
 
-  <p class="mb-8 max-w-xl text-[var(--color-muted)]">
-    Technical depth + a pull toward leading teams, since before I had the title
-    to match it.
-  </p>
+  <p class="mb-8 max-w-xl text-[var(--color-muted)]">{about.intro}</p>
 
   <ol class="mb-8 space-y-4 border-l border-[var(--color-border)] pl-5">
     {
-      timeline.map((item) => (
+      about.timeline.map((item) => (
         <li class="relative">
           <span class="absolute -left-[23px] top-1.5 h-2 w-2 rounded-full bg-[var(--color-accent)]" />
           <div class="flex flex-wrap items-baseline gap-x-2">
@@ -59,14 +33,14 @@ const strengths = ['Achiever', 'Futuristic', 'Learner', 'Individualization', 'Id
 
   <div class="flex flex-wrap items-center gap-2">
     {
-      strengths.map((s) => (
+      about.strengths.map((s) => (
         <span class="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]">
           {s}
         </span>
       ))
     }
     <a
-      href="/CliftonStrengths.pdf"
+      href={site.site.cliftonStrengthsPath}
       class="text-xs text-[var(--color-accent)] underline underline-offset-4"
     >
       Full assessment →
