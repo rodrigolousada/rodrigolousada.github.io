@@ -1,0 +1,25 @@
+---
+// Sitewide continuation of Hero's blurred accent/fuchsia blobs. Sits behind
+// all page content as a single absolutely-positioned layer (see `body {
+// position: relative }` in global.css) so it isn't duplicated per-section.
+// Starts below the Hero's own fold (Hero renders its own pair of blobs) to
+// avoid visually doubling up there.
+const blobs = [
+  { top: '100vh', side: 'left-[-8%]', size: 'h-[30rem] w-[30rem]', color: 'bg-fuchsia-500/10' },
+  { top: '175vh', side: 'right-[-10%]', size: 'h-[34rem] w-[34rem]', color: 'bg-[var(--color-accent)]/15' },
+  { top: '255vh', side: 'left-[-12%]', size: 'h-[28rem] w-[28rem]', color: 'bg-[var(--color-accent)]/15' },
+  { top: '335vh', side: 'right-[-8%]', size: 'h-[32rem] w-[32rem]', color: 'bg-fuchsia-500/10' },
+  { top: '415vh', side: 'left-[-10%]', size: 'h-[30rem] w-[30rem]', color: 'bg-[var(--color-accent)]/15' },
+];
+---
+
+<div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+  {
+    blobs.map((blob) => (
+      <div
+        class={`absolute ${blob.side} ${blob.size} rounded-full ${blob.color} blur-[120px]`}
+        style={`top: ${blob.top};`}
+      />
+    ))
+  }
+</div>
