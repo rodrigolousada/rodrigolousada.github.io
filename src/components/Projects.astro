@@ -9,17 +9,28 @@ const { careerPath, careerPathMore, sideProjects } = site;
     PROJECTS
   </h2>
 
-  <div class="relative space-y-4 border-l border-[var(--color-border)] pl-6 sm:pl-8">
+  <div class="space-y-4">
     {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} />)}
 
-    <details class="group/more relative">
-      <summary class="flex cursor-pointer list-none items-center gap-2 py-1.5 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
-        <span class="absolute -left-[29px] top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--color-bg)] bg-[var(--color-muted)] sm:-left-[37px]" />
-        <span class="transition group-open/more:rotate-90">▸</span>
-        Show more
+    <details class="group/more">
+      <summary class="grid cursor-pointer list-none grid-cols-[1.5rem_1fr] gap-4 [&::-webkit-details-marker]:hidden">
+        <div class="relative">
+          <span class="absolute left-1/2 top-0 hidden h-[calc(100%+1rem)] w-px -translate-x-1/2 bg-[var(--color-border)] group-open/more:block" />
+          <span class="absolute left-1/2 top-1/2 z-10 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-muted)] ring-4 ring-[var(--color-bg)]" />
+        </div>
+        <span class="flex items-center gap-2 py-2 font-mono text-xs text-[var(--color-muted)] transition group-hover/more:text-[var(--color-accent)]">
+          <span class="inline-block transition group-open/more:rotate-90">▸</span>
+          Show more
+        </span>
       </summary>
       <div class="mt-4 space-y-4">
-        {careerPathMore.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-more-${i}`} />)}
+        {careerPathMore.map((stop, i) => (
+          <CareerStopRow
+            stop={stop}
+            modalId={`career-modal-more-${i}`}
+            showLine={i !== careerPathMore.length - 1}
+          />
+        ))}
       </div>
     </details>
   </div>
