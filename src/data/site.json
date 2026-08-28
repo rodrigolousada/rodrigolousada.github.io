@@ -59,6 +59,11 @@
       "logo": "/img/montepio-logo.svg",
       "chipClass": "bg-white"
     },
+    "bankinter": {
+      "name": "Bankinter",
+      "logo": "/img/bankinter-logo.svg",
+      "chipClass": "bg-white"
+    },
     "it": {
       "name": "Instituto de Telecomunicações",
       "logo": "/img/it-logo.png",
@@ -138,6 +143,25 @@
             "source": "SAPO Tek",
             "date": "2020-03-03",
             "url": "https://tek.sapo.pt/noticias/computadores/artigos/nova-assistente-interativa-do-montepio-chama-se-m-a-r-i-a-e-e-filha-do-watson-da-ibm/"
+          }
+        },
+        {
+          "name": "BIA & Beatriz — Bankinter Voice Assistants",
+          "companies": ["ibm", "bankinter"],
+          "tldr": "Built BIA and Beatriz, AI phone-banking assistants for Bankinter and Bankinter Consumer Finance, on the same IBM automation platform as M.A.R.I.A.",
+          "description": "BIA (Bankinter) and Beatriz (Bankinter Consumer Finance) answer Bankinter's phone-banking line, authenticate callers, resolve frequent requests (card unlock/activation, balance checks, digital-channel enrollment, app/homebanking support), and route complex cases to human agents with context attached — voice-to-text, ML conversation orchestration, and text-to-voice, running on the same underlying platform later reused for Banco Montepio's M.A.R.I.A.",
+          "technologies": ["IBM Watson Assistant for Voice", "Speech-to-Text / Text-to-Speech", "RPA", "IBM Cloud", "Machine Learning"],
+          "achievements": [
+            "Cover ~40% of frequent customer contact scenarios",
+            "90%+ intent recognition rate",
+            "~70% of calls fully resolved without a human transfer",
+            "24/7 availability with no wait queues"
+          ],
+          "news": {
+            "title": "BIA e Beatriz são as assistentes digitais que já respondem a 40% dos casos de interações com clientes do Bankinter",
+            "source": "SAPO Tek",
+            "date": "2022-12-13",
+            "url": "https://tek.sapo.pt/noticias/computadores/artigos/bia-e-beatriz-sao-as-assistentes-digitais-que-ja-respondem-a-40-dos-casos-de-interacoes-com-clientes-do-bankinter/"
           }
         }
       ],
@@ -252,6 +276,7 @@
     { "name": "Klarna", "logo": "/img/klarna-logo.svg", "logoScale": 1.6 },
     { "name": "IBM", "logo": "/img/ibm-logo.png" },
     { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg" },
+    { "name": "Bankinter", "logo": "/img/bankinter-logo.svg" },
     { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png" },
     { "name": "SINFO", "logo": "/img/sinfo-logo.jpg" },
     { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png" },
