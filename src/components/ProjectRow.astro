@@ -26,6 +26,14 @@ interface Props {
 
 const { project, modalId } = Astro.props;
 const badgeCompanies = (project.companies ?? []).map((id) => companyMap[id]);
+
+const newsDate = project.news
+  ? new Date(project.news.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  : null;
 ---
 
 <div class="relative">
@@ -130,11 +138,22 @@ const badgeCompanies = (project.companies ?? []).map((id) => companyMap[id]);
             href={project.news.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-5 flex items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 transition hover:border-[var(--color-accent)]"
+            class="group/news mt-5 block rotate-[-1deg] rounded-[2px] bg-[#f4f1ea] p-4 text-neutral-900 shadow-md transition hover:-translate-y-0.5 hover:rotate-0 hover:shadow-lg"
           >
-            <span class="shrink-0 font-mono text-xs text-[var(--color-accent)]">News</span>
-            <span class="min-w-0 flex-1 truncate text-sm text-[var(--color-text)]">{project.news.title}</span>
-            <span class="shrink-0 text-xs text-[var(--color-muted)]">{project.news.source}</span>
+            <div class="flex items-baseline justify-between gap-3 border-b-2 border-neutral-900 pb-1.5">
+              <span class="font-serif text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                {project.news.source}
+              </span>
+              <span class="shrink-0 font-mono text-[10px] uppercase tracking-wide text-neutral-500">
+                {newsDate}
+              </span>
+            </div>
+            <p class="mt-2 font-serif text-base font-bold italic leading-snug text-neutral-900 group-hover/news:underline">
+              “{project.news.title}”
+            </p>
+            <p class="mt-2 font-mono text-[10px] uppercase tracking-wide text-neutral-500">
+              Read the article →
+            </p>
           </a>
         )}
       </div>
