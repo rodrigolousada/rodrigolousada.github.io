@@ -50,7 +50,7 @@ const newsDate = project.news
           </span>
         ) : (
           badgeCompanies.map((c) => (
-            <span class={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-[var(--color-bg)] p-1 ${c.chipClass}`}>
+            <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] p-1 ${c.chipClass}`}>
               <img
                 src={c.logo}
                 alt={c.name}
@@ -87,7 +87,7 @@ const newsDate = project.news
               </span>
             ) : (
               badgeCompanies.map((c) => (
-                <span class={`flex h-9 w-9 items-center justify-center rounded-lg p-1.5 ${c.chipClass}`}>
+                <span class={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg p-1.5 ${c.chipClass}`}>
                   <img
                     src={c.logo}
                     alt={c.name}
