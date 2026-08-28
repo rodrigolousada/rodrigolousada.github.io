@@ -36,30 +36,39 @@
 
   "about": {
     "lookingFor": "Engineering Manager / Tech Lead roles — Berlin/EU or remote-first, fintech or scale-up.",
-    "intro": "Technical depth + a pull toward leading teams, since before I had the title to match it.",
-    "timeline": [
-      {
-        "period": "2016–19",
-        "role": "Project Manager, SINFO",
-        "detail": "Led volunteer teams for a large student-run tech conference."
-      },
-      {
-        "period": "2018–20",
-        "role": "Thesis Researcher, Instituto de Telecomunicações",
-        "detail": "ML trading model — Mixture of Experts, 1.90 Sharpe ratio."
-      },
-      {
-        "period": "2020–24",
-        "role": "Consulting Lead, IBM",
-        "detail": "Led & mentored 4–6 devs across 2 concurrent teams."
-      },
-      {
-        "period": "2024–now",
-        "role": "Software Engineer, Klarna",
-        "detail": "Rotated across Search, Product, DevOps, Knowledge Management → now Referrals & Deals."
-      }
-    ],
+    "intro": "Technical depth + a pull toward leading teams, since before I had the title to match it. Full career history is in the Projects timeline below.",
     "strengths": ["Achiever", "Futuristic", "Learner", "Individualization", "Ideation"]
+  },
+
+  "companies": {
+    "klarna": {
+      "name": "Klarna",
+      "logo": "/img/klarna-logo.svg",
+      "logoScale": 1.6,
+      "logoInvert": true,
+      "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent"
+    },
+    "ibm": {
+      "name": "IBM",
+      "logo": "/img/ibm-logo.png",
+      "logoInvert": true,
+      "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent"
+    },
+    "montepio": {
+      "name": "Banco Montepio",
+      "logo": "/img/montepio-logo.svg",
+      "chipClass": "bg-white"
+    },
+    "it": {
+      "name": "Instituto de Telecomunicações",
+      "logo": "/img/it-logo.png",
+      "chipClass": "bg-white"
+    },
+    "sinfo": {
+      "name": "SINFO",
+      "logo": "/img/sinfo-logo.jpg",
+      "chipClass": "bg-[#2a5a8a]"
+    }
   },
 
   "focusCategories": [
@@ -81,7 +90,19 @@
       "period": "2024 — Present",
       "role": "Full-stack engineer, rotating across 4+ teams — now on Referrals & Deals",
       "kpis": ["Built a GenAI agent automating data modeling into Neo4j", "Cut a Qliksense app’s footprint 53%+"],
-      "projects": ["Search → Product → DevOps → Knowledge Management → Referrals & Deals"],
+      "projects": [
+        {
+          "name": "GenAI Data Modeling Agent",
+          "companies": ["klarna"],
+          "tldr": "A GenAI agent that automates mapping data into Klarna's Neo4j graph layer.",
+          "description": "Built while on the Knowledge Management team: an agent that uses GenAI to automate data modeling work into Neo4j that was previously done manually, across multiple source systems and tech stacks.",
+          "technologies": ["Neo4j", "FastAPI", "TypeScript", "React", "GenAI / LLMs"],
+          "achievements": [
+            "Automated data modeling into Neo4j via a GenAI agent",
+            "Cut a Qliksense app’s footprint by 53%+ through usage analysis"
+          ]
+        }
+      ],
       "stack": ["Neo4j", "FastAPI", "TypeScript", "React", "GenAI / LLMs"],
       "focus": { "pm": 5, "swe": 65, "analytics": 10, "de": 15, "ds": 5 }
     },
@@ -99,7 +120,27 @@
         "9+ NPS",
         "10+ features shipped, 8+ demos pitched"
       ],
-      "projects": ["Chatbot & GenAI delivery for a bank’s 50k+ calls/month call center"],
+      "projects": [
+        {
+          "name": "M.A.R.I.A — IBM Watson Voice Assistant",
+          "companies": ["ibm", "montepio"],
+          "tldr": "Led delivery of M.A.R.I.A, a real-time voice assistant for Banco Montepio's contact center, built on IBM Watson.",
+          "description": "M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) is a cognitive voice agent built on IBM Watson Assistant for Voice, integrated into Banco Montepio's contact-center IVR to automate customer interactions — from card activation to account confirmations.",
+          "technologies": ["IBM Watson Assistant for Voice", "RPA", "Cognitive Bot Service", "IBM Cloud", "Data Pipelines"],
+          "achievements": [
+            "Automated 72 customer intentions in the contact center, incl. card activation and account confirmations",
+            "Targeted ~80% of call center workflow automation within a year of launch",
+            "Doubled FTE savings for the client’s call center (50k+ calls/month)",
+            "9+ NPS on the delivered solution"
+          ],
+          "news": {
+            "title": "Nova assistente interativa do Montepio chama-se M.A.R.I.A e é \"filha\" do Watson da IBM",
+            "source": "SAPO Tek",
+            "date": "2020-03-03",
+            "url": "https://tek.sapo.pt/noticias/computadores/artigos/nova-assistente-interativa-do-montepio-chama-se-m-a-r-i-a-e-e-filha-do-watson-da-ibm/"
+          }
+        }
+      ],
       "stack": ["Python", "Data Pipelines", "Chat/Voicebot", "GenAI", "Agile"],
       "focus": { "pm": 35, "swe": 25, "analytics": 15, "de": 15, "ds": 10 }
     },
@@ -111,7 +152,16 @@
       "period": "2018 — 2020",
       "role": "Thesis Researcher / Data Scientist",
       "kpis": ["48%+ decision accuracy", "100% Return on Risk", "1.90 Sharpe ratio"],
-      "projects": ["ML trading simulator for SPY options — Mixture of Experts model using Random Forests"],
+      "projects": [
+        {
+          "name": "ML Trading Simulator (SPY Options)",
+          "companies": ["it"],
+          "tldr": "A Mixture-of-Experts trading model for SPY options, built for my MSc thesis.",
+          "description": "Designed and implemented a Mixture of Experts model using Random Forests to predict SPY options trades, evaluated via backtesting against real market data.",
+          "technologies": ["Python", "Random Forests", "Time Series", "scikit-learn"],
+          "achievements": ["48%+ decision accuracy", "100% Return on Risk", "1.90 Sharpe ratio"]
+        }
+      ],
       "stack": ["Python", "Random Forests", "Time Series", "scikit-learn"],
       "focus": { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60 }
     }
@@ -122,11 +172,24 @@
       "org": "SINFO",
       "title": "Project Manager / Event Coordinator",
       "logo": "/img/sinfo-logo.jpg",
-      "chipClass": "bg-white",
+      "chipClass": "bg-[#2a5a8a]",
       "period": "2016 — 2019",
       "role": "Project Manager / Event Coordinator — recruited and led volunteer teams for a large student-run tech conference",
       "kpis": ["Recruited 10+ volunteers", "Raised €7,000+ in sponsorship", "10x social media engagement on 10k+ follower accounts"],
-      "projects": ["Organized SINFO's annual tech conference — volunteer recruitment, sponsorship, and social media"],
+      "projects": [
+        {
+          "name": "SINFO Annual Tech Conference",
+          "companies": ["sinfo"],
+          "tldr": "Organized volunteer teams, sponsorship, and social media for a large student-run tech conference.",
+          "description": "As Project Manager / Event Coordinator, recruited and led volunteer teams, secured sponsorship, and ran social media for SINFO's annual conference.",
+          "technologies": ["Event Management", "Sponsorship", "Social Media", "Team Leadership"],
+          "achievements": [
+            "Recruited 10+ volunteers",
+            "Raised €7,000+ in sponsorship",
+            "10x social media engagement on 10k+ follower accounts"
+          ]
+        }
+      ],
       "stack": ["Event Management", "Sponsorship", "Social Media", "Team Leadership"],
       "focus": { "pm": 85, "swe": 5, "analytics": 10, "de": 0, "ds": 0 }
     }

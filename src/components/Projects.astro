@@ -11,17 +11,17 @@ const { careerPath, careerPathMore, sideProjects } = site;
 
   <div class="relative space-y-4 border-l border-[var(--color-border)] pl-6 sm:pl-8">
     {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} />)}
-
-    <details class="group/more relative">
-      <summary class="flex cursor-pointer list-none items-center gap-2 py-2 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
-        <span class="transition group-open/more:rotate-90">▸</span>
-        Show more
-      </summary>
-      <div class="mt-4 space-y-4">
-        {careerPathMore.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-more-${i}`} />)}
-      </div>
-    </details>
   </div>
+
+  <details class="group/more mt-4 pl-6 sm:pl-8">
+    <summary class="flex cursor-pointer list-none items-center gap-2 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
+      <span class="transition group-open/more:rotate-90">▸</span>
+      Show more
+    </summary>
+    <div class="relative mt-4 space-y-4 border-l border-[var(--color-border)] pl-6 sm:pl-8">
+      {careerPathMore.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-more-${i}`} />)}
+    </div>
+  </details>
 
   <div class="mt-14">
     <h3 class="mb-1 text-sm font-medium tracking-wide text-[var(--color-muted)]">

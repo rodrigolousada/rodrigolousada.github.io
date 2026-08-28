@@ -16,21 +16,6 @@ const { about } = site;
 
   <p class="mb-8 max-w-xl text-[var(--color-muted)]">{about.intro}</p>
 
-  <ol class="mb-8 space-y-4 border-l border-[var(--color-border)] pl-5">
-    {
-      about.timeline.map((item) => (
-        <li class="relative">
-          <span class="absolute -left-[23px] top-1.5 h-2 w-2 rounded-full bg-[var(--color-accent)]" />
-          <div class="flex flex-wrap items-baseline gap-x-2">
-            <span class="font-mono text-xs text-[var(--color-muted)]">{item.period}</span>
-            <span class="font-semibold text-[var(--color-text)]">{item.role}</span>
-          </div>
-          <p class="text-sm text-[var(--color-muted)]">{item.detail}</p>
-        </li>
-      ))
-    }
-  </ol>
-
   <div class="flex flex-wrap items-center gap-2">
     {
       about.strengths.map((s) => (

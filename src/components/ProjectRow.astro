@@ -1,0 +1,143 @@
+---
+import { companies } from '../data/site.json';
+
+interface Company {
+  name: string;
+  logo: string;
+  logoScale?: number;
+  logoInvert?: boolean;
+  chipClass: string;
+}
+const companyMap = companies as unknown as Record<string, Company>;
+
+interface Props {
+  project: {
+    name: string;
+    companies?: string[];
+    isSideProject?: boolean;
+    tldr: string;
+    description: string;
+    technologies: string[];
+    achievements: string[];
+    news?: { title: string; source: string; date: string; url: string };
+  };
+  modalId: string;
+}
+
+const { project, modalId } = Astro.props;
+const badgeCompanies = (project.companies ?? []).map((id) => companyMap[id]);
+---
+
+<div class="relative">
+  <button
+    type="button"
+    onclick={`document.getElementById('${modalId}').showModal()`}
+    class="group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition hover:border-[var(--color-accent)]"
+  >
+    <div class="flex shrink-0 items-center -space-x-2">
+      {
+        project.isSideProject ? (
+          <span class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+            Side project
+          </span>
+        ) : (
+          badgeCompanies.map((c) => (
+            <span class={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-[var(--color-bg)] p-1 ${c.chipClass}`}>
+              <img
+                src={c.logo}
+                alt={c.name}
+                class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
+                style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
+              />
+            </span>
+          ))
+        )
+      }
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <p class="truncate text-sm font-semibold text-[var(--color-text)]">{project.name}</p>
+      <p class="truncate text-xs text-[var(--color-muted)]">{project.tldr}</p>
+    </div>
+
+    <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+      View →
+    </span>
+  </button>
+
+  <dialog
+    id={modalId}
+    class="m-auto w-[min(90vw,32rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  >
+    <div class="overflow-hidden rounded-xl">
+      <div class="relative flex items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)] px-6 py-4">
+        <div class="flex items-center gap-2">
+          {
+            project.isSideProject ? (
+              <span class="rounded-full border border-[var(--color-border)] px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+                Side project
+              </span>
+            ) : (
+              badgeCompanies.map((c) => (
+                <span class={`flex h-9 w-9 items-center justify-center rounded-lg p-1.5 ${c.chipClass}`}>
+                  <img
+                    src={c.logo}
+                    alt={c.name}
+                    class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
+                    style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
+                  />
+                </span>
+              ))
+            )
+          }
+        </div>
+        <form method="dialog">
+          <button
+            aria-label="Close"
+            class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+          >
+            ✕
+          </button>
+        </form>
+      </div>
+
+      <div class="p-6">
+        <h3 class="text-xl font-bold text-[var(--color-text)]">{project.name}</h3>
+        <p class="mt-1 text-sm text-[var(--color-accent)]">{project.tldr}</p>
+        <p class="mt-3 text-[var(--color-muted)]">{project.description}</p>
+
+        <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Technologies</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {project.technologies.map((tech) => (
+            <span class="rounded border border-[var(--color-border)] px-2 py-0.5 font-mono text-xs text-[var(--color-muted)]">
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Achievements</p>
+        <ul class="mt-2 space-y-1.5">
+          {project.achievements.map((achievement) => (
+            <li class="flex gap-2 text-[var(--color-text)]">
+              <span class="text-[var(--color-accent)]">▸</span>
+              <span>{achievement}</span>
+            </li>
+          ))}
+        </ul>
+
+        {project.news && (
+          <a
+            href={project.news.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 flex items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 transition hover:border-[var(--color-accent)]"
+          >
+            <span class="shrink-0 font-mono text-xs text-[var(--color-accent)]">News</span>
+            <span class="min-w-0 flex-1 truncate text-sm text-[var(--color-text)]">{project.news.title}</span>
+            <span class="shrink-0 text-xs text-[var(--color-muted)]">{project.news.source}</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </dialog>
+</div>

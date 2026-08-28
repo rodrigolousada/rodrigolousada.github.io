@@ -1,5 +1,6 @@
 ---
 import { focusCategories } from '../data/site.json';
+import ProjectRow from './ProjectRow.astro';
 
 interface Props {
   stop: {
@@ -12,7 +13,16 @@ interface Props {
     period: string;
     role: string;
     kpis: string[];
-    projects: string[];
+    projects: {
+      name: string;
+      companies?: string[];
+      isSideProject?: boolean;
+      tldr: string;
+      description: string;
+      technologies: string[];
+      achievements: string[];
+      news?: { title: string; source: string; date: string; url: string };
+    }[];
     stack: string[];
     focus: Record<string, number>;
   };
@@ -89,14 +99,11 @@ const { stop, modalId } = Astro.props;
         </ul>
 
         <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Projects</p>
-        <ul class="mt-2 space-y-1.5">
-          {stop.projects.map((project) => (
-            <li class="flex gap-2 text-[var(--color-text)]">
-              <span class="text-[var(--color-accent)]">▸</span>
-              <span>{project}</span>
-            </li>
+        <div class="mt-2 space-y-2">
+          {stop.projects.map((project, pi) => (
+            <ProjectRow project={project} modalId={`${modalId}-project-${pi}`} />
           ))}
-        </ul>
+        </div>
 
         <div class="mt-5 flex flex-wrap gap-2">
           {stop.stack.map((tech) => (
