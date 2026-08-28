@@ -134,12 +134,14 @@ const newsDate = project.news
         </ul>
 
         {project.news && (
-          <a
-            href={project.news.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group/news mt-5 block rotate-[-1deg] rounded-[2px] bg-[#f4f1ea] p-4 text-neutral-900 shadow-md transition hover:-translate-y-0.5 hover:rotate-0 hover:shadow-lg"
-          >
+          <>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">News</p>
+            <a
+              href={project.news.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group/news block rotate-[-1deg] rounded-[2px] bg-[#f4f1ea] p-4 text-neutral-900 shadow-md transition hover:-translate-y-0.5 hover:rotate-0 hover:shadow-lg"
+            >
             <div class="flex items-baseline justify-between gap-3 border-b-2 border-neutral-900 pb-1.5">
               <span class="font-serif text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
                 {project.news.source}
@@ -154,7 +156,8 @@ const newsDate = project.news
             <p class="mt-2 font-mono text-[10px] uppercase tracking-wide text-neutral-500">
               Read the article →
             </p>
-          </a>
+            </a>
+          </>
         )}
       </div>
     </div>
