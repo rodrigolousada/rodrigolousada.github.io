@@ -1,5 +1,6 @@
 ---
 import { focusCategories } from '../data/site.json';
+import { icons } from '../data/icons';
 import ProjectRow from './ProjectRow.astro';
 
 interface Props {
@@ -13,6 +14,8 @@ interface Props {
     period: string;
     role: string;
     kpis: string[];
+    /** Personal honors/awards earned during this stop (medals) — distinct from project-level achievements. */
+    honors?: { label: string; year?: string }[];
     projects: {
       name: string;
       companies?: string[];
@@ -108,6 +111,35 @@ const { stop, modalId, showLine = true } = Astro.props;
               </li>
             ))}
           </ul>
+
+          {stop.honors && stop.honors.length > 0 && (
+            <>
+              <p class="mb-3 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                Achievements
+              </p>
+              <div class="flex flex-wrap gap-5">
+                {stop.honors.map((honor) => (
+                  <div class="flex w-20 flex-col items-center gap-2 text-center">
+                    <div class="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10">
+                      <svg viewBox="0 0 24 24" class="h-6 w-6 fill-[var(--color-accent)]">
+                        <path d={icons.star} />
+                      </svg>
+                      <span
+                        class="absolute -bottom-1 left-1/2 h-3 w-2.5 -translate-x-[10px] rotate-[20deg] bg-[var(--color-accent)]/30"
+                        style="clip-path: polygon(0 0, 100% 0, 60% 100%)"
+                      />
+                      <span
+                        class="absolute -bottom-1 left-1/2 h-3 w-2.5 translate-x-px -rotate-[20deg] bg-[var(--color-accent)]/30"
+                        style="clip-path: polygon(0 0, 100% 0, 40% 100%)"
+                      />
+                    </div>
+                    <p class="text-[11px] leading-tight text-[var(--color-text)]">{honor.label}</p>
+                    {honor.year && <p class="text-[10px] text-[var(--color-muted)]">{honor.year}</p>}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
           <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Projects</p>
           <div class="mt-2 space-y-2">
