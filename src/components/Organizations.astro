@@ -30,7 +30,7 @@ const groups = [
                   src={org.logo}
                   alt={org.name}
                   title={org.name}
-                  class="h-6 w-auto object-contain opacity-40 invert grayscale transition hover:opacity-90 sm:h-7"
+                  class={`h-6 w-auto object-contain opacity-40 grayscale transition hover:opacity-90 sm:h-7 ${org.alreadyWhite ? '' : 'invert'}`}
                   style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
                 />
               ))}
