@@ -3,6 +3,10 @@ Use this to complete the website a bit more
 # Question
 - With Astro, are we still able to host the website in GitHub Pages? I think it is only possible to host static websites. Don't let that stop you, we can address it later.
 
+# Main screen
+
+- I want the map to use 30% of the width of the screen, it is too tiny sometimes
+
 
 # Klarna
 
