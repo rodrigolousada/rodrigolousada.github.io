@@ -256,8 +256,8 @@
       "From consulting to product engineering: what changes, what doesn’t"
     ],
     "talks": [
-      { "photo": "public/img/IT Talk.JPG", "caption": "MoE Trading Simulator", "placeholder": true, "rotate": -4 },
-      { "photo": "public/img/ISCTE Talk.JPG", "caption": "GitHub 101 Lecture", "placeholder": true, "rotate": 3 }
+      { "photo": "/img/IT talk.JPG", "caption": "MoE Trading Simulator", "placeholder": true, "rotate": -4 },
+      { "photo": "/img/ISCTE Talk.JPG", "caption": "GitHub 101 Lecture", "placeholder": true, "rotate": 3 }
     ]
   },
 
@@ -304,7 +304,8 @@
     "text": "\"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career.\"",
     "name": "António Pedro Cerejeira",
     "role": "IBM Senior Manager, Service Line Director",
-    "initials": "APC"
+    "initials": "APC",
+    "photo": "/img/apc_photo.png"
   },
 
   "footer": {

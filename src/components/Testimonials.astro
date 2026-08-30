@@ -11,9 +11,17 @@ const { testimonial } = site;
   </h2>
 
   <blockquote class="flex items-start gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] font-mono text-xs font-semibold text-[var(--color-text)]">
-      {testimonial.initials}
-    </div>
+    {testimonial.photo ? (
+      <img
+        src={testimonial.photo}
+        alt={testimonial.name}
+        class="h-11 w-11 shrink-0 rounded-full object-cover"
+      />
+    ) : (
+      <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] font-mono text-xs font-semibold text-[var(--color-text)]">
+        {testimonial.initials}
+      </div>
+    )}
     <div>
       <p class="text-[var(--color-text)]">{testimonial.text}</p>
       <footer class="mt-4 text-sm">
