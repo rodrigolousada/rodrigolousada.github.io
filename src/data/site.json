@@ -31,6 +31,13 @@
       { "value": "4–6", "label": "developers led across 2 concurrent teams" },
       { "value": "2x", "label": "FTE savings delivered on a 50k+ calls/month operation" },
       { "value": "70%", "label": "team workload cut through automation" }
+    ],
+    "cities": [
+      { "name": "Lisbon", "text": "Born and raised here — this is home." },
+      {
+        "name": "Berlin",
+        "text": "Second time living in Berlin: first an Erasmus exchange for 6 months, then moved back in 2024 to join Klarna as a Software Engineer. Currently lives here."
+      }
     ]
   },
 

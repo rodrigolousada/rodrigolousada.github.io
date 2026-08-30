@@ -1,6 +1,28 @@
 ---
 import site from '../data/site.json';
 const { hero } = site;
+
+// Pixel coordinates within the map SVG's viewBox — not content, so kept here
+// rather than in site.json (which only holds the per-city bio text).
+const MAP_VIEWBOX = { w: 506.0, h: 442.9 };
+const CITY_POINTS: Record<string, { x: number; y: number }> = {
+  Lisbon: { x: 122.3, y: 393.5 },
+  Berlin: { x: 296.2, y: 227.9 },
+};
+
+const cities = hero.cities.map((city, i) => {
+  const point = CITY_POINTS[city.name];
+  const topPct = (point.y / MAP_VIEWBOX.h) * 100;
+  return {
+    ...city,
+    id: `city-${i}`,
+    delay: i * 0.8,
+    leftPct: (point.x / MAP_VIEWBOX.w) * 100,
+    topPct,
+    // Open the popup toward whichever side of the marker has more room.
+    popupClass: topPct > 50 ? 'bottom-full mb-3' : 'top-full mt-3',
+  };
+});
 ---
 
 <section class="relative overflow-hidden">
@@ -23,11 +45,47 @@ const { hero } = site;
           stroke-linejoin="round"
           stroke-opacity="0.35"
         />
-        <circle class="city-glow" cx="122.3" cy="393.5" r="8" fill="var(--color-accent)" opacity="0.18" />
-        <circle cx="122.3" cy="393.5" r="3" fill="var(--color-accent)" />
-        <circle class="city-glow city-glow-delayed" cx="296.2" cy="227.9" r="8" fill="var(--color-accent)" opacity="0.18" />
-        <circle cx="296.2" cy="227.9" r="3" fill="var(--color-accent)" />
       </svg>
+
+      {
+        cities.map((city) => (
+          <div
+            class="absolute -translate-x-1/2 -translate-y-1/2"
+            style={`left:${city.leftPct}%; top:${city.topPct}%;`}
+          >
+            <button
+              type="button"
+              class="city-marker group/city pointer-events-auto relative flex h-5 w-5 cursor-pointer items-center justify-center rounded-full"
+              aria-expanded="false"
+              aria-label={`${city.name} — show info`}
+              data-city-toggle={city.id}
+            >
+              <span
+                class="city-glow pointer-events-none absolute inset-0 rounded-full bg-[var(--color-accent)] opacity-20 transition group-hover/city:opacity-40"
+                style={`animation-delay:${city.delay}s`}
+              />
+              <span class="pointer-events-none relative h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] transition group-hover/city:scale-125" />
+            </button>
+
+            <div
+              id={city.id}
+              role="dialog"
+              class={`city-popup pointer-events-auto absolute left-1/2 z-50 hidden w-56 -translate-x-1/2 rotate-[8deg] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-left shadow-xl ${city.popupClass}`}
+            >
+              <button
+                type="button"
+                aria-label="Close"
+                class="absolute right-2 top-2 cursor-pointer text-[var(--color-muted)] transition hover:text-[var(--color-text)]"
+                data-city-close={city.id}
+              >
+                ✕
+              </button>
+              <p class="pr-4 text-xs font-semibold text-[var(--color-accent)]">{city.name}</p>
+              <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{city.text}</p>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 
@@ -89,11 +147,6 @@ const { hero } = site;
 <style>
   .city-glow {
     animation: city-pulse 2.6s ease-in-out infinite;
-    transform-box: fill-box;
-    transform-origin: center;
-  }
-  .city-glow-delayed {
-    animation-delay: 0.8s;
   }
   @keyframes city-pulse {
     0%,
@@ -112,3 +165,39 @@ const { hero } = site;
     }
   }
 </style>
+
+<script>
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-city-toggle]');
+  const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-city-close]');
+
+  function closeAll() {
+    document.querySelectorAll<HTMLElement>('.city-popup').forEach((popup) => {
+      popup.classList.add('hidden');
+    });
+    toggles.forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+  }
+
+  toggles.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.cityToggle;
+      if (!id) return;
+      const popup = document.getElementById(id);
+      const wasOpen = popup ? !popup.classList.contains('hidden') : false;
+      closeAll();
+      if (popup && !wasOpen) {
+        popup.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAll();
+    });
+  });
+
+  document.addEventListener('click', () => closeAll());
+</script>
