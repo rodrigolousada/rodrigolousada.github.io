@@ -1,6 +1,7 @@
 ---
 import site from '../data/site.json';
 import CareerStopRow from './CareerStopRow.astro';
+import GameCartridge from './GameCartridge.astro';
 const { careerPath, careerPathMore, sideProjects } = site;
 ---
 
@@ -40,23 +41,12 @@ const { careerPath, careerPathMore, sideProjects } = site;
       SIDE PROJECTS
     </h3>
     <p class="mb-6 text-xs text-[var(--color-muted)]/70">
-      Draft placeholders below — swap for real projects (or remove this section) before publishing.
+      Click a cartridge to load it.
     </p>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div class="flex flex-wrap gap-5">
       {
-        sideProjects.map((sp) => (
-          <div class="relative overflow-hidden rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-            {sp.placeholder && (
-              <span class="absolute right-3 top-3 rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
-                Example
-              </span>
-            )}
-            <div class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br ${sp.cover} font-mono text-xs font-bold text-[var(--color-text)]`}>
-              {sp.initials}
-            </div>
-            <h4 class="font-semibold text-[var(--color-text)]">{sp.title}</h4>
-            <p class="mt-1.5 text-sm text-[var(--color-muted)]">{sp.description}</p>
-          </div>
+        sideProjects.map((sp, i) => (
+          <GameCartridge project={sp} modalId={`side-project-modal-${i}`} />
         ))
       }
     </div>

@@ -221,18 +221,26 @@
 
   "sideProjects": [
     {
-      "title": "[Example] OSS contribution — Neo4j tooling",
-      "description": "Placeholder: co-maintaining a small open-source graph/GenAI-tooling project.",
-      "initials": "OSS",
-      "cover": "from-emerald-500/30 to-transparent",
-      "placeholder": true
+      "title": "Space Invaders",
+      "subtitle": "3D remake — Three.js",
+      "description": "A 3D Space Invaders remake built with Three.js for the Computer Graphics course at IST. Multiple camera views (top-down, perspective, ship), toggleable Gouraud/Phong shading, dynamic sun and spotlight lighting, and a wireframe debug mode. Scored 19.50/20 across all deliveries.",
+      "technologies": ["JavaScript", "Three.js", "WebGL"],
+      "repoUrl": "https://github.com/rodrigolousada/ist-leic-cg-space-invaders-game",
+      "demoUrl": "http://web.ist.utl.pt/~ist181115/CG/",
+      "demoLabel": "Play the live demo",
+      "shellColor": "bg-emerald-600",
+      "labelColor": "bg-emerald-50"
     },
     {
-      "title": "[Example] Small team-shipped build",
-      "description": "Placeholder: a weekend project run with 2–3 collaborators, written up afterward.",
-      "initials": "RUN",
-      "cover": "from-amber-500/30 to-transparent",
-      "placeholder": true
+      "title": "Nobel Prizes",
+      "subtitle": "Data viz — D3.js",
+      "description": "An interactive D3.js dashboard exploring Nobel Prize winners in Physics and Chemistry — a world map, scatterplot, chord chart, and Sankey diagram tracing connections between laureates, built for the Information Visualization course at IST.",
+      "technologies": ["D3.js", "JavaScript", "Bootstrap"],
+      "repoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization",
+      "demoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization/blob/master/G33_final.mp4",
+      "demoLabel": "Watch demo video",
+      "shellColor": "bg-indigo-600",
+      "labelColor": "bg-indigo-50"
     }
   ],
 
@@ -244,8 +252,8 @@
       "From consulting to product engineering: what changes, what doesn’t"
     ],
     "talks": [
-      { "photo": null, "caption": "[Add a photo from a past talk]", "placeholder": true, "rotate": -4 },
-      { "photo": null, "caption": "[Add a photo from a past talk]", "placeholder": true, "rotate": 3 }
+      { "photo": "public/img/IT Talk.JPG", "caption": "MoE Trading Simulator", "placeholder": true, "rotate": -4 },
+      { "photo": "public/img/ISCTE Talk.JPG", "caption": "GitHub 101 Lecture", "placeholder": true, "rotate": 3 }
     ]
   },
 
