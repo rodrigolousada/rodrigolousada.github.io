@@ -1,24 +1,43 @@
 ---
 import site from '../data/site.json';
 const { organizations } = site;
+
+const groups = [
+  { key: 'worked', label: 'Worked at' },
+  { key: 'client', label: 'Clients' },
+  { key: 'studied', label: 'Studied in' },
+];
 ---
 
 <section class="mx-auto max-w-3xl px-6 py-14">
-  <p class="mb-8 text-center font-mono text-xs tracking-widest text-[var(--color-muted)]">
+  <p class="mb-10 text-center font-mono text-xs tracking-widest text-[var(--color-muted)]">
     ASSOCIATED WITH
   </p>
 
-  <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+  <div class="flex flex-col gap-8">
     {
-      organizations.map((org) => (
-        <img
-          src={org.logo}
-          alt={org.name}
-          title={org.name}
-          class="h-6 w-auto object-contain opacity-40 invert grayscale transition hover:opacity-90 sm:h-7"
-          style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
-        />
-      ))
+      groups.map((group) => {
+        const orgs = organizations.filter((org) => org.category === group.key);
+        if (orgs.length === 0) return null;
+        return (
+          <div>
+            <p class="mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]/60">
+              {group.label}
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+              {orgs.map((org) => (
+                <img
+                  src={org.logo}
+                  alt={org.name}
+                  title={org.name}
+                  class="h-6 w-auto object-contain opacity-40 invert grayscale transition hover:opacity-90 sm:h-7"
+                  style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })
     }
   </div>
 </section>

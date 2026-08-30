@@ -277,15 +277,15 @@
   },
 
   "organizations": [
-    { "name": "Klarna", "logo": "/img/klarna-logo.svg", "logoScale": 1.6 },
-    { "name": "IBM", "logo": "/img/ibm-logo.png" },
-    { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg" },
-    { "name": "Bankinter", "logo": "/img/bankinter-logo.svg" },
-    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png", "logoScale": 1.3 },
-    { "name": "SINFO", "logo": "/img/sinfo-logo.svg" },
-    { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png", "logoScale": 1.3 },
-    { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg", "logoScale": 1.4 },
-    { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png", "logoScale": 1.6 }
+    { "name": "Klarna", "logo": "/img/klarna-logo.svg", "logoScale": 2.2, "category": "worked" },
+    { "name": "IBM", "logo": "/img/ibm-logo.png", "category": "worked" },
+    { "name": "SINFO", "logo": "/img/sinfo-logo.svg", "category": "worked" },
+    { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg", "category": "client" },
+    { "name": "Bankinter", "logo": "/img/bankinter-logo.svg", "category": "client" },
+    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png", "logoScale": 1.3, "category": "studied" },
+    { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png", "logoScale": 1.3, "category": "studied" },
+    { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg", "logoScale": 1.4, "category": "studied" },
+    { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png", "logoScale": 1.6, "category": "studied" }
   ],
 
   "testimonial": {
