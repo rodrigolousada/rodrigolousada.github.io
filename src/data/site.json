@@ -125,6 +125,10 @@
         "9+ NPS",
         "10+ features shipped, 8+ demos pitched"
       ],
+      "honors": [
+        { "label": "IBM Top Talents Portugal" },
+        { "label": "IBM Gold Champion Learner" }
+      ],
       "projects": [
         {
           "name": "M.A.R.I.A — IBM Watson Voice Assistant",
