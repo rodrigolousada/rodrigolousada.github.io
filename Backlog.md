@@ -48,10 +48,15 @@ I was under a lot of other initiatives, demos and MVPs for possible clients like
 # IT
 - on my project you can add a link to the Master Thesis, it is fine
 
+# SINFO
+- Project can be the 3 SINFOs (sinfo 23) I was part of
+
 # Side projects
 Fill free to check my GitHub for side projects, check which ones are ok to share and which ones aren't. When it is clickable I want to have videos and so showing how it is done
 
 - CourtKit: For this projcet I want to show screen recording of an Apple Watch and and iPhone.
+
+On the Cart Ridge, I want it look more like A GameBoy advance one where we have a picture for the background, wdyt?
 
 # Studies
 - I want a small section with my studies, without mentioning dates or anything, but it would be nice to have it. 
@@ -64,10 +69,15 @@ Fill free to check my GitHub for side projects, check which ones are ok to share
 - APC picture is on "img" nowS
 
 # Companies
-- SINFO logo is black now. Let's make sure we split in different lines for "Worked for", "Clients" and "Studies at"
+- "IT" move to  "Worked at"
+- Add "AESE" and "Externato S. José" on "Studied at" 
+- Add "clients" add also "Generali"
+find the necessary logos
 
 # Other intructions
 - Pop up for projects can be wider
 - Will uploaded a new profile picture on "img"
 - Klarna card email need to be aligned top, not bottom
 - I also want a section that includes the technologies I am familiar with, but I want logos there to call for attention, oki? I want you to help me plan how to show technologies in the best way possible, if it's a section, if it is per project, etc.
+- Check my LinkedIn to improve data
+- Check my old webstie to improve data here

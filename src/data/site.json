@@ -256,11 +256,15 @@
   ],
 
   "speaking": {
-    "intro": "Open to conference and meetup talks on engineering leadership and applied GenAI. No talks booked yet — topics below are a starting point.",
+    "intro": "Contact me if you'd like me to talk on any of these:",
     "topics": [
-      "Leading engineering teams without a formal manager title",
-      "GenAI agents in production: lessons from building on graph databases",
-      "From consulting to product engineering: what changes, what doesn’t"
+      "A deep dive into one of my projects",
+      "AI on an enterprise level",
+      "How AI is changing expectations",
+      "Software engineering fundamentals (GitHub, Python, etc.)",
+      "How to build a successful voicebot or chatbot",
+      "How data can enrich your projects",
+      "How to make data-driven decisions"
     ],
     "talks": [
       { "photo": "/img/IT talk.JPG", "caption": "MoE Trading Simulator", "placeholder": true, "rotate": -4 },
@@ -301,7 +305,7 @@
     { "name": "SINFO", "logo": "/img/sinfo-logo.svg", "category": "worked", "alreadyWhite": true },
     { "name": "Banco Montepio", "logo": "/img/montepio-logo.svg", "category": "client" },
     { "name": "Bankinter", "logo": "/img/bankinter-logo.svg", "category": "client" },
-    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png", "logoScale": 1.3, "category": "studied" },
+    { "name": "Instituto de Telecomunicações", "logo": "/img/it-logo.png", "logoScale": 1.3, "category": "worked" },
     { "name": "Instituto Superior Técnico", "logo": "/img/ist-logo.png", "logoScale": 1.3, "category": "studied" },
     { "name": "TU Berlin", "logo": "/img/tu-berlin-logo.svg", "logoScale": 1.4, "category": "studied" },
     { "name": "Humboldt-Universität zu Berlin", "logo": "/img/humboldt-logo.png", "logoScale": 1.6, "category": "studied" }
