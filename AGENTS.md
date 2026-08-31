@@ -102,3 +102,12 @@ no JS modal library.
    set to deploy from a branch (leftover from the old Jekyll-style site).
    A `deploy.yml` workflow (withastro/action + actions/deploy-pages) is
    already committed and only triggers on pushes to `master`.
+10. **`astro dev --background` / `astro preview --background` daemons
+    outlive the session that started them.** Astro has no `strictPort`
+    config — if 4321 is taken it silently starts on 4322, 4323, etc.
+    Found two orphaned preview daemons still bound to random ports days
+    after the sessions that launched them had ended, which is why the
+    dev URL kept moving on refresh. Always run `astro dev stop` /
+    `astro preview stop` when done with a server, and if a URL that used
+    to work stops responding, check `ps aux | grep astro` /
+    `lsof -i :4321` for a stray process before assuming something broke.
