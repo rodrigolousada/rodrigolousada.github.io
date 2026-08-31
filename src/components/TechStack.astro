@@ -19,8 +19,41 @@ function groupByCategory(list: { name: string; category: string }[]) {
 }
 
 const allGroups = groupByCategory([...technologies.items, ...(technologies.extra ?? [])]);
-const preferredStack = technologies.preferredStack ?? [];
 const modalId = 'technologies-more';
+
+// "My preferred stack" mini architecture diagram: a top-to-bottom stack of
+// tiers, each tier holding one or more layers rendered side by side (e.g.
+// Data and AI/LLMs share a tier). Connectors between tiers are drawn as
+// plain SVG lines with an arrowhead, using percentage coordinates so no
+// JS measurement or viewBox scaling is needed to stay responsive.
+interface StackLayer {
+  label: string;
+  items: string[];
+}
+interface StackTier {
+  layers: StackLayer[];
+}
+
+const preferredStack: StackTier[] = technologies.preferredStack ?? [];
+const connectorHeight = 28;
+
+function columnCenters(count: number) {
+  return Array.from({ length: count }, (_, i) => ((i + 0.5) / count) * 100);
+}
+
+const connectors = preferredStack.slice(0, -1).map((tier, i) => {
+  const nextTier = preferredStack[i + 1];
+  const topXs = columnCenters(tier.layers.length);
+  const bottomXs = columnCenters(nextTier.layers.length);
+  const allXs = [...topXs, ...bottomXs];
+  return {
+    topXs,
+    bottomXs,
+    midY: connectorHeight / 2,
+    busX1: Math.min(...allXs),
+    busX2: Math.max(...allXs),
+  };
+});
 ---
 
 <div>
@@ -80,27 +113,74 @@ const modalId = 'technologies-more';
         <p class="mb-3 mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
           My preferred stack
         </p>
-        <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
-          <div class="flex flex-wrap items-stretch justify-center gap-x-1.5 gap-y-3">
-            {preferredStack.map((layer, i) => (
+        <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
+          <div class="mx-auto flex min-w-[16rem] max-w-md flex-col">
+            {preferredStack.map((tier, i) => (
               <>
-                <div class="flex min-w-[8.5rem] flex-1 flex-col gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
-                  <div class="flex items-center gap-1.5">
-                    <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[9px] font-bold text-[var(--color-bg)]">
-                      {i + 1}
-                    </span>
-                    <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">{layer.label}</p>
-                  </div>
-                  <div class="flex flex-wrap gap-1.5">
-                    {layer.items.map((name) => (
-                      <TechPill name={name} />
-                    ))}
-                  </div>
+                <div class="flex items-stretch gap-2">
+                  {tier.layers.map((layer) => (
+                    <div
+                      class={`flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] p-2.5 shadow-sm ${
+                        i === preferredStack.length - 1 ? 'border-dashed bg-[var(--color-bg)]' : 'bg-[var(--color-surface)]'
+                      }`}
+                    >
+                      <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
+                        {layer.label}
+                      </p>
+                      <div class="flex flex-wrap gap-1.5">
+                        {layer.items.map((name) => (
+                          <TechPill name={name} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                {i < preferredStack.length - 1 && (
-                  <div class="flex shrink-0 items-center justify-center text-lg leading-none text-[var(--color-accent)]/70">
-                    →
-                  </div>
+
+                {i < connectors.length && (
+                  <svg width="100%" height={connectorHeight} class="block shrink-0" aria-hidden="true">
+                    <defs>
+                      <marker
+                        id={`archArrow-${i}`}
+                        markerWidth="6"
+                        markerHeight="6"
+                        refX="3"
+                        refY="3"
+                        orient="auto"
+                        class="fill-[var(--color-accent)]"
+                      >
+                        <path d="M0,0 L6,3 L0,6 Z" />
+                      </marker>
+                    </defs>
+                    {connectors[i].topXs.map((x) => (
+                      <line
+                        x1={`${x}%`}
+                        y1={0}
+                        x2={`${x}%`}
+                        y2={connectors[i].midY}
+                        class="stroke-[var(--color-border)]"
+                        stroke-width="1.5"
+                      />
+                    ))}
+                    <line
+                      x1={`${connectors[i].busX1}%`}
+                      y1={connectors[i].midY}
+                      x2={`${connectors[i].busX2}%`}
+                      y2={connectors[i].midY}
+                      class="stroke-[var(--color-border)]"
+                      stroke-width="1.5"
+                    />
+                    {connectors[i].bottomXs.map((x) => (
+                      <line
+                        x1={`${x}%`}
+                        y1={connectors[i].midY}
+                        x2={`${x}%`}
+                        y2={connectorHeight - 1}
+                        class="stroke-[var(--color-border)]"
+                        stroke-width="1.5"
+                        marker-end={`url(#archArrow-${i})`}
+                      />
+                    ))}
+                  </svg>
                 )}
               </>
             ))}

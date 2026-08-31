@@ -19,8 +19,8 @@ interface Props {
     kpis: string[];
     /** Personal honors/awards earned during this stop (medals) — distinct from project-level achievements. */
     honors?: { label: string; year?: string }[];
-    /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). Each links out to its own Credly page for the full-resolution badge. */
-    credlyBadges?: { name: string; img: string; url?: string }[];
+    /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). Each links out to its own Credly page for the full-resolution badge. Set `highlight: true` on the handful worth calling out (e.g. AWS) — they render bigger, above the rest. */
+    credlyBadges?: { name: string; img: string; url?: string; highlight?: boolean }[];
     credlyProfileUrl?: string;
     projects: {
       name: string;
@@ -219,27 +219,60 @@ const { stop, modalId, showLine = true } = Astro.props;
               <p class="mb-2 mt-6 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
                 Badges
               </p>
-              <div class="flex flex-wrap gap-2.5">
-                {stop.credlyBadges.map((badge) => (
-                  <a
-                    href={badge.url ?? stop.credlyProfileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`View ${badge.name} on Credly`}
-                    title={badge.name}
-                    class="transition hover:scale-105"
-                  >
-                    <img
-                      src={badge.img}
-                      alt={badge.name}
-                      loading="lazy"
-                      width="56"
-                      height="56"
-                      class="h-14 w-14 object-contain"
-                    />
-                  </a>
-                ))}
-              </div>
+              {(() => {
+                const highlighted = stop.credlyBadges!.filter((b) => b.highlight);
+                const rest = stop.credlyBadges!.filter((b) => !b.highlight);
+                return (
+                  <>
+                    {highlighted.length > 0 && (
+                      <div class="mb-3 flex flex-wrap gap-3">
+                        {highlighted.map((badge) => (
+                          <a
+                            href={badge.url ?? stop.credlyProfileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View ${badge.name} on Credly`}
+                            title={badge.name}
+                            class="transition hover:scale-105"
+                          >
+                            <img
+                              src={badge.img}
+                              alt={badge.name}
+                              loading="lazy"
+                              width="80"
+                              height="80"
+                              class="h-20 w-20 object-contain drop-shadow-[0_0_10px_var(--color-accent-dim)]"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    {rest.length > 0 && (
+                      <div class="flex flex-wrap gap-2">
+                        {rest.map((badge) => (
+                          <a
+                            href={badge.url ?? stop.credlyProfileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View ${badge.name} on Credly`}
+                            title={badge.name}
+                            class="transition hover:scale-105"
+                          >
+                            <img
+                              src={badge.img}
+                              alt={badge.name}
+                              loading="lazy"
+                              width="40"
+                              height="40"
+                              class="h-10 w-10 object-contain opacity-80"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
               {stop.credlyProfileUrl && (
                 <a
                   href={stop.credlyProfileUrl}

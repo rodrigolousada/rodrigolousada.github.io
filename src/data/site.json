@@ -447,7 +447,8 @@
         {
           "name": "IBM AI Associate Data Scientist",
           "img": "/img/badges/ibm-ai-associate-data-scientist.png",
-          "url": "https://www.credly.com/badges/e5e30f95-ae76-4e6d-8612-7f997c764262"
+          "url": "https://www.credly.com/badges/e5e30f95-ae76-4e6d-8612-7f997c764262",
+          "highlight": true
         },
         {
           "name": "Big Data Foundations - Level 1",
@@ -522,12 +523,14 @@
         {
           "name": "AWS Certified Cloud Practitioner",
           "img": "/img/badges/aws-certified-cloud-practitioner.png",
-          "url": "https://www.credly.com/badges/706fb657-6baf-4b0b-8768-c323057900cf"
+          "url": "https://www.credly.com/badges/706fb657-6baf-4b0b-8768-c323057900cf",
+          "highlight": true
         },
         {
           "name": "watsonx.ai Practitioner Advanced",
           "img": "/img/badges/watsonx-ai-practitioner-advanced.png",
-          "url": "https://www.credly.com/badges/9529938f-c887-46bf-a03c-ea66daf86389"
+          "url": "https://www.credly.com/badges/9529938f-c887-46bf-a03c-ea66daf86389",
+          "highlight": true
         },
         {
           "name": "Watson Assistant Methodology",
@@ -647,6 +650,20 @@
     }
   ],
   "sideProjects": [
+    {
+      "title": "CourtKit",
+      "subtitle": "Watch-first basketball training app",
+      "description": "A Watch-first basketball training app: the Apple Watch app captures shooting drills, timed and clocked drills, and live game stats through a 14-spot interactive court diagram, while the iPhone app reviews it all with a shooting heat map, trend charts, and searchable history. Built entirely in SwiftUI with bidirectional sync between Watch and iPhone via WatchConnectivity.",
+      "technologies": [
+        "Swift",
+        "SwiftUI",
+        "WatchConnectivity",
+        "Swift Charts"
+      ],
+      "shellColor": "bg-orange-600",
+      "labelColor": "bg-neutral-900",
+      "screenshot": "/img/side-projects/courtkit.jpg"
+    },
     {
       "title": "Space Invaders",
       "subtitle": "3D remake · Three.js",
@@ -884,6 +901,10 @@
         "category": "Infra & Tools"
       },
       {
+        "name": "IBM Cloud",
+        "category": "Infra & Tools"
+      },
+      {
         "name": "Terraform",
         "category": "Infra & Tools"
       },
@@ -1004,40 +1025,56 @@
     ],
     "preferredStack": [
       {
-        "label": "Frontend",
-        "items": [
-          "TypeScript",
-          "React"
+        "layers": [
+          {
+            "label": "Frontend",
+            "items": [
+              "TypeScript",
+              "React"
+            ]
+          }
         ]
       },
       {
-        "label": "Backend / API",
-        "items": [
-          "Python",
-          "FastAPI"
+        "layers": [
+          {
+            "label": "Backend / API",
+            "items": [
+              "Python",
+              "FastAPI"
+            ]
+          }
         ]
       },
       {
-        "label": "Data",
-        "items": [
-          "PostgreSQL",
-          "Kafka",
-          "OpenSearch"
+        "layers": [
+          {
+            "label": "Data",
+            "items": [
+              "PostgreSQL",
+              "Kafka",
+              "OpenSearch"
+            ]
+          },
+          {
+            "label": "AI / LLMs",
+            "items": [
+              "GenAI / LLMs",
+              "LangChain"
+            ]
+          }
         ]
       },
       {
-        "label": "AI / LLMs",
-        "items": [
-          "GenAI / LLMs",
-          "LangChain"
-        ]
-      },
-      {
-        "label": "Infra",
-        "items": [
-          "AWS",
-          "Docker",
-          "Terraform"
+        "layers": [
+          {
+            "label": "Infra",
+            "items": [
+              "AWS",
+              "Docker",
+              "Terraform"
+            ]
+          }
         ]
       }
     ]
