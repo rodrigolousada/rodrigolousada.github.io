@@ -645,19 +645,22 @@
       "name": "Instituto Superior Técnico",
       "logo": "/img/ist-logo.png",
       "logoScale": 1.3,
-      "category": "studied"
+      "category": "studied",
+      "program": "BSc & MSc, Computer Science and Engineering"
     },
     {
       "name": "TU Berlin",
       "logo": "/img/tu-berlin-logo.svg",
       "logoScale": 1.4,
-      "category": "studied"
+      "category": "studied",
+      "program": "Erasmus exchange semester"
     },
     {
       "name": "Humboldt-Universität zu Berlin",
       "logo": "/img/humboldt-logo.png",
       "logoScale": 1.6,
-      "category": "studied"
+      "category": "studied",
+      "program": "Erasmus exchange semester"
     },
     {
       "name": "Generali",
@@ -668,12 +671,14 @@
       "name": "AESE Business School",
       "logo": "/img/aese-logo.png",
       "logoScale": 1.3,
-      "category": "studied"
+      "category": "studied",
+      "program": "Executive education programme"
     },
     {
       "name": "Externato S. José",
       "logo": "/img/esj-logo.svg",
-      "category": "studied"
+      "category": "studied",
+      "program": "Primary & Secondary Education"
     }
   ],
   "testimonial": {
@@ -687,99 +692,87 @@
     "name": "Rodrigo Lousada",
     "location": "Berlin, Germany"
   },
-  "studies": [
-    {
-      "institution": "Externato S. José",
-      "program": "Primary & Secondary Education",
-      "logo": "/img/esj-logo.svg"
-    },
-    {
-      "institution": "Instituto Superior Técnico",
-      "program": "BSc & MSc, Computer Science and Engineering",
-      "logo": "/img/ist-logo.png",
-      "logoScale": 1.3
-    },
-    {
-      "institution": "TU Berlin",
-      "program": "Erasmus exchange semester",
-      "logo": "/img/tu-berlin-logo.svg",
-      "logoScale": 1.4
-    },
-    {
-      "institution": "Humboldt-Universität zu Berlin",
-      "program": "Erasmus exchange semester",
-      "logo": "/img/humboldt-logo.png",
-      "logoScale": 1.6
-    },
-    {
-      "institution": "AESE Business School",
-      "program": "Executive education programme",
-      "logo": "/img/aese-logo.png",
-      "logoScale": 1.3
-    }
-  ],
   "technologies": {
-    "intro": "Technologies I've worked with across these projects.",
     "items": [
       {
-        "name": "TypeScript"
+        "name": "TypeScript",
+        "category": "Languages & Frameworks"
       },
       {
-        "name": "React"
+        "name": "React",
+        "category": "Languages & Frameworks"
       },
       {
-        "name": "Python"
+        "name": "Python",
+        "category": "Languages & Frameworks"
       },
       {
-        "name": "FastAPI"
+        "name": "FastAPI",
+        "category": "Languages & Frameworks"
       },
       {
-        "name": "Neo4j"
+        "name": "Neo4j",
+        "category": "Data & Search"
       },
       {
-        "name": "PostgreSQL"
+        "name": "PostgreSQL",
+        "category": "Data & Search"
       },
       {
-        "name": "Kafka"
+        "name": "Kafka",
+        "category": "Data & Search"
       },
       {
-        "name": "OpenSearch"
+        "name": "OpenSearch",
+        "category": "Data & Search"
       },
       {
-        "name": "AWS"
+        "name": "AWS",
+        "category": "Infra & Tools"
       },
       {
-        "name": "Terraform"
+        "name": "Terraform",
+        "category": "Infra & Tools"
       },
       {
-        "name": "Jenkins"
+        "name": "Jenkins",
+        "category": "Infra & Tools"
       },
       {
-        "name": "Datadog"
+        "name": "Datadog",
+        "category": "Infra & Tools"
       },
       {
-        "name": "k6"
+        "name": "k6",
+        "category": "Infra & Tools"
       },
       {
-        "name": "GenAI / LLMs"
+        "name": "GenAI / LLMs",
+        "category": "AI & Data Science"
       },
       {
-        "name": "IBM Watson"
+        "name": "IBM Watson",
+        "category": "AI & Data Science"
       },
       {
-        "name": "WikiData"
+        "name": "WikiData",
+        "category": "Data & Search"
       },
       {
-        "name": "scikit-learn"
+        "name": "scikit-learn",
+        "category": "AI & Data Science"
       },
       {
-        "name": "D3.js"
+        "name": "D3.js",
+        "category": "AI & Data Science"
       },
       {
-        "name": "GitHub"
+        "name": "GitHub",
+        "category": "Infra & Tools"
       },
       {
-        "name": "Jupyter"
+        "name": "Jupyter",
+        "category": "AI & Data Science"
       }
     ]
   }

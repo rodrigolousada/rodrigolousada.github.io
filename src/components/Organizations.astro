@@ -5,7 +5,7 @@ const { organizations } = site;
 const groups = [
   { key: 'worked', label: 'Worked at' },
   { key: 'client', label: 'Clients' },
-  { key: 'studied', label: 'Studied in' },
+  { key: 'studied', label: 'Studied at' },
 ];
 ---
 
@@ -25,15 +25,62 @@ const groups = [
               {group.label}
             </p>
             <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
-              {orgs.map((org) => (
-                <img
-                  src={org.logo}
-                  alt={org.name}
-                  title={org.name}
-                  class={`h-6 w-auto object-contain opacity-40 grayscale transition hover:opacity-90 sm:h-7 ${org.alreadyWhite ? '' : 'invert'}`}
-                  style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
-                />
-              ))}
+              {orgs.map((org, i) => {
+                const logoImg = (
+                  <img
+                    src={org.logo}
+                    alt={org.name}
+                    title={org.program ? undefined : org.name}
+                    class={`h-6 w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-7 ${org.alreadyWhite ? '' : 'invert'}`}
+                    style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
+                  />
+                );
+
+                if (!org.program) {
+                  return <span class="group">{logoImg}</span>;
+                }
+
+                const modalId = `study-modal-${group.key}-${i}`;
+                return (
+                  <>
+                    <button
+                      type="button"
+                      onclick={`document.getElementById('${modalId}').showModal()`}
+                      class="group cursor-pointer"
+                      aria-label={`${org.name} — show details`}
+                    >
+                      {logoImg}
+                    </button>
+                    <dialog
+                      id={modalId}
+                      class="m-auto w-[min(90vw,24rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+                    >
+                      <div class="flex items-start justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-3">
+                        <span class="flex h-9 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1.5">
+                          <img
+                            src={org.logo}
+                            alt={org.name}
+                            class="h-full w-full object-contain"
+                            style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
+                          />
+                        </span>
+                        <form method="dialog">
+                          <button
+                            aria-label="Close"
+                            class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+                          >
+                            ✕
+                          </button>
+                        </form>
+                      </div>
+                      <div class="p-5">
+                        <p class="font-semibold text-[var(--color-text)]">{org.name}</p>
+                        <p class="mt-1 text-sm text-[var(--color-muted)]">{org.program}</p>
+                      </div>
+                    </dialog>
+                  </>
+                );
+              })}
             </div>
           </div>
         );

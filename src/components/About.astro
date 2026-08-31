@@ -1,5 +1,6 @@
 ---
 import site from '../data/site.json';
+import TechStack from './TechStack.astro';
 const { about } = site;
 ---
 
@@ -30,5 +31,11 @@ const { about } = site;
     >
       Full assessment →
     </a>
+  </div>
+
+  <div class="mt-10 flex justify-end">
+    <div class="w-full sm:w-[60%] lg:w-1/2">
+      <TechStack />
+    </div>
   </div>
 </section>
