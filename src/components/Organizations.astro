@@ -45,7 +45,7 @@ const groups = [
                         data-scroll-target={org.scrollTo}
                         data-scroll-company={org.scrollToCompany}
                         data-scroll-label={org.name}
-                        aria-label={`${org.name} — jump to that part of the timeline`}
+                        aria-label={`Jump to ${org.name} in the timeline`}
                       >
                         {logoImg}
                       </button>
@@ -61,7 +61,7 @@ const groups = [
                       type="button"
                       class="study-marker group relative cursor-pointer"
                       aria-expanded="false"
-                      aria-label={`${org.name} — show details`}
+                      aria-label={`Show details for ${org.name}`}
                       data-study-toggle={popupId}
                     >
                       {logoImg}
@@ -160,9 +160,15 @@ const groups = [
     if (details && !details.open) details.open = true;
 
     scrollToStop(stopEl, 600);
+    // Start the pulse once the scroll has actually settled, not at the same
+    // moment it starts moving — lit up while the page is still sliding into
+    // place it was mostly spent (and unnoticed) by the time anyone could
+    // look at it.
     const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
-    highlightTarget.classList.add('scroll-highlight');
-    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 2200);
+    setTimeout(() => {
+      highlightTarget.classList.add('scroll-highlight');
+      setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1600);
+    }, 600);
 
     const stopModalId = stopEl.dataset.modalId;
     const stopDialog = stopModalId && document.getElementById(stopModalId);

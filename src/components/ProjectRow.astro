@@ -9,6 +9,8 @@ interface Company {
   logoScale?: number;
   logoInvert?: boolean;
   chipClass: string;
+  /** True for a logo that's already a full-bleed square mark (app icon style) — skip the inner padding so it fills the chip instead of floating in a margin. */
+  logoFill?: boolean;
 }
 const companyMap = companies as unknown as Record<string, Company>;
 
@@ -73,7 +75,7 @@ function formatNewsDate(date: string) {
           </span>
         ) : (
           badgeCompanies.map((c) => (
-            <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] p-1 ${c.chipClass}`}>
+            <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] ${c.logoFill ? '' : 'p-1'} ${c.chipClass}`}>
               <img
                 src={c.logo}
                 alt={c.name}
@@ -110,7 +112,7 @@ function formatNewsDate(date: string) {
               </span>
             ) : (
               badgeCompanies.map((c) => (
-                <span class={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg p-1.5 ${c.chipClass}`}>
+                <span class={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg ${c.logoFill ? '' : 'p-1.5'} ${c.chipClass}`}>
                   <img
                     src={c.logo}
                     alt={c.name}

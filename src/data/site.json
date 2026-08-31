@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "Rodrigo Lousada — Software Engineer & Engineering Team Lead",
+    "title": "Rodrigo Lousada · Software Engineer & Engineering Team Lead",
     "description": "Software Engineer at Klarna with a track record leading engineering teams (4-6 developers across 2 concurrent teams at IBM). Open to Engineering Manager / Tech Lead roles.",
     "url": "https://rodrigolousada.me",
     "jobTitle": "Software Engineer",
@@ -54,7 +54,7 @@
     "cities": [
       {
         "name": "Lisbon",
-        "text": "Born and raised here — this is home."
+        "text": "Born and raised here. This is home."
       },
       {
         "name": "Berlin",
@@ -70,7 +70,7 @@
       "voicebots"
     ],
     "currentRole": "Klarna's Referrals team",
-    "lookingFor": "Engineering Manager / Tech Lead roles — Berlin/EU or remote-first, fintech or scale-up.",
+    "lookingFor": "Engineering Manager or Tech Lead roles, based in Berlin/EU or fully remote, ideally at a fintech or scale-up.",
     "strengths": [
       "Achiever",
       "Futuristic",
@@ -96,12 +96,14 @@
     "montepio": {
       "name": "Banco Montepio",
       "logo": "/img/montepio-icon.png",
-      "chipClass": "bg-white"
+      "chipClass": "bg-white",
+      "logoFill": true
     },
     "bankinter": {
       "name": "Bankinter",
-      "logo": "/img/bankinter-icon.svg",
-      "chipClass": "bg-white"
+      "logo": "/img/bankinter-icon.png",
+      "chipClass": "bg-white",
+      "logoFill": true
     },
     "it": {
       "name": "Instituto de Telecomunicações",
@@ -149,10 +151,10 @@
       "logoScale": 1.15,
       "logoInvert": true,
       "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
-      "period": "2024 — Present",
-      "role": "Full-stack engineer, rotating across QlikSense DevOps, Data Modeling, Search, and the Internal Knowledge Base team — now on Referrals & Deals",
+      "period": "2024 – Present",
+      "role": "Full-stack engineer, rotating across QlikSense DevOps, Data Modeling, Search, and the Internal Knowledge Base team, now on Referrals & Deals",
       "kpis": [
-        "Rotated across 5 teams in under 2 years — DevOps, Data Modeling, Search, Knowledge Base, now Referrals & Deals",
+        "Rotated across 5 teams in under 2 years: DevOps, Data Modeling, Search, Knowledge Base, now Referrals & Deals",
         "Built a GenAI agent automating data modeling into Neo4j",
         "Cut a Qliksense app's footprint 53%+ through usage analysis"
       ],
@@ -162,7 +164,7 @@
           "companies": [
             "klarna"
           ],
-          "tldr": "Rolling out Klarna's referral program — advocates share, friends redeem, both get rewarded.",
+          "tldr": "Rolling out Klarna's referral program: advocates share, friends redeem, both get rewarded.",
           "description": "On the Referrals & Deals team, building and rolling out Klarna's referral program end to end: an advocate shares a personal link, a referred friend redeems it in the app, and both sides get their reward once the friend completes a qualifying purchase. Also maintain the discounts platform that powers Klarna's promotions.",
           "technologies": [
             "TypeScript",
@@ -180,7 +182,7 @@
             "captions": [
               "Advocate shares their referral link",
               "Friend redeems the link in-app",
-              "Referral complete — both sides rewarded"
+              "Referral complete: both sides rewarded"
             ]
           }
         },
@@ -191,7 +193,7 @@
           ],
           "confidential": true,
           "tldr": "Core contributor to Klarna's Internal Knowledge Base on Neo4j and WikiData, incl. a GenAI agent that automates populating it.",
-          "description": "Worked across the team building Klarna's Internal Knowledge Base on Neo4j and WikiData — from a stint improving search relevance over it, to core graph data modeling, to building \"Cursor Data Modeler\", a GenAI agent that automates data modeling work into the graph that was previously done by hand. Some specifics are confidential.",
+          "description": "Worked across the team building Klarna's Internal Knowledge Base on Neo4j and WikiData, from a stint improving search relevance over it, to core graph data modeling, to building \"Cursor Data Modeler\", a GenAI agent that automates data modeling work into the graph that was previously done by hand. Some specifics are confidential.",
           "technologies": [
             "Neo4j",
             "WikiData",
@@ -235,8 +237,8 @@
       "logo": "/img/ibm-logo.png",
       "logoInvert": true,
       "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
-      "period": "2020 — 2024",
-      "role": "Consulting Lead — led a 4–6 person team across 2 concurrent teams; also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing",
+      "period": "2020 – 2024",
+      "role": "Consulting Lead, led a 4–6 person team across 2 concurrent teams; also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing",
       "kpis": [
         "Doubled FTE savings",
         "70% workload cut via automation",
@@ -253,13 +255,13 @@
       ],
       "projects": [
         {
-          "name": "M.A.R.I.A — IBM Watson Voice Assistant",
+          "name": "M.A.R.I.A: IBM Watson Voice Assistant",
           "companies": [
             "ibm",
             "montepio"
           ],
           "tldr": "Grew from Analyst to Consulting Lead & PM delivering M.A.R.I.A, a real-time voice assistant for Banco Montepio's contact center, built on IBM Watson.",
-          "description": "M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) is a cognitive voice agent built on IBM Watson Assistant for Voice, integrated into Banco Montepio's contact-center IVR to automate customer interactions — from card activation to account confirmations. My role grew with the project: started as an Analyst, then Developer & Data Analyst, then Developer & Data Engineer, and finally Consulting Lead & Project Manager.",
+          "description": "M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) is a cognitive voice agent built on IBM Watson Assistant for Voice, integrated into Banco Montepio's contact-center IVR to automate customer interactions, from card activation to account confirmations. My role grew with the project: started as an Analyst, then Developer & Data Analyst, then Developer & Data Engineer, and finally Consulting Lead & Project Manager.",
           "technologies": [
             "IBM Watson Assistant for Voice",
             "RPA",
@@ -303,13 +305,13 @@
           "shortName": "M.A.R.I.A"
         },
         {
-          "name": "BIA & Beatriz — Bankinter Voice Assistants",
+          "name": "BIA & Beatriz: Bankinter Voice Assistants",
           "companies": [
             "ibm",
             "bankinter"
           ],
           "tldr": "Data Engineer & Data Analyst on BIA and Beatriz, AI phone-banking assistants for Bankinter and Bankinter Consumer Finance.",
-          "description": "BIA (Bankinter) and Beatriz (Bankinter Consumer Finance) answer Bankinter's phone-banking line, authenticate callers, resolve frequent requests (card unlock/activation, balance checks, digital-channel enrollment, app/homebanking support), and route complex cases to human agents with context attached — voice-to-text, ML conversation orchestration, and text-to-voice, running on the same underlying platform later reused for Banco Montepio's M.A.R.I.A.",
+          "description": "BIA (Bankinter) and Beatriz (Bankinter Consumer Finance) answer Bankinter's phone-banking line, authenticate callers, resolve frequent requests (card unlock/activation, balance checks, digital-channel enrollment, app/homebanking support), and route complex cases to human agents with context attached: voice-to-text, ML conversation orchestration, and text-to-voice, running on the same underlying platform later reused for Banco Montepio's M.A.R.I.A.",
           "technologies": [
             "IBM Watson Assistant for Voice",
             "Speech-to-Text / Text-to-Speech",
@@ -359,7 +361,7 @@
             "bankinter"
           ],
           "confidential": true,
-          "tldr": "Contributed to another internal Bankinter voicebot product — details confidential.",
+          "tldr": "Contributed to another internal Bankinter voicebot product. Details confidential.",
           "description": "Worked on another internal voicebot product for Bankinter beyond BIA and Beatriz. The specifics of this one aren't public.",
           "technologies": [
             "IBM Watson Assistant for Voice",
@@ -546,7 +548,7 @@
       "title": "Data Scientist Researcher",
       "logo": "/img/it-logo.png",
       "chipClass": "bg-white",
-      "period": "2018 — 2020",
+      "period": "2018 – 2020",
       "role": "Thesis Researcher / Data Scientist",
       "kpis": [
         "48%+ decision accuracy",
@@ -600,8 +602,8 @@
       "title": "Project Manager / Event Coordinator",
       "logo": "/img/sinfo-logo.svg",
       "chipClass": "bg-[#2a5a8a]",
-      "period": "2016 — 2019",
-      "role": "Project Manager / Event Coordinator — recruited and led volunteer teams for a large student-run tech conference",
+      "period": "2016 – 2019",
+      "role": "Project Manager / Event Coordinator, recruited and led volunteer teams for a large student-run tech conference",
       "kpis": [
         "Recruited 10+ volunteers",
         "Raised €7,000+ in sponsorship",
@@ -647,7 +649,7 @@
   "sideProjects": [
     {
       "title": "Space Invaders",
-      "subtitle": "3D remake — Three.js",
+      "subtitle": "3D remake · Three.js",
       "description": "A 3D Space Invaders remake built with Three.js for the Computer Graphics course at IST. Multiple camera views (top-down, perspective, ship), toggleable Gouraud/Phong shading, dynamic sun and spotlight lighting, and a wireframe debug mode. Scored 19.50/20 across all deliveries.",
       "technologies": [
         "JavaScript",
@@ -663,8 +665,8 @@
     },
     {
       "title": "Nobel Prizes",
-      "subtitle": "Data viz — D3.js",
-      "description": "An interactive D3.js dashboard exploring Nobel Prize winners in Physics and Chemistry — a world map, scatterplot, chord chart, and Sankey diagram tracing connections between laureates, built for the Information Visualization course at IST.",
+      "subtitle": "Data viz · D3.js",
+      "description": "An interactive D3.js dashboard exploring Nobel Prize winners in Physics and Chemistry: a world map, scatterplot, chord chart, and Sankey diagram tracing connections between laureates, built for the Information Visualization course at IST.",
       "technologies": [
         "D3.js",
         "JavaScript",

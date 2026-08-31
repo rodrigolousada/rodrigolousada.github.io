@@ -15,9 +15,14 @@ const areasText =
 ---
 
 <section id="about" class="mx-auto max-w-3xl px-6 py-10">
-  <h2 class="mb-4 font-mono text-sm tracking-widest text-[var(--color-accent)]">
-    ABOUT
-  </h2>
+  <div class="mb-4 flex items-center gap-3">
+    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+      <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+        <path d={icons.user} />
+      </svg>
+    </span>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">ABOUT</h2>
+  </div>
 
   <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
     <div class="p-4">
@@ -36,7 +41,7 @@ const areasText =
       </div>
 
       <p class="mb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-        My CliftonStrengths
+        My Clifton Strengths
       </p>
       <div class="flex flex-wrap items-center gap-2">
         {
@@ -47,15 +52,6 @@ const areasText =
           ))
         }
       </div>
-
-      <a
-        href={site.site.cvPath}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-2 text-xs font-medium text-[var(--color-accent)] transition hover:bg-[var(--color-accent)]/20"
-      >
-        Check my CV ↗
-      </a>
     </div>
 
     <div class="p-4">

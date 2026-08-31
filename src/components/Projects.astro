@@ -2,13 +2,19 @@
 import site from '../data/site.json';
 import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
+import { icons } from '../data/icons';
 const { careerPath, careerPathMore, sideProjects } = site;
 ---
 
 <section id="projects" class="mx-auto max-w-3xl px-6 py-14">
-  <h2 class="mb-12 font-mono text-sm tracking-widest text-[var(--color-accent)]">
-    PROJECTS
-  </h2>
+  <div class="mb-12 flex items-center gap-3">
+    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+      <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+        <path d={icons.briefcase} />
+      </svg>
+    </span>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">PROJECTS</h2>
+  </div>
 
   <div class="space-y-4">
     {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} />)}
