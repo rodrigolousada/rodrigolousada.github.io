@@ -95,12 +95,12 @@
     },
     "montepio": {
       "name": "Banco Montepio",
-      "logo": "/img/montepio-logo.svg",
+      "logo": "/img/montepio-icon.png",
       "chipClass": "bg-white"
     },
     "bankinter": {
       "name": "Bankinter",
-      "logo": "/img/bankinter-logo.svg",
+      "logo": "/img/bankinter-icon.svg",
       "chipClass": "bg-white"
     },
     "it": {
@@ -769,7 +769,7 @@
     },
     {
       "name": "Banco Montepio",
-      "logo": "/img/montepio-logo.svg",
+      "logo": "/img/montepio-logo-horizontal.png",
       "category": "client",
       "scrollToCompany": "montepio",
       "scrollTo": "ibm-consulting"

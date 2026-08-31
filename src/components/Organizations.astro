@@ -170,10 +170,16 @@ const groups = [
       setTimeout(() => {
         if (!stopDialog.open) stopDialog.showModal();
         if (projectEl) {
+          // Give the project row its own hover-style highlight so it's clear
+          // which box is about to open, then hold on it for a beat before
+          // that second popup appears — two modals landing back-to-back
+          // felt like a glitch rather than a deliberate drill-down.
+          projectEl.classList.add('scroll-highlight');
+          setTimeout(() => projectEl.classList.remove('scroll-highlight'), 1600);
           const projModalId = projectEl.dataset.modalId;
           const projDialog = projModalId && document.getElementById(projModalId);
           if (projDialog instanceof HTMLDialogElement && !projDialog.open) {
-            setTimeout(() => projDialog.showModal(), 300);
+            setTimeout(() => projDialog.showModal(), 900);
           }
         }
       }, 1600);

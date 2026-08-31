@@ -36,7 +36,7 @@ const { contact } = site;
                   href={link.href}
                   target={link.href.startsWith('http') ? '_blank' : undefined}
                   rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  class="card-link flex items-center gap-2 text-sm text-neutral-600 transition hover:text-blue-600"
+                  class="card-link flex w-fit items-center gap-2 text-sm text-neutral-600 transition hover:text-blue-600"
                 >
                   <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0 fill-current">
                     <path d={icons[link.type]} />
@@ -80,7 +80,7 @@ const { contact } = site;
               contact.klarna.links.map((link) => (
                 <a
                   href={link.href}
-                  class="card-link flex items-center gap-2 text-sm text-neutral-600 transition hover:text-pink-500"
+                  class="card-link flex w-fit items-center gap-2 text-sm text-neutral-600 transition hover:text-pink-500"
                 >
                   <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0 fill-current">
                     <path d={icons[link.type]} />
