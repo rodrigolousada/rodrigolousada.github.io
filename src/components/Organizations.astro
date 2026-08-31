@@ -44,6 +44,7 @@ const groups = [
                         class="group cursor-pointer"
                         data-scroll-target={org.scrollTo}
                         data-scroll-company={org.scrollToCompany}
+                        data-scroll-label={org.name}
                         aria-label={`${org.name} — jump to that part of the timeline`}
                       >
                         {logoImg}
@@ -128,9 +129,10 @@ const groups = [
 
   document.addEventListener('click', () => closeAll());
 
-  // Slow, controllable smooth-scroll (native scrollIntoView's "smooth" is too
-  // quick to read as intentional) — eases to the target over `duration` ms.
-  function slowScrollTo(el: HTMLElement, duration = 1100) {
+  // Smooth-scroll to the target at a normal pace — the pause that makes a
+  // jump feel deliberate (rather than an accidental scroll+open) belongs
+  // before the destination modal appears, not in the scroll itself.
+  function scrollToStop(el: HTMLElement, duration = 600) {
     const rect = el.getBoundingClientRect();
     const startY = window.scrollY;
     const targetY = startY + rect.top - window.innerHeight / 2 + rect.height / 2;
@@ -150,15 +152,17 @@ const groups = [
   // Testimonials.astro jump into the matching Projects timeline entry (and,
   // where a specific project is known, drill straight into its own modal).
   // The jump only happens after the user confirms in the small popover
-  // below — a bare click used to feel like an accidental scroll+open.
+  // below — a bare click used to feel like an accidental scroll+open. Once
+  // confirmed, the page scrolls there at a normal pace, then pauses for a
+  // beat (so the destination is clearly in view) before the modal pops up.
   function openStop(stopEl: HTMLElement, projectEl: HTMLElement | null = null) {
     const details = stopEl.closest('details');
     if (details && !details.open) details.open = true;
 
-    slowScrollTo(stopEl, 1100);
+    scrollToStop(stopEl, 600);
     const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
     highlightTarget.classList.add('scroll-highlight');
-    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1900);
+    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 2200);
 
     const stopModalId = stopEl.dataset.modalId;
     const stopDialog = stopModalId && document.getElementById(stopModalId);
@@ -172,7 +176,7 @@ const groups = [
             setTimeout(() => projDialog.showModal(), 300);
           }
         }
-      }, 1150);
+      }, 1600);
     }
   }
 
@@ -182,38 +186,46 @@ const groups = [
     jumpPopup = null;
   }
 
-  function stopLabel(stopEl: HTMLElement) {
-    return stopEl.querySelector<HTMLElement>(':scope > button p.font-semibold')?.textContent?.trim() ?? 'this timeline entry';
-  }
-
-  function showJumpPopup(triggerEl: HTMLElement, stopEl: HTMLElement, projectEl: HTMLElement | null) {
+  function showJumpPopup(triggerEl: HTMLElement, stopEl: HTMLElement, projectEls: HTMLElement[]) {
     closeJumpPopup();
     // If the trigger lives inside an open <dialog> (e.g. the testimonial
     // letter), the popup must be its child to share the dialog's top-layer
     // stacking — a plain body-appended element would render behind it.
     const hostDialog = triggerEl.closest('dialog');
+    const label = triggerEl.dataset.scrollLabel ?? 'this part of the timeline';
 
     const popup = document.createElement('div');
     popup.className = 'jump-confirm-popup';
 
     const text = document.createElement('p');
     text.className = 'mb-2 text-xs text-[var(--color-text)]';
-    text.textContent = `Jump to ${stopLabel(stopEl)}?`;
+    text.textContent =
+      projectEls.length > 0 ? `Check the projects I did with ${label}:` : `Check my work at ${label}:`;
     popup.appendChild(text);
 
     const actions = document.createElement('div');
-    actions.className = 'flex gap-2';
+    actions.className = 'flex flex-wrap gap-1.5';
 
-    const yes = document.createElement('button');
-    yes.type = 'button';
-    yes.className = 'rounded-md bg-[var(--color-accent)] px-2.5 py-1 text-xs font-medium text-[var(--color-bg)] transition hover:brightness-110';
-    yes.textContent = 'Jump →';
-    yes.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeJumpPopup();
-      if (hostDialog instanceof HTMLDialogElement && hostDialog.open) hostDialog.close();
-      openStop(stopEl, projectEl);
-    });
+    function addJumpButton(label: string, target: HTMLElement | null) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className =
+        'rounded-md bg-[var(--color-accent)] px-2.5 py-1 text-xs font-medium text-[var(--color-bg)] transition hover:brightness-110';
+      btn.textContent = label;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeJumpPopup();
+        if (hostDialog instanceof HTMLDialogElement && hostDialog.open) hostDialog.close();
+        openStop(stopEl, target);
+      });
+      actions.appendChild(btn);
+    }
+
+    if (projectEls.length > 0) {
+      projectEls.forEach((p) => addJumpButton(`Jump to ${p.dataset.projectName ?? 'project'} →`, p));
+    } else {
+      addJumpButton('Jump here →', null);
+    }
 
     const cancel = document.createElement('button');
     cancel.type = 'button';
@@ -223,8 +235,8 @@ const groups = [
       e.stopPropagation();
       closeJumpPopup();
     });
+    actions.appendChild(cancel);
 
-    actions.append(yes, cancel);
     popup.appendChild(actions);
     (hostDialog ?? document.body).appendChild(popup);
 
@@ -245,14 +257,14 @@ const groups = [
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       const company = el.dataset.scrollCompany;
-      const projectEl = company
-        ? document.querySelector<HTMLElement>(`[data-project-companies~="${company}"]`)
-        : null;
-      const stopEl = projectEl
-        ? projectEl.closest<HTMLElement>('[data-stop-anchor]')
+      const projectEls = company
+        ? [...document.querySelectorAll<HTMLElement>(`[data-project-companies~="${company}"]`)]
+        : [];
+      const stopEl = projectEls[0]
+        ? projectEls[0].closest<HTMLElement>('[data-stop-anchor]')
         : document.querySelector<HTMLElement>(`[data-stop-anchor="${el.dataset.scrollTarget}"]`);
       if (!stopEl) return;
-      showJumpPopup(el, stopEl, projectEl);
+      showJumpPopup(el, stopEl, projectEls);
     });
   });
 </script>

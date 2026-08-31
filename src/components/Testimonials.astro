@@ -75,9 +75,10 @@ const modalId = 'apc-letter';
         <button
           type="button"
           data-scroll-target={testimonial.scrollTo}
+          data-scroll-label={testimonial.company}
           class="mt-4 text-xs text-[var(--color-accent)] underline underline-offset-4"
         >
-          Written during my time at IBM Consulting →
+          Written during my time at {testimonial.company} →
         </button>
       )}
     </div>

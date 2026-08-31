@@ -22,6 +22,8 @@ interface NewsItem {
 interface Props {
   project: {
     name: string;
+    /** Short label used in the cross-link jump balloon (e.g. "PFM" for "Personal Finance Manager (MVP)"). */
+    shortName?: string;
     companies?: string[];
     isSideProject?: boolean;
     /** True for work that can only be described at a high level (NDA, internal-only, etc). */
@@ -60,6 +62,7 @@ function formatNewsDate(date: string) {
     onclick={`document.getElementById('${modalId}').showModal()`}
     data-modal-id={modalId}
     data-project-companies={(project.companies ?? []).join(' ')}
+    data-project-name={project.shortName ?? project.name}
     class="group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition hover:border-[var(--color-accent)]"
   >
     <div class="flex shrink-0 items-center -space-x-2">

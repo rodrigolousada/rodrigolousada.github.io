@@ -14,19 +14,19 @@ const areasText =
     : about.areas[0];
 ---
 
-<section id="about" class="mx-auto max-w-3xl px-6 py-12">
-  <h2 class="mb-6 font-mono text-sm tracking-widest text-[var(--color-accent)]">
+<section id="about" class="mx-auto max-w-3xl px-6 py-10">
+  <h2 class="mb-4 font-mono text-sm tracking-widest text-[var(--color-accent)]">
     ABOUT
   </h2>
 
-  <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-    <div class="p-6">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+    <div class="p-4">
       <p class="text-justify text-sm text-[var(--color-text)]">
         <span class="font-semibold">{years} years</span> of Software Development spanning a
         multitude of areas in {areasText}. Currently at {about.currentRole}.
       </p>
 
-      <div class="mb-6 mt-6 flex items-start gap-3 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-bg)] px-5 py-4">
+      <div class="mb-3 mt-3 flex items-start gap-3 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-bg)] px-4 py-3">
         <svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 shrink-0 fill-[var(--color-accent)]">
           <path d={icons.search} />
         </svg>
@@ -52,13 +52,13 @@ const areasText =
         href={site.site.cvPath}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-2 text-xs font-medium text-[var(--color-accent)] transition hover:bg-[var(--color-accent)]/20"
+        class="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-2 text-xs font-medium text-[var(--color-accent)] transition hover:bg-[var(--color-accent)]/20"
       >
         Check my CV ↗
       </a>
     </div>
 
-    <div class="p-6">
+    <div class="p-4">
       <TechStack />
     </div>
   </div>

@@ -19,8 +19,8 @@ interface Props {
     kpis: string[];
     /** Personal honors/awards earned during this stop (medals) — distinct from project-level achievements. */
     honors?: { label: string; year?: string }[];
-    /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). */
-    credlyBadges?: { name: string; img: string }[];
+    /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). Each links out to its own Credly page for the full-resolution badge. */
+    credlyBadges?: { name: string; img: string; url?: string }[];
     credlyProfileUrl?: string;
     projects: {
       name: string;
@@ -215,28 +215,29 @@ const { stop, modalId, showLine = true } = Astro.props;
           </div>
 
           {stop.credlyBadges && stop.credlyBadges.length > 0 && (
-            <div data-badge-gallery={`${modalId}-badges`}>
+            <div>
               <p class="mb-2 mt-6 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
                 Badges
               </p>
               <div class="flex flex-wrap gap-2.5">
-                {stop.credlyBadges.map((badge, bi) => (
-                  <button
-                    type="button"
-                    data-badge-open={bi}
-                    aria-label={`View ${badge.name} badge larger`}
-                    class="cursor-pointer transition hover:scale-105"
+                {stop.credlyBadges.map((badge) => (
+                  <a
+                    href={badge.url ?? stop.credlyProfileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${badge.name} — view on Credly`}
+                    title={badge.name}
+                    class="transition hover:scale-105"
                   >
                     <img
                       src={badge.img}
                       alt={badge.name}
-                      title={badge.name}
                       loading="lazy"
                       width="56"
                       height="56"
                       class="h-14 w-14 object-contain"
                     />
-                  </button>
+                  </a>
                 ))}
               </div>
               {stop.credlyProfileUrl && (
@@ -254,98 +255,5 @@ const { stop, modalId, showLine = true } = Astro.props;
         </div>
       </div>
     </dialog>
-
-    {stop.credlyBadges && stop.credlyBadges.length > 0 && (
-      <dialog
-        id={`${modalId}-badges`}
-        data-badges={JSON.stringify(stop.credlyBadges)}
-        class="m-auto w-[min(92vw,26rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/70 backdrop:backdrop-blur-sm"
-      >
-        <div class="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3">
-          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
-            Badge <span data-badge-index>1</span> / {stop.credlyBadges.length}
-          </p>
-          <form method="dialog">
-            <button
-              aria-label="Close"
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-            >
-              ✕
-            </button>
-          </form>
-        </div>
-        <div class="flex items-center gap-3 p-6">
-          <button
-            type="button"
-            data-badge-prev
-            aria-label="Previous badge"
-            class="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
-          >
-            ‹
-          </button>
-          <div class="flex flex-1 flex-col items-center gap-3">
-            <img data-badge-img class="h-40 w-40 object-contain" alt="" />
-            <p data-badge-name class="text-center text-sm font-medium text-[var(--color-text)]" />
-          </div>
-          <button
-            type="button"
-            data-badge-next
-            aria-label="Next badge"
-            class="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
-          >
-            ›
-          </button>
-        </div>
-      </dialog>
-    )}
   </div>
 </div>
-
-<script>
-  // Credly badge "carousel": each career stop with badges gets its own
-  // gallery dialog, opened at the clicked index, navigable with ‹ › or
-  // the left/right arrow keys.
-  document.querySelectorAll<HTMLElement>('[data-badge-gallery]').forEach((gallery) => {
-    const dialogId = gallery.dataset.badgeGallery;
-    const dialog = dialogId && document.getElementById(dialogId);
-    if (!(dialog instanceof HTMLDialogElement)) return;
-
-    const badges: { name: string; img: string }[] = JSON.parse(dialog.dataset.badges ?? '[]');
-    const img = dialog.querySelector<HTMLImageElement>('[data-badge-img]');
-    const nameEl = dialog.querySelector<HTMLElement>('[data-badge-name]');
-    const indexEl = dialog.querySelector<HTMLElement>('[data-badge-index]');
-    let current = 0;
-
-    function render() {
-      const badge = badges[current];
-      if (!badge || !img) return;
-      img.src = badge.img;
-      img.alt = badge.name;
-      if (nameEl) nameEl.textContent = badge.name;
-      if (indexEl) indexEl.textContent = String(current + 1);
-    }
-
-    gallery.querySelectorAll<HTMLButtonElement>('[data-badge-open]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        current = Number(btn.dataset.badgeOpen ?? 0);
-        render();
-        dialog.showModal();
-      });
-    });
-
-    dialog.querySelector('[data-badge-prev]')?.addEventListener('click', () => {
-      current = (current - 1 + badges.length) % badges.length;
-      render();
-    });
-    dialog.querySelector('[data-badge-next]')?.addEventListener('click', () => {
-      current = (current + 1) % badges.length;
-      render();
-    });
-    dialog.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') current = (current - 1 + badges.length) % badges.length;
-      else if (e.key === 'ArrowRight') current = (current + 1) % badges.length;
-      else return;
-      render();
-    });
-  });
-</script>

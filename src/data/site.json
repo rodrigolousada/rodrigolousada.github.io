@@ -299,7 +299,8 @@
             "captions": [
               "Recording: a call with M.A.R.I.A"
             ]
-          }
+          },
+          "shortName": "M.A.R.I.A"
         },
         {
           "name": "BIA & Beatriz — Bankinter Voice Assistants",
@@ -348,7 +349,8 @@
             "captions": [
               "Recording: a call with BIA / Beatriz"
             ]
-          }
+          },
+          "shortName": "BIA & Beatriz"
         },
         {
           "name": "Bankinter Voicebot Platform",
@@ -364,7 +366,8 @@
             "Speech-to-Text / Text-to-Speech",
             "IBM Cloud"
           ],
-          "achievements": []
+          "achievements": [],
+          "shortName": "Bankinter Voicebot"
         },
         {
           "name": "Montepio HR Virtual Assistant",
@@ -382,7 +385,8 @@
           "achievements": [
             "Tech Lead & PM for the project, from design through delivery",
             "Automated common HR request workflows for Montepio employees"
-          ]
+          ],
+          "shortName": "HR Virtual Assistant"
         },
         {
           "name": "Personal Finance Manager (MVP)",
@@ -399,7 +403,8 @@
           ],
           "achievements": [
             "Delivered the MVP as both Data Scientist and Chatbot Developer"
-          ]
+          ],
+          "shortName": "PFM"
         }
       ],
       "stack": [
@@ -419,95 +424,118 @@
       "credlyBadges": [
         {
           "name": "Banking Insights and Solutions (Bronze)",
-          "img": "/img/badges/banking-insights-and-solutions-bronze.png"
+          "img": "/img/badges/banking-insights-and-solutions-bronze.png",
+          "url": "https://www.credly.com/badges/a17496b0-df4b-49d7-b437-f5e55335b066"
         },
         {
           "name": "IBM Garage Essentials",
-          "img": "/img/badges/ibm-garage-essentials.png"
+          "img": "/img/badges/ibm-garage-essentials.png",
+          "url": "https://www.credly.com/badges/7cb6f82c-a3dc-4ae7-baa7-2b972d8acf1e"
         },
         {
           "name": "Hadoop Foundations - Level 1",
-          "img": "/img/badges/hadoop-foundations-level-1.png"
+          "img": "/img/badges/hadoop-foundations-level-1.png",
+          "url": "https://www.credly.com/badges/76d15af3-6dbe-44a8-abfb-5a869a5d4a5a"
         },
         {
           "name": "Banking Industry Jumpstart",
-          "img": "/img/badges/banking-industry-jumpstart.png"
+          "img": "/img/badges/banking-industry-jumpstart.png",
+          "url": "https://www.credly.com/badges/b2d5aefc-23ed-41d1-9ce3-e5834901aa3d"
         },
         {
           "name": "IBM AI Associate Data Scientist",
-          "img": "/img/badges/ibm-ai-associate-data-scientist.png"
+          "img": "/img/badges/ibm-ai-associate-data-scientist.png",
+          "url": "https://www.credly.com/badges/e5e30f95-ae76-4e6d-8612-7f997c764262"
         },
         {
           "name": "Big Data Foundations - Level 1",
-          "img": "/img/badges/big-data-foundations-level-1.png"
+          "img": "/img/badges/big-data-foundations-level-1.png",
+          "url": "https://www.credly.com/badges/67f01568-5cf4-40ed-b1b4-3dc3dba6aadf"
         },
         {
           "name": "The IBM Way",
-          "img": "/img/badges/the-ibm-way.png"
+          "img": "/img/badges/the-ibm-way.png",
+          "url": "https://www.credly.com/badges/a3dcbd45-26d8-4fca-a3ba-f314dbb45c3a"
         },
         {
           "name": "Data Science Foundations - Level 2 (V2)",
-          "img": "/img/badges/data-science-foundations-level-2-v2.png"
+          "img": "/img/badges/data-science-foundations-level-2-v2.png",
+          "url": "https://www.credly.com/badges/3f9d803b-7acd-42cb-a449-2a0d599fc475"
         },
         {
           "name": "Data Science Methodologies",
-          "img": "/img/badges/data-science-methodologies.png"
+          "img": "/img/badges/data-science-methodologies.png",
+          "url": "https://www.credly.com/badges/3f93a610-bcba-457d-8124-3eed7513757f"
         },
         {
           "name": "Data Science Tools",
-          "img": "/img/badges/data-science-tools.png"
+          "img": "/img/badges/data-science-tools.png",
+          "url": "https://www.credly.com/badges/2a5e61ea-5953-4ab0-8698-74c09e44fd95"
         },
         {
           "name": "Data Science Foundations - Level 1",
-          "img": "/img/badges/data-science-foundations-level-1.png"
+          "img": "/img/badges/data-science-foundations-level-1.png",
+          "url": "https://www.credly.com/badges/5d250f70-0b78-43ed-9d8e-c9757aa6914d"
         },
         {
           "name": "Docker Essentials: A Developer Introduction",
-          "img": "/img/badges/docker-essentials-a-developer-introduction.png"
+          "img": "/img/badges/docker-essentials-a-developer-introduction.png",
+          "url": "https://www.credly.com/badges/a70221dc-0004-4c56-8abd-9e5bd4a87a2b"
         },
         {
           "name": "Watson Assistant for Customer Care",
-          "img": "/img/badges/watson-assistant-for-customer-care.png"
+          "img": "/img/badges/watson-assistant-for-customer-care.png",
+          "url": "https://www.credly.com/badges/6ced6539-bf51-4ce1-b771-cd985bc326ca"
         },
         {
           "name": "IBM Cloud Pak for Data V3.0.x Data Science",
-          "img": "/img/badges/ibm-cloud-pak-for-data-v3-0-x-data-science.png"
+          "img": "/img/badges/ibm-cloud-pak-for-data-v3-0-x-data-science.png",
+          "url": "https://www.credly.com/badges/eaddb6de-5022-4116-b3dc-b09d07006c3c"
         },
         {
           "name": "Watson Studio Essentials",
-          "img": "/img/badges/watson-studio-essentials.png"
+          "img": "/img/badges/watson-studio-essentials.png",
+          "url": "https://www.credly.com/badges/187f6a39-4eef-402f-b1fc-d8b83f381f76"
         },
         {
           "name": "Enterprise Design Thinking Practitioner",
-          "img": "/img/badges/enterprise-design-thinking-practitioner.png"
+          "img": "/img/badges/enterprise-design-thinking-practitioner.png",
+          "url": "https://www.credly.com/badges/69638961-524c-4698-b6d8-39fa785f0307"
         },
         {
           "name": "Node-RED: basics to bots",
-          "img": "/img/badges/node-red-basics-to-bots.png"
+          "img": "/img/badges/node-red-basics-to-bots.png",
+          "url": "https://www.credly.com/badges/7695d626-4abc-498c-93f9-e66e9af5ccae"
         },
         {
           "name": "Cognitive Practitioner",
-          "img": "/img/badges/cognitive-practitioner.png"
+          "img": "/img/badges/cognitive-practitioner.png",
+          "url": "https://www.credly.com/badges/e6029bd1-a041-46ba-a9d7-62bca4632bc7"
         },
         {
           "name": "Watson Assistant Hands-On",
-          "img": "/img/badges/watson-assistant-hands-on.png"
+          "img": "/img/badges/watson-assistant-hands-on.png",
+          "url": "https://www.credly.com/badges/857f5bea-9b63-400d-8b9a-71a24b83894f"
         },
         {
           "name": "AWS Certified Cloud Practitioner",
-          "img": "/img/badges/aws-certified-cloud-practitioner.png"
+          "img": "/img/badges/aws-certified-cloud-practitioner.png",
+          "url": "https://www.credly.com/badges/706fb657-6baf-4b0b-8768-c323057900cf"
         },
         {
           "name": "watsonx.ai Practitioner Advanced",
-          "img": "/img/badges/watsonx-ai-practitioner-advanced.png"
+          "img": "/img/badges/watsonx-ai-practitioner-advanced.png",
+          "url": "https://www.credly.com/badges/9529938f-c887-46bf-a03c-ea66daf86389"
         },
         {
           "name": "Watson Assistant Methodology",
-          "img": "/img/badges/watson-assistant-methodology.png"
+          "img": "/img/badges/watson-assistant-methodology.png",
+          "url": "https://www.credly.com/badges/fc01f852-bf22-4186-a9b4-4f3d8696e540"
         },
         {
           "name": "Watson Assistant Foundations",
-          "img": "/img/badges/watson-assistant-foundations.png"
+          "img": "/img/badges/watson-assistant-foundations.png",
+          "url": "https://www.credly.com/badges/ad78944d-6c0e-431e-b520-c35a5a716d70"
         }
       ],
       "credlyProfileUrl": "https://www.credly.com/users/rodrigo-lousada/badges/credly",
@@ -808,7 +836,8 @@
     "initials": "APC",
     "photo": "/img/apc_photo.png",
     "scrollTo": "ibm-consulting",
-    "letterImage": "/img/testimonial/apc-recommendation-letter.jpg"
+    "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
+    "company": "IBM Consulting"
   },
   "footer": {
     "name": "Rodrigo Lousada",
