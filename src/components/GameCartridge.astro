@@ -1,4 +1,6 @@
 ---
+import QRCode from 'qrcode';
+import DeviceDuo from './DeviceDuo.astro';
 import TechPill from './TechPill.astro';
 
 interface Props {
@@ -11,6 +13,13 @@ interface Props {
     demoUrl?: string;
     demoLabel?: string;
     demoPlaceholders?: string[];
+    /** Companion Watch + iPhone videos shown side by side (e.g. a Watch app reviewed on the phone). Falls back to a placeholder per device until a real video is set. */
+    deviceDemo?: {
+      watch: { video?: string; caption: string };
+      phone: { video?: string; caption: string };
+    };
+    /** Link to download the app (App Store, TestFlight, etc). Once set, a QR code is generated automatically. */
+    appDownloadUrl?: string;
     /** Real screenshot of the project, shown as the cartridge's box-art label and in the modal. */
     screenshot?: string;
     shellColor: string;
@@ -20,6 +29,10 @@ interface Props {
 }
 
 const { project, modalId } = Astro.props;
+
+const qrCodeSvg = project.appDownloadUrl
+  ? await QRCode.toString(project.appDownloadUrl, { type: 'svg', margin: 1 })
+  : null;
 ---
 
 <div>
@@ -114,6 +127,13 @@ const { project, modalId } = Astro.props;
           </>
         )}
 
+        {project.deviceDemo && (
+          <>
+            <p class="mb-3 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Demo</p>
+            <DeviceDuo watch={project.deviceDemo.watch} phone={project.deviceDemo.phone} />
+          </>
+        )}
+
         {project.demoPlaceholders && project.demoPlaceholders.length > 0 && (
           <>
             <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Demo</p>
@@ -129,6 +149,23 @@ const { project, modalId } = Astro.props;
                 </div>
               ))}
             </div>
+          </>
+        )}
+
+        {qrCodeSvg && (
+          <>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+              Get the app
+            </p>
+            <a
+              href={project.appDownloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-3 rounded-lg border border-[var(--color-border)] p-3 transition hover:border-[var(--color-accent)]"
+            >
+              <div class="h-16 w-16 shrink-0 rounded-md bg-white p-1" set:html={qrCodeSvg} />
+              <span class="text-sm font-medium text-[var(--color-text)]">Scan to download {project.title}</span>
+            </a>
           </>
         )}
 

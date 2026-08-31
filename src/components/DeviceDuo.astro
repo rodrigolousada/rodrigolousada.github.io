@@ -1,0 +1,73 @@
+---
+// Apple Watch + iPhone frames shown side by side, for projects with a
+// companion-app demo (e.g. a Watch app reviewed on the phone). Each frame
+// plays a real video when one is supplied; until then it falls back to the
+// site's usual dashed-border + play icon + caption placeholder, so the
+// layout is ready the moment real screen recordings are dropped in.
+interface Device {
+  video?: string;
+  caption: string;
+}
+
+interface Props {
+  watch: Device;
+  phone: Device;
+}
+
+const { watch, phone } = Astro.props;
+---
+
+<div class="flex items-end justify-center gap-8">
+  <div class="flex w-24 shrink-0 flex-col items-center gap-2">
+    <div class="relative aspect-[42/51] w-full rounded-[1.6rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
+      {
+        watch.video ? (
+          <video
+            src={watch.video}
+            class="h-full w-full rounded-[1.1rem] object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+          />
+        ) : (
+          <div class="flex h-full w-full flex-col items-center justify-center gap-1.5 rounded-[1.1rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-2 text-center">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 fill-neutral-500">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <p class="font-mono text-[8px] leading-snug text-neutral-400">{watch.caption}</p>
+          </div>
+        )
+      }
+      <span class="absolute -right-[5px] top-[30%] h-4 w-[3px] rounded-full bg-neutral-700" />
+      <span class="absolute -right-[5px] top-[46%] h-2.5 w-[3px] rounded-full bg-neutral-700" />
+    </div>
+    <p class="text-center text-[10px] text-[var(--color-muted)]/70">Apple Watch</p>
+  </div>
+
+  <div class="flex w-36 shrink-0 flex-col items-center gap-2">
+    <div class="relative aspect-[9/19] w-full rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
+      {
+        phone.video ? (
+          <video
+            src={phone.video}
+            class="h-full w-full rounded-[1.25rem] object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+          />
+        ) : (
+          <div class="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <p class="font-mono text-[9px] leading-snug text-neutral-400">{phone.caption}</p>
+          </div>
+        )
+      }
+      <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
+    </div>
+    <p class="text-center text-[10px] text-[var(--color-muted)]/70">iPhone</p>
+  </div>
+</div>

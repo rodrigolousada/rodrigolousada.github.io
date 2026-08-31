@@ -662,7 +662,11 @@
       ],
       "shellColor": "bg-orange-600",
       "labelColor": "bg-neutral-900",
-      "screenshot": "/img/side-projects/courtkit.jpg"
+      "screenshot": "/img/side-projects/courtkit.jpg",
+      "deviceDemo": {
+        "watch": { "caption": "Add Apple Watch recording" },
+        "phone": { "caption": "Add iPhone recording" }
+      }
     },
     {
       "title": "Space Invaders",
@@ -866,15 +870,18 @@
     "items": [
       {
         "name": "TypeScript",
-        "category": "Languages"
+        "category": "Languages",
+        "recent": true
       },
       {
         "name": "React",
-        "category": "Frameworks & Libraries"
+        "category": "Frameworks & Libraries",
+        "recent": true
       },
       {
         "name": "Python",
-        "category": "Languages"
+        "category": "Languages",
+        "recent": true
       },
       {
         "name": "FastAPI",
@@ -882,23 +889,28 @@
       },
       {
         "name": "Neo4j",
-        "category": "Data & Databases"
+        "category": "Data & Databases",
+        "recent": true
       },
       {
         "name": "PostgreSQL",
-        "category": "Data & Databases"
+        "category": "Data & Databases",
+        "recent": true
       },
       {
         "name": "Kafka",
-        "category": "Data & Databases"
+        "category": "Data & Databases",
+        "recent": true
       },
       {
         "name": "OpenSearch",
-        "category": "Data & Databases"
+        "category": "Data & Databases",
+        "recent": true
       },
       {
         "name": "AWS",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "IBM Cloud",
@@ -906,19 +918,23 @@
       },
       {
         "name": "Terraform",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "Jenkins",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "Datadog",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "k6",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "GenAI / LLMs",

@@ -21,6 +21,13 @@ function groupByCategory(list: { name: string; category: string }[]) {
 const allGroups = groupByCategory([...technologies.items, ...(technologies.extra ?? [])]);
 const modalId = 'technologies-more';
 
+// Compact "About" view only surfaces what's actually current, flagged per
+// item via `recent` in site.json — everything else (recent or not) still
+// shows up in the full "View more" breakdown above. Falls back to showing
+// everything if nothing is flagged, so this never silently renders empty.
+const recentItems = technologies.items.filter((item) => item.recent);
+const compactItems = recentItems.length > 0 ? recentItems : technologies.items;
+
 // "My preferred stack" mini architecture diagram: a top-to-bottom stack of
 // tiers, each tier holding one or more layers rendered side by side (e.g.
 // Data and AI/LLMs share a tier). Connectors between tiers are drawn as
@@ -61,12 +68,12 @@ const connectors = preferredStack.slice(0, -1).map((tier, i) => {
     Technologies
   </p>
   <div class="flex flex-wrap gap-1.5">
-    {technologies.items.map((item) => (
+    {compactItems.map((item) => (
       <TechPill name={item.name} />
     ))}
   </div>
 
-  {technologies.extra && technologies.extra.length > 0 && (
+  {(technologies.extra?.length > 0 || compactItems.length < technologies.items.length) && (
     <button
       type="button"
       onclick={`document.getElementById('${modalId}').showModal()`}
