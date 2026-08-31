@@ -1,0 +1,103 @@
+---
+// Reusable phone-frame mockup for showcasing a video/recording that doesn't
+// exist yet — renders a clear placeholder (dashed border + play icon +
+// caption) so real footage can be dropped in later without touching markup.
+//
+// mode="single": one phone, one caption.
+// mode="handoff": two phones + an animated "message" bubble that travels
+// between them, cycling through 3 captions on a CSS-only loop (no JS) —
+// used for a referral flow: advocate shares -> message travels -> friend
+// receives, then the advocate's phone shows the completed state.
+interface Props {
+  mode?: string;
+  /** single mode: one caption. handoff mode: exactly 3 — [video1 (left), video2 (right), video3 (left, completed)]. */
+  captions: string[];
+}
+
+const { mode = 'single', captions } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+{
+  mode === 'single' ? (
+    <div class="mx-auto w-40">
+      <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
+        <div class="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
+          <svg viewBox="0 0 24 24" class="h-7 w-7 fill-neutral-500">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[0]}</p>
+        </div>
+        <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
+      </div>
+      <p class="mt-2 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder — add real footage</p>
+    </div>
+  ) : (
+    <div class="mx-auto max-w-sm">
+      <style set:html={`
+        @keyframes phone-video1-${uid} { 0%,22%{opacity:1} 27%,100%{opacity:0} }
+        @keyframes phone-video2-${uid} { 0%,33%{opacity:0} 38%,58%{opacity:1} 63%,100%{opacity:0} }
+        @keyframes phone-video3-${uid} { 0%,63%{opacity:0} 68%,97%{opacity:1} 100%{opacity:0} }
+        @keyframes phone-bubble-${uid} {
+          0%,22%{opacity:0; transform:translateX(0)}
+          25%{opacity:1; transform:translateX(0)}
+          32%{opacity:1; transform:translateX(calc(100% + 2.5rem))}
+          36%,100%{opacity:0; transform:translateX(calc(100% + 2.5rem))}
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .phone-anim-${uid} { animation: none !important; opacity: 1 !important; }
+        }
+      `} />
+      <div class="flex items-center justify-center gap-10">
+        <div class="relative w-40 shrink-0">
+          <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
+            <div
+              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}
+              style={`animation: phone-video1-${uid} 13s ease-in-out infinite;`}
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[0]}</p>
+            </div>
+            <div
+              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center`}
+              style={`animation: phone-video3-${uid} 13s ease-in-out infinite; opacity: 0;`}
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
+                <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+              </svg>
+              <p class="font-mono text-[9px] leading-snug text-emerald-400">{captions[2]}</p>
+            </div>
+            <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
+          </div>
+        </div>
+
+        <div
+          class={`phone-anim-${uid} flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[#04141c] shadow-[0_0_16px_-2px_var(--color-accent)]`}
+          style={`animation: phone-bubble-${uid} 13s ease-in-out infinite; opacity: 0;`}
+        >
+          <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+            <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </div>
+
+        <div class="relative w-40 shrink-0">
+          <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
+            <div
+              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}
+              style={`animation: phone-video2-${uid} 13s ease-in-out infinite; opacity: 0;`}
+            >
+              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[1]}</p>
+            </div>
+            <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
+          </div>
+        </div>
+      </div>
+      <p class="mt-3 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder — add real footage for each step</p>
+    </div>
+  )
+}

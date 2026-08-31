@@ -20,11 +20,14 @@ interface Props {
       name: string;
       companies?: string[];
       isSideProject?: boolean;
+      confidential?: boolean;
       tldr: string;
       description: string;
+      myRole?: string;
       technologies: string[];
       achievements: string[];
-      news?: { title: string; source: string; date: string; url: string };
+      demo?: { mode?: string; captions: string[] };
+      news?: { title: string; source: string; date: string; url: string }[];
     }[];
     stack: string[];
     focus: Record<string, number>;

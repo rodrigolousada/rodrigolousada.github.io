@@ -1,0 +1,29 @@
+---
+import site from '../data/site.json';
+const { studies } = site;
+---
+
+<section class="mx-auto max-w-3xl px-6 py-14">
+  <h2 class="mb-6 font-mono text-sm tracking-widest text-[var(--color-accent)]">STUDIES</h2>
+
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    {
+      studies.map((s) => (
+        <div class="flex items-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+          <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1.5">
+            <img
+              src={s.logo}
+              alt={s.institution}
+              class="h-full w-full object-contain"
+              style={s.logoScale ? `transform: scale(${s.logoScale})` : undefined}
+            />
+          </span>
+          <div class="min-w-0">
+            <p class="truncate font-semibold text-[var(--color-text)]">{s.institution}</p>
+            <p class="truncate text-xs text-[var(--color-muted)]">{s.program}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
