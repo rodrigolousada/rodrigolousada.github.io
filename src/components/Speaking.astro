@@ -19,7 +19,7 @@ const { speaking } = site;
 
   <p class="max-w-xl text-[var(--color-muted)]">{speaking.intro}</p>
 
-  <ul class="mt-6 space-y-3">
+  <ul class="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
     {
       speaking.topics.map((topic) => (
         <li class="flex gap-2 text-[var(--color-text)]">
@@ -48,7 +48,7 @@ const { speaking } = site;
               </div>
             )}
             <figcaption class="mt-2.5 truncate text-center font-display text-xs text-neutral-500">
-              {talk.caption}
+              “{talk.caption}”
             </figcaption>
           </figure>
         ))

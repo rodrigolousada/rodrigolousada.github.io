@@ -53,6 +53,8 @@ function formatNewsDate(date: string) {
   <button
     type="button"
     onclick={`document.getElementById('${modalId}').showModal()`}
+    data-modal-id={modalId}
+    data-project-companies={(project.companies ?? []).join(' ')}
     class="group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition hover:border-[var(--color-accent)]"
   >
     <div class="flex shrink-0 items-center -space-x-2">

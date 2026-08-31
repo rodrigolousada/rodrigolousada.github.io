@@ -220,7 +220,8 @@
         "analytics": 10,
         "de": 15,
         "ds": 5
-      }
+      },
+      "slug": "klarna"
     },
     {
       "org": "IBM Consulting",
@@ -408,7 +409,103 @@
         "analytics": 15,
         "de": 15,
         "ds": 10
-      }
+      },
+      "credlyBadges": [
+        {
+          "name": "Banking Insights and Solutions (Bronze)",
+          "img": "/img/badges/banking-insights-and-solutions-bronze.png"
+        },
+        {
+          "name": "IBM Garage Essentials",
+          "img": "/img/badges/ibm-garage-essentials.png"
+        },
+        {
+          "name": "Hadoop Foundations - Level 1",
+          "img": "/img/badges/hadoop-foundations-level-1.png"
+        },
+        {
+          "name": "Banking Industry Jumpstart",
+          "img": "/img/badges/banking-industry-jumpstart.png"
+        },
+        {
+          "name": "IBM AI Associate Data Scientist",
+          "img": "/img/badges/ibm-ai-associate-data-scientist.png"
+        },
+        {
+          "name": "Big Data Foundations - Level 1",
+          "img": "/img/badges/big-data-foundations-level-1.png"
+        },
+        {
+          "name": "The IBM Way",
+          "img": "/img/badges/the-ibm-way.png"
+        },
+        {
+          "name": "Data Science Foundations - Level 2 (V2)",
+          "img": "/img/badges/data-science-foundations-level-2-v2.png"
+        },
+        {
+          "name": "Data Science Methodologies",
+          "img": "/img/badges/data-science-methodologies.png"
+        },
+        {
+          "name": "Data Science Tools",
+          "img": "/img/badges/data-science-tools.png"
+        },
+        {
+          "name": "Data Science Foundations - Level 1",
+          "img": "/img/badges/data-science-foundations-level-1.png"
+        },
+        {
+          "name": "Docker Essentials: A Developer Introduction",
+          "img": "/img/badges/docker-essentials-a-developer-introduction.png"
+        },
+        {
+          "name": "Watson Assistant for Customer Care",
+          "img": "/img/badges/watson-assistant-for-customer-care.png"
+        },
+        {
+          "name": "IBM Cloud Pak for Data V3.0.x Data Science",
+          "img": "/img/badges/ibm-cloud-pak-for-data-v3-0-x-data-science.png"
+        },
+        {
+          "name": "Watson Studio Essentials",
+          "img": "/img/badges/watson-studio-essentials.png"
+        },
+        {
+          "name": "Enterprise Design Thinking Practitioner",
+          "img": "/img/badges/enterprise-design-thinking-practitioner.png"
+        },
+        {
+          "name": "Node-RED: basics to bots",
+          "img": "/img/badges/node-red-basics-to-bots.png"
+        },
+        {
+          "name": "Cognitive Practitioner",
+          "img": "/img/badges/cognitive-practitioner.png"
+        },
+        {
+          "name": "Watson Assistant Hands-On",
+          "img": "/img/badges/watson-assistant-hands-on.png"
+        },
+        {
+          "name": "AWS Certified Cloud Practitioner",
+          "img": "/img/badges/aws-certified-cloud-practitioner.png"
+        },
+        {
+          "name": "watsonx.ai Practitioner Advanced",
+          "img": "/img/badges/watsonx-ai-practitioner-advanced.png"
+        },
+        {
+          "name": "Watson Assistant Methodology",
+          "img": "/img/badges/watson-assistant-methodology.png"
+        },
+        {
+          "name": "Watson Assistant Foundations",
+          "img": "/img/badges/watson-assistant-foundations.png"
+        }
+      ],
+      "credlyProfileUrl": "https://www.credly.com/users/rodrigo-lousada/badges/credly",
+      "slug": "ibm-consulting"
     },
     {
       "org": "Instituto de Telecomunicações",
@@ -457,7 +554,8 @@
         "analytics": 10,
         "de": 10,
         "ds": 60
-      }
+      },
+      "slug": "instituto-de-telecomunicacoes"
     }
   ],
   "careerPathMore": [
@@ -506,7 +604,8 @@
         "analytics": 10,
         "de": 0,
         "ds": 0
-      }
+      },
+      "slug": "sinfo"
     }
   ],
   "sideProjects": [
@@ -523,7 +622,8 @@
       "demoUrl": "http://web.ist.utl.pt/~ist181115/CG/",
       "demoLabel": "Play the live demo",
       "shellColor": "bg-emerald-600",
-      "labelColor": "bg-emerald-50"
+      "labelColor": "bg-emerald-50",
+      "screenshot": "/img/side-projects/space-invaders.jpg"
     },
     {
       "title": "Nobel Prizes",
@@ -538,7 +638,8 @@
       "demoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization/blob/master/G33_final.mp4",
       "demoLabel": "Watch demo video",
       "shellColor": "bg-indigo-600",
-      "labelColor": "bg-indigo-50"
+      "labelColor": "bg-indigo-50",
+      "screenshot": "/img/side-projects/nobel-prizes.jpg"
     }
   ],
   "speaking": {
@@ -614,34 +715,42 @@
       "name": "Klarna",
       "logo": "/img/klarna-logo.svg",
       "logoScale": 2.2,
-      "category": "worked"
+      "category": "worked",
+      "scrollTo": "klarna"
     },
     {
       "name": "IBM",
       "logo": "/img/ibm-logo.png",
-      "category": "worked"
+      "category": "worked",
+      "scrollTo": "ibm-consulting"
     },
     {
       "name": "SINFO",
       "logo": "/img/sinfo-logo.svg",
       "category": "worked",
-      "alreadyWhite": true
+      "alreadyWhite": true,
+      "scrollTo": "sinfo"
     },
     {
       "name": "Banco Montepio",
       "logo": "/img/montepio-logo.svg",
-      "category": "client"
+      "category": "client",
+      "scrollToCompany": "montepio",
+      "scrollTo": "ibm-consulting"
     },
     {
       "name": "Bankinter",
       "logo": "/img/bankinter-logo.svg",
-      "category": "client"
+      "category": "client",
+      "scrollToCompany": "bankinter",
+      "scrollTo": "ibm-consulting"
     },
     {
       "name": "Instituto de Telecomunicações",
       "logo": "/img/it-logo.png",
       "logoScale": 1.3,
-      "category": "worked"
+      "category": "worked",
+      "scrollTo": "instituto-de-telecomunicacoes"
     },
     {
       "name": "Instituto Superior Técnico",
@@ -667,7 +776,8 @@
     {
       "name": "Generali",
       "logo": "/img/generali-logo.svg",
-      "category": "client"
+      "category": "client",
+      "scrollTo": "ibm-consulting"
     },
     {
       "name": "AESE Business School",
@@ -688,7 +798,8 @@
     "name": "António Pedro Cerejeira",
     "role": "IBM Senior Manager, Service Line Director",
     "initials": "APC",
-    "photo": "/img/apc_photo.png"
+    "photo": "/img/apc_photo.png",
+    "scrollTo": "ibm-consulting"
   },
   "footer": {
     "name": "Rodrigo Lousada",

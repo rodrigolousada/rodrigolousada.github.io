@@ -6,6 +6,8 @@ import ProjectRow from './ProjectRow.astro';
 interface Props {
   stop: {
     org: string;
+    /** Stable anchor used by cross-links (testimonial, "worked at" logos) to scroll to and open this stop. */
+    slug?: string;
     title: string;
     logo: string;
     logoScale?: number;
@@ -16,6 +18,9 @@ interface Props {
     kpis: string[];
     /** Personal honors/awards earned during this stop (medals) — distinct from project-level achievements. */
     honors?: { label: string; year?: string }[];
+    /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). */
+    credlyBadges?: { name: string; img: string }[];
+    credlyProfileUrl?: string;
     projects: {
       name: string;
       companies?: string[];
@@ -54,7 +59,7 @@ const { stop, modalId, showLine = true } = Astro.props;
     <span class="absolute left-1/2 top-1/2 z-10 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-bg)]" />
   </div>
 
-  <div class="min-w-0">
+  <div class="min-w-0" id={stop.slug} data-stop-anchor={stop.slug} data-modal-id={modalId}>
     <button
       type="button"
       onclick={`document.getElementById('${modalId}').showModal()`}
@@ -124,26 +129,75 @@ const { stop, modalId, showLine = true } = Astro.props;
                 Achievements
               </p>
               <div class="flex flex-wrap gap-5">
-                {stop.honors.map((honor) => (
-                  <div class="flex w-20 flex-col items-center gap-2 text-center">
-                    <div class="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10">
-                      <svg viewBox="0 0 24 24" class="h-6 w-6 fill-[var(--color-accent)]">
-                        <path d={icons.star} />
-                      </svg>
-                      <span
-                        class="absolute -bottom-1 left-1/2 h-3 w-2.5 -translate-x-[10px] rotate-[20deg] bg-[var(--color-accent)]/30"
-                        style="clip-path: polygon(0 0, 100% 0, 60% 100%)"
-                      />
-                      <span
-                        class="absolute -bottom-1 left-1/2 h-3 w-2.5 translate-x-px -rotate-[20deg] bg-[var(--color-accent)]/30"
-                        style="clip-path: polygon(0 0, 100% 0, 40% 100%)"
-                      />
+                {stop.honors.map((honor) => {
+                  const isTrophy = /champion/i.test(honor.label);
+                  const ringClass = isTrophy
+                    ? 'border-amber-400/40 bg-amber-400/10'
+                    : 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10';
+                  const ribbonClass = isTrophy ? 'bg-amber-400/30' : 'bg-[var(--color-accent)]/30';
+                  return (
+                    <div class="flex w-20 flex-col items-center gap-2 text-center">
+                      <div class={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 ${ringClass}`}>
+                        {isTrophy ? (
+                          <svg viewBox="0 0 24 24" class="h-6 w-6 fill-amber-400">
+                            <path d="M7 4h10l-3 8h-4z" />
+                            <path d="M6 5L3.5 5L3.5 8.5L6 9.5Z" />
+                            <path d="M18 5L20.5 5L20.5 8.5L18 9.5Z" />
+                            <rect x="11" y="12" width="2" height="3" />
+                            <rect x="9" y="15" width="6" height="2" />
+                            <rect x="7.5" y="17.25" width="9" height="1.75" rx="0.6" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" class="h-6 w-6 fill-[var(--color-accent)]">
+                            <path d={icons.star} />
+                          </svg>
+                        )}
+                        <span
+                          class={`absolute -bottom-1 left-1/2 h-3 w-2.5 -translate-x-[10px] rotate-[20deg] ${ribbonClass}`}
+                          style="clip-path: polygon(0 0, 100% 0, 60% 100%)"
+                        />
+                        <span
+                          class={`absolute -bottom-1 left-1/2 h-3 w-2.5 translate-x-px -rotate-[20deg] ${ribbonClass}`}
+                          style="clip-path: polygon(0 0, 100% 0, 40% 100%)"
+                        />
+                      </div>
+                      <p class="text-[11px] leading-tight text-[var(--color-text)]">{honor.label}</p>
+                      {honor.year && <p class="text-[10px] text-[var(--color-muted)]">{honor.year}</p>}
                     </div>
-                    <p class="text-[11px] leading-tight text-[var(--color-text)]">{honor.label}</p>
-                    {honor.year && <p class="text-[10px] text-[var(--color-muted)]">{honor.year}</p>}
-                  </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {stop.credlyBadges && stop.credlyBadges.length > 0 && (
+            <>
+              <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                Badges
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                {stop.credlyBadges.map((badge) => (
+                  <img
+                    src={badge.img}
+                    alt={badge.name}
+                    title={badge.name}
+                    loading="lazy"
+                    width="32"
+                    height="32"
+                    class="h-8 w-8 rounded-full object-contain"
+                  />
                 ))}
               </div>
+              {stop.credlyProfileUrl && (
+                <a
+                  href={stop.credlyProfileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-2 inline-block text-xs text-[var(--color-accent)] underline underline-offset-4"
+                >
+                  See all badges on Credly →
+                </a>
+              )}
             </>
           )}
 

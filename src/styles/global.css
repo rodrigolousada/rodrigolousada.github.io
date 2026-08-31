@@ -31,3 +31,21 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Momentary ring pulse when a cross-link (testimonial, "worked at"/"clients"
+   logos) scrolls to and opens a matching Projects timeline entry. */
+.scroll-highlight {
+  animation: scroll-highlight-pulse 1.6s ease-out;
+}
+
+@keyframes scroll-highlight-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-accent);
+  }
+  25% {
+    box-shadow: 0 0 0 4px var(--color-accent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}

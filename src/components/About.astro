@@ -4,20 +4,20 @@ import TechStack from './TechStack.astro';
 const { about } = site;
 ---
 
-<section id="about" class="mx-auto max-w-3xl px-6 py-14">
-  <h2 class="mb-8 font-mono text-sm tracking-widest text-[var(--color-accent)]">
+<section id="about" class="mx-auto max-w-3xl px-6 py-12">
+  <h2 class="mb-6 font-mono text-sm tracking-widest text-[var(--color-accent)]">
     ABOUT
   </h2>
 
-  <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
-    <div class="lg:col-span-2">
-      <div class="mb-8 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-surface)] px-5 py-4">
+  <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+      <div class="mb-6 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-bg)] px-5 py-4">
         <p class="text-[var(--color-text)]">
           <span class="font-semibold">Looking for:</span> {about.lookingFor}
         </p>
       </div>
 
-      <p class="mb-8 max-w-xl text-[var(--color-muted)]">{about.intro}</p>
+      <p class="mb-6 text-[var(--color-muted)]">{about.intro}</p>
 
       <div class="flex flex-wrap items-center gap-2">
         {
@@ -36,7 +36,7 @@ const { about } = site;
       </div>
     </div>
 
-    <div>
+    <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
       <TechStack />
     </div>
   </div>

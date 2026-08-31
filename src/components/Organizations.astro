@@ -37,6 +37,19 @@ const groups = [
                 );
 
                 if (!org.program) {
+                  if (org.scrollTo || org.scrollToCompany) {
+                    return (
+                      <button
+                        type="button"
+                        class="group cursor-pointer"
+                        data-scroll-target={org.scrollTo}
+                        data-scroll-company={org.scrollToCompany}
+                        aria-label={`${org.name} — jump to that part of the timeline`}
+                      >
+                        {logoImg}
+                      </button>
+                    );
+                  }
                   return <span class="group">{logoImg}</span>;
                 }
 
@@ -114,4 +127,47 @@ const groups = [
   });
 
   document.addEventListener('click', () => closeAll());
+
+  // Cross-links: "Worked at" / "Clients" logos here and the testimonial in
+  // Testimonials.astro jump into the matching Projects timeline entry (and,
+  // where a specific project is known, drill straight into its own modal).
+  function openStop(stopEl: HTMLElement | null, projectEl: HTMLElement | null = null) {
+    if (!stopEl) return;
+    const details = stopEl.closest('details');
+    if (details && !details.open) details.open = true;
+
+    stopEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
+    highlightTarget.classList.add('scroll-highlight');
+    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1600);
+
+    const stopModalId = stopEl.dataset.modalId;
+    const stopDialog = stopModalId && document.getElementById(stopModalId);
+    if (stopDialog instanceof HTMLDialogElement) {
+      setTimeout(() => {
+        if (!stopDialog.open) stopDialog.showModal();
+        if (projectEl) {
+          const projModalId = projectEl.dataset.modalId;
+          const projDialog = projModalId && document.getElementById(projModalId);
+          if (projDialog instanceof HTMLDialogElement && !projDialog.open) {
+            setTimeout(() => projDialog.showModal(), 250);
+          }
+        }
+      }, 450);
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-scroll-target]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const company = el.dataset.scrollCompany;
+      const projectEl = company
+        ? document.querySelector<HTMLElement>(`[data-project-companies~="${company}"]`)
+        : null;
+      const stopEl = projectEl
+        ? projectEl.closest<HTMLElement>('[data-stop-anchor]')
+        : document.querySelector<HTMLElement>(`[data-stop-anchor="${el.dataset.scrollTarget}"]`);
+      openStop(stopEl, projectEl);
+    });
+  });
 </script>
