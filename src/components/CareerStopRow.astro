@@ -2,6 +2,7 @@
 import { focusCategories } from '../data/site.json';
 import { icons } from '../data/icons';
 import ProjectRow from './ProjectRow.astro';
+import TechPill from './TechPill.astro';
 
 interface Props {
   stop: {
@@ -184,7 +185,7 @@ const { stop, modalId, showLine = true } = Astro.props;
                     loading="lazy"
                     width="32"
                     height="32"
-                    class="h-8 w-8 rounded-full object-contain"
+                    class="h-8 w-8 object-contain"
                   />
                 ))}
               </div>
@@ -208,11 +209,9 @@ const { stop, modalId, showLine = true } = Astro.props;
             ))}
           </div>
 
-          <div class="mt-5 flex flex-wrap gap-2">
+          <div class="mt-5 flex flex-wrap gap-1.5">
             {stop.stack.map((tech) => (
-              <span class="rounded border border-[var(--color-border)] px-2 py-0.5 font-mono text-xs text-[var(--color-muted)]">
-                {tech}
-              </span>
+              <TechPill name={tech} />
             ))}
           </div>
 

@@ -1,0 +1,24 @@
+---
+// Shared technology badge — icon-in-a-circle + name — used everywhere a tech
+// stack is listed (About's TechStack, career/project "Technologies", side
+// project cartridges) so they all look the same instead of three styles.
+import { techIcons } from '../data/techIcons';
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+const icon = techIcons.find((t) => t.name === name);
+---
+
+<span class="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-0.5 pl-0.5 pr-2">
+  {icon && (
+    <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-white p-0.5">
+      <svg viewBox="0 0 24 24" class="h-full w-full" fill={icon.color}>
+        <path d={icon.path} />
+      </svg>
+    </span>
+  )}
+  <span class={`whitespace-nowrap text-[11px] text-[var(--color-text)] ${icon ? '' : 'pl-1.5'}`}>{name}</span>
+</span>

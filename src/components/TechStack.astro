@@ -1,20 +1,26 @@
 ---
 // Compact, grouped technology badges — embedded inside About.astro rather
 // than a standalone section (see Backlog2.md feedback: smaller, grouped by
-// category, tucked into a quarter of the About section).
+// category, tucked into a quarter of the About section). A "View more"
+// button opens a dialog with the wider skill set from the CV/LinkedIn.
 import site from '../data/site.json';
-import { techIcons } from '../data/techIcons';
+import TechPill from './TechPill.astro';
 
 const { technologies } = site;
-const iconMap = new Map(techIcons.map((t) => [t.name, t]));
-
 const categoryOrder = ['Languages & Frameworks', 'Data & Search', 'AI & Data Science', 'Infra & Tools'];
-const groups = categoryOrder
-  .map((category) => ({
-    category,
-    items: technologies.items.filter((item) => item.category === category),
-  }))
-  .filter((g) => g.items.length > 0);
+
+function groupByCategory(list: { name: string; category: string }[]) {
+  return categoryOrder
+    .map((category) => ({
+      category,
+      items: list.filter((item) => item.category === category),
+    }))
+    .filter((g) => g.items.length > 0);
+}
+
+const groups = groupByCategory(technologies.items);
+const allGroups = groupByCategory([...technologies.items, ...(technologies.extra ?? [])]);
+const modalId = 'technologies-more';
 ---
 
 <div>
@@ -27,24 +33,55 @@ const groups = categoryOrder
         <div>
           <p class="mb-1.5 text-[9px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
           <div class="flex flex-wrap gap-1.5">
-            {group.items.map((item) => {
-              const icon = iconMap.get(item.name);
-              return (
-                <span class="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-0.5 pl-0.5 pr-2">
-                  {icon && (
-                    <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-white p-0.5">
-                      <svg viewBox="0 0 24 24" class="h-full w-full" fill={icon.color}>
-                        <path d={icon.path} />
-                      </svg>
-                    </span>
-                  )}
-                  <span class="whitespace-nowrap text-[11px] text-[var(--color-text)]">{item.name}</span>
-                </span>
-              );
-            })}
+            {group.items.map((item) => (
+              <TechPill name={item.name} />
+            ))}
           </div>
         </div>
       ))
     }
   </div>
+
+  {technologies.extra && technologies.extra.length > 0 && (
+    <button
+      type="button"
+      onclick={`document.getElementById('${modalId}').showModal()`}
+      class="mt-4 text-xs text-[var(--color-accent)] underline underline-offset-4"
+    >
+      View more →
+    </button>
+  )}
 </div>
+
+<dialog
+  id={modalId}
+  class="m-auto w-[min(92vw,32rem)] max-h-[85vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+>
+  <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+    <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">All Technologies</p>
+    <form method="dialog">
+      <button
+        aria-label="Close"
+        class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+      >
+        ✕
+      </button>
+    </form>
+  </div>
+  <div class="max-h-[calc(85vh-4rem)] overflow-y-auto p-6">
+    <div class="space-y-4">
+      {
+        allGroups.map((group) => (
+          <div>
+            <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {group.items.map((item) => (
+                <TechPill name={item.name} />
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</dialog>

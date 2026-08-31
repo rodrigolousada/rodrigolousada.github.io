@@ -1,8 +1,10 @@
 ---
-// Quote drawn from a real recommendation letter (08/02/2024). Only the text is
-// used here — the signed PDF (and signature) is never published.
+// Quote drawn from a real recommendation letter (08/02/2024). The full letter
+// is shown in the modal below with the signature blurred out for privacy —
+// see letterImage.
 import site from '../data/site.json';
 const { testimonial } = site;
+const modalId = 'apc-letter';
 ---
 
 <section class="mx-auto max-w-3xl px-6 py-14">
@@ -12,7 +14,7 @@ const { testimonial } = site;
 
   <button
     type="button"
-    data-scroll-target={testimonial.scrollTo}
+    onclick={testimonial.letterImage ? `document.getElementById('${modalId}').showModal()` : undefined}
     class="group flex w-full items-start gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-left transition hover:border-[var(--color-accent)]"
   >
     {testimonial.photo ? (
@@ -33,12 +35,52 @@ const { testimonial } = site;
           <span class="font-medium text-[var(--color-text)]">{testimonial.name}</span>
           <span class="text-[var(--color-muted)]"> — {testimonial.role}</span>
         </p>
-        {testimonial.scrollTo && (
+        {testimonial.letterImage && (
           <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
-            See the project →
+            Read the full letter →
           </span>
         )}
       </footer>
     </div>
   </button>
 </section>
+
+{testimonial.letterImage && (
+  <dialog
+    id={modalId}
+    class="m-auto w-[min(92vw,34rem)] max-h-[90vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">Recommendation letter</p>
+      <form method="dialog">
+        <button
+          aria-label="Close"
+          class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+        >
+          ✕
+        </button>
+      </form>
+    </div>
+    <div class="max-h-[calc(90vh-4rem)] overflow-y-auto p-6">
+      <img
+        src={testimonial.letterImage}
+        alt={`Recommendation letter from ${testimonial.name}`}
+        class="w-full rounded-lg border border-[var(--color-border)]"
+        loading="lazy"
+      />
+      <p class="mt-3 text-xs text-[var(--color-muted)]">
+        Signature blurred for privacy — happy to share the original on request.
+      </p>
+      {testimonial.scrollTo && (
+        <button
+          type="button"
+          data-scroll-target={testimonial.scrollTo}
+          onclick={`document.getElementById('${modalId}').close()`}
+          class="mt-4 text-xs text-[var(--color-accent)] underline underline-offset-4"
+        >
+          Written during my time at IBM Consulting →
+        </button>
+      )}
+    </div>
+  </dialog>
+)}

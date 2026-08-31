@@ -1,6 +1,7 @@
 ---
 import { companies } from '../data/site.json';
 import PhoneMockup from './PhoneMockup.astro';
+import TechPill from './TechPill.astro';
 
 interface Company {
   name: string;
@@ -163,11 +164,9 @@ function formatNewsDate(date: string) {
         )}
 
         <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Technologies</p>
-        <div class="mt-2 flex flex-wrap gap-2">
+        <div class="mt-2 flex flex-wrap gap-1.5">
           {project.technologies.map((tech) => (
-            <span class="rounded border border-[var(--color-border)] px-2 py-0.5 font-mono text-xs text-[var(--color-muted)]">
-              {tech}
-            </span>
+            <TechPill name={tech} />
           ))}
         </div>
 

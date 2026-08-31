@@ -63,8 +63,14 @@
     ]
   },
   "about": {
+    "softwareSince": "2018-09-01",
+    "areas": [
+      "AI",
+      "data engineering",
+      "voicebots"
+    ],
+    "currentRole": "Klarna's Referrals team",
     "lookingFor": "Engineering Manager / Tech Lead roles — Berlin/EU or remote-first, fintech or scale-up.",
-    "intro": "Technical depth + a pull toward leading teams, since before I had the title to match it. Full career history is in the Projects timeline below.",
     "strengths": [
       "Achiever",
       "Futuristic",
@@ -635,8 +641,8 @@
         "Bootstrap"
       ],
       "repoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization",
-      "demoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization/blob/master/G33_final.mp4",
-      "demoLabel": "Watch demo video",
+      "demoUrl": "https://rodrigolousada.me/ist-meic-vi-d3js-nobels-visualization/",
+      "demoLabel": "Open the live dashboard",
       "shellColor": "bg-indigo-600",
       "labelColor": "bg-indigo-50",
       "screenshot": "/img/side-projects/nobel-prizes.jpg"
@@ -799,7 +805,8 @@
     "role": "IBM Senior Manager, Service Line Director",
     "initials": "APC",
     "photo": "/img/apc_photo.png",
-    "scrollTo": "ibm-consulting"
+    "scrollTo": "ibm-consulting",
+    "letterImage": "/img/testimonial/apc-recommendation-letter.jpg"
   },
   "footer": {
     "name": "Rodrigo Lousada",
@@ -886,6 +893,80 @@
       {
         "name": "Jupyter",
         "category": "AI & Data Science"
+      }
+    ],
+    "extra": [
+      {
+        "name": "JavaScript",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "Java",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "HTML & CSS",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "C",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "Bash",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "Flask",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "Three.js",
+        "category": "Languages & Frameworks"
+      },
+      {
+        "name": "MySQL",
+        "category": "Data & Search"
+      },
+      {
+        "name": "NumPy",
+        "category": "Data & Search"
+      },
+      {
+        "name": "Pandas",
+        "category": "Data & Search"
+      },
+      {
+        "name": "TensorFlow",
+        "category": "AI & Data Science"
+      },
+      {
+        "name": "Keras",
+        "category": "AI & Data Science"
+      },
+      {
+        "name": "LangChain",
+        "category": "AI & Data Science"
+      },
+      {
+        "name": "Git",
+        "category": "Infra & Tools"
+      },
+      {
+        "name": "Azure",
+        "category": "Infra & Tools"
+      },
+      {
+        "name": "Docker",
+        "category": "Infra & Tools"
+      },
+      {
+        "name": "Power BI",
+        "category": "Infra & Tools"
+      },
+      {
+        "name": "Excel",
+        "category": "Infra & Tools"
       }
     ]
   }
