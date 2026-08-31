@@ -9,32 +9,34 @@ const { about } = site;
     ABOUT
   </h2>
 
-  <div class="mb-8 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-surface)] px-5 py-4">
-    <p class="text-[var(--color-text)]">
-      <span class="font-semibold">Looking for:</span> {about.lookingFor}
-    </p>
-  </div>
+  <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
+    <div class="lg:col-span-2">
+      <div class="mb-8 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-surface)] px-5 py-4">
+        <p class="text-[var(--color-text)]">
+          <span class="font-semibold">Looking for:</span> {about.lookingFor}
+        </p>
+      </div>
 
-  <p class="mb-8 max-w-xl text-[var(--color-muted)]">{about.intro}</p>
+      <p class="mb-8 max-w-xl text-[var(--color-muted)]">{about.intro}</p>
 
-  <div class="flex flex-wrap items-center gap-2">
-    {
-      about.strengths.map((s) => (
-        <span class="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]">
-          {s}
-        </span>
-      ))
-    }
-    <a
-      href={site.site.cliftonStrengthsPath}
-      class="text-xs text-[var(--color-accent)] underline underline-offset-4"
-    >
-      Full assessment →
-    </a>
-  </div>
+      <div class="flex flex-wrap items-center gap-2">
+        {
+          about.strengths.map((s) => (
+            <span class="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]">
+              {s}
+            </span>
+          ))
+        }
+        <a
+          href={site.site.cliftonStrengthsPath}
+          class="text-xs text-[var(--color-accent)] underline underline-offset-4"
+        >
+          Full assessment →
+        </a>
+      </div>
+    </div>
 
-  <div class="mt-10 flex justify-end">
-    <div class="w-full sm:w-[60%] lg:w-1/2">
+    <div>
       <TechStack />
     </div>
   </div>

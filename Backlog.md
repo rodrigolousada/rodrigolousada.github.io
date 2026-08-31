@@ -20,14 +20,3 @@ branch except what's below.)
 - **Old website**: I only compared what I'd already pulled in against it
   opportunistically, not a systematic pass — let me know if there's
   something specific there worth mining.
-
-# In progress — being worked on directly
-- Studies: delete the standalone section, surface that info instead behind
-  clicking the institution logo in the "Studied at" row at the bottom of the
-  page.
-- Technologies: move out of its own section into the About section, as a
-  much smaller panel occupying the bottom-right quarter, badges grouped by
-  category, every badge with a real logo (not text-only).
-- Write a plan (as an .md doc, not implemented yet) for a "I only have 5
-  mins" / "I want to know more" toggle that trims the page down to the
-  essentials in the short mode.
