@@ -28,6 +28,9 @@ interface Props {
       achievements: string[];
       demo?: { mode?: string; captions: string[] };
       news?: { title: string; source: string; date: string; url: string }[];
+      /** External link to the project itself (thesis PDF, publication, live app, etc.). */
+      url?: string;
+      urlLabel?: string;
     }[];
     stack: string[];
     focus: Record<string, number>;
