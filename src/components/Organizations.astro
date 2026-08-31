@@ -128,18 +128,37 @@ const groups = [
 
   document.addEventListener('click', () => closeAll());
 
+  // Slow, controllable smooth-scroll (native scrollIntoView's "smooth" is too
+  // quick to read as intentional) — eases to the target over `duration` ms.
+  function slowScrollTo(el: HTMLElement, duration = 1100) {
+    const rect = el.getBoundingClientRect();
+    const startY = window.scrollY;
+    const targetY = startY + rect.top - window.innerHeight / 2 + rect.height / 2;
+    const diff = targetY - startY;
+    const startTime = performance.now();
+
+    function step(now: number) {
+      const t = Math.min((now - startTime) / duration, 1);
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      window.scrollTo(0, startY + diff * eased);
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
   // Cross-links: "Worked at" / "Clients" logos here and the testimonial in
   // Testimonials.astro jump into the matching Projects timeline entry (and,
   // where a specific project is known, drill straight into its own modal).
-  function openStop(stopEl: HTMLElement | null, projectEl: HTMLElement | null = null) {
-    if (!stopEl) return;
+  // The jump only happens after the user confirms in the small popover
+  // below — a bare click used to feel like an accidental scroll+open.
+  function openStop(stopEl: HTMLElement, projectEl: HTMLElement | null = null) {
     const details = stopEl.closest('details');
     if (details && !details.open) details.open = true;
 
-    stopEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    slowScrollTo(stopEl, 1100);
     const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
     highlightTarget.classList.add('scroll-highlight');
-    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1600);
+    setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1900);
 
     const stopModalId = stopEl.dataset.modalId;
     const stopDialog = stopModalId && document.getElementById(stopModalId);
@@ -150,11 +169,76 @@ const groups = [
           const projModalId = projectEl.dataset.modalId;
           const projDialog = projModalId && document.getElementById(projModalId);
           if (projDialog instanceof HTMLDialogElement && !projDialog.open) {
-            setTimeout(() => projDialog.showModal(), 250);
+            setTimeout(() => projDialog.showModal(), 300);
           }
         }
-      }, 450);
+      }, 1150);
     }
+  }
+
+  let jumpPopup: HTMLElement | null = null;
+  function closeJumpPopup() {
+    jumpPopup?.remove();
+    jumpPopup = null;
+  }
+
+  function stopLabel(stopEl: HTMLElement) {
+    return stopEl.querySelector<HTMLElement>(':scope > button p.font-semibold')?.textContent?.trim() ?? 'this timeline entry';
+  }
+
+  function showJumpPopup(triggerEl: HTMLElement, stopEl: HTMLElement, projectEl: HTMLElement | null) {
+    closeJumpPopup();
+    // If the trigger lives inside an open <dialog> (e.g. the testimonial
+    // letter), the popup must be its child to share the dialog's top-layer
+    // stacking — a plain body-appended element would render behind it.
+    const hostDialog = triggerEl.closest('dialog');
+
+    const popup = document.createElement('div');
+    popup.className = 'jump-confirm-popup';
+
+    const text = document.createElement('p');
+    text.className = 'mb-2 text-xs text-[var(--color-text)]';
+    text.textContent = `Jump to ${stopLabel(stopEl)}?`;
+    popup.appendChild(text);
+
+    const actions = document.createElement('div');
+    actions.className = 'flex gap-2';
+
+    const yes = document.createElement('button');
+    yes.type = 'button';
+    yes.className = 'rounded-md bg-[var(--color-accent)] px-2.5 py-1 text-xs font-medium text-[var(--color-bg)] transition hover:brightness-110';
+    yes.textContent = 'Jump →';
+    yes.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeJumpPopup();
+      if (hostDialog instanceof HTMLDialogElement && hostDialog.open) hostDialog.close();
+      openStop(stopEl, projectEl);
+    });
+
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.className = 'rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs text-[var(--color-muted)] transition hover:text-[var(--color-text)]';
+    cancel.textContent = 'Cancel';
+    cancel.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeJumpPopup();
+    });
+
+    actions.append(yes, cancel);
+    popup.appendChild(actions);
+    (hostDialog ?? document.body).appendChild(popup);
+
+    const rect = triggerEl.getBoundingClientRect();
+    const popupRect = popup.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - popupRect.width / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - popupRect.width - 8));
+    let top = rect.top - popupRect.height - 10;
+    if (top < 8) top = rect.bottom + 10;
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+
+    jumpPopup = popup;
+    setTimeout(() => document.addEventListener('click', closeJumpPopup, { once: true }), 0);
   }
 
   document.querySelectorAll<HTMLElement>('[data-scroll-target]').forEach((el) => {
@@ -167,7 +251,8 @@ const groups = [
       const stopEl = projectEl
         ? projectEl.closest<HTMLElement>('[data-stop-anchor]')
         : document.querySelector<HTMLElement>(`[data-stop-anchor="${el.dataset.scrollTarget}"]`);
-      openStop(stopEl, projectEl);
+      if (!stopEl) return;
+      showJumpPopup(el, stopEl, projectEl);
     });
   });
 </script>

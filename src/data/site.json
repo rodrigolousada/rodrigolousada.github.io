@@ -545,7 +545,9 @@
             "1.90 Sharpe ratio"
           ],
           "url": "https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997261079/81115-rodrigo-lousada_dissertacao_final.pdf",
-          "urlLabel": "Read the thesis (PDF) →"
+          "urlLabel": "Read the thesis (PDF) →",
+          "urlStyle": "paper",
+          "urlSource": "IST Thesis"
         }
       ],
       "stack": [
@@ -816,35 +818,35 @@
     "items": [
       {
         "name": "TypeScript",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "React",
-        "category": "Languages & Frameworks"
+        "category": "Frameworks & Libraries"
       },
       {
         "name": "Python",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "FastAPI",
-        "category": "Languages & Frameworks"
+        "category": "Frameworks & Libraries"
       },
       {
         "name": "Neo4j",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "PostgreSQL",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "Kafka",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "OpenSearch",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "AWS",
@@ -876,7 +878,7 @@
       },
       {
         "name": "WikiData",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "scikit-learn",
@@ -898,43 +900,43 @@
     "extra": [
       {
         "name": "JavaScript",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "Java",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "HTML & CSS",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "C",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "Bash",
-        "category": "Languages & Frameworks"
+        "category": "Languages"
       },
       {
         "name": "Flask",
-        "category": "Languages & Frameworks"
+        "category": "Frameworks & Libraries"
       },
       {
         "name": "Three.js",
-        "category": "Languages & Frameworks"
+        "category": "Frameworks & Libraries"
       },
       {
         "name": "MySQL",
-        "category": "Data & Search"
+        "category": "Data & Databases"
       },
       {
         "name": "NumPy",
-        "category": "Data & Search"
+        "category": "AI & Data Science"
       },
       {
         "name": "Pandas",
-        "category": "Data & Search"
+        "category": "AI & Data Science"
       },
       {
         "name": "TensorFlow",
@@ -967,6 +969,45 @@
       {
         "name": "Excel",
         "category": "Infra & Tools"
+      }
+    ],
+    "preferredStack": [
+      {
+        "label": "Frontend",
+        "items": [
+          "TypeScript",
+          "React"
+        ]
+      },
+      {
+        "label": "Backend / API",
+        "items": [
+          "Python",
+          "FastAPI"
+        ]
+      },
+      {
+        "label": "Data",
+        "items": [
+          "PostgreSQL",
+          "Kafka",
+          "OpenSearch"
+        ]
+      },
+      {
+        "label": "AI / LLMs",
+        "items": [
+          "GenAI / LLMs",
+          "LangChain"
+        ]
+      },
+      {
+        "label": "Infra",
+        "items": [
+          "AWS",
+          "Docker",
+          "Terraform"
+        ]
       }
     ]
   }

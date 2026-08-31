@@ -66,3 +66,18 @@ dialog[open] {
     box-shadow: 0 0 0 0 transparent;
   }
 }
+
+/* Small "confirm before we scroll you away" balloon shown by the
+   cross-link jump logic in Organizations.astro. */
+.jump-confirm-popup {
+  position: fixed;
+  z-index: 60;
+  width: max-content;
+  max-width: 16rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  animation: dialog-in 0.12s ease-out;
+}

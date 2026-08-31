@@ -19,10 +19,10 @@ const { speaking } = site;
 
   <p class="max-w-xl text-[var(--color-muted)]">{speaking.intro}</p>
 
-  <ul class="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
+  <ul class="mt-6 columns-1 gap-x-6 sm:columns-2">
     {
       speaking.topics.map((topic) => (
-        <li class="flex gap-2 text-[var(--color-text)]">
+        <li class="mb-3 flex break-inside-avoid gap-2 text-[var(--color-text)]">
           <span class="text-[var(--color-accent)]">▸</span>
           <span>{topic}</span>
         </li>

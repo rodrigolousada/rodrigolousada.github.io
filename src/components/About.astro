@@ -20,8 +20,8 @@ const areasText =
   </h2>
 
   <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-    <div class="rounded-xl border border-[var(--color-border)] p-6">
-      <p class="text-[var(--color-text)]">
+    <div class="p-6">
+      <p class="text-justify text-sm text-[var(--color-text)]">
         <span class="font-semibold">{years} years</span> of Software Development spanning a
         multitude of areas in {areasText}. Currently at {about.currentRole}.
       </p>
@@ -30,7 +30,7 @@ const areasText =
         <svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 shrink-0 fill-[var(--color-accent)]">
           <path d={icons.search} />
         </svg>
-        <p class="text-[var(--color-text)]">
+        <p class="text-justify text-sm text-[var(--color-text)]">
           <span class="font-semibold">Looking for:</span> {about.lookingFor}
         </p>
       </div>
@@ -46,18 +46,19 @@ const areasText =
             </span>
           ))
         }
-        <a
-          href={site.site.cvPath}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-xs text-[var(--color-accent)] underline underline-offset-4"
-        >
-          Check my CV →
-        </a>
       </div>
+
+      <a
+        href={site.site.cvPath}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-2 text-xs font-medium text-[var(--color-accent)] transition hover:bg-[var(--color-accent)]/20"
+      >
+        Check my CV ↗
+      </a>
     </div>
 
-    <div class="rounded-xl border border-[var(--color-border)] p-6">
+    <div class="p-6">
       <TechStack />
     </div>
   </div>
