@@ -1,8 +1,7 @@
 ---
-// Compact, grouped technology badges — embedded inside About.astro rather
-// than a standalone section (see Backlog2.md feedback: smaller, grouped by
-// category, tucked into a quarter of the About section). A "View more"
-// button opens a dialog with the wider skill set from the CV/LinkedIn.
+// Compact, grouped technology badges rendered inside the standalone
+// Technologies section (Technologies.astro). A "View more" button opens a
+// dialog with the wider skill set from the CV/LinkedIn.
 import site from '../data/site.json';
 import TechPill from './TechPill.astro';
 
@@ -64,9 +63,6 @@ const connectors = preferredStack.slice(0, -1).map((tier, i) => {
 ---
 
 <div>
-  <p class="mb-3 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-    Technologies
-  </p>
   <div class="flex flex-wrap gap-1.5">
     {compactItems.map((item) => (
       <TechPill name={item.name} />

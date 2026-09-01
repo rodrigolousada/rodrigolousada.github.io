@@ -1,0 +1,20 @@
+---
+// Standalone top-level section — previously a column inside About.astro, split
+// out on its own (About was removed: its bio merged into Hero's subline, and
+// "Looking for" / Clifton Strengths moved into Hero right after the numbers).
+import { icons } from '../data/icons';
+import TechStack from './TechStack.astro';
+---
+
+<section id="tech" class="mx-auto max-w-3xl px-6 py-10">
+  <div class="mb-6 flex items-center gap-3">
+    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+      <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+        <path d={icons.code} />
+      </svg>
+    </span>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">TECHNOLOGIES</h2>
+  </div>
+
+  <TechStack />
+</section>

@@ -142,11 +142,17 @@ const { contact } = site;
       movingSlot.style.transform = '';
       return;
     }
+    // Both cards converge on the shared boundary between the two grid slots
+    // (half own size + half the gap) rather than one card staying put while
+    // the other slides the full distance — so on reveal they spread apart
+    // from the middle instead of the pair appearing to slide in from the left.
     const isRow = window.matchMedia('(min-width: 640px)').matches;
+    stationarySlot.style.transform = isRow
+      ? 'translateX(calc(50% + 0.625rem)) rotate(3deg) scale(0.98)'
+      : 'translateY(calc(50% + 0.625rem)) rotate(3deg) scale(0.98)';
     movingSlot.style.transform = isRow
-      ? 'translateX(calc(-100% - 1.25rem)) rotate(-4deg) scale(0.96)'
-      : 'translateY(calc(-100% - 1.25rem)) rotate(-4deg) scale(0.96)';
-    stationarySlot.style.transform = 'rotate(3deg) scale(0.98)';
+      ? 'translateX(calc(-50% - 0.625rem)) rotate(-4deg) scale(0.96)'
+      : 'translateY(calc(-50% - 0.625rem)) rotate(-4deg) scale(0.96)';
   }
 
   function setImmediate(run: () => void) {

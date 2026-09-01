@@ -1,7 +1,10 @@
 ---
-// Shared technology badge — icon-in-a-circle + name — used everywhere a tech
-// stack is listed (About's TechStack, career/project "Technologies", side
-// project cartridges) so they all look the same instead of three styles.
+// Shared technology badge — icon + name — used everywhere a tech stack is
+// listed (Technologies section, career/project "Technologies", side project
+// cartridges) so they all look the same instead of three styles. Styled
+// after nathanbrachotte.dev/'s tech-stack row: logos sit directly on the pill
+// with no backing circle, everything is a touch bigger than a typical badge,
+// hovering grows the whole pill, and clicking opens the tech's own docs.
 import { techIcons } from '../data/techIcons';
 
 interface Props {
@@ -10,15 +13,35 @@ interface Props {
 
 const { name } = Astro.props;
 const icon = techIcons.find((t) => t.name === name);
+
+// A few brand colors (GitHub black, Kafka near-black, Pandas navy, ...) are
+// too dark to read once the white backing circle is gone — swap those for
+// the theme's muted text color instead of guessing per-icon exceptions.
+function relativeLuminance(hex: string) {
+  const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((h) => parseInt(h, 16) / 255);
+  const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+const iconColor = icon && relativeLuminance(icon.color) < 0.12 ? 'var(--color-muted)' : icon?.color;
 ---
 
-<span class="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-0.5 pl-0.5 pr-2">
+<a
+  href={icon?.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="tech-pill inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1.5 pl-2.5 pr-3.5 transition hover:scale-110 hover:border-[var(--color-accent)]"
+>
   {icon && (
-    <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-white p-0.5">
-      <svg viewBox="0 0 24 24" class="h-full w-full" fill={icon.color}>
-        <path d={icon.path} />
-      </svg>
-    </span>
+    <svg viewBox="0 0 24 24" class="h-[18px] w-[18px] shrink-0" fill={iconColor}>
+      <path d={icon.path} />
+    </svg>
   )}
-  <span class={`whitespace-nowrap text-[11px] text-[var(--color-text)] ${icon ? '' : 'pl-1.5'}`}>{name}</span>
-</span>
+  <span class="whitespace-nowrap text-xs text-[var(--color-text)]">{name}</span>
+</a>
+
+<style>
+  /* transform-origin center so growth reads as "bigger in place", not a shift */
+  .tech-pill {
+    transform-origin: center;
+  }
+</style>

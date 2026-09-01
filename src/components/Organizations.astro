@@ -26,13 +26,22 @@ const groups = [
             </p>
             <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
               {orgs.map((org, i) => {
+                // `logoScale` bumps up a logo that renders visually smaller than
+                // its neighbors at the same height (e.g. a mark with lots of
+                // padding baked into the file). It used to be a CSS `transform:
+                // scale()` on the image, which grows the pixels without growing
+                // the box the flex row reserves for it — a heavily scaled logo
+                // (Klarna at 2.2x) then visually overlapped into the gap toward
+                // its neighbor, reading as "less spacing" than everywhere else.
+                // Baking the scale into the actual height keeps the real layout
+                // box in sync with what's drawn, so every gap stays even.
                 const logoImg = (
                   <img
                     src={org.logo}
                     alt={org.name}
                     title={org.program ? undefined : org.name}
-                    class={`h-6 w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-7 ${org.alreadyWhite ? '' : 'invert'}`}
-                    style={org.logoScale ? `transform: scale(${org.logoScale})` : undefined}
+                    class={`h-[calc(1.5rem*var(--logo-scale))] w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-[calc(1.75rem*var(--logo-scale))] ${org.alreadyWhite ? '' : 'invert'}`}
+                    style={`--logo-scale: ${org.logoScale ?? 1};`}
                   />
                 );
 
@@ -185,7 +194,7 @@ const groups = [
           const projModalId = projectEl.dataset.modalId;
           const projDialog = projModalId && document.getElementById(projModalId);
           if (projDialog instanceof HTMLDialogElement && !projDialog.open) {
-            setTimeout(() => projDialog.showModal(), 900);
+            setTimeout(() => projDialog.showModal(), 500);
           }
         }
       }, 1600);

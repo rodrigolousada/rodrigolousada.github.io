@@ -1,6 +1,16 @@
 ---
 import site from '../data/site.json';
-const { hero } = site;
+import { icons } from '../data/icons';
+const { hero, about } = site;
+
+// Recomputed on every build, not hardcoded — see about.softwareSince.
+const years = Math.floor(
+  (Date.now() - new Date(about.softwareSince).getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+);
+const areasText =
+  about.areas.length > 1
+    ? `${about.areas.slice(0, -1).join(', ')} and ${about.areas[about.areas.length - 1]}`
+    : about.areas[0];
 
 // Pixel coordinates within the map SVG's viewBox — not content, so kept here
 // rather than in site.json (which only holds the per-city bio text).
@@ -107,7 +117,8 @@ const cities = hero.cities.map((city, i) => {
     </h1>
 
     <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
-      {hero.subline}
+      {about.bioTitle} with {years} years experience on Software Development spanning a multitude of
+      areas as {areasText}.
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -141,6 +152,30 @@ const cities = hero.cities.map((city, i) => {
         ))
       }
     </dl>
+
+    <div class="mt-8 flex items-start gap-3 rounded-lg border-l-2 border-[var(--color-accent)] bg-[var(--color-surface)] px-4 py-3">
+      <svg viewBox="0 0 24 24" class="mt-0.5 h-4 w-4 shrink-0 fill-[var(--color-accent)]">
+        <path d={icons.search} />
+      </svg>
+      <p class="text-sm text-[var(--color-text)]">
+        <span class="font-semibold">Looking for:</span> {about.lookingFor}
+      </p>
+    </div>
+
+    <div class="mt-6">
+      <p class="mb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+        My Clifton Strengths
+      </p>
+      <div class="flex flex-wrap items-center gap-2">
+        {
+          about.strengths.map((s) => (
+            <span class="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]">
+              {s}
+            </span>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
 

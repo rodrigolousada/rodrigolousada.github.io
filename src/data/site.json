@@ -15,8 +15,8 @@
     "initials": "RL",
     "links": [
       {
-        "href": "#about",
-        "label": "About"
+        "href": "#tech",
+        "label": "Tech"
       },
       {
         "href": "#projects",
@@ -34,9 +34,8 @@
   },
   "hero": {
     "name": "Rodrigo Lousada",
-    "roleLine": "Software Engineer · Berlin, Germany",
-    "headline": "I lead engineering teams that ship.",
-    "subline": "Software Engineer at Klarna, Berlin. Previously led a 4–6 person team across two concurrent GenAI & chatbot workstreams at IBM Consulting. Now looking for Engineering Manager / Tech Lead roles.",
+    "roleLine": "Software Engineer @ Klarna · Berlin, Germany",
+    "headline": "I lead teams that ship!",
     "stats": [
       {
         "value": "4–6",
@@ -63,13 +62,18 @@
     ]
   },
   "about": {
+    "bioTitle": "Project Engineering Manager",
     "softwareSince": "2018-09-01",
     "areas": [
+      "Full Stack Development",
+      "Mobile",
+      "Web",
       "AI",
-      "data engineering",
-      "voicebots"
+      "Data Engineering",
+      "Analytics",
+      "Chatbots",
+      "Voicebots"
     ],
-    "currentRole": "Klarna's Referrals team",
     "lookingFor": "Engineering Manager or Tech Lead roles, based in Berlin/EU or fully remote, ideally at a fintech or scale-up.",
     "strengths": [
       "Achiever",
@@ -141,6 +145,21 @@
       "id": "ds",
       "label": "Data Science",
       "color": "#d55181"
+    },
+    {
+      "id": "sales",
+      "label": "Sales",
+      "color": "#84cc16"
+    },
+    {
+      "id": "design",
+      "label": "Product Design",
+      "color": "#8b5cf6"
+    },
+    {
+      "id": "social",
+      "label": "Social Media",
+      "color": "#06b6d4"
     }
   ],
   "careerPath": [
@@ -226,8 +245,11 @@
         "pm": 5,
         "swe": 65,
         "analytics": 10,
-        "de": 15,
-        "ds": 5
+        "de": 10,
+        "ds": 0,
+        "sales": 0,
+        "design": 10,
+        "social": 0
       },
       "slug": "klarna"
     },
@@ -303,6 +325,32 @@
             ]
           },
           "shortName": "M.A.R.I.A"
+        },
+        {
+          "name": "Chatbots Data Pipeline (E2E)",
+          "companies": [
+            "ibm"
+          ],
+          "tldr": "Designed and built, end-to-end and solo, the data pipeline feeding analytics and reporting for IBM's entire chatbot/voicebot portfolio.",
+          "description": "Designed the full data pipeline behind IBM Consulting's chat/voicebot portfolio (M.A.R.I.A, BIA & Beatriz, and others): ingestion straight from the bots, cleaning and processing, then a move from raw OLTP records into an OLAP model built for reporting. On top of that, distribution: tailored dashboards and reports for developers, management, clients, and CXOs, each needing a different level of detail from the same underlying data.",
+          "technologies": [
+            "Python",
+            "SQL",
+            "Data Pipelines",
+            "ETL",
+            "OLTP → OLAP",
+            "Data Warehousing",
+            "Power BI",
+            "IBM Cloud"
+          ],
+          "achievements": [
+            "Saved 3 FTEs by automating reporting that was previously done by hand",
+            "100x increase in analytical insights surfaced from chatbot interaction data",
+            "Detected hundreds of improvements and fixes across the chatbot portfolio",
+            "Findings directly informed IBM's roadmap investment decisions for the chat/voicebot line"
+          ],
+          "myRole": "Sole designer & builder, end-to-end",
+          "shortName": "Chatbots Data Pipeline"
         },
         {
           "name": "BIA & Beatriz: Bankinter Voice Assistants",
@@ -418,10 +466,13 @@
       ],
       "focus": {
         "pm": 35,
-        "swe": 25,
+        "swe": 20,
         "analytics": 15,
         "de": 15,
-        "ds": 10
+        "ds": 10,
+        "sales": 5,
+        "design": 0,
+        "social": 0
       },
       "credlyBadges": [
         {
@@ -594,7 +645,10 @@
         "swe": 15,
         "analytics": 10,
         "de": 10,
-        "ds": 60
+        "ds": 60,
+        "sales": 0,
+        "design": 0,
+        "social": 0
       },
       "slug": "instituto-de-telecomunicacoes"
     }
@@ -640,11 +694,14 @@
         "Team Leadership"
       ],
       "focus": {
-        "pm": 85,
+        "pm": 30,
         "swe": 5,
         "analytics": 10,
         "de": 0,
-        "ds": 0
+        "ds": 0,
+        "sales": 45,
+        "design": 0,
+        "social": 10
       },
       "slug": "sinfo"
     }
