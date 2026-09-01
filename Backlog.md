@@ -216,3 +216,35 @@ here is missing exactly — say the word on any of these and I'll add it:
   feeds Backend while Reporting feeds Data Pipeline specifically — matches
   how Power BI/Excel actually get their numbers (off the data pipeline,
   not the live API).
+
+-------
+
+- **Full mobile audit** (real headless Chrome at phone widths — 375/390/430px
+  — via Playwright, not just code review): checked every section, dialog,
+  and animation for overflow, contrast, and layout issues. Most of the
+  site holds up well at phone widths — nav, hero, career/project/side-project
+  modals, the flip-card contact section, and the footer logo grid all
+  reflow cleanly with zero horizontal overflow anywhere on the page itself.
+  Two real bugs found and fixed:
+  - **Done** — The "My preferred stack" diagram's tier boxes (Storage,
+    AI/LLMs, Data Science, etc.) had no real minimum width, so on a phone
+    they got squeezed narrower than a single tech pill — labels ellipsized
+    ("DATA SCIE...") and pills rendered half outside their own box. Gave
+    each box a real floor width so every label and pill renders in full;
+    the diagram still scrolls horizontally inside its own bordered box on
+    phones (unavoidable — it's a wide diagram), but now added a small
+    "↔ scroll to see all" hint (phone-only) so that's discoverable instead
+    of looking like a cut-off bug.
+  - **Done** — The Magic Mirror side-project cartridge (the one project
+    without a real screenshot, so it falls back to a plain text label) had
+    its "Insert →" corner label hardcoded to white — invisible against that
+    cartridge's light cyan label background. Switched it to the same dark
+    neutral tone the fallback label's own title/subtitle already use.
+  Nothing else needed changing — false leads chased down and ruled out
+  along the way: an icon strip that looked like a stray overlay near the
+  hero stats turned out to be Astro's own dev-mode toolbar (won't exist in
+  the production build); overlapping "click me to rotate" text on the
+  Klarna card was the screenshot catching the card's reveal animation
+  mid-flip, not a real rendering bug; the Watch/iPhone demo mockups being
+  different sizes and bottom-aligned is the intended design, not a layout
+  bug.

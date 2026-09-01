@@ -164,15 +164,20 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
 
     {preferredStack && (
       <>
-        <p class="mb-3 mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-          My preferred stack
+        <p class="mb-3 mt-6 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+          <span>My preferred stack</span>
+          <!-- The diagram below is wider than a phone screen can show at
+               once (each tier box needs real room for its tech pills), so
+               it scrolls horizontally inside its own border — this hint
+               only needs to exist where that isn't obvious at a glance. -->
+          <span class="normal-case tracking-normal text-[var(--color-muted)]/60 sm:hidden">↔ scroll to see all</span>
         </p>
         <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
           <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
             <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
             <div class="flex items-stretch gap-2">
               {preferredStack.consumers.layers.map((layer) => (
-                <div class="flex flex-1 min-w-0 items-center justify-center rounded-lg border border-dashed border-[var(--color-muted)]/40 p-2.5 text-center">
+                <div class="flex flex-1 min-w-[6rem] items-center justify-center rounded-lg border border-dashed border-[var(--color-muted)]/40 p-2.5 text-center">
                   <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
                     {layer.label}
                   </p>
@@ -200,7 +205,14 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                   <>
                     <div class="flex items-stretch gap-2">
                       {tier.layers.map((layer) => (
-                        <div class="flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 shadow-sm">
+                        // min-w-[8.5rem], not min-w-0: at min-w-0 a narrow
+                        // phone squeezed these below the width a single tech
+                        // pill needs (e.g. "scikit-learn"), which both
+                        // ellipsized the label ("DATA SCIE...") and forced
+                        // pills half out of their own box. This floor keeps
+                        // every layer legible; the outer overflow-x-auto
+                        // (with the scroll hint above) handles the rest.
+                        <div class="flex min-w-[8.5rem] flex-1 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 shadow-sm">
                           <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
                             {layer.label}
                           </p>
