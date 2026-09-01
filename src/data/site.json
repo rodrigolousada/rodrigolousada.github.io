@@ -103,7 +103,7 @@
     "klarna": {
       "name": "Klarna",
       "logo": "/img/klarna-logo.svg",
-      "logoScale": 1.15,
+      "logoScale": 1.45,
       "logoInvert": true,
       "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent"
     },

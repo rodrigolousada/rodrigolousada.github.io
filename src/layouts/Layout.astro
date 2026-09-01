@@ -54,11 +54,35 @@ const jsonLd = {
          (visible as text "jumping" on every fresh load). `optional` gives
          the webfont a very short window to be ready before first paint and
          otherwise just keeps the fallback for that visit — no later swap,
-         no jump. -->
+         no jump.
+
+         Loaded via the `media="print"` + `onload` trick, not a plain
+         `rel="stylesheet"`: a plain cross-origin stylesheet link is
+         render-blocking, so on a cold cache (no local copy to fall back on)
+         the whole page sits blank until this file round-trips to Google's
+         server, then paints everything at once — which reads as a flicker,
+         and only on a clean cache since a warm one resolves instantly.
+         `media="print"` doesn't match screen rendering, so the browser
+         fetches it without blocking paint; the `onload` then flips it to
+         `all` so it applies as soon as it's ready. `<noscript>` covers
+         browsers with JS disabled, where this trick can't run. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
@@ -67,3 +91,28 @@ const jsonLd = {
     <slot />
   </body>
 </html>
+
+<script>
+  // Intercept plain same-page anchor links site-wide (nav, "Get in touch"
+  // buttons, the "What's next?" card, etc.) and scroll to the target
+  // ourselves instead of letting the browser navigate to the hash — that
+  // native navigation is what was leaving "#contact" (or "#projects", ...)
+  // stuck in the address bar after every jump. `scroll-behavior: smooth`
+  // in global.css still applies to this JS-driven scroll, so it looks the
+  // same as before, just without touching the URL.
+  //
+  // This only ever matches an `<a href="#id">`, so it doesn't interfere
+  // with Organizations.astro's own cross-link "jump" (that one scrolls
+  // manually via buttons, never a hash link) or the nested-modal "← Back"
+  // buttons (`<form method="dialog">`, not anchors).
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement)?.closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href')?.slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>

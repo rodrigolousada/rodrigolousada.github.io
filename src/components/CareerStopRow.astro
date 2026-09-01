@@ -45,6 +45,13 @@ interface Props {
 }
 
 const { stop, modalId, showLine = true } = Astro.props;
+
+// Same "first N, then Show more" pattern as the career timeline and side
+// projects grid in Projects.astro — a stop with a long project list (e.g.
+// six at IBM Consulting) made the modal itself scroll for a while just to
+// reach "Focus this era" and the badges below it.
+const visibleProjects = stop.projects.slice(0, 3);
+const moreProjects = stop.projects.slice(3);
 ---
 
 <div class="grid grid-cols-[1.5rem_1fr] gap-4">
@@ -91,9 +98,14 @@ const { stop, modalId, showLine = true } = Astro.props;
       </span>
     </button>
 
+    <!-- sm:max-h-[85vh], not left uncapped: without it, a stop with enough
+         content (KPIs, projects, badges) grows the dialog right up to the
+         browser's own near-100%-of-viewport default on laptop widths too,
+         reading as another full-screen popup rather than a compact card
+         that happens to scroll. -->
     <dialog
       id={modalId}
-      class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
+      class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
     >
       <div class="overflow-hidden rounded-none sm:rounded-xl">
         <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>
@@ -185,10 +197,24 @@ const { stop, modalId, showLine = true } = Astro.props;
 
           <p class="mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Projects</p>
           <div class="mt-3 space-y-2">
-            {stop.projects.map((project, pi) => (
+            {visibleProjects.map((project, pi) => (
               <ProjectRow project={project} modalId={`${modalId}-project-${pi}`} />
             ))}
           </div>
+
+          {moreProjects.length > 0 && (
+            <details class="group/projectsmore mt-2">
+              <summary class="flex cursor-pointer list-none items-center gap-2 py-1 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
+                <span class="inline-block transition group-open/projectsmore:rotate-90">▸</span>
+                View more
+              </summary>
+              <div class="mt-2 space-y-2">
+                {moreProjects.map((project, pi) => (
+                  <ProjectRow project={project} modalId={`${modalId}-project-${pi + visibleProjects.length}`} />
+                ))}
+              </div>
+            </details>
+          )}
 
           <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
             Focus this era
@@ -212,12 +238,14 @@ const { stop, modalId, showLine = true } = Astro.props;
               })}
           </div>
           <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
-            {focusCategories.map((cat) => (
-              <div class="flex items-center gap-1.5">
-                <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${cat.color};`} />
-                <span class="text-[11px] text-[var(--color-muted)]">{cat.label}</span>
-              </div>
-            ))}
+            {focusCategories
+              .filter((cat) => (stop.focus[cat.id] ?? 0) > 0)
+              .map((cat) => (
+                <div class="flex items-center gap-1.5">
+                  <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${cat.color};`} />
+                  <span class="text-[11px] text-[var(--color-muted)]">{cat.label}</span>
+                </div>
+              ))}
           </div>
 
           {stop.credlyBadges && stop.credlyBadges.length > 0 && (

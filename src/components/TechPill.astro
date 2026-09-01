@@ -4,7 +4,14 @@
 // cartridges) so they all look the same instead of three styles. Styled
 // after nathanbrachotte.dev/'s tech-stack row: logos sit directly on the pill
 // with no backing circle, everything is a touch bigger than a typical badge,
-// hovering grows the whole pill, and clicking opens the tech's own docs.
+// and hovering grows the whole pill.
+//
+// Clicking toggles a pinned/highlighted state rather than navigating
+// anywhere — it used to open the tech's own docs, but a visitor can't mark
+// several favorites that way, only leave the page one at a time. Pinned
+// pills also survive the "All Technologies" search filter (see TechStack's
+// script) so someone can highlight the ones they like while still narrowing
+// the list down.
 import { techIcons } from '../data/techIcons';
 
 interface Props {
@@ -37,12 +44,13 @@ const iconColor = icon && contrastRatio(icon.color, PILL_BG) < 1.8 ? 'var(--colo
 const iconSize = icon?.sizePx ?? 18;
 ---
 
-<a
-  href={icon?.url}
-  target="_blank"
-  rel="noopener noreferrer"
+<button
+  type="button"
+  data-tech-pill
   data-tech-name={name.toLowerCase()}
-  class="tech-pill inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1.5 pl-2.5 pr-3.5 transition hover:scale-110 hover:border-[var(--color-accent)]"
+  aria-pressed="false"
+  title={`Highlight ${name}`}
+  class="tech-pill inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1.5 pl-2.5 pr-3.5 text-left transition hover:scale-110 hover:border-[var(--color-accent)] aria-pressed:border-[var(--color-accent)] aria-pressed:bg-[var(--color-accent)]/10"
 >
   {icon && (
     icon.svg ? (
@@ -54,7 +62,7 @@ const iconSize = icon?.sizePx ?? 18;
     )
   )}
   <span class="whitespace-nowrap text-xs text-[var(--color-text)]">{name}</span>
-</a>
+</button>
 
 <style>
   /* transform-origin center so growth reads as "bigger in place", not a shift */
@@ -62,3 +70,17 @@ const iconSize = icon?.sizePx ?? 18;
     transform-origin: center;
   }
 </style>
+
+<script>
+  // One delegated listener covers every pill on the page, however many
+  // TechPill instances rendered it — no per-instance wiring needed, and it
+  // still works for pills that appear later inside a <dialog> (native
+  // dialogs stay part of the document, so clicks inside them bubble here
+  // same as anywhere else).
+  document.addEventListener('click', (e) => {
+    const pill = (e.target as HTMLElement)?.closest<HTMLElement>('[data-tech-pill]');
+    if (!pill) return;
+    const pressed = pill.getAttribute('aria-pressed') === 'true';
+    pill.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+  });
+</script>

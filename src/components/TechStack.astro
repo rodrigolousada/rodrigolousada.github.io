@@ -302,7 +302,12 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     categories.forEach((category) => {
       let categoryHasMatch = false;
       category.querySelectorAll<HTMLElement>('[data-tech-name]').forEach((pill) => {
-        const match = !query || (pill.dataset.techName ?? '').includes(query);
+        // A pinned/highlighted pill (see TechPill's click-to-toggle) stays
+        // visible regardless of the search term, so highlighting a
+        // technology doesn't make it vanish the moment someone searches
+        // for something else.
+        const pinned = pill.getAttribute('aria-pressed') === 'true';
+        const match = pinned || !query || (pill.dataset.techName ?? '').includes(query);
         // Inline style, not the `hidden` class — the pill already carries the
         // `inline-flex` display utility, which wins over `hidden` in
         // Tailwind's cascade and would leave it visible.

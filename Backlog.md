@@ -324,3 +324,42 @@ here is missing exactly — say the word on any of these and I'll add it:
   crowded: the Technologies "View more" list and the side-project
   cartridge modal are back to a centered card with native scrolling.
   Career-stop and nested-project modals stay full-screen.
+
+-------
+
+- **Done** — A career stop with a long project list (e.g. six at IBM
+  Consulting) now shows only the first 3 by default, with a "View more"
+  toggle for the rest — same pattern already used for the career timeline
+  and side-projects grid.
+- **Done** — Clicking a technology pill no longer opens its docs page; it
+  toggles a pinned/highlighted state instead, so someone can mark several
+  technologies they're interested in while browsing. Pinned pills also
+  stay visible when searching the "All Technologies" list, instead of
+  disappearing the moment the search term doesn't match them.
+- **Done** — Fixed a flicker on the home section text on a clean-cache
+  reload: the Google Fonts stylesheet was a plain render-blocking
+  `<link>`, so on a cold cache the whole page sat blank until it
+  round-tripped to Google's server, then painted everything at once.
+  Switched to the standard `media="print"` + `onload` non-blocking-style
+  trick (with a `<noscript>` fallback) so the page paints immediately in
+  the fallback font instead of waiting on it.
+- **Done** — Capped the career-stop and nested-project dialogs at
+  `max-h-[85vh]` on sm+ (matching the Technologies dialog) — without it, a
+  stop with enough content grew right up to the browser's own
+  near-100%-of-viewport default on laptop widths too, reading as another
+  full-screen popup instead of a compact scrolling card.
+- **Done** — "Download my CV" in Get In Touch now uses the same accent
+  blue as "View more" on Technologies, instead of a muted underline style.
+- **Done** — The "Focus this era" legend now only lists categories that
+  are actually present that era, matching the bar chart above it (which
+  already filtered out 0% categories) — e.g. Klarna no longer lists Data
+  Science, Sales, or Social when none of them are part of that stop.
+- **Done** — Clicking anything that jumps to "Get in touch" (or any other
+  in-page section link) no longer leaves `#contact` (or `#projects`, etc.)
+  in the address bar — a site-wide script intercepts same-page anchor
+  clicks and scrolls to the target itself instead of letting the browser
+  navigate to the hash. A direct link with a hash already in the URL
+  still jumps there correctly on load.
+- **Done** — Enlarged the Klarna logo inside its career-timeline chip
+  (`logoScale` 1.15 → 1.45) — it was reading noticeably smaller than the
+  IBM and Instituto de Telecomunicações logos in the same-sized chips.
