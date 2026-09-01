@@ -305,3 +305,22 @@ here is missing exactly — say the word on any of these and I'll add it:
   it to Tailwind's `open:flex` variant instead, which only sets `display`
   while the dialog is actually open. Verified open + close by hand and via
   script on all four dialog types; only Technologies was ever affected.
+
+-------
+
+- **Done** — Fixed a text jump on page load: the Google Fonts link used
+  `display=swap`, so the page first painted in a fallback font and then
+  visibly reflowed to Inter/Space Grotesk once they downloaded (different
+  metrics between the two). Switched to `display=optional`, which gives
+  the webfont a short window before first paint and otherwise keeps the
+  fallback for that visit — no later swap, no jump.
+- **Done** — Tightened the gap between the "Associated with" logos on
+  phones (`gap-x-5`, was `gap-x-10`) — shrinking the logos themselves in
+  the last round left them looking scattered rather than grouped at the
+  old spacing. Unchanged at sm+.
+- **Done** — Reverted two of the four full-screen-on-phone dialogs back to
+  their previous compact centered-card style, per feedback that the
+  full-screen treatment should only apply to pop-ups that actually feel
+  crowded: the Technologies "View more" list and the side-project
+  cartridge modal are back to a centered card with native scrolling.
+  Career-stop and nested-project modals stay full-screen.

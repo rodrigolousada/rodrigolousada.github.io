@@ -37,7 +37,10 @@ const groups = [
             <p class="mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]/60">
               {group.label}
             </p>
-            <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+            <!-- Tighter horizontal gap below sm: once the logos themselves
+                 shrank for mobile, the old gap-x-10 (unchanged) left them
+                 looking scattered rather than grouped. -->
+            <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-6 sm:gap-x-10">
               {orgs.map((org, i) => {
                 // `logoScale` bumps up a logo that renders visually smaller than
                 // its neighbors at the same height (e.g. a mark with lots of
