@@ -16,6 +16,11 @@ branch except what's below.)
   I can do for you" (total FTEs saved across every automation project, and
   revenue brought in), I need the actual numbers from you (or a CV pass to
   find them). Flagging so it doesn't get lost; not blocking anything else.
+- **Grades on the "Studied at" balloons**: the balloon now supports an
+  optional grade line under the program (e.g. "Grade: 17/20"), but I don't
+  have real numbers for IST, TU Berlin, Humboldt, AESE, or Externato S. José
+  — send whichever ones you want shown and I'll add them (leave any out you
+  don't want displayed).
 
 # Optional polish — found while checking LinkedIn and the old site
 Not gaps, just small enrichments spotted while cross-checking your LinkedIn
@@ -153,3 +158,37 @@ here is missing exactly — say the word on any of these and I'll add it:
   pop-up pattern as the APC recommendation letter) — I generated the image
   from the `CliftonStrengths.pdf` already in the repo, so no new file is
   needed from you.
+
+
+-------
+
+- **Done** — Removed the company-wide "Technologies" pill row from inside
+  each career-stop modal (IBM, Klarna, etc.) — each project underneath it
+  already lists its own Technologies, so the company-level row was just
+  repeating the same logos with no added info.
+- **Done** — Datadog, for real this time: last round's read of "already a
+  flat single color, nothing to fix" was only half right. The mark itself
+  (confirmed identical on both Simple Icons and Devicon) is genuinely
+  detailed — a dog-and-chart illustration, not a plain silhouette — and it
+  turned to mud at the pill row's normal 18px. It now renders at 28px, the
+  smallest size the detail actually holds together at, while every other
+  icon stays at the normal size.
+- **Done** — Widened the "All Technologies" pop-up (42rem → 54rem) so the
+  preferred-stack diagram has more breathing room.
+- **Done** — Added React Native to the Frontend layer of "My preferred
+  stack." Backend now shows two side-by-side options — Python + FastAPI, or
+  Node.js + TypeScript — joined by an explicit "OR" badge so it reads as
+  "either one" rather than "all of this at once."
+- **Done** — Klarna business card's front now uses the same top/bottom
+  layout as the personal card (contact block pinned to the top, links
+  pinned to the bottom) instead of everything bunched at the top with dead
+  space below — same rhythm on both cards now.
+- **Done** — Side-project cartridges now sit in a 4-column grid sized to
+  the row's actual width instead of fixed-width boxes wrapping unevenly —
+  4 fit exactly per row with no stranded 4th cartridge and no leftover gap.
+  Past 4 side projects, a "Show more" toggle appears (same pattern as the
+  career timeline's); not visible yet since there are exactly 4. CourtKit
+  is now the first cartridge.
+- **Done** — "Studied at" balloons can now show an optional grade line
+  under the program — see the Blocked section above, need real numbers
+  from you before any actually show up.

@@ -243,20 +243,6 @@
           ]
         }
       ],
-      "stack": [
-        "TypeScript",
-        "React",
-        "Python",
-        "Kafka",
-        "Neo4j",
-        "PostgreSQL",
-        "AWS",
-        "OpenSearch",
-        "Terraform",
-        "Datadog",
-        "Jenkins",
-        "k6"
-      ],
       "focus": {
         "pm": 5,
         "swe": 65,
@@ -473,13 +459,6 @@
           "shortName": "PFM"
         }
       ],
-      "stack": [
-        "Python",
-        "Data Pipelines",
-        "Chat/Voicebot",
-        "GenAI",
-        "Agile"
-      ],
       "focus": {
         "pm": 35,
         "swe": 20,
@@ -650,12 +629,6 @@
           "urlSource": "IST Thesis"
         }
       ],
-      "stack": [
-        "Python",
-        "Random Forests",
-        "Time Series",
-        "scikit-learn"
-      ],
       "focus": {
         "pm": 5,
         "swe": 15,
@@ -703,12 +676,6 @@
           ]
         }
       ],
-      "stack": [
-        "Event Management",
-        "Sponsorship",
-        "Social Media",
-        "Team Leadership"
-      ],
       "focus": {
         "pm": 30,
         "swe": 5,
@@ -723,19 +690,6 @@
     }
   ],
   "sideProjects": [
-    {
-      "title": "Magic Mirror",
-      "subtitle": "Smart mirror · Raspberry Pi",
-      "description": "A smart mirror built from scratch at home: a Raspberry Pi and an old monitor sit behind two-way mirror glass, running the open-source MagicMirror² platform to surface a personal dashboard right on the glass. Built from cheap, mostly repurposed materials for well under €50 all in.",
-      "technologies": [
-        "Raspberry Pi",
-        "Node.js",
-        "JavaScript"
-      ],
-      "demoPlaceholders": ["Photo", "Video"],
-      "shellColor": "bg-cyan-600",
-      "labelColor": "bg-cyan-50"
-    },
     {
       "title": "CourtKit",
       "subtitle": "Watch-first basketball training app",
@@ -753,6 +707,19 @@
         "watch": { "caption": "Add Apple Watch recording" },
         "phone": { "caption": "Add iPhone recording" }
       }
+    },
+    {
+      "title": "Magic Mirror",
+      "subtitle": "Smart mirror · Raspberry Pi",
+      "description": "A smart mirror built from scratch at home: a Raspberry Pi and an old monitor sit behind two-way mirror glass, running the open-source MagicMirror² platform to surface a personal dashboard right on the glass. Built from cheap, mostly repurposed materials for well under €50 all in.",
+      "technologies": [
+        "Raspberry Pi",
+        "Node.js",
+        "JavaScript"
+      ],
+      "demoPlaceholders": ["Photo", "Video"],
+      "shellColor": "bg-cyan-600",
+      "labelColor": "bg-cyan-50"
     },
     {
       "title": "Space Invaders",
@@ -1167,7 +1134,7 @@
           "layers": [
             {
               "label": "Frontend",
-              "items": ["TypeScript", "React"]
+              "items": ["TypeScript", "React", "React Native"]
             },
             {
               "label": "Reporting",
@@ -1176,10 +1143,15 @@
           ]
         },
         {
+          "relation": "or",
           "layers": [
             {
-              "label": "Backend / API",
+              "label": "Backend · Python",
               "items": ["Python", "FastAPI"]
+            },
+            {
+              "label": "Backend · Node.js",
+              "items": ["Node.js", "TypeScript"]
             }
           ]
         },

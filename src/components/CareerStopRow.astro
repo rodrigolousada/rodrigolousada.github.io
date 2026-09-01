@@ -2,7 +2,6 @@
 import { focusCategories } from '../data/site.json';
 import { icons } from '../data/icons';
 import ProjectRow from './ProjectRow.astro';
-import TechPill from './TechPill.astro';
 
 interface Props {
   stop: {
@@ -38,7 +37,6 @@ interface Props {
       url?: string;
       urlLabel?: string;
     }[];
-    stack: string[];
     focus: Record<string, number>;
   };
   modalId: string;
@@ -181,12 +179,6 @@ const { stop, modalId, showLine = true } = Astro.props;
           <div class="mt-3 space-y-2">
             {stop.projects.map((project, pi) => (
               <ProjectRow project={project} modalId={`${modalId}-project-${pi}`} />
-            ))}
-          </div>
-
-          <div class="mt-8 flex flex-wrap gap-1.5">
-            {stop.stack.map((tech) => (
-              <TechPill name={tech} />
             ))}
           </div>
 

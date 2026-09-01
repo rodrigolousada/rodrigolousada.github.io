@@ -4,6 +4,14 @@ import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
 import { icons } from '../data/icons';
 const { careerPath, careerPathMore, sideProjects, about } = site;
+
+// Cartridges are sized to fit exactly 4 per row (2 on narrow screens) via a
+// grid rather than a fixed pixel width in a wrapping flex row — the fixed
+// width used to leave a 4th cartridge stranded on its own row with empty
+// space beside it. Anything past the first 4 hides behind "Show more",
+// same pattern as the career timeline above.
+const visibleSideProjects = sideProjects.slice(0, 4);
+const moreSideProjects = sideProjects.slice(4);
 ---
 
 <section id="projects" class="mx-auto max-w-3xl px-6 py-14">
@@ -76,13 +84,29 @@ const { careerPath, careerPathMore, sideProjects, about } = site;
     <p class="mb-6 text-xs text-[var(--color-muted)]/70">
       Click a cartridge to load it.
     </p>
-    <div class="flex flex-wrap gap-5">
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
       {
-        sideProjects.map((sp, i) => (
+        visibleSideProjects.map((sp, i) => (
           <GameCartridge project={sp} modalId={`side-project-modal-${i}`} />
         ))
       }
     </div>
+
+    {moreSideProjects.length > 0 && (
+      <details class="group/sidemore">
+        <summary class="mt-4 flex cursor-pointer list-none items-center gap-2 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
+          <span class="inline-block transition group-open/sidemore:rotate-90">▸</span>
+          Show more
+        </summary>
+        <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {
+            moreSideProjects.map((sp, i) => (
+              <GameCartridge project={sp} modalId={`side-project-modal-more-${i}`} />
+            ))
+          }
+        </div>
+      </details>
+    )}
   </div>
 </section>
 

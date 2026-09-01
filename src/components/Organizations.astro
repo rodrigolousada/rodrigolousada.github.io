@@ -1,6 +1,19 @@
 ---
 import site from '../data/site.json';
-const { organizations } = site;
+
+interface Organization {
+  name: string;
+  logo: string;
+  logoScale?: number;
+  alreadyWhite?: boolean;
+  category: string;
+  program?: string;
+  /** Optional grade/result shown in the "Studied at" balloon alongside the program, e.g. "17/20". */
+  grade?: string;
+  scrollTo?: string;
+  scrollToCompany?: string;
+}
+const organizations = site.organizations as unknown as Organization[];
 
 const groups = [
   { key: 'worked', label: 'Worked at' },
@@ -91,6 +104,11 @@ const groups = [
                       </button>
                       <p class="pr-4 text-xs font-semibold text-[var(--color-accent)]">{org.name}</p>
                       <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{org.program}</p>
+                      {org.grade && (
+                        <p class="mt-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+                          Grade: {org.grade}
+                        </p>
+                      )}
                     </div>
                   </div>
                 );

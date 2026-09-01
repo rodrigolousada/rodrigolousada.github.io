@@ -41,7 +41,7 @@ const qrCodeSvg = project.appDownloadUrl
   <button
     type="button"
     onclick={`document.getElementById('${modalId}').showModal()`}
-    class={`cartridge-shell group relative flex h-28 w-44 shrink-0 items-center justify-center p-2 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl ${project.shellColor}`}
+    class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl ${project.shellColor}`}
     style="clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 8%); border-radius: 8px;"
   >
     <span class="absolute right-2.5 top-2.5 z-10 h-1.5 w-1.5 rounded-full bg-black/30" />

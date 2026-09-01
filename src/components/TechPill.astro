@@ -34,6 +34,7 @@ function contrastRatio(hexA: string, hexB: string) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 const iconColor = icon && contrastRatio(icon.color, PILL_BG) < 1.8 ? 'var(--color-muted)' : icon?.color;
+const iconSize = icon?.sizePx ?? 18;
 ---
 
 <a
@@ -44,9 +45,9 @@ const iconColor = icon && contrastRatio(icon.color, PILL_BG) < 1.8 ? 'var(--colo
 >
   {icon && (
     icon.svg ? (
-      <svg viewBox={icon.viewBox ?? '0 0 24 24'} class="h-[18px] w-[18px] shrink-0" set:html={icon.svg} />
+      <svg viewBox={icon.viewBox ?? '0 0 24 24'} class="shrink-0" style={`height:${iconSize}px;width:${iconSize}px;`} set:html={icon.svg} />
     ) : (
-      <svg viewBox="0 0 24 24" class="h-[18px] w-[18px] shrink-0" fill={iconColor}>
+      <svg viewBox="0 0 24 24" class="shrink-0" style={`height:${iconSize}px;width:${iconSize}px;`} fill={iconColor}>
         <path d={icon.path} fill-rule={icon.fillRule} />
       </svg>
     )
