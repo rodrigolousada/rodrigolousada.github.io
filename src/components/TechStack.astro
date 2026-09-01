@@ -4,6 +4,7 @@
 // dialog with the wider skill set from the CV/LinkedIn.
 import site from '../data/site.json';
 import TechPill from './TechPill.astro';
+import StackConnector, { type BusConnector, type GroupedConnector } from './StackConnector.astro';
 
 const { technologies } = site;
 const categoryOrder = ['Languages', 'Frameworks & Libraries', 'Data & Databases', 'AI & Data Science', 'Infra & Tools'];
@@ -30,38 +31,65 @@ const allTechs = [...technologies.items, ...(technologies.extra ?? [])];
 const recentItems = allTechs.filter((item) => item.recent);
 const compactItems = recentItems.length > 0 ? recentItems : technologies.items;
 
-// "My preferred stack" mini architecture diagram: a top-to-bottom stack of
-// tiers, each tier holding one or more layers rendered side by side (e.g.
-// Data and AI/LLMs share a tier). Connectors between tiers are drawn as
-// plain SVG lines with an arrowhead, using percentage coordinates so no
-// JS measurement or viewBox scaling is needed to stay responsive.
+// "My preferred stack" mini architecture diagram: consumers on top, feeding
+// down into a stack of tiers (each tier holding one or more layers side by
+// side), all wrapped in one "Infra" box since that runs underneath
+// everything — plus a separate, deliberately disconnected "Experimentation"
+// box off to the side for tools that never made it into the core stack.
+// Connectors are plain SVG lines with an arrowhead, using percentage
+// coordinates so no JS measurement or viewBox scaling is needed to stay
+// responsive.
 interface StackLayer {
   label: string;
-  items: string[];
+  items?: string[];
 }
 interface StackTier {
   layers: StackLayer[];
+  /**
+   * For the row whose layers feed the NEXT row down: group source-layer
+   * indices by which target layer (index into the next row) they connect
+   * to, instead of the default "every column talks to every column" bus.
+   * E.g. [[0,1],[2]] means layers 0 & 1 feed target 0, layer 2 feeds
+   * target 1 — used where the mapping is specific and blurring it into one
+   * shared bus would misrepresent it (Mobile/Web Users vs. Stakeholders).
+   */
+  connectorGroups?: number[][];
+}
+interface PreferredStack {
+  consumers: StackTier;
+  tiers: StackTier[];
+  infra: StackLayer;
+  experimentation?: StackLayer;
 }
 
-const preferredStack: StackTier[] = technologies.preferredStack ?? [];
+const preferredStack = (technologies.preferredStack as PreferredStack | undefined) ?? null;
 const connectorHeight = 28;
 
 function columnCenters(count: number) {
   return Array.from({ length: count }, (_, i) => ((i + 0.5) / count) * 100);
 }
 
-const connectors = preferredStack.slice(0, -1).map((tier, i) => {
-  const nextTier = preferredStack[i + 1];
-  const topXs = columnCenters(tier.layers.length);
-  const bottomXs = columnCenters(nextTier.layers.length);
+// Every row rendered top to bottom (consumers, then each inner tier), so
+// connectors can be generated uniformly between every adjacent pair.
+const allRows: StackTier[] = preferredStack ? [preferredStack.consumers, ...preferredStack.tiers] : [];
+
+const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map((row, i) => {
+  const nextRow = allRows[i + 1];
+  const topXs = columnCenters(row.layers.length);
+  const bottomXs = columnCenters(nextRow.layers.length);
+
+  if (row.connectorGroups) {
+    const groups = row.connectorGroups.map((sources, targetIdx) => {
+      const sourceXs = sources.map((idx) => topXs[idx]);
+      const targetX = bottomXs[targetIdx];
+      const allXs = [...sourceXs, targetX];
+      return { sourceXs, targetX, busX1: Math.min(...allXs), busX2: Math.max(...allXs) };
+    });
+    return { mode: 'grouped', groups };
+  }
+
   const allXs = [...topXs, ...bottomXs];
-  return {
-    topXs,
-    bottomXs,
-    midY: connectorHeight / 2,
-    busX1: Math.min(...allXs),
-    busX2: Math.max(...allXs),
-  };
+  return { mode: 'bus', topXs, bottomXs, busX1: Math.min(...allXs), busX2: Math.max(...allXs) };
 });
 ---
 
@@ -114,82 +142,78 @@ const connectors = preferredStack.slice(0, -1).map((tier, i) => {
       }
     </div>
 
-    {preferredStack.length > 0 && (
+    {preferredStack && (
       <>
         <p class="mb-3 mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
           My preferred stack
         </p>
         <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
-          <div class="mx-auto flex min-w-[16rem] max-w-md flex-col">
-            {preferredStack.map((tier, i) => (
-              <>
-                <div class="flex items-stretch gap-2">
-                  {tier.layers.map((layer) => (
-                    <div
-                      class={`flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] p-2.5 shadow-sm ${
-                        i === preferredStack.length - 1 ? 'border-dashed bg-[var(--color-bg)]' : 'bg-[var(--color-surface)]'
-                      }`}
-                    >
-                      <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
-                        {layer.label}
-                      </p>
-                      <div class="flex flex-wrap gap-1.5">
-                        {layer.items.map((name) => (
-                          <TechPill name={name} />
-                        ))}
-                      </div>
-                    </div>
+          <div class="mx-auto flex min-w-[20rem] max-w-xl flex-col">
+            <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
+            <div class="flex items-stretch gap-2">
+              {preferredStack.consumers.layers.map((layer) => (
+                <div class="flex flex-1 min-w-0 items-center justify-center rounded-lg border border-dashed border-[var(--color-muted)]/40 p-2.5 text-center">
+                  <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+                    {layer.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <StackConnector connector={connectors[0]} height={connectorHeight} arrowId="archArrow-0" />
+
+            <!-- Everything below runs on the same infra, drawn as one wrapping box. -->
+            <div class="rounded-xl border-2 border-dashed border-[var(--color-accent)]/40 p-3">
+              <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
+                  {preferredStack.infra.label}
+                </span>
+                <div class="flex flex-wrap justify-end gap-1.5">
+                  {(preferredStack.infra.items ?? []).map((name) => (
+                    <TechPill name={name} />
                   ))}
                 </div>
+              </div>
 
-                {i < connectors.length && (
-                  <svg width="100%" height={connectorHeight} class="block shrink-0" aria-hidden="true">
-                    <defs>
-                      <marker
-                        id={`archArrow-${i}`}
-                        markerWidth="6"
-                        markerHeight="6"
-                        refX="3"
-                        refY="3"
-                        orient="auto"
-                        class="fill-[var(--color-accent)]"
-                      >
-                        <path d="M0,0 L6,3 L0,6 Z" />
-                      </marker>
-                    </defs>
-                    {connectors[i].topXs.map((x) => (
-                      <line
-                        x1={`${x}%`}
-                        y1={0}
-                        x2={`${x}%`}
-                        y2={connectors[i].midY}
-                        class="stroke-[var(--color-border)]"
-                        stroke-width="1.5"
-                      />
-                    ))}
-                    <line
-                      x1={`${connectors[i].busX1}%`}
-                      y1={connectors[i].midY}
-                      x2={`${connectors[i].busX2}%`}
-                      y2={connectors[i].midY}
-                      class="stroke-[var(--color-border)]"
-                      stroke-width="1.5"
-                    />
-                    {connectors[i].bottomXs.map((x) => (
-                      <line
-                        x1={`${x}%`}
-                        y1={connectors[i].midY}
-                        x2={`${x}%`}
-                        y2={connectorHeight - 1}
-                        class="stroke-[var(--color-border)]"
-                        stroke-width="1.5"
-                        marker-end={`url(#archArrow-${i})`}
-                      />
-                    ))}
-                  </svg>
-                )}
-              </>
-            ))}
+              <div class="flex flex-col">
+                {preferredStack.tiers.map((tier, i) => (
+                  <>
+                    <div class="flex items-stretch gap-2">
+                      {tier.layers.map((layer) => (
+                        <div class="flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 shadow-sm">
+                          <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
+                            {layer.label}
+                          </p>
+                          <div class="flex flex-wrap gap-1.5">
+                            {(layer.items ?? []).map((name) => (
+                              <TechPill name={name} />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {i < preferredStack.tiers.length - 1 && (
+                      <StackConnector connector={connectors[i + 1]} height={connectorHeight} arrowId={`archArrow-${i + 1}`} />
+                    )}
+                  </>
+                ))}
+              </div>
+            </div>
+
+            {preferredStack.experimentation && (
+              <div class="mx-auto mt-6 w-full max-w-[14rem] rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-surface)]/30 p-2.5">
+                <p class="mb-1.5 truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+                  {preferredStack.experimentation.label}
+                  <span class="ml-1 font-normal normal-case text-[var(--color-muted)]/70">(not wired in)</span>
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  {(preferredStack.experimentation.items ?? []).map((name) => (
+                    <TechPill name={name} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </>

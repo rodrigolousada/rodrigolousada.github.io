@@ -119,3 +119,37 @@ here is missing exactly — say the word on any of these and I'll add it:
   same wording that's on the certificate).
 - **Done** — Inside a career stop's modal, Achievements now takes about 1/3
   of the width next to KPIs (was an even 50/50 split).
+
+
+-------
+
+- **Done** — "Looking for" is gone from the Hero; it now shows up as the
+  newest entry in the Projects timeline, right before Klarna: a dashed
+  "What's next" card with the same text, styled as an open/incomplete
+  project. Clicking it opens a pre-filled email to you instead of a modal.
+- **Done** — Icon quality pass, round two. Jenkins now uses the real
+  multi-color butler illustration (sourced from Devicon, MIT license)
+  instead of Simple Icons' flat single-color silhouette — this is the
+  actual fix for "Jenkins is a drawing but shows one color." Datadog was
+  left as-is: its real brand mark genuinely is a flat single-color
+  silhouette, so there was nothing to fix there. IBM Watson's stand-in icon
+  (it has no public brand mark to reproduce) was swapped from a blurry
+  single-color robot glyph to a crisp two-tone CPU chip, since the actual
+  complaint turned out to be legibility at small size rather than color.
+- **Done** — "My preferred stack" rebuilt with the full picture you asked
+  for: a "Consumers" row up top (Mobile Users, Web Users, Stakeholders),
+  with Power BI/Excel's Reporting layer specifically wired to Stakeholders
+  (Mobile/Web Users wire to Frontend) rather than a generic "everything
+  connects to everything" line. Infra (AWS, Docker, Terraform, plus Datadog
+  and Sentry moved in as cross-cutting observability) is now drawn as one
+  box wrapping the whole stack instead of its own tier. Added a new Data
+  Science layer (scikit-learn, Pandas, NumPy). Added a separate,
+  deliberately disconnected "Experimentation" box (Jupyter, TensorFlow,
+  Keras, k6) with no lines into the main diagram, for tools you use to try
+  things out rather than ones that are actually wired into the stack.
+- **Done** — Clifton Strengths pills now respond to hover instead of
+  requiring a click, and each balloon has a "See certificate →" link that
+  opens your actual CliftonStrengths certificate right on the site (same
+  pop-up pattern as the APC recommendation letter) — I generated the image
+  from the `CliftonStrengths.pdf` already in the repo, so no new file is
+  needed from you.

@@ -3,7 +3,7 @@ import site from '../data/site.json';
 import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
 import { icons } from '../data/icons';
-const { careerPath, careerPathMore, sideProjects } = site;
+const { careerPath, careerPathMore, sideProjects, about } = site;
 ---
 
 <section id="projects" class="mx-auto max-w-3xl px-6 py-14">
@@ -17,6 +17,33 @@ const { careerPath, careerPathMore, sideProjects } = site;
   </div>
 
   <div class="space-y-4">
+    <!-- "Looking for" reframed as the newest, still-open entry in the
+         timeline: a dashed project waiting for its next chapter. Clicking
+         it suggests emailing directly rather than opening a modal. -->
+    <div class="grid grid-cols-[1.5rem_1fr] gap-4">
+      <div class="relative">
+        <span class="absolute left-1/2 top-0 h-[calc(100%+1rem)] w-px -translate-x-1/2 bg-[var(--color-border)]" />
+        <span class="absolute left-1/2 top-1/2 z-10 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-bg)] ring-4 ring-[var(--color-bg)]" />
+      </div>
+      <a
+        href={`mailto:${site.site.email}?subject=${encodeURIComponent("Let's talk")}`}
+        class="group flex w-full items-center gap-4 rounded-xl border-2 border-dashed border-[var(--color-border)] bg-[var(--color-surface)]/60 p-4 text-left transition hover:border-[var(--color-accent)] sm:p-5"
+      >
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-[var(--color-muted)]/40 text-[var(--color-muted)] transition group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current">
+            <path d={icons.mail} />
+          </svg>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold text-[var(--color-text)]">What's next</p>
+          <p class="text-xs text-[var(--color-muted)]">{about.lookingFor}</p>
+        </div>
+        <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+          Let's talk →
+        </span>
+      </a>
+    </div>
+
     {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} />)}
 
     <details class="group/more">

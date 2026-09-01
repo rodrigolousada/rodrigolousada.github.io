@@ -1,0 +1,93 @@
+---
+// Connector lines drawn between two adjacent rows of the "My preferred
+// stack" diagram (TechStack.astro). Two shapes:
+//  - "bus": every column in the row above shares one horizontal bus down to
+//    every column in the row below (the original behavior — used when the
+//    relationship is genuinely many-to-many, or just not worth being
+//    precise about).
+//  - "grouped": explicit column-to-column groups, each drawn as its own
+//    little manifold (used where the mapping is meaningful and shouldn't
+//    read as "everything touches everything" — e.g. Mobile/Web Users feed
+//    the Frontend layer while Stakeholders feed Reporting, not the other
+//    way round).
+export interface BusConnector {
+  mode: 'bus';
+  topXs: number[];
+  bottomXs: number[];
+  busX1: number;
+  busX2: number;
+}
+export interface GroupedConnector {
+  mode: 'grouped';
+  groups: { sourceXs: number[]; targetX: number; busX1: number; busX2: number }[];
+}
+
+interface Props {
+  connector: BusConnector | GroupedConnector;
+  height: number;
+  arrowId: string;
+}
+
+const { connector, height, arrowId } = Astro.props;
+const midY = height / 2;
+---
+
+<svg width="100%" height={height} class="block shrink-0" aria-hidden="true">
+  <defs>
+    <marker id={arrowId} markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto" class="fill-[var(--color-accent)]">
+      <path d="M0,0 L6,3 L0,6 Z" />
+    </marker>
+  </defs>
+
+  {connector.mode === 'bus' ? (
+    <>
+      {connector.topXs.map((x) => (
+        <line x1={`${x}%`} y1={0} x2={`${x}%`} y2={midY} class="stroke-[var(--color-border)]" stroke-width="1.5" />
+      ))}
+      <line
+        x1={`${connector.busX1}%`}
+        y1={midY}
+        x2={`${connector.busX2}%`}
+        y2={midY}
+        class="stroke-[var(--color-border)]"
+        stroke-width="1.5"
+      />
+      {connector.bottomXs.map((x) => (
+        <line
+          x1={`${x}%`}
+          y1={midY}
+          x2={`${x}%`}
+          y2={height - 1}
+          class="stroke-[var(--color-border)]"
+          stroke-width="1.5"
+          marker-end={`url(#${arrowId})`}
+        />
+      ))}
+    </>
+  ) : (
+    connector.groups.map((g) => (
+      <>
+        {g.sourceXs.map((x) => (
+          <line x1={`${x}%`} y1={0} x2={`${x}%`} y2={midY} class="stroke-[var(--color-border)]" stroke-width="1.5" />
+        ))}
+        <line
+          x1={`${g.busX1}%`}
+          y1={midY}
+          x2={`${g.busX2}%`}
+          y2={midY}
+          class="stroke-[var(--color-border)]"
+          stroke-width="1.5"
+        />
+        <line
+          x1={`${g.targetX}%`}
+          y1={midY}
+          x2={`${g.targetX}%`}
+          y2={height - 1}
+          class="stroke-[var(--color-border)]"
+          stroke-width="1.5"
+          marker-end={`url(#${arrowId})`}
+        />
+      </>
+    ))
+  )}
+</svg>

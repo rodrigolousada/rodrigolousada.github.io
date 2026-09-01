@@ -75,6 +75,7 @@
       "Voicebots"
     ],
     "lookingFor": "Engineering Manager or Tech Lead roles, based in Berlin/EU or fully remote, ideally at a fintech or scale-up.",
+    "certificateImage": "/img/certificates/clifton-strengths-certificate.jpg",
     "strengths": [
       {
         "name": "Achiever",
@@ -1152,79 +1153,65 @@
         "category": "Infra & Tools"
       }
     ],
-    "preferredStack": [
-      {
+    "preferredStack": {
+      "consumers": {
         "layers": [
-          {
-            "label": "Frontend",
-            "items": [
-              "TypeScript",
-              "React"
-            ]
-          }
-        ]
+          { "label": "Mobile Users" },
+          { "label": "Web Users" },
+          { "label": "Stakeholders" }
+        ],
+        "connectorGroups": [[0, 1], [2]]
       },
-      {
-        "layers": [
-          {
-            "label": "Backend / API",
-            "items": [
-              "Python",
-              "FastAPI"
-            ]
-          }
-        ]
+      "tiers": [
+        {
+          "layers": [
+            {
+              "label": "Frontend",
+              "items": ["TypeScript", "React"]
+            },
+            {
+              "label": "Reporting",
+              "items": ["Power BI", "Excel"]
+            }
+          ]
+        },
+        {
+          "layers": [
+            {
+              "label": "Backend / API",
+              "items": ["Python", "FastAPI"]
+            }
+          ]
+        },
+        {
+          "layers": [
+            {
+              "label": "Data",
+              "items": ["Kafka", "OpenSearch"]
+            },
+            {
+              "label": "Storage",
+              "items": ["PostgreSQL", "RDS", "Neo4j"]
+            },
+            {
+              "label": "AI / LLMs",
+              "items": ["GenAI / LLMs", "LangChain"]
+            },
+            {
+              "label": "Data Science",
+              "items": ["scikit-learn", "Pandas", "NumPy"]
+            }
+          ]
+        }
+      ],
+      "infra": {
+        "label": "Infra",
+        "items": ["AWS", "Docker", "Terraform", "Datadog", "Sentry"]
       },
-      {
-        "layers": [
-          {
-            "label": "Data",
-            "items": [
-              "Kafka",
-              "OpenSearch"
-            ]
-          },
-          {
-            "label": "Storage",
-            "items": [
-              "PostgreSQL",
-              "RDS",
-              "Neo4j"
-            ]
-          },
-          {
-            "label": "AI / LLMs",
-            "items": [
-              "GenAI / LLMs",
-              "LangChain"
-            ]
-          }
-        ]
-      },
-      {
-        "layers": [
-          {
-            "label": "Analytics / Monitoring / Reporting",
-            "items": [
-              "Datadog",
-              "Sentry",
-              "Power BI"
-            ]
-          }
-        ]
-      },
-      {
-        "layers": [
-          {
-            "label": "Infra",
-            "items": [
-              "AWS",
-              "Docker",
-              "Terraform"
-            ]
-          }
-        ]
+      "experimentation": {
+        "label": "Experimentation",
+        "items": ["Jupyter", "TensorFlow", "Keras", "k6"]
       }
-    ]
+    }
   }
 }
