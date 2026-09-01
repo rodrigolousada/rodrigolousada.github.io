@@ -15,6 +15,12 @@ const { contact } = site;
   </div>
 
   <p class="max-w-xl text-[var(--color-muted)]">{contact.intro}</p>
+  <a
+    href={site.site.cvPath}
+    class="mt-2 inline-block text-sm font-medium text-[var(--color-muted)] underline decoration-[var(--color-border)] underline-offset-4 transition hover:text-[var(--color-text)]"
+  >
+    Download my CV
+  </a>
 
   <div id="card-grid" class="mt-8 grid grid-cols-1 gap-5 [perspective:1200px] sm:grid-cols-2">
     <!-- Personal card -->

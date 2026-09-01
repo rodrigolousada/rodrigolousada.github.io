@@ -48,12 +48,17 @@ const groups = [
                 // its neighbor, reading as "less spacing" than everywhere else.
                 // Baking the scale into the actual height keeps the real layout
                 // box in sync with what's drawn, so every gap stays even.
+                //
+                // Mobile base size below is 2/3 of what it used to be (1rem vs
+                // the prior 1.5rem) — this whole row is a low-priority "as seen
+                // in" credibility strip, not worth a big chunk of a phone
+                // screen. Unchanged at sm+.
                 const logoImg = (
                   <img
                     src={org.logo}
                     alt={org.name}
                     title={org.program ? undefined : org.name}
-                    class={`h-[calc(1.5rem*var(--logo-scale))] w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-[calc(1.75rem*var(--logo-scale))] ${org.alreadyWhite ? '' : 'invert'}`}
+                    class={`h-[calc(1rem*var(--logo-scale))] w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-[calc(1.75rem*var(--logo-scale))] ${org.alreadyWhite ? '' : 'invert'}`}
                     style={`--logo-scale: ${org.logoScale ?? 1};`}
                   />
                 );

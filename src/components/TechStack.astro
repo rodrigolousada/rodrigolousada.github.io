@@ -119,9 +119,9 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
 
 <dialog
   id={modalId}
-  class="m-auto w-[min(94vw,54rem)] max-h-[85vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  class="flex h-dvh w-full max-w-full flex-col rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
 >
-  <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+  <div class="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
     <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">All Technologies</p>
     <form method="dialog">
       <button
@@ -132,7 +132,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
       </button>
     </form>
   </div>
-  <div class="max-h-[calc(85vh-4rem)] overflow-y-auto p-6">
+  <div class="min-h-0 flex-1 overflow-y-auto p-6">
     <div class="relative mb-4">
       <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-[var(--color-muted)]">
         <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5L20.5 19l-5-5zm-6 0a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />

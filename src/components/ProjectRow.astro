@@ -100,11 +100,22 @@ function formatNewsDate(date: string) {
 
   <dialog
     id={modalId}
-    class="m-auto w-[min(92vw,40rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+    class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
   >
-    <div class="overflow-hidden rounded-xl">
+    <div class="overflow-hidden rounded-none sm:rounded-xl">
       <div class="relative flex items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)] px-6 py-4">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
+          <!-- This modal only ever opens from inside a career-stop modal
+               that's still open underneath it, so closing this one (same
+               action as the ✕) reads better labeled as "back" here. -->
+          <form method="dialog">
+            <button
+              aria-label="Back to the career stop"
+              class="flex h-7 items-center gap-1 rounded-full bg-[var(--color-border)] px-2.5 font-mono text-xs text-[var(--color-text)] transition hover:brightness-125"
+            >
+              ← Back
+            </button>
+          </form>
           {
             project.isSideProject ? (
               <span class="rounded-full border border-[var(--color-border)] px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">

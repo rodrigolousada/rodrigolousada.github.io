@@ -78,9 +78,9 @@ const qrCodeSvg = project.appDownloadUrl
 
   <dialog
     id={modalId}
-    class="m-auto w-[min(92vw,40rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+    class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
   >
-    <div class="overflow-hidden rounded-xl">
+    <div class="overflow-hidden rounded-none sm:rounded-xl">
       <div class={`cartridge-shell relative flex items-center justify-between px-6 py-5 ${project.shellColor}`}>
         <div class="relative z-10">
           <p class="font-pixel text-xs text-white">{project.title}</p>

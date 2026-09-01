@@ -48,8 +48,12 @@ const uid = Math.random().toString(36).slice(2, 8);
           .phone-anim-${uid} { animation: none !important; opacity: 1 !important; }
         }
       `} />
-      <div class="flex items-center justify-center gap-10">
-        <div class="relative w-40 shrink-0">
+      <!-- Two fixed-width phones + gaps need 432px at the original w-40/gap-10
+           sizing — comfortably inside a desktop dialog, but wider than a
+           phone screen has room for even edge to edge. Narrower frames and
+           tighter gaps below sm bring that down to a size that actually fits. -->
+      <div class="flex items-center justify-center gap-4 sm:gap-10">
+        <div class="relative w-28 shrink-0 sm:w-40">
           <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
             <div
               class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}
@@ -82,7 +86,7 @@ const uid = Math.random().toString(36).slice(2, 8);
           </svg>
         </div>
 
-        <div class="relative w-40 shrink-0">
+        <div class="relative w-28 shrink-0 sm:w-40">
           <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
             <div
               class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}

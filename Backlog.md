@@ -268,3 +268,26 @@ here is missing exactly — say the word on any of these and I'll add it:
 - **Done** — That same "What's next" card now scrolls to Get In Touch
   (`#contact`) instead of opening an email client directly — the actual
   email is still one click away from there.
+
+-------
+
+- **Done** — "Associated with" logo strip (worked at / clients / studied
+  at) is 2/3 its previous size on phones — it's a low-priority credibility
+  strip, not worth a big chunk of a phone screen. Unchanged at sm+.
+- **Done** — Added a small "Download my CV" link under the Get In Touch
+  intro, next to the two contact cards.
+- **Done** — Every dialog (Technologies, career stops, side-project
+  cartridges, and the nested project modal inside a career stop) now goes
+  full-screen on phones — edge to edge, no rounded corners or margin —
+  instead of a centered card with wasted space around it. Unchanged at
+  sm+ (still the centered card).
+- **Done** — The project modal that opens from inside a career-stop modal
+  (a "popup inside a popup") now has a "← Back" button in its top-left
+  corner alongside the usual ✕ — since the career-stop modal is still open
+  underneath it, closing this one reads better labeled as going back to it.
+- **Found and fixed along the way**: going full-screen on phones exposed a
+  pre-existing bug in the two-phone "handoff" demo mockup (used by the
+  Klarna Referral Program project) — its fixed-width phone frames needed
+  432px and had nowhere to go on a phone, spilling off both edges. Narrower
+  frames and a tighter gap below the sm breakpoint fix it; unchanged at
+  sm+.
