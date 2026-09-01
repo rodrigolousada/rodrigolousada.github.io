@@ -192,3 +192,27 @@ here is missing exactly — say the word on any of these and I'll add it:
 - **Done** — "Studied at" balloons can now show an optional grade line
   under the program — see the Blocked section above, need real numbers
   from you before any actually show up.
+
+
+-------
+
+- **Done** — "I lead developers that ship" now fits on one line from the
+  sm breakpoint up (was breaking after "that", stranding "ship" alone) —
+  sized down a notch specifically at sm/md, measured against the actual
+  column width so it holds one line without shrinking the mobile size.
+- **Done** — Added a search bar to the "All Technologies" pop-up's full
+  list — typing filters the badges live and hides any category with no
+  match, so it stays usable as the list grows.
+- **Done** — Fixed a real overflow bug in the "My preferred stack" diagram:
+  at the previous width, "OpenSearch"'s badge spilled a couple pixels past
+  its box. Widened the whole diagram (max-w-xl → max-w-2xl) so every row,
+  including Data/Storage/AI/LLMs/Data Science, has enough room.
+- **Done** — Backend's Python/Node.js options now live inside one shared
+  box (labelled "Backend", with an "or" badge between the two) instead of
+  two separate boxes glued together — reads as "one decision, two ways."
+- **Done** — Reporting no longer visually feeds through Backend. Split what
+  used to be the "Data" layer into its own "Data Pipeline" box (Kafka,
+  OpenSearch) sitting next to Backend, and rewired the diagram so Frontend
+  feeds Backend while Reporting feeds Data Pipeline specifically — matches
+  how Power BI/Excel actually get their numbers (off the data pipeline,
+  not the live API).

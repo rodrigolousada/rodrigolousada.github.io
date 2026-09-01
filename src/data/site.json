@@ -1140,27 +1140,26 @@
               "label": "Reporting",
               "items": ["Power BI", "Excel"]
             }
-          ]
+          ],
+          "connectorGroups": [[0], [1]]
         },
         {
-          "relation": "or",
           "layers": [
             {
-              "label": "Backend · Python",
-              "items": ["Python", "FastAPI"]
+              "label": "Backend",
+              "options": [
+                { "label": "Python", "items": ["Python", "FastAPI"] },
+                { "label": "Node.js", "items": ["Node.js", "TypeScript"] }
+              ]
             },
             {
-              "label": "Backend · Node.js",
-              "items": ["Node.js", "TypeScript"]
+              "label": "Data Pipeline",
+              "items": ["Kafka", "OpenSearch"]
             }
           ]
         },
         {
           "layers": [
-            {
-              "label": "Data",
-              "items": ["Kafka", "OpenSearch"]
-            },
             {
               "label": "Storage",
               "items": ["PostgreSQL", "RDS", "Neo4j"]

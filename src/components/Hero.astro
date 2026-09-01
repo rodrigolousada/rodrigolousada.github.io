@@ -111,7 +111,13 @@ const cities = hero.cities.map((city, i) => {
       </div>
     </div>
 
-    <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:text-5xl md:text-6xl">
+    <!-- "I lead developers that ship" was breaking after "that" at the sm/md
+         sizes below (a lone "ship" stranded on its own line) — the 6xl step
+         was simply wider than the max-w-3xl column has room for. Sized down
+         a notch at sm/md specifically (measured against the actual column
+         width) so the headline holds one line from sm up; it still wraps
+         naturally on the smallest phones, which reads fine there. -->
+    <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:whitespace-nowrap sm:text-[2.75rem] md:text-[3.5rem]">
       {hero.headline}
     </h1>
 

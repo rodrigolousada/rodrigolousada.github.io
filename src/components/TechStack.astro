@@ -42,6 +42,11 @@ const compactItems = recentItems.length > 0 ? recentItems : technologies.items;
 interface StackLayer {
   label: string;
   items?: string[];
+  /** Alternative sub-options shown together inside this one box, joined by
+   * an "or" badge (e.g. Backend is either Python or Node.js) — used instead
+   * of splitting them into separate layers so they read as "one decision,
+   * two ways" rather than two things wired in at once. */
+  options?: { label: string; items?: string[] }[];
 }
 interface StackTier {
   layers: StackLayer[];
@@ -51,13 +56,10 @@ interface StackTier {
    * to, instead of the default "every column talks to every column" bus.
    * E.g. [[0,1],[2]] means layers 0 & 1 feed target 0, layer 2 feeds
    * target 1 — used where the mapping is specific and blurring it into one
-   * shared bus would misrepresent it (Mobile/Web Users vs. Stakeholders).
+   * shared bus would misrepresent it (Mobile/Web Users vs. Stakeholders;
+   * Frontend feeds Backend while Reporting feeds the Data Pipeline instead).
    */
   connectorGroups?: number[][];
-  /** When set, layers in this tier are alternatives rather than parts of
-   * one combined stack — an "or" badge is drawn between them instead of
-   * just a gap (e.g. "Backend · Python" or "Backend · Node.js"). */
-  relation?: 'or';
 }
 interface PreferredStack {
   consumers: StackTier;
@@ -131,10 +133,21 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     </form>
   </div>
   <div class="max-h-[calc(85vh-4rem)] overflow-y-auto p-6">
+    <div class="relative mb-4">
+      <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-[var(--color-muted)]">
+        <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5L20.5 19l-5-5zm-6 0a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />
+      </svg>
+      <input
+        type="search"
+        id="tech-search"
+        placeholder="Search technologies…"
+        class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 pl-9 pr-3 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)]"
+      />
+    </div>
     <div class="space-y-4">
       {
         allGroups.map((group) => (
-          <div>
+          <div data-tech-category>
             <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
             <div class="flex flex-wrap gap-1.5">
               {group.items.map((item) => (
@@ -145,6 +158,9 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         ))
       }
     </div>
+    <p id="tech-search-empty" class="mt-4 hidden text-center text-sm text-[var(--color-muted)]">
+      No technologies match your search.
+    </p>
 
     {preferredStack && (
       <>
@@ -152,7 +168,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
           My preferred stack
         </p>
         <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
-          <div class="mx-auto flex min-w-[20rem] max-w-xl flex-col">
+          <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
             <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
             <div class="flex items-stretch gap-2">
               {preferredStack.consumers.layers.map((layer) => (
@@ -183,26 +199,41 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                 {preferredStack.tiers.map((tier, i) => (
                   <>
                     <div class="flex items-stretch gap-2">
-                      {tier.layers.map((layer, li) => (
-                        <>
-                          {li > 0 && tier.relation === 'or' && (
-                            <div class="flex shrink-0 items-center">
-                              <span class="rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide text-[var(--color-muted)]">
-                                or
-                              </span>
+                      {tier.layers.map((layer) => (
+                        <div class="flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 shadow-sm">
+                          <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
+                            {layer.label}
+                          </p>
+                          {layer.options ? (
+                            <div class="flex flex-wrap items-center gap-2">
+                              {layer.options.map((opt, oi) => (
+                                <>
+                                  {oi > 0 && (
+                                    <span class="shrink-0 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide text-[var(--color-muted)]">
+                                      or
+                                    </span>
+                                  )}
+                                  <div class="flex flex-col gap-1">
+                                    <p class="text-[9px] font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                                      {opt.label}
+                                    </p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                      {(opt.items ?? []).map((name) => (
+                                        <TechPill name={name} />
+                                      ))}
+                                    </div>
+                                  </div>
+                                </>
+                              ))}
                             </div>
-                          )}
-                          <div class="flex flex-1 min-w-0 flex-col gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5 shadow-sm">
-                            <p class="truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
-                              {layer.label}
-                            </p>
+                          ) : (
                             <div class="flex flex-wrap gap-1.5">
                               {(layer.items ?? []).map((name) => (
                                 <TechPill name={name} />
                               ))}
                             </div>
-                          </div>
-                        </>
+                          )}
+                        </div>
                       ))}
                     </div>
 
@@ -233,3 +264,33 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     )}
   </div>
 </dialog>
+
+<script>
+  // Filters the flat "All Technologies" grid only — the preferred-stack
+  // diagram below it is a fixed architecture picture, not a list, so it
+  // stays put regardless of the search term.
+  const searchInput = document.getElementById('tech-search') as HTMLInputElement | null;
+  const emptyMessage = document.getElementById('tech-search-empty');
+  const categories = document.querySelectorAll<HTMLElement>('[data-tech-category]');
+
+  searchInput?.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+    let anyVisible = false;
+
+    categories.forEach((category) => {
+      let categoryHasMatch = false;
+      category.querySelectorAll<HTMLElement>('[data-tech-name]').forEach((pill) => {
+        const match = !query || (pill.dataset.techName ?? '').includes(query);
+        // Inline style, not the `hidden` class — the pill already carries the
+        // `inline-flex` display utility, which wins over `hidden` in
+        // Tailwind's cascade and would leave it visible.
+        pill.style.display = match ? '' : 'none';
+        if (match) categoryHasMatch = true;
+      });
+      category.classList.toggle('hidden', !categoryHasMatch);
+      if (categoryHasMatch) anyVisible = true;
+    });
+
+    emptyMessage?.classList.toggle('hidden', anyVisible);
+  });
+</script>
