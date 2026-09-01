@@ -147,11 +147,15 @@ const cities = hero.cities.map((city, i) => {
       </a>
     </div>
 
-    <dl class="mt-16 grid grid-cols-1 gap-6 border-t border-[var(--color-border)] pt-10 sm:grid-cols-3">
+    <!-- Numbers sized down a step on phones specifically — at text-3xl,
+         stacked one per row (grid-cols-1 below sm), the three stats ate a
+         big chunk of the fold for what's supporting detail, not the
+         headline. Tighter margins/gap alongside it for the same reason. -->
+    <dl class="mt-10 grid grid-cols-1 gap-4 border-t border-[var(--color-border)] pt-6 sm:mt-16 sm:gap-6 sm:pt-10 sm:grid-cols-3">
       {
         hero.stats.map((stat) => (
           <div>
-            <dt class="text-3xl font-bold text-[var(--color-text)]">{stat.value}</dt>
+            <dt class="text-2xl font-bold text-[var(--color-text)] sm:text-3xl">{stat.value}</dt>
             <dd class="mt-1 text-sm text-[var(--color-muted)]">{stat.label}</dd>
           </div>
         ))

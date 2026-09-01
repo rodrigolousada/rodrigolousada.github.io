@@ -248,3 +248,23 @@ here is missing exactly — say the word on any of these and I'll add it:
   mid-flip, not a real rendering bug; the Watch/iPhone demo mockups being
   different sizes and bottom-aligned is the intended design, not a layout
   bug.
+
+-------
+
+- **Done** — Hero's three stat numbers ("4-6", "2x", "70%") are a size
+  smaller on phones specifically, with tighter margins/gaps around them —
+  they were eating a lot of the fold for supporting detail, not the
+  headline. Desktop is untouched (still text-3xl at the old spacing).
+- **Done** — "My preferred stack" diagram no longer shows on phones at all
+  (hidden below the sm breakpoint) — it's a nice-to-have, and even widened
+  it needs more room than a phone gives it. Desktop unaffected.
+- **Done** — Career-stop rows (Klarna, IBM Consulting, etc.): the period
+  now always breaks onto its own line under the org name on phones,
+  instead of wrapping wherever it ran out of horizontal room — which had
+  been splitting mid-date ("· 2018" / "– 2020" on separate lines) for the
+  longer org names. Desktop keeps org and period on one line as before.
+- **Done** — "What's next" → "What's next?" and dropped the ", ideally at
+  a fintech or scale-up" qualifier from the blurb beside it.
+- **Done** — That same "What's next" card now scrolls to Get In Touch
+  (`#contact`) instead of opening an email client directly — the actual
+  email is still one click away from there.

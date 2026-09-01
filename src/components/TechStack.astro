@@ -163,14 +163,13 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     </p>
 
     {preferredStack && (
-      <>
-        <p class="mb-3 mt-6 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-          <span>My preferred stack</span>
-          <!-- The diagram below is wider than a phone screen can show at
-               once (each tier box needs real room for its tech pills), so
-               it scrolls horizontally inside its own border — this hint
-               only needs to exist where that isn't obvious at a glance. -->
-          <span class="normal-case tracking-normal text-[var(--color-muted)]/60 sm:hidden">↔ scroll to see all</span>
+      // Hidden below sm: it's a nice-to-have architecture diagram, not core
+      // content, and even with the wider tier boxes it needs more room than
+      // a phone screen gives it — happier not shown at all there than shown
+      // as a squeezed, scroll-to-explore box.
+      <div class="hidden sm:block">
+        <p class="mb-3 mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+          My preferred stack
         </p>
         <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
           <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
@@ -272,7 +271,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
             )}
           </div>
         </div>
-      </>
+      </div>
     )}
   </div>
 </dialog>

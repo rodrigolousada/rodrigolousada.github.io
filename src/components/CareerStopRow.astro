@@ -75,7 +75,15 @@ const { stop, modalId, showLine = true } = Astro.props;
 
       <div class="min-w-0 flex-1">
         <p class="font-semibold text-[var(--color-text)]">{stop.title}</p>
-        <p class="text-xs text-[var(--color-muted)]">{stop.org} · {stop.period}</p>
+        <p class="text-xs text-[var(--color-muted)]">
+          {stop.org}
+          <!-- Block below sm, not left to wrap inline: on narrow screens a
+               long org name (e.g. "Instituto de Telecomunicações") pushed
+               this onto multiple lines anyway, and plain word-wrap was
+               splitting mid-date ("· 2018" / "– 2020") wherever it ran out
+               of room. Forcing the period onto its own line keeps it whole. -->
+          <span class="block sm:inline">· {stop.period}</span>
+        </p>
       </div>
 
       <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
