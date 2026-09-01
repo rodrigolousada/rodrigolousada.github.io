@@ -117,9 +117,16 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
   )}
 </div>
 
+<!-- `open:flex`, not a bare `flex`, on this dialog: an unconditional
+     `display` utility on <dialog> itself beats the browser's own
+     `dialog { display: none }` once closed (Tailwind's class outranks
+     that bare type-selector rule), so the dialog stayed rendered on
+     screen after .close() — even with the `open` attribute gone. Scoping
+     it to the `open:` variant only ever sets `display` while `[open]` is
+     present, so the UA rule is free to hide it the rest of the time. -->
 <dialog
   id={modalId}
-  class="flex h-dvh w-full max-w-full flex-col rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
+  class="open:flex h-dvh w-full max-w-full flex-col rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
 >
   <div class="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
     <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">All Technologies</p>

@@ -291,3 +291,17 @@ here is missing exactly — say the word on any of these and I'll add it:
   432px and had nowhere to go on a phone, spilling off both edges. Narrower
   frames and a tighter gap below the sm breakpoint fix it; unchanged at
   sm+.
+
+-------
+
+- **Fixed a regression from the full-screen-dialog round**: closing the
+  Technologies "View more" pop-up stopped actually hiding it — the ✕ (and
+  Escape) still marked the dialog closed, but it stayed fully visible and
+  laid out on screen. Cause: making that one dialog `flex` (for the
+  sticky-header layout) put a `display` utility directly on the `<dialog>`
+  element, which outranks the browser's own `dialog { display: none }`
+  rule once `open` is removed — none of the other pop-ups were touched
+  this way, so this was isolated to the Technologies one. Fixed by scoping
+  it to Tailwind's `open:flex` variant instead, which only sets `display`
+  while the dialog is actually open. Verified open + close by hand and via
+  script on all four dialog types; only Technologies was ever affected.
