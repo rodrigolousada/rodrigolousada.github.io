@@ -35,7 +35,7 @@
   "hero": {
     "name": "Rodrigo Lousada",
     "roleLine": "Software Engineer @ Klarna · Berlin, Germany",
-    "headline": "I lead teams that ship!",
+    "headline": "I lead developers that ship",
     "stats": [
       {
         "value": "4–6",
@@ -76,11 +76,26 @@
     ],
     "lookingFor": "Engineering Manager or Tech Lead roles, based in Berlin/EU or fully remote, ideally at a fintech or scale-up.",
     "strengths": [
-      "Achiever",
-      "Futuristic",
-      "Learner",
-      "Individualization",
-      "Ideation"
+      {
+        "name": "Achiever",
+        "description": "People exceptionally talented in the Achiever theme work hard and possess a great deal of stamina. They take immense satisfaction in being busy and productive."
+      },
+      {
+        "name": "Futuristic",
+        "description": "People exceptionally talented in the Futuristic theme are inspired by the future and what could be. They energize others with their visions of the future."
+      },
+      {
+        "name": "Learner",
+        "description": "People exceptionally talented in the Learner theme have a great desire to learn and want to continuously improve. In particular, the process of learning, rather than the outcome, excites them."
+      },
+      {
+        "name": "Individualization",
+        "description": "People exceptionally talented in the Individualization theme are intrigued with the unique qualities of each person. They have a gift for figuring out how different people can work together productively."
+      },
+      {
+        "name": "Ideation",
+        "description": "People exceptionally talented in the Ideation theme are fascinated by ideas. They are able to find connections between seemingly disparate phenomena."
+      }
     ]
   },
   "companies": {
@@ -708,6 +723,19 @@
   ],
   "sideProjects": [
     {
+      "title": "Magic Mirror",
+      "subtitle": "Smart mirror · Raspberry Pi",
+      "description": "A smart mirror built from scratch at home: a Raspberry Pi and an old monitor sit behind two-way mirror glass, running the open-source MagicMirror² platform to surface a personal dashboard right on the glass. Built from cheap, mostly repurposed materials for well under €50 all in.",
+      "technologies": [
+        "Raspberry Pi",
+        "Node.js",
+        "JavaScript"
+      ],
+      "demoPlaceholders": ["Photo", "Video"],
+      "shellColor": "bg-cyan-600",
+      "labelColor": "bg-cyan-50"
+    },
+    {
       "title": "CourtKit",
       "subtitle": "Watch-first basketball training app",
       "description": "A Watch-first basketball training app: the Apple Watch app captures shooting drills, timed and clocked drills, and live game stats through a 14-spot interactive court diagram, while the iPhone app reviews it all with a shooting heat map, trend charts, and searchable history. Built entirely in SwiftUI with bidirectional sync between Watch and iPhone via WatchConnectivity.",
@@ -936,21 +964,41 @@
         "recent": true
       },
       {
+        "name": "React Native",
+        "category": "Frameworks & Libraries",
+        "recent": true
+      },
+      {
+        "name": "Node.js",
+        "category": "Frameworks & Libraries",
+        "recent": true
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Frameworks & Libraries",
+        "recent": true
+      },
+      {
         "name": "Python",
         "category": "Languages",
         "recent": true
       },
       {
         "name": "FastAPI",
-        "category": "Frameworks & Libraries"
+        "category": "Frameworks & Libraries",
+        "recent": true
       },
       {
         "name": "Neo4j",
+        "category": "Data & Databases"
+      },
+      {
+        "name": "PostgreSQL",
         "category": "Data & Databases",
         "recent": true
       },
       {
-        "name": "PostgreSQL",
+        "name": "RDS",
         "category": "Data & Databases",
         "recent": true
       },
@@ -961,8 +1009,7 @@
       },
       {
         "name": "OpenSearch",
-        "category": "Data & Databases",
-        "recent": true
+        "category": "Data & Databases"
       },
       {
         "name": "AWS",
@@ -975,8 +1022,7 @@
       },
       {
         "name": "Terraform",
-        "category": "Infra & Tools",
-        "recent": true
+        "category": "Infra & Tools"
       },
       {
         "name": "Jenkins",
@@ -989,9 +1035,18 @@
         "recent": true
       },
       {
-        "name": "k6",
+        "name": "Sentry",
         "category": "Infra & Tools",
         "recent": true
+      },
+      {
+        "name": "SentinelOne",
+        "category": "Infra & Tools",
+        "recent": true
+      },
+      {
+        "name": "k6",
+        "category": "Infra & Tools"
       },
       {
         "name": "GenAI / LLMs",
@@ -1085,7 +1140,8 @@
       },
       {
         "name": "Docker",
-        "category": "Infra & Tools"
+        "category": "Infra & Tools",
+        "recent": true
       },
       {
         "name": "Power BI",
@@ -1124,9 +1180,16 @@
           {
             "label": "Data",
             "items": [
-              "PostgreSQL",
               "Kafka",
               "OpenSearch"
+            ]
+          },
+          {
+            "label": "Storage",
+            "items": [
+              "PostgreSQL",
+              "RDS",
+              "Neo4j"
             ]
           },
           {
@@ -1134,6 +1197,18 @@
             "items": [
               "GenAI / LLMs",
               "LangChain"
+            ]
+          }
+        ]
+      },
+      {
+        "layers": [
+          {
+            "label": "Analytics / Monitoring / Reporting",
+            "items": [
+              "Datadog",
+              "Sentry",
+              "Power BI"
             ]
           }
         ]

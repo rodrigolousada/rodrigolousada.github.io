@@ -4,7 +4,7 @@
 // see letterImage.
 import site from '../data/site.json';
 import { icons } from '../data/icons';
-const { testimonial } = site;
+const { testimonial, about } = site;
 const modalId = 'apc-letter';
 ---
 
@@ -49,6 +49,46 @@ const modalId = 'apc-letter';
       </footer>
     </div>
   </button>
+
+  <div class="mt-8">
+    <p class="mb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+      My Clifton Strengths
+    </p>
+    <div class="flex flex-wrap items-center gap-2">
+      {
+        about.strengths.map((s, i) => (
+          <div class="relative inline-block">
+            <button
+              type="button"
+              class="strength-marker cursor-pointer rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-text)]"
+              aria-expanded="false"
+              aria-label={`Show details for ${s.name}`}
+              data-strength-toggle={`strength-popup-${i}`}
+            >
+              {s.name}
+            </button>
+
+            <div
+              id={`strength-popup-${i}`}
+              role="dialog"
+              class="strength-popup pointer-events-auto absolute bottom-full left-1/2 z-50 mb-3 hidden w-64 -translate-x-1/2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-left shadow-xl"
+            >
+              <button
+                type="button"
+                aria-label="Close"
+                class="absolute right-2 top-2 cursor-pointer text-[var(--color-muted)] transition hover:text-[var(--color-text)]"
+                data-strength-close={`strength-popup-${i}`}
+              >
+                ✕
+              </button>
+              <p class="pr-4 text-xs font-semibold text-[var(--color-accent)]">{s.name}</p>
+              <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{s.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </section>
 
 {testimonial.letterImage && (
@@ -90,3 +130,43 @@ const modalId = 'apc-letter';
     </div>
   </dialog>
 )}
+
+<script>
+  // Clifton Strengths pills: click one to show a balloon with the theme's
+  // official CliftonStrengths description (same wording as the certificate),
+  // same toggle/close/outside-click pattern as the study-popups in
+  // Organizations.astro.
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-strength-toggle]');
+  const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-strength-close]');
+
+  function closeAll() {
+    document.querySelectorAll<HTMLElement>('.strength-popup').forEach((popup) => {
+      popup.classList.add('hidden');
+    });
+    toggles.forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+  }
+
+  toggles.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.strengthToggle;
+      if (!id) return;
+      const popup = document.getElementById(id);
+      const wasOpen = popup ? !popup.classList.contains('hidden') : false;
+      closeAll();
+      if (popup && !wasOpen) {
+        popup.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAll();
+    });
+  });
+
+  document.addEventListener('click', () => closeAll());
+</script>

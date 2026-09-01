@@ -21,10 +21,13 @@ const allGroups = groupByCategory([...technologies.items, ...(technologies.extra
 const modalId = 'technologies-more';
 
 // Compact "About" view only surfaces what's actually current, flagged per
-// item via `recent` in site.json — everything else (recent or not) still
-// shows up in the full "View more" breakdown above. Falls back to showing
-// everything if nothing is flagged, so this never silently renders empty.
-const recentItems = technologies.items.filter((item) => item.recent);
+// item via `recent` in site.json — checked across both `items` and `extra`
+// so a technology doesn't need to live in `items` just to show up here.
+// Everything else (recent or not) still shows up in the full "View more"
+// breakdown above. Falls back to showing everything if nothing is flagged,
+// so this never silently renders empty.
+const allTechs = [...technologies.items, ...(technologies.extra ?? [])];
+const recentItems = allTechs.filter((item) => item.recent);
 const compactItems = recentItems.length > 0 ? recentItems : technologies.items;
 
 // "My preferred stack" mini architecture diagram: a top-to-bottom stack of

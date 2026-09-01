@@ -74,6 +74,48 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 -------
 
-- I want you to add a new side project called Magic Mirror, check the public repo on git. I won't provide any code for it, but I will provide a video and picture maybe. This way you can explain that I assemble my own Magic Mirror at home, and then using a Raspberry Pi, an old monitor, and some cheap material, all under 50€. Also, you can add a list of my favorite MMM-Modules, which I will provide later.
-- On technologies: My recent skills should be: AWS, Typescript (with zod), React, React Native, Node.js, TailwindCSS, Python, FastAPI, Kafka, RDS, PostegreSQL, Jenkins, Datadog, Docker, SentinelOne, Sentry.
-- For my favorite stack, you are not including analytics, monitoring and/or reporting as sections. therefore this is not compelte. I also want to separate data from storage. 
+- **Done** — Headline changed to "I lead developers that ship" (dropped the
+  exclamation). The bio paragraph under it is now justified and a bit wider
+  so it doesn't wrap onto a new line so early.
+- **Done** — Technologies "recent" set now matches exactly what you listed:
+  AWS, TypeScript, React, React Native, Node.js, Tailwind CSS, Python,
+  FastAPI, Kafka, RDS, PostgreSQL, Jenkins, Datadog, Docker, SentinelOne,
+  Sentry. Added React Native, Node.js, Tailwind CSS, RDS, and SentinelOne as
+  new technologies (they didn't exist on the site before); also fixed a bug
+  where a tech only showed in the compact "recent" row if it lived in the
+  `items` list specifically — `extra` is now checked too.
+- **Done** — Tech icons: added the real (missing) Docker logo, plus Node.js,
+  Tailwind CSS, Sentry, React Native, and Raspberry Pi. RDS and SentinelOne
+  have no official open-license mark anywhere, so those use a generic
+  database/shield icon tinted their brand color, same approach already used
+  for AWS/IBM. Also found and fixed the actual bug behind "some are just
+  grey" — the grey fallback was triggering off raw color darkness instead of
+  actual contrast against the pill's background, wrongly greying out
+  Datadog's purple, Terraform, OpenSearch, and WikiData even though they're
+  perfectly readable; it now only kicks in for genuinely low-contrast marks
+  (Kafka, GitHub, Flask, Three.js, Pandas, LangChain, Sentry). Note on
+  Jenkins specifically: that colored butler-head "drawing" you're picturing
+  doesn't exist as an open-license asset — Simple Icons (the source for
+  every brand mark here) only publishes single-color silhouettes, and that
+  red one is the official Jenkins mark as published. If you want it to look
+  more like the plaid butler, that'd mean sourcing (or drawing) a bespoke
+  multi-color asset for just that one icon — happy to if it's worth it to
+  you.
+- **Done** — "My preferred stack" now has Storage split out from Data
+  (PostgreSQL/RDS/Neo4j vs. Kafka/OpenSearch), plus a new Analytics /
+  Monitoring / Reporting tier (Datadog, Sentry, Power BI) between that and
+  Infra.
+- **Done** — Added "Magic Mirror" as a side project: built at home with a
+  Raspberry Pi and an old monitor behind two-way mirror glass, running the
+  open-source MagicMirror² platform, all in for well under €50. No public
+  repo of your own for it, so it shows "not open source yet" like any other
+  closed project — flag if you'd rather it credit/link the MagicMirror²
+  project itself. Added placeholder photo/video slots and a "Favorite
+  Modules" list slot in the cartridge (currently empty, ready whenever you
+  send over the modules list, plus the picture/video).
+- **Done** — Clifton Strengths moved out of the Hero, now sits right below
+  "What people say" as its own row. Each pill is clickable and pops up a
+  balloon with that theme's real Gallup/CliftonStrengths description (the
+  same wording that's on the certificate).
+- **Done** — Inside a career stop's modal, Achievements now takes about 1/3
+  of the width next to KPIs (was an even 50/50 split).

@@ -14,15 +14,26 @@ interface Props {
 const { name } = Astro.props;
 const icon = techIcons.find((t) => t.name === name);
 
-// A few brand colors (GitHub black, Kafka near-black, Pandas navy, ...) are
-// too dark to read once the white backing circle is gone — swap those for
-// the theme's muted text color instead of guessing per-icon exceptions.
+// A few brand colors (GitHub black, Kafka near-black, ...) are too close to
+// the pill's own background to read once the white backing circle is gone —
+// swap those for the theme's muted text color instead of guessing per-icon
+// exceptions. Judged by actual contrast against the pill background (WCAG
+// contrast ratio), not raw brightness — a moderately dark but saturated
+// color (Datadog purple, Terraform violet) still reads fine on this
+// background and should keep its real color; only near-invisible ones
+// (contrast well under the "graphical object" 3:1 baseline) get swapped.
+const PILL_BG = '#131318'; // must match --color-surface in global.css
 function relativeLuminance(hex: string) {
   const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((h) => parseInt(h, 16) / 255);
   const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
   return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
 }
-const iconColor = icon && relativeLuminance(icon.color) < 0.12 ? 'var(--color-muted)' : icon?.color;
+function contrastRatio(hexA: string, hexB: string) {
+  const [la, lb] = [relativeLuminance(hexA), relativeLuminance(hexB)];
+  const [lighter, darker] = la > lb ? [la, lb] : [lb, la];
+  return (lighter + 0.05) / (darker + 0.05);
+}
+const iconColor = icon && contrastRatio(icon.color, PILL_BG) < 1.8 ? 'var(--color-muted)' : icon?.color;
 ---
 
 <a
@@ -33,7 +44,7 @@ const iconColor = icon && relativeLuminance(icon.color) < 0.12 ? 'var(--color-mu
 >
   {icon && (
     <svg viewBox="0 0 24 24" class="h-[18px] w-[18px] shrink-0" fill={iconColor}>
-      <path d={icon.path} />
+      <path d={icon.path} fill-rule={icon.fillRule} />
     </svg>
   )}
   <span class="whitespace-nowrap text-xs text-[var(--color-text)]">{name}</span>

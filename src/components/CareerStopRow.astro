@@ -115,7 +115,7 @@ const { stop, modalId, showLine = true } = Astro.props;
           <p class="text-[var(--color-muted)]">{stop.role}</p>
 
           <div
-            class={`mt-8 gap-x-8 gap-y-8 ${stop.honors && stop.honors.length > 0 ? 'grid sm:grid-cols-2' : ''}`}
+            class={`mt-8 gap-x-8 gap-y-8 ${stop.honors && stop.honors.length > 0 ? 'grid sm:grid-cols-[2fr_1fr]' : ''}`}
           >
             <div>
               <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">KPIs</p>

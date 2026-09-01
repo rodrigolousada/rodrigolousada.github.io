@@ -22,6 +22,8 @@ interface Props {
     appDownloadUrl?: string;
     /** Real screenshot of the project, shown as the cartridge's box-art label and in the modal. */
     screenshot?: string;
+    /** Short favorites/config list shown as bullets (e.g. MagicMirror² modules). */
+    modules?: string[];
     shellColor: string;
     labelColor: string;
   };
@@ -144,11 +146,27 @@ const qrCodeSvg = project.appDownloadUrl
                     <path d="M15 8v8H5V8h10m1-2H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4V7a1 1 0 00-1-1z" />
                   </svg>
                   <span class="px-2 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
-                    [Add {label} recording]
+                    [Add {label}]
                   </span>
                 </div>
               ))}
             </div>
+          </>
+        )}
+
+        {project.modules && project.modules.length > 0 && (
+          <>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+              Favorite Modules
+            </p>
+            <ul class="grid grid-cols-2 gap-x-4 gap-y-1">
+              {project.modules.map((mod) => (
+                <li class="flex items-center gap-2 text-sm text-[var(--color-text)]">
+                  <span class="text-[var(--color-accent)]">▸</span>
+                  {mod}
+                </li>
+              ))}
+            </ul>
           </>
         )}
 
