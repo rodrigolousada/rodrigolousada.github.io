@@ -1,43 +1,36 @@
-# Astro Starter Kit: Minimal
+# rodrigolousada.me
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Rodrigo Lousada's personal site — Astro + Tailwind v4, statically built and
+deployed to GitHub Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Docs
 
-## 🚀 Project Structure
+- [`docs/HANDOVER.md`](docs/HANDOVER.md) — architecture, key decisions, and
+  onboarding for anyone (human or agent) picking this project up.
+- [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md) — what's still
+  missing before this can go live (content Rodrigo needs to supply, plus
+  the deployment steps).
+- [`docs/quick-view-toggle-plan.md`](docs/quick-view-toggle-plan.md) — a
+  not-yet-implemented feature plan for a "5 mins" / "Know more" reading
+  mode toggle.
+- [`Backlog.md`](Backlog.md) — full round-by-round change history.
+- [`AGENTS.md`](AGENTS.md) (aliased as `CLAUDE.md`) — process notes for
+  running this repo as an AI agent session.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Commands
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+All commands run from the repo root:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command             | Action                                        |
+| :------------------- | :--------------------------------------------- |
+| `npm install`         | Install dependencies                           |
+| `astro dev --background` | Start the dev server at `localhost:4321` (background daemon — see `AGENTS.md`) |
+| `npm run build`       | Build the production site to `./dist/`         |
+| `npm run preview`     | Preview `dist/` locally over HTTP              |
+| `npx astro check`     | Type-check the project                         |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Branches
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `master` — the live site.
+- `redesign` — active development branch; not yet merged. See the launch
+  checklist above before merging.

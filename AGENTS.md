@@ -28,14 +28,22 @@ Astro + Tailwind v4, positioned for Engineering Manager / Tech Lead job
 hunting. All work happens on the `redesign` branch — `master` is the old
 live site, untouched until `redesign` is deliberately merged.
 
-**Architecture**: every piece of visible copy lives in `src/data/site.json`
-— components render it, they don't hardcode text. `src/data/icons.ts` holds
+**For the full architecture writeup and decision log, see
+[`docs/HANDOVER.md`](docs/HANDOVER.md).** For what's still missing before
+this can go live, see [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md).
+Short version: every piece of visible copy lives in `src/data/site.json` —
+components render it, they don't hardcode text. `src/data/icons.ts` holds
 small hand-written SVG paths (contact links, star badge); `src/data/techIcons.ts`
 holds brand-colored logo paths for the Technologies section, sourced from
 Simple Icons (CC0). Design is dark-theme-only, tokens in
 `src/styles/global.css`'s `@theme` block. Expandable content (career stops,
 projects, side-project cartridges) uses native `<dialog>` + `showModal()` —
 no JS modal library.
+
+The rest of this file (below) is process notes for running this repo as a
+multi-agent Claude Code session — worktree hygiene, verification tooling,
+failure modes hit so far. It's not about the site's architecture; that's
+in `docs/HANDOVER.md`.
 
 ### Lessons learned running this as a multi-agent session
 
