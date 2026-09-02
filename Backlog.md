@@ -498,3 +498,25 @@ here is missing exactly — say the word on any of these and I'll add it:
   `loop` from the handoff step videos: a clip that finishes early now
   just freezes on its last frame until the schedule moves on, instead of
   visibly restarting.
+
+-------
+
+- **Done.** Clicking a nav link put the destination section's heading
+  flush against the bottom edge of the sticky header, with no breathing
+  room. Added a `scroll-padding-top` at the widths where that header is
+  actually sticky (below `sm` it isn't there at all), so every anchor
+  jump now lands with a small gap under the header instead of butting
+  right up against it.
+- **Done.** The Klarna business card had its one email link stranded at
+  the bottom of the card, far from the header, because the layout
+  centered on `justify-between` between a fixed-height header block and
+  however many links followed it. The personal card's three links
+  happened to reach close to that same spot, so the two cards looked
+  inconsistent side by side. Both cards now anchor their links block a
+  fixed gap below the header instead, so the first link sits at the same
+  spot on both regardless of how many more follow.
+- **Done.** The nav bar listed "Feedback" before "Contact", but the
+  actual page order runs Speaking, then Contact, then Feedback:
+  clicking "Feedback" first felt like it skipped past what was actually
+  coming up next. Reordered `nav.links` to match the page's real
+  top-to-bottom order rather than moving the sections themselves.

@@ -32,7 +32,7 @@ const { contact } = site;
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
         <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.personal.stripColor}`}></div>
-        <div class="flex h-full flex-col justify-between py-6 pl-8 pr-6 text-neutral-900">
+        <div class="flex h-full flex-col py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
             <img src={contact.personal.photo} alt={contact.personal.name} class="h-12 w-12 rounded-md object-cover" />
             <div>
@@ -40,7 +40,14 @@ const { contact } = site;
               <p class="text-xs text-neutral-500">{contact.personal.tagline}</p>
             </div>
           </div>
-          <div class="space-y-1.5">
+          <!-- Top-anchored, not `justify-between`: with only one link the
+               Klarna card would otherwise strand it alone at the bottom of
+               the card, far from the header, while the personal card's three
+               links sit right underneath its own header — same fixed-height
+               card, two different-looking layouts. A fixed gap here keeps
+               the first link at the same spot on both cards regardless of
+               how many follow it. -->
+          <div class="mt-5 space-y-1.5">
             {
               contact.personal.links.map((link) => (
                 <a
@@ -78,7 +85,7 @@ const { contact } = site;
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
         <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.klarna.stripColor}`}></div>
-        <div class="flex h-full flex-col justify-between py-6 pl-8 pr-6 text-neutral-900">
+        <div class="flex h-full flex-col py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
             <img src={contact.klarna.photo} alt={contact.klarna.name} class="h-12 w-12 rounded-md object-cover" />
             <div>
@@ -86,7 +93,7 @@ const { contact } = site;
               <p class="text-xs text-neutral-500">{contact.klarna.tagline}</p>
             </div>
           </div>
-          <div class="space-y-1.5">
+          <div class="mt-5 space-y-1.5">
             {
               contact.klarna.links.map((link) => (
                 <a

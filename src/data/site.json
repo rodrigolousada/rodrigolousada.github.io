@@ -27,12 +27,12 @@
         "label": "Speaking"
       },
       {
-        "href": "#feedback",
-        "label": "Feedback"
-      },
-      {
         "href": "#contact",
         "label": "Contact"
+      },
+      {
+        "href": "#feedback",
+        "label": "Feedback"
       }
     ]
   },

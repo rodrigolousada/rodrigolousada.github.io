@@ -20,6 +20,17 @@ html {
   color-scheme: dark;
 }
 
+/* Nav.astro's header is sticky and sits on top of the page at sm and up
+   (below sm it's hidden entirely in favor of the floating hamburger button,
+   so no offset is needed there). Without this, jumping to a section via the
+   nav puts its heading flush against the bottom edge of the sticky header
+   instead of leaving it any breathing room. */
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 40px;
+  }
+}
+
 body {
   position: relative;
   background-color: var(--color-bg);
