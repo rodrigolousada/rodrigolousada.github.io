@@ -15,10 +15,20 @@ interface Organization {
 }
 const organizations = site.organizations as unknown as Organization[];
 
+// Known category keys get a hand-picked label and a fixed order. A category
+// value in site.json that isn't listed here still gets its own group
+// (title-cased from the raw key, appended after the known ones) instead of
+// being silently dropped — so a new category only needs adding to the data.
 const groups = [
   { key: 'worked', label: 'Worked at' },
   { key: 'client', label: 'Clients' },
   { key: 'studied', label: 'Studied at' },
+];
+const knownKeys = new Set(groups.map((g) => g.key));
+const extraKeys = [...new Set(organizations.map((org) => org.category).filter((c) => !knownKeys.has(c)))];
+const allGroups = [
+  ...groups,
+  ...extraKeys.map((key) => ({ key, label: key.charAt(0).toUpperCase() + key.slice(1) })),
 ];
 ---
 
@@ -29,7 +39,7 @@ const groups = [
 
   <div class="flex flex-col gap-8">
     {
-      groups.map((group) => {
+      allGroups.map((group) => {
         const orgs = organizations.filter((org) => org.category === group.key);
         if (orgs.length === 0) return null;
         return (

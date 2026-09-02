@@ -1,6 +1,6 @@
 ---
 import { companies } from '../data/site.json';
-import PhoneMockup from './PhoneMockup.astro';
+import PhoneMockup, { type HandoffStep } from './PhoneMockup.astro';
 import TechPill from './TechPill.astro';
 
 interface Company {
@@ -36,7 +36,7 @@ interface Props {
     myRole?: string;
     technologies: string[];
     achievements: string[];
-    demo?: { mode?: string; captions: string[] };
+    demo?: { mode?: string; captions?: string[]; videos?: (string | null)[]; steps?: HandoffStep[] };
     news?: NewsItem[];
     /** External link to the project itself (thesis PDF, publication, live app, etc.). */
     url?: string;
@@ -203,7 +203,12 @@ function formatNewsDate(date: string) {
 
         {project.demo && (
           <div class="mt-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-5">
-            <PhoneMockup mode={project.demo.mode} captions={project.demo.captions} />
+            <PhoneMockup
+              mode={project.demo.mode}
+              captions={project.demo.captions}
+              videos={project.demo.videos}
+              steps={project.demo.steps}
+            />
           </div>
         )}
 

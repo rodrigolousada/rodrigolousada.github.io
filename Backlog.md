@@ -363,3 +363,60 @@ here is missing exactly — say the word on any of these and I'll add it:
 - **Done** — Enlarged the Klarna logo inside its career-timeline chip
   (`logoScale` 1.15 → 1.45) — it was reading noticeably smaller than the
   IBM and Instituto de Telecomunicações logos in the same-sized chips.
+
+-------
+
+- **Done.** Fixed the Clifton Strengths hover popup getting stuck open.
+  Clicking the strength badge (or the nested "See certificate" link) left
+  it focused, and clicking elsewhere doesn't blur a focused element in
+  Chrome/Safari, so the popup stayed open until something else stole
+  focus. It now blurs on mouseleave, so hovering away always closes it,
+  and Tab-based keyboard access is untouched.
+- **Done.** The Technologies search now accepts a bulk-pasted list, split
+  on commas or semicolons (e.g. "react, node, aws"), each term matched
+  independently. It also understands common alternate spellings via a
+  small alias table, so "ReactJS", "React.js" and "React JS" all find
+  "React".
+- **Done.** Wired in the real screen recording for the Klarna Referral
+  Program's "friend redeems" phone. Along the way, fixed two bugs in the
+  handoff animation: the friend's phase wasn't held on screen long enough
+  for the actual clip length, and the video's own playback clock ran
+  independently of when the animation revealed it, so it looked like it
+  started mid-clip and could restart while still visible. The whole
+  handoff timeline is now driven by one scheduler that resets and starts
+  a step's video at the exact instant it becomes visible.
+
+-------
+
+- **Done.** Full sweep for hardcoded values that should live in data
+  instead, at your request. Fixed:
+  - The profile photo path was a literal string repeated in three places
+    (Hero, both Contact cards) plus the social-share image, with no way
+    to use a different photo per spot. Each of the three now has its own
+    `photo` field in site.json (all pointing at the same file today), so
+    any of them can be swapped independently.
+  - The world-map city markers were keyed by a hand-maintained coordinate
+    table matched to site.json by name, so adding a new city there
+    without also adding its pixel position would crash the page.
+    Pre-plotted Madrid, Barcelona, London and Edinburgh (fitted from real
+    coordinates against the two live pins), and a city without a match
+    now just gets skipped instead of crashing.
+  - The Technologies search categories and the "Worked at / Clients /
+    Studied at" groups were both hardcoded lists that had to match
+    site.json's category values exactly, or a new category would silently
+    vanish from the page. Both now fall back to auto-generating a group
+    for any category they don't already know about.
+  - The trophy vs. medal icon on career honors was decided by testing
+    whether the label contained the word "champion". Replaced with an
+    explicit `type: "trophy"` field on the honor itself.
+  - A tech pill's icon-contrast check duplicated the surface color from
+    global.css as a hand-copied hex string, which could silently drift if
+    the theme's color ever changed. It now reads the real value straight
+    out of global.css at build time.
+  - The Klarna Referral Program's phone-to-phone handoff animation was
+    hardcoded to exactly one shape (phone 1, bubble, phone 2, phone 1
+    again). Rewrote `PhoneMockup` around an ordered `steps` array instead:
+    each step just says which phone it's on, its video/caption, how long
+    to hold it, and whether the message bubble should travel into it, so
+    any sequence (more steps, different phone order, more than one bubble
+    hop) works from data alone.

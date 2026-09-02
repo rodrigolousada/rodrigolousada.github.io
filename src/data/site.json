@@ -34,6 +34,7 @@
   },
   "hero": {
     "name": "Rodrigo Lousada",
+    "photo": "/img/profile.jpg",
     "roleLine": "Software Engineer @ Klarna · Berlin, Germany",
     "headline": "I lead developers that ship",
     "stats": [
@@ -214,10 +215,24 @@
           ],
           "demo": {
             "mode": "handoff",
-            "captions": [
-              "Advocate shares their referral link",
-              "Friend redeems the link in-app",
-              "Referral complete: both sides rewarded"
+            "steps": [
+              {
+                "phone": "left",
+                "caption": "Advocate shares their referral link",
+                "duration": 3
+              },
+              {
+                "phone": "right",
+                "caption": "Friend redeems the link in-app",
+                "video": "/video/klarna-referral-friend.mp4",
+                "duration": 20,
+                "bubble": true
+              },
+              {
+                "phone": "left",
+                "caption": "Referral complete: both sides rewarded",
+                "duration": 4
+              }
             ]
           }
         },
@@ -274,7 +289,8 @@
           "label": "IBM Top Talents Portugal"
         },
         {
-          "label": "IBM Gold Champion Learner"
+          "label": "IBM Gold Champion Learner",
+          "type": "trophy"
         }
       ],
       "projects": [
@@ -784,6 +800,7 @@
     "intro": "Open to Engineering Manager / Tech Lead opportunities, speaking invitations, and interesting conversations.",
     "personal": {
       "name": "Rodrigo Lousada",
+      "photo": "/img/profile.jpg",
       "tagline": "Open to EM / Tech Lead roles",
       "stripColor": "bg-blue-600",
       "backColor": "bg-blue-600",
@@ -809,6 +826,7 @@
     },
     "klarna": {
       "name": "Rodrigo Lousada",
+      "photo": "/img/profile.jpg",
       "tagline": "Software Engineer · Referrals & Deals",
       "stripColor": "bg-[#ffb3c7]",
       "backColor": "bg-[#ffb3c7]",

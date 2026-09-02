@@ -2,6 +2,7 @@
 import { focusCategories } from '../data/site.json';
 import { icons } from '../data/icons';
 import ProjectRow from './ProjectRow.astro';
+import type { HandoffStep } from './PhoneMockup.astro';
 
 interface Props {
   stop: {
@@ -17,7 +18,7 @@ interface Props {
     role: string;
     kpis: string[];
     /** Personal honors/awards earned during this stop (medals) — distinct from project-level achievements. */
-    honors?: { label: string; year?: string }[];
+    honors?: { label: string; year?: string; type?: string }[];
     /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). Each links out to its own Credly page for the full-resolution badge. Set `highlight: true` on the handful worth calling out (e.g. AWS) — they render bigger, above the rest. */
     credlyBadges?: { name: string; img: string; url?: string; highlight?: boolean }[];
     credlyProfileUrl?: string;
@@ -31,7 +32,7 @@ interface Props {
       myRole?: string;
       technologies: string[];
       achievements: string[];
-      demo?: { mode?: string; captions: string[] };
+      demo?: { mode?: string; captions?: string[]; videos?: (string | null)[]; steps?: HandoffStep[] };
       news?: { title: string; source: string; date: string; url: string }[];
       /** External link to the project itself (thesis PDF, publication, live app, etc.). */
       url?: string;
@@ -154,7 +155,7 @@ const moreProjects = stop.projects.slice(3);
                 </p>
                 <div class="mt-3 flex flex-wrap gap-5">
                   {stop.honors.map((honor) => {
-                    const isTrophy = /champion/i.test(honor.label);
+                    const isTrophy = honor.type === 'trophy';
                     const ringClass = isTrophy
                       ? 'border-amber-400/40 bg-amber-400/10'
                       : 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10';

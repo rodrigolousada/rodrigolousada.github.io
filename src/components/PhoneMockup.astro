@@ -1,53 +1,131 @@
 ---
-// Reusable phone-frame mockup for showcasing a video/recording that doesn't
-// exist yet — renders a clear placeholder (dashed border + play icon +
-// caption) so real footage can be dropped in later without touching markup.
+// Reusable phone-frame mockup for showcasing a video/recording. Renders a
+// clear placeholder (dashed border + play icon + caption) per slot until a
+// real recording is supplied via `videos`/`steps`, so footage can be
+// dropped in one clip at a time without touching markup.
 //
 // mode="single": one phone, one caption.
 // mode="handoff": two phones + an animated "message" bubble that travels
-// between them, cycling through 3 captions on a CSS-only loop (no JS) —
-// used for a referral flow: advocate shares -> message travels -> friend
-// receives, then the advocate's phone shows the completed state.
-interface Props {
-  mode?: string;
-  /** single mode: one caption. handoff mode: exactly 3 — [video1 (left), video2 (right), video3 (left, completed)]. */
-  captions: string[];
+// between them, cycling through an arbitrary ordered sequence of `steps` —
+// used for flows that bounce between two screens (e.g. a referral: advocate
+// shares -> message travels -> friend receives -> advocate sees the
+// completed state). Each step just says which phone it belongs to, how
+// long to hold it, and whether the bubble should travel into it — so a
+// 2-step handoff, a 4-step back-and-forth, or two steps stacked on the same
+// phone back to back all work from the same data shape, no code changes
+// needed to reshape the sequence.
+//
+// Driven by the small script at the bottom rather than pure CSS keyframes:
+// a step with a real video needs to reset that video to its start and play
+// it the instant the step becomes visible (otherwise the clip is already
+// partway through — or has looped and restarted mid-view — by the time
+// anyone can see it), and only JS can line a video's own clock up with the
+// reveal like that.
+export interface HandoffStep {
+  /** Which phone frame this step's video/placeholder shows on: 'left' or
+   * 'right'. Typed as a plain string, not a literal union — like the rest
+   * of this data, it's ultimately sourced from site.json, which TypeScript
+   * can only ever infer as `string`. */
+  phone: string;
+  caption: string;
+  /** A real screen recording for this step; left unset (or null) keeps the
+   * dashed-border placeholder, so footage can be dropped in one step at a
+   * time instead of needing all of them up front. */
+  video?: string | null;
+  /** How long this step stays visible, in seconds — fade/travel-in time
+   * included, so once a step has a real video this should comfortably
+   * cover its actual runtime. Defaults to 3. */
+  duration?: number;
+  /** Show the message bubble traveling from the previous step's phone into
+   * this one, right before this step becomes visible. Defaults to false (a
+   * plain crossfade) — ignored on the very first step, nothing precedes it. */
+  bubble?: boolean;
 }
 
-const { mode = 'single', captions } = Astro.props;
-const uid = Math.random().toString(36).slice(2, 8);
+interface Props {
+  mode?: string;
+  /** single mode only: one caption. */
+  captions?: string[];
+  /** single mode only: a real screen recording, parallel to `captions`. */
+  videos?: (string | null | undefined)[];
+  /** handoff mode only: the ordered sequence of steps to cycle through —
+   * see HandoffStep. Loops back to the first step once the last one ends. */
+  steps?: HandoffStep[];
+}
+
+const { mode = 'single', captions, videos, steps = [] } = Astro.props;
+
+// Handoff timeline, built from each step's own hold duration rather than
+// fixed percentages of an arbitrary total. FADE is the crossfade length
+// between steps on a plain cut, BUBBLE how long the message bubble takes to
+// travel from one phone to the other. Expressed as a flat list of timed
+// events (not fixed "phase1/phase2/phase3" slots) so any number of steps,
+// in any left/right order, produces a valid schedule — the running script
+// below just plays these events back, without knowing anything about what
+// a "step" means.
+const FADE = 0.5;
+const BUBBLE = 0.8;
+const DEFAULT_DURATION = 3;
+
+type TimelineEvent =
+  | { at: number; type: 'show'; index: number }
+  | { at: number; type: 'hide'; index: number }
+  | { at: number; type: 'bubbleIn'; dir: 'fwd' | 'back' }
+  | { at: number; type: 'bubbleTravel'; dir: 'fwd' | 'back' }
+  | { at: number; type: 'bubbleOut' };
+
+const events: TimelineEvent[] = [];
+let t = 0;
+if (steps.length > 0) {
+  events.push({ at: 0, type: 'show', index: 0 });
+  steps.forEach((step, i) => {
+    t += step.duration ?? DEFAULT_DURATION;
+    events.push({ at: t, type: 'hide', index: i });
+    const next = steps[i + 1];
+    if (next?.bubble) {
+      const dir = next.phone === 'right' ? 'fwd' : 'back';
+      events.push({ at: t, type: 'bubbleIn', dir });
+      t += FADE;
+      events.push({ at: t, type: 'bubbleTravel', dir });
+      t += BUBBLE;
+      events.push({ at: t, type: 'bubbleOut' });
+      events.push({ at: t, type: 'show', index: i + 1 });
+    } else if (next) {
+      // Plain simultaneous crossfade: no bubble, next step just fades in as
+      // this one fades out.
+      events.push({ at: t, type: 'show', index: i + 1 });
+    } else {
+      // Last step: hold a beat of black before the loop cuts back to step 0.
+      t += FADE;
+    }
+  });
+}
+const total = t;
+const lastIndex = steps.length - 1;
 ---
 
 {
   mode === 'single' ? (
     <div class="mx-auto w-40">
       <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
-        <div class="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
-          <svg viewBox="0 0 24 24" class="h-7 w-7 fill-neutral-500">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[0]}</p>
-        </div>
+        {videos?.[0] ? (
+          <video src={videos[0]} class="h-full w-full rounded-[1.25rem] object-cover" autoplay muted loop playsinline />
+        ) : (
+          <div class="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
+            <svg viewBox="0 0 24 24" class="h-7 w-7 fill-neutral-500">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions?.[0]}</p>
+          </div>
+        )}
         <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
       </div>
-      <p class="mt-2 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage</p>
+      {!videos?.[0] && (
+        <p class="mt-2 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage</p>
+      )}
     </div>
   ) : (
-    <div class="mx-auto max-w-sm">
-      <style set:html={`
-        @keyframes phone-video1-${uid} { 0%,22%{opacity:1} 27%,100%{opacity:0} }
-        @keyframes phone-video2-${uid} { 0%,33%{opacity:0} 38%,58%{opacity:1} 63%,100%{opacity:0} }
-        @keyframes phone-video3-${uid} { 0%,63%{opacity:0} 68%,97%{opacity:1} 100%{opacity:0} }
-        @keyframes phone-bubble-${uid} {
-          0%,22%{opacity:0; transform:translateX(0)}
-          25%{opacity:1; transform:translateX(0)}
-          32%{opacity:1; transform:translateX(calc(100% + 2.5rem))}
-          36%,100%{opacity:0; transform:translateX(calc(100% + 2.5rem))}
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .phone-anim-${uid} { animation: none !important; opacity: 1 !important; }
-        }
-      `} />
+    <div class="mx-auto max-w-sm" data-handoff data-total={total} data-schedule={JSON.stringify(events)}>
       <!-- Two fixed-width phones + gaps need 432px at the original w-40/gap-10
            sizing — comfortably inside a desktop dialog, but wider than a
            phone screen has room for even edge to edge. Narrower frames and
@@ -55,53 +133,201 @@ const uid = Math.random().toString(36).slice(2, 8);
       <div class="flex items-center justify-center gap-4 sm:gap-10">
         <div class="relative w-28 shrink-0 sm:w-40">
           <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
-            <div
-              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}
-              style={`animation: phone-video1-${uid} 13s ease-in-out infinite;`}
-            >
-              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[0]}</p>
-            </div>
-            <div
-              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center`}
-              style={`animation: phone-video3-${uid} 13s ease-in-out infinite; opacity: 0;`}
-            >
-              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
-                <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg>
-              <p class="font-mono text-[9px] leading-snug text-emerald-400">{captions[2]}</p>
-            </div>
+            {steps.map(
+              (step, i) =>
+                step.phone === 'left' && (
+                  <div
+                    data-step={i}
+                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    style={`transition: opacity ${FADE}s ease;`}
+                  >
+                    {step.video ? (
+                      <video src={step.video} class="h-full w-full object-cover" muted loop playsinline />
+                    ) : i === lastIndex ? (
+                      <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
+                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
+                          <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                        </svg>
+                        <p class="font-mono text-[9px] leading-snug text-emerald-400">{step.caption}</p>
+                      </div>
+                    ) : (
+                      <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
+                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                        <p class="font-mono text-[9px] leading-snug text-neutral-400">{step.caption}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+            )}
             <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
           </div>
         </div>
 
         <div
-          class={`phone-anim-${uid} flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[#04141c] shadow-[0_0_16px_-2px_var(--color-accent)]`}
-          style={`animation: phone-bubble-${uid} 13s ease-in-out infinite; opacity: 0;`}
+          data-phase="bubble"
+          class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[#04141c] opacity-0 shadow-[0_0_16px_-2px_var(--color-accent)]"
+          style={`transition: opacity ${FADE}s ease, transform ${BUBBLE}s ease-in-out; transform: translateX(0);`}
         >
-          <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+          <svg data-bubble-icon viewBox="0 0 24 24" class="h-4 w-4 fill-current" style="transition: transform 0.2s ease;">
             <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
           </svg>
         </div>
 
         <div class="relative w-28 shrink-0 sm:w-40">
           <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
-            <div
-              class={`phone-anim-${uid} absolute inset-1.5 flex flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center`}
-              style={`animation: phone-video2-${uid} 13s ease-in-out infinite; opacity: 0;`}
-            >
-              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              <p class="font-mono text-[9px] leading-snug text-neutral-400">{captions[1]}</p>
-            </div>
+            {steps.map(
+              (step, i) =>
+                step.phone === 'right' && (
+                  <div
+                    data-step={i}
+                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    style={`transition: opacity ${FADE}s ease;`}
+                  >
+                    {step.video ? (
+                      <video src={step.video} class="h-full w-full object-cover" muted loop playsinline />
+                    ) : i === lastIndex ? (
+                      <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
+                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
+                          <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                        </svg>
+                        <p class="font-mono text-[9px] leading-snug text-emerald-400">{step.caption}</p>
+                      </div>
+                    ) : (
+                      <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
+                        <svg viewBox="0 0 24 24" class="h-6 w-6 fill-neutral-500">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                        <p class="font-mono text-[9px] leading-snug text-neutral-400">{step.caption}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+            )}
             <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
           </div>
         </div>
       </div>
-      <p class="mt-3 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage for each step</p>
+      {steps.some((s) => !s.video) && (
+        <p class="mt-3 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage for each step</p>
+      )}
     </div>
   )
 }
+
+<script>
+  // Drives every handoff-mode mockup on the page (there may be several —
+  // this one listener handles them all, matching the delegated-listener
+  // pattern used elsewhere on the site). Reads each instance's own event
+  // schedule back off its `data-schedule` attribute (computed once, in the
+  // frontmatter above) — this script has no idea what a "step" represents,
+  // it just plays back a list of `{ at, type, ... }` events against
+  // whichever `[data-step]` elements exist, so it works unchanged for any
+  // number of steps in any left/right order.
+  //
+  // Respects prefers-reduced-motion by just holding on step 0, statically,
+  // rather than cycling at all.
+  interface TimelineEvent {
+    at: number;
+    type: 'show' | 'hide' | 'bubbleIn' | 'bubbleTravel' | 'bubbleOut';
+    index?: number;
+    dir?: 'fwd' | 'back';
+  }
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-handoff]').forEach((root) => {
+    const total = Number(root.dataset.total);
+    let schedule: TimelineEvent[] = [];
+    try {
+      schedule = JSON.parse(root.dataset.schedule ?? '[]');
+    } catch {
+      schedule = [];
+    }
+
+    const stepEls = new Map<number, HTMLElement>();
+    root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
+      const index = Number(el.dataset.step);
+      if (!Number.isNaN(index)) stepEls.set(index, el);
+    });
+    const bubbleEl = root.querySelector<HTMLElement>('[data-phase="bubble"]');
+    const bubbleIcon = bubbleEl?.querySelector<HTMLElement>('[data-bubble-icon]');
+
+    if (stepEls.size === 0 || schedule.length === 0 || reduceMotion) return;
+
+    // Restarts a step's real video (if it has one) from the beginning right
+    // as it's revealed — otherwise it's already however far into its own
+    // independent playback clock as whenever the page happened to load, and
+    // can even loop and jump back to its start while still on screen.
+    function playFromStart(step: HTMLElement) {
+      const video = step.querySelector('video');
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    }
+
+    // Jumps a step back to fully visible with no transition, for the loop
+    // restart — an instant cut, same as the very first frame, rather than a
+    // fade the timeline's total duration doesn't budget room for.
+    function cutIn(step: HTMLElement) {
+      step.style.transitionProperty = 'none';
+      step.style.opacity = '1';
+      void step.offsetHeight;
+      step.style.transitionProperty = '';
+    }
+
+    let timers: number[] = [];
+    function at(seconds: number, run: () => void) {
+      timers.push(window.setTimeout(run, seconds * 1000));
+    }
+
+    function runCycle() {
+      timers.forEach(clearTimeout);
+      timers = [];
+
+      stepEls.forEach((step, index) => {
+        if (index === 0) {
+          cutIn(step);
+          playFromStart(step);
+        } else {
+          step.style.opacity = '0';
+        }
+      });
+      if (bubbleEl) {
+        bubbleEl.style.opacity = '0';
+        bubbleEl.style.transform = 'translateX(0)';
+      }
+      if (bubbleIcon) bubbleIcon.style.transform = '';
+
+      schedule.forEach((event) => {
+        at(event.at, () => {
+          if (event.type === 'show' && event.index !== undefined) {
+            const step = stepEls.get(event.index);
+            if (step) {
+              step.style.opacity = '1';
+              playFromStart(step);
+            }
+          } else if (event.type === 'hide' && event.index !== undefined) {
+            const step = stepEls.get(event.index);
+            if (step) step.style.opacity = '0';
+          } else if (event.type === 'bubbleIn' && bubbleEl) {
+            if (bubbleIcon) bubbleIcon.style.transform = event.dir === 'back' ? 'scaleX(-1)' : '';
+            bubbleEl.style.transform = 'translateX(0)';
+            bubbleEl.style.opacity = '1';
+          } else if (event.type === 'bubbleTravel' && bubbleEl) {
+            const distance = 'calc(100% + 2.5rem)';
+            bubbleEl.style.transform = event.dir === 'back' ? `translateX(-${distance})` : `translateX(${distance})`;
+          } else if (event.type === 'bubbleOut' && bubbleEl) {
+            bubbleEl.style.opacity = '0';
+          }
+        });
+      });
+
+      at(total, runCycle);
+    }
+
+    runCycle();
+  });
+</script>

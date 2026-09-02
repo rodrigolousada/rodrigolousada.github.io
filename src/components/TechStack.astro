@@ -7,15 +7,25 @@ import TechPill from './TechPill.astro';
 import StackConnector, { type BusConnector, type GroupedConnector } from './StackConnector.astro';
 
 const { technologies } = site;
+// Preferred display order for the categories we know about today. A
+// category value in site.json that isn't listed here still renders — just
+// appended after these, in the order it's first seen — so adding a brand
+// new category to the data alone is enough; nothing here needs editing to
+// keep it from silently disappearing.
 const categoryOrder = ['Languages', 'Frameworks & Libraries', 'Data & Databases', 'AI & Data Science', 'Infra & Tools'];
 
 function groupByCategory(list: { name: string; category: string }[]) {
-  return categoryOrder
-    .map((category) => ({
-      category,
-      items: list.filter((item) => item.category === category),
-    }))
-    .filter((g) => g.items.length > 0);
+  const known = categoryOrder.map((category) => ({
+    category,
+    items: list.filter((item) => item.category === category),
+  }));
+  const knownSet = new Set(categoryOrder);
+  const extraCategories = [...new Set(list.map((item) => item.category).filter((c) => !knownSet.has(c)))];
+  const extra = extraCategories.map((category) => ({
+    category,
+    items: list.filter((item) => item.category === category),
+  }));
+  return [...known, ...extra].filter((g) => g.items.length > 0);
 }
 
 const allGroups = groupByCategory([...technologies.items, ...(technologies.extra ?? [])]);
@@ -295,8 +305,17 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
   const emptyMessage = document.getElementById('tech-search-empty');
   const categories = document.querySelectorAll<HTMLElement>('[data-tech-category]');
 
+  const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+
   searchInput?.addEventListener('input', () => {
-    const query = searchInput.value.trim().toLowerCase();
+    // A recruiter can paste a whole keyword list at once, separated by
+    // commas or semicolons — each piece is matched independently (OR
+    // logic), so pasting "react, node, aws" highlights every one of those
+    // pills rather than requiring a literal match of the whole string.
+    const terms = searchInput.value
+      .split(/[,;]+/)
+      .map(normalize)
+      .filter(Boolean);
     let anyVisible = false;
 
     categories.forEach((category) => {
@@ -307,7 +326,11 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         // technology doesn't make it vanish the moment someone searches
         // for something else.
         const pinned = pill.getAttribute('aria-pressed') === 'true';
-        const match = pinned || !query || (pill.dataset.techName ?? '').includes(query);
+        // Matched against the pill's normalized name + known alias tokens
+        // (see TechPill's data-tech-search), not just its own display name —
+        // so "reactjs" or "react.js" still finds the "React" pill.
+        const tokens = (pill.dataset.techSearch ?? '').split(' ');
+        const match = pinned || terms.length === 0 || terms.some((term) => tokens.some((token) => token.includes(term)));
         // Inline style, not the `hidden` class — the pill already carries the
         // `inline-flex` display utility, which wins over `hidden` in
         // Tailwind's cascade and would leave it visible.

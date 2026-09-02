@@ -113,6 +113,28 @@ const certModalId = 'clifton-strengths-certificate';
   </dialog>
 )}
 
+{about.strengths.length > 0 && (
+  <script>
+    // The strength popup only shows via CSS (:hover / :focus-within), no
+    // click wiring needed — but clicking the "strength-marker" button (or
+    // the nested "See certificate" link) leaves it focused, and clicking a
+    // non-focusable area of the page afterwards doesn't move focus away in
+    // Chrome/Safari. So the popup was getting stuck open long after the
+    // mouse had left, until something else happened to steal focus. Blur
+    // whatever's focused inside a strength group the moment the mouse
+    // leaves it, so hovering away always closes it like it visually should
+    // — Tab-based keyboard focus is untouched since this only fires on
+    // mouseleave.
+    document.querySelectorAll<HTMLElement>('.group\\/strength').forEach((group) => {
+      group.addEventListener('mouseleave', () => {
+        if (document.activeElement instanceof HTMLElement && group.contains(document.activeElement)) {
+          document.activeElement.blur();
+        }
+      });
+    });
+  </script>
+)}
+
 {testimonial.letterImage && (
   <dialog
     id={modalId}
