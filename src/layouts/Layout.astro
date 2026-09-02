@@ -116,3 +116,36 @@ const jsonLd = {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 </script>
+
+<script>
+  // Every expandable section (career stops, projects, side-project
+  // cartridges, testimonials, the CliftonStrengths certificate) uses a
+  // native <dialog>. Reopening one should always feel like the first time:
+  // scrolled back to the top, not wherever it was left scrolled to on a
+  // previous viewing. A native <dialog> fires no event when it opens (only
+  // 'close'), so a MutationObserver on its `open` attribute is the only
+  // reliable way to know either transition happened. Re-dispatched as
+  // bubbling custom events so any component's own script (PhoneMockup's,
+  // for instance, to restart its video/animation from the beginning) can
+  // react without needing a direct reference to this one, same
+  // delegated-listener style used elsewhere on the site.
+  document.querySelectorAll('dialog').forEach((dialog) => {
+    new MutationObserver(() => {
+      const type = dialog.hasAttribute('open') ? 'dialogopen' : 'dialogclose';
+      dialog.dispatchEvent(new CustomEvent(type, { bubbles: true }));
+    }).observe(dialog, { attributes: true, attributeFilter: ['open'] });
+  });
+
+  document.addEventListener('dialogopen', (e) => {
+    const dialog = e.target as HTMLElement;
+    dialog.scrollTop = 0;
+    // Most dialogs scroll via their own box (see the `h-fit`/`max-h`
+    // comments on CareerStopRow/ProjectRow/TechStack's dialogs), but a
+    // couple (the testimonial letter, the CliftonStrengths certificate)
+    // scroll an inner `overflow-y-auto` div instead, so reset whichever one
+    // actually has the scroll position.
+    dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]').forEach((el) => {
+      el.scrollTop = 0;
+    });
+  });
+</script>

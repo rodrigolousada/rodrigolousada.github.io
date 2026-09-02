@@ -27,6 +27,10 @@
         "label": "Speaking"
       },
       {
+        "href": "#feedback",
+        "label": "Feedback"
+      },
+      {
         "href": "#contact",
         "label": "Contact"
       }
@@ -923,16 +927,18 @@
       "program": "Primary & Secondary Education"
     }
   ],
-  "testimonial": {
-    "text": "\"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career.\"",
-    "name": "António Pedro Cerejeira",
-    "role": "IBM Senior Manager, Service Line Director",
-    "initials": "APC",
-    "photo": "/img/apc_photo.png",
-    "scrollTo": "ibm-consulting",
-    "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
-    "company": "IBM Consulting"
-  },
+  "testimonials": [
+    {
+      "text": "\"Rodrigo stood out for his technical, functional, and relational skills, having assumed project coordination and leadership positions naturally, and still at an early stage of his career.\"",
+      "name": "António Pedro Cerejeira",
+      "role": "IBM Senior Manager, Service Line Director",
+      "initials": "APC",
+      "photo": "/img/apc_photo.png",
+      "scrollTo": "ibm-consulting",
+      "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
+      "company": "IBM Consulting"
+    }
+  ],
   "footer": {
     "name": "Rodrigo Lousada",
     "location": "Berlin, Germany"

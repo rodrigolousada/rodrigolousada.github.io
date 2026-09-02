@@ -420,3 +420,51 @@ here is missing exactly — say the word on any of these and I'll add it:
     to hold it, and whether the message bubble should travel into it, so
     any sequence (more steps, different phone order, more than one bubble
     hop) works from data alone.
+
+-------
+
+- **Done.** Mobile nav no longer shows the full link row: below `sm` it
+  collapses to a hamburger icon top-right that opens a slide-in side panel
+  (backdrop + same links, stacked), rather than crowding or wrapping the
+  header.
+- **Done.** The hero description text is a size smaller on mobile
+  (`text-sm`, was `text-lg` at every width): it was eating a big chunk of
+  the fold on a phone screen.
+- **Done.** The "What people say" section had no nav entry at all. Added
+  a "Feedback" link (and a matching `#feedback` anchor on the section) to
+  the nav.
+- **Done.** The first CliftonStrengths badge's hover popup was getting
+  clipped off the left edge of the screen on mobile: it was always
+  centered under its marker with no awareness of the viewport edge.
+  Generalized the fix to any marker near either edge, so the popup now
+  measures whether it would overflow before it's shown and nudges itself
+  back inside the viewport by exactly that amount.
+- **Done.** "What people say" is now a list (`testimonials` array in
+  site.json, was a single `testimonial` object) with its own
+  `TestimonialCard` component, and follows the same "first 2, then Show
+  more" pattern as the career timeline and side projects, ready for more
+  people's feedback without the section growing unbounded.
+- **Done.** Reopening any dialog (career stop, project, testimonial
+  letter, certificate, side project, the technologies list) now always
+  starts fresh: scrolled back to the top, not wherever a previous viewing
+  left it. A site-wide script turns each `<dialog>`'s `open` attribute
+  into `dialogopen`/`dialogclose` events any component can listen for.
+- **Done.** Fixed two related bugs in the phone-mockup demos:
+  - On laptop, a project or career-stop popup short enough not to need
+    the full `85vh` cap was still rendering at that full height with a
+    big empty gap. Root cause: a native `<dialog>`'s modal centering pins
+    both `top` and `bottom`, and `height: auto` against two pinned edges
+    stretches to fill instead of shrinking to content. Switched those
+    dialogs (plus the Technologies "show more" list, latently the same
+    bug) from `h-auto` to `h-fit`, which explicitly asks for shrink-to-fit
+    sizing, so a short popup now sizes to its own content and a long one
+    still clamps and scrolls exactly as before.
+  - The Klarna referral video looked like it started mid-clip and could
+    restart while still visible. Root cause: the handoff animation's
+    schedule started running the moment the page loaded, invisibly,
+    inside the still-closed dialog, so by the time anyone actually opened
+    it, the video had already been playing (and possibly looping)
+    unseen for however long they'd been on the page. The schedule (and
+    single-video demos) now only run while their dialog is actually open,
+    restarting from the first frame on every open and stopping the
+    instant it closes.

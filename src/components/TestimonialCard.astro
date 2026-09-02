@@ -1,0 +1,96 @@
+---
+// One person's testimonial: the card shown in the "What people say" list,
+// plus (if a scanned letter exists) the dialog it opens on click. Split out
+// from Testimonials.astro so the section can list any number of people the
+// same way Projects.astro lists CareerStopRow/GameCartridge: one component
+// per repeated item, not one hand-copied block per person.
+interface Testimonial {
+  text: string;
+  name: string;
+  role: string;
+  initials?: string;
+  photo?: string;
+  /** Career-stop anchor this testimonial cross-links to (see Organizations.astro's scroll-to script). */
+  scrollTo?: string;
+  /** Scanned recommendation letter, signature blurred. Unset just shows the quote with no "Read the full letter" link/dialog. */
+  letterImage?: string;
+  company?: string;
+}
+interface Props {
+  testimonial: Testimonial;
+  modalId: string;
+}
+const { testimonial, modalId } = Astro.props;
+---
+
+<button
+  type="button"
+  onclick={testimonial.letterImage ? `document.getElementById('${modalId}').showModal()` : undefined}
+  class="group flex w-full items-start gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-left transition hover:border-[var(--color-accent)]"
+>
+  {testimonial.photo ? (
+    <img
+      src={testimonial.photo}
+      alt={testimonial.name}
+      class="h-11 w-11 shrink-0 rounded-full object-cover"
+    />
+  ) : (
+    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] font-mono text-xs font-semibold text-[var(--color-text)]">
+      {testimonial.initials}
+    </div>
+  )}
+  <div class="min-w-0 flex-1">
+    <p class="text-[var(--color-text)]">{testimonial.text}</p>
+    <footer class="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
+      <p>
+        <span class="font-medium text-[var(--color-text)]">{testimonial.name}</span>
+        <span class="text-[var(--color-muted)]"> · {testimonial.role}</span>
+      </p>
+      {testimonial.letterImage && (
+        <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+          Read the full letter →
+        </span>
+      )}
+    </footer>
+  </div>
+</button>
+
+{testimonial.letterImage && (
+  <dialog
+    id={modalId}
+    class="m-auto w-[min(92vw,34rem)] max-h-[90vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">Recommendation letter</p>
+      <form method="dialog">
+        <button
+          aria-label="Close"
+          class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+        >
+          ✕
+        </button>
+      </form>
+    </div>
+    <div class="max-h-[calc(90vh-4rem)] overflow-y-auto p-6">
+      <img
+        src={testimonial.letterImage}
+        alt={`Recommendation letter from ${testimonial.name}`}
+        class="w-full rounded-lg border border-[var(--color-border)]"
+        loading="lazy"
+      />
+      <p class="mt-3 text-xs text-[var(--color-muted)]">
+        Signature blurred for privacy. Happy to share the original on request.
+      </p>
+      {testimonial.scrollTo && (
+        <button
+          type="button"
+          data-scroll-target={testimonial.scrollTo}
+          data-scroll-label={testimonial.company}
+          class="mt-4 text-xs text-[var(--color-accent)] underline underline-offset-4"
+        >
+          Written during my time at {testimonial.company} →
+        </button>
+      )}
+    </div>
+  </dialog>
+)}

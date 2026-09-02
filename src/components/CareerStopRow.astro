@@ -103,10 +103,21 @@ const moreProjects = stop.projects.slice(3);
          content (KPIs, projects, badges) grows the dialog right up to the
          browser's own near-100%-of-viewport default on laptop widths too,
          reading as another full-screen popup rather than a compact card
-         that happens to scroll. -->
+         that happens to scroll.
+
+         sm:h-fit, not sm:h-auto: a native <dialog>'s default `showModal()`
+         centering pins both `top` and `bottom` to 0 (see the UA
+         stylesheet's `dialog:modal { inset-block: 0 }`), and `height: auto`
+         against two pinned edges resolves to stretch-to-fill, not
+         shrink-to-content: a short stop was rendering at the full
+         sm:max-h-[85vh] cap instead of its own (much shorter) content
+         height. `fit-content` explicitly asks for shrink-to-fit sizing
+         regardless of that stretch context, so a short stop sizes to its
+         own content and a long one still clamps at the cap and scrolls,
+         exactly as before. -->
     <dialog
       id={modalId}
-      class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
+      class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
     >
       <div class="overflow-hidden rounded-none sm:rounded-xl">
         <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>

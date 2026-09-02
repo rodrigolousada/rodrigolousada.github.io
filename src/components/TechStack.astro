@@ -137,10 +137,17 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
      so the dialog stayed rendered on screen after .close() — even with the
      `open` attribute gone. Scoping it to the `open:` variant only ever
      sets `display` while `[open]` is present, so the UA rule is free to
-     hide it the rest of the time. -->
+     hide it the rest of the time.
+
+     `h-fit`, not `h-auto`: see CareerStopRow's dialog for why. `height:
+     auto` against a native modal dialog's pinned top/bottom edges stretches
+     to the max-height cap instead of shrinking to content. Matters here
+     specifically because this list's visible content shrinks a lot once
+     the search narrows it down to a couple of pills: `h-auto` left the
+     card at its full height with a big empty gap below a short result set. -->
 <dialog
   id={modalId}
-  class="open:flex m-auto h-auto max-h-[85vh] w-[min(94vw,54rem)] flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  class="open:flex m-auto h-fit max-h-[85vh] w-[min(94vw,54rem)] flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
 >
   <div class="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
     <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">All Technologies</p>

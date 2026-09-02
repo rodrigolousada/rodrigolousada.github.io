@@ -98,12 +98,22 @@ function formatNewsDate(date: string) {
     </span>
   </button>
 
-  <!-- sm:max-h-[85vh], not left uncapped: see CareerStopRow's dialog for why —
+  <!-- sm:max-h-[85vh], not left uncapped: see CareerStopRow's dialog for why,
        same near-100vh-on-desktop issue for any project with enough content
-       (news clippings, long achievement lists) to need it. -->
+       (news clippings, long achievement lists) to need it.
+
+       sm:h-fit, not sm:h-auto: a native <dialog>'s default `showModal()`
+       centering pins both `top` and `bottom` to 0 (see the UA stylesheet's
+       `dialog:modal { inset-block: 0 }`), and `height: auto` against two
+       pinned edges resolves to stretch-to-fill, not shrink-to-content:
+       every short project was rendering at the full sm:max-h-[85vh] cap
+       instead of its own (much shorter) content height. `fit-content`
+       explicitly asks for shrink-to-fit sizing regardless of that stretch
+       context, so a short project sizes to its own content and a long one
+       still clamps at the cap and scrolls, exactly as before. -->
   <dialog
     id={modalId}
-    class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
+    class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
   >
     <div class="overflow-hidden rounded-none sm:rounded-xl">
       <div class="relative flex items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)] px-6 py-4">

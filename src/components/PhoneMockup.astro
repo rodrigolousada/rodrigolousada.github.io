@@ -21,6 +21,17 @@
 // partway through — or has looped and restarted mid-view — by the time
 // anyone can see it), and only JS can line a video's own clock up with the
 // reveal like that.
+//
+// Every real usage of this component lives inside a <dialog> (a project's
+// modal), which is closed by default, so the schedule only starts once
+// that dialog actually opens, and stops the moment it closes, rather than
+// ticking away in the background from page load. Without that gating, a
+// step's video would already be partway into its own playback clock (or
+// several loops deep) by the time anyone actually opened the dialog to
+// watch it: the video looked like it "started at a random point" purely
+// because it had been running unseen the whole time the page sat open.
+// Listens for the `dialogopen`/`dialogclose` events Layout.astro's script
+// dispatches, so every reopen starts the whole sequence fresh from step 0.
 export interface HandoffStep {
   /** Which phone frame this step's video/placeholder shows on: 'left' or
    * 'right'. Typed as a plain string, not a literal union — like the rest
@@ -106,7 +117,7 @@ const lastIndex = steps.length - 1;
 
 {
   mode === 'single' ? (
-    <div class="mx-auto w-40">
+    <div class="mx-auto w-40" data-single-demo>
       <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
         {videos?.[0] ? (
           <video src={videos[0]} class="h-full w-full rounded-[1.25rem] object-cover" autoplay muted loop playsinline />
@@ -328,6 +339,36 @@ const lastIndex = steps.length - 1;
       at(total, runCycle);
     }
 
-    runCycle();
+    function stopCycle() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      stepEls.forEach((step) => step.querySelector('video')?.pause());
+    }
+
+    const dialog = root.closest('dialog');
+    if (dialog) {
+      if (dialog.hasAttribute('open')) runCycle();
+      dialog.addEventListener('dialogopen', runCycle);
+      dialog.addEventListener('dialogclose', stopCycle);
+    } else {
+      runCycle();
+    }
+  });
+
+  // mode="single" videos have the same "already however far into its own
+  // playback clock by the time the dialog opens" problem, just without a
+  // schedule to drive. Reset and (re)start the one video the moment the
+  // dialog opens, pause it the moment the dialog closes.
+  document.querySelectorAll<HTMLElement>('[data-single-demo]').forEach((root) => {
+    const video = root.querySelector('video');
+    const dialog = root.closest('dialog');
+    if (!video || !dialog) return;
+    function playFromStart() {
+      video!.currentTime = 0;
+      video!.play().catch(() => {});
+    }
+    if (dialog.hasAttribute('open')) playFromStart();
+    dialog.addEventListener('dialogopen', playFromStart);
+    dialog.addEventListener('dialogclose', () => video.pause());
   });
 </script>
