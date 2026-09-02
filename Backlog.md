@@ -468,3 +468,33 @@ here is missing exactly — say the word on any of these and I'll add it:
     single-video demos) now only run while their dialog is actually open,
     restarting from the first frame on every open and stopping the
     instant it closes.
+
+-------
+
+- **Done.** The mobile nav still showed a full-width bar (background,
+  border, initials) even collapsed to a hamburger. Removed the bar
+  entirely below `sm`: just a small floating circular button, top-right,
+  that opens the same slide-in side panel.
+- **Done.** "Download CV" on the hero, a plain underlined link rather than
+  a button, sat right up against the two buttons above it whenever it
+  wrapped onto its own line on a phone screen. It's now its own row below
+  the button pair at every width narrow enough to need one, with a
+  proper gap instead of however much a lucky wrap happened to leave.
+- **Done.** The same technology can render as several separate pills (the
+  compact Technologies list, the "All Technologies" search modal, the
+  preferred-stack diagram). Pinning one now pins every copy of it, keyed
+  by technology name, instead of only the one actually clicked.
+- **Done.** Split the "All Technologies" modal into two tabs, "Search"
+  and "Preferred stack", instead of stacking the architecture diagram
+  underneath the search results in one view. The diagram is no longer
+  hidden on mobile either, now that it has the whole modal to itself
+  rather than sharing space with the search list; its existing
+  horizontal scroll handles a narrow screen the same way it always did
+  on tablet widths.
+- **Done.** The referral video, now starting at the right timestamp,
+  still flashed back to its first frame for a moment once it reached the
+  end (its `loop` attribute racing ahead of the schedule's own "hide"
+  event if the clip finished before its held duration ran out). Dropped
+  `loop` from the handoff step videos: a clip that finishes early now
+  just freezes on its last frame until the schedule moves on, instead of
+  visibly restarting.

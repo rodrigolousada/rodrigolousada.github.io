@@ -153,7 +153,7 @@ const lastIndex = steps.length - 1;
                     style={`transition: opacity ${FADE}s ease;`}
                   >
                     {step.video ? (
-                      <video src={step.video} class="h-full w-full object-cover" muted loop playsinline />
+                      <video src={step.video} class="h-full w-full object-cover" muted playsinline />
                     ) : i === lastIndex ? (
                       <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
                         <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
@@ -197,7 +197,7 @@ const lastIndex = steps.length - 1;
                     style={`transition: opacity ${FADE}s ease;`}
                   >
                     {step.video ? (
-                      <video src={step.video} class="h-full w-full object-cover" muted loop playsinline />
+                      <video src={step.video} class="h-full w-full object-cover" muted playsinline />
                     ) : i === lastIndex ? (
                       <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
                         <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
@@ -268,9 +268,13 @@ const lastIndex = steps.length - 1;
     if (stepEls.size === 0 || schedule.length === 0 || reduceMotion) return;
 
     // Restarts a step's real video (if it has one) from the beginning right
-    // as it's revealed — otherwise it's already however far into its own
-    // independent playback clock as whenever the page happened to load, and
-    // can even loop and jump back to its start while still on screen.
+    // as it's revealed, otherwise it's already however far into its own
+    // independent playback clock as whenever the page happened to load.
+    // Step videos deliberately don't have the `loop` attribute either: a
+    // step's `duration` is a hold time, not a guess at the clip's exact
+    // length, so a clip that finishes early just freezes on its last frame
+    // until the schedule moves on, instead of visibly snapping back to its
+    // first frame and replaying for however long is left.
     function playFromStart(step: HTMLElement) {
       const video = step.querySelector('video');
       if (video) {

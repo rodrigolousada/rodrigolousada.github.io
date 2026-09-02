@@ -2,14 +2,16 @@
 import site from '../data/site.json';
 ---
 
-<!-- Below sm, the full link row doesn't fit next to the initials without
-     wrapping or crowding, so it collapses to a hamburger that opens a
-     slide-in side panel instead, same links, shown only while asked for.
-     sm and up keeps the original inline row; nothing changes there. -->
-<header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur">
+<!-- Below sm, there's no header bar at all, not even a collapsed one: the
+     full-width bar (background, border, initials) looked like a permanent
+     fixture squatting over the hero on a phone screen. Just a small
+     floating circular button, top-right, that opens a slide-in side panel
+     with the same links. sm and up keeps the original inline bar; nothing
+     changes there. -->
+<header class="sticky top-0 z-50 hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur sm:block">
   <nav class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
     <a href="#" class="font-mono text-sm font-semibold text-[var(--color-text)]">{site.nav.initials}</a>
-    <ul class="hidden items-center gap-6 text-sm text-[var(--color-muted)] sm:flex">
+    <ul class="flex items-center gap-6 text-sm text-[var(--color-muted)]">
       {
         site.nav.links.map((link) => (
           <li>
@@ -20,20 +22,21 @@ import site from '../data/site.json';
         ))
       }
     </ul>
-    <button
-      type="button"
-      data-nav-open
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="nav-panel"
-      class="flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-text)] transition hover:text-[var(--color-accent)] sm:hidden"
-    >
-      <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current">
-        <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
-      </svg>
-    </button>
   </nav>
 </header>
+
+<button
+  type="button"
+  data-nav-open
+  aria-label="Open menu"
+  aria-expanded="false"
+  aria-controls="nav-panel"
+  class="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/90 text-[var(--color-text)] shadow-lg backdrop-blur transition hover:text-[var(--color-accent)] sm:hidden"
+>
+  <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current">
+    <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
+  </svg>
+</button>
 
 <div
   data-nav-backdrop

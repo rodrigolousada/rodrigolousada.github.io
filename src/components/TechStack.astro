@@ -160,45 +160,74 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
       </button>
     </form>
   </div>
+
+  {preferredStack && (
+    // Two tabs rather than stacking the architecture diagram underneath
+    // the search list in the same view: they're different tasks (skim my
+    // preferred stack vs. hunt for one specific technology), and splitting
+    // them keeps either view from feeling cluttered by the other. Plain
+    // buttons + JS, not <details>/native tabs: this needs exactly one
+    // panel visible at a time with a persistent header, which neither
+    // gives you for free.
+    <div class="flex shrink-0 gap-4 border-b border-[var(--color-border)] px-6">
+      <button
+        type="button"
+        data-tech-tab="search"
+        aria-selected="true"
+        class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
+      >
+        Search
+      </button>
+      <button
+        type="button"
+        data-tech-tab="stack"
+        aria-selected="false"
+        class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
+      >
+        Preferred stack
+      </button>
+    </div>
+  )}
+
   <div class="min-h-0 flex-1 overflow-y-auto p-6">
-    <div class="relative mb-4">
-      <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-[var(--color-muted)]">
-        <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5L20.5 19l-5-5zm-6 0a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />
-      </svg>
-      <input
-        type="search"
-        id="tech-search"
-        placeholder="Search technologies…"
-        class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 pl-9 pr-3 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)]"
-      />
-    </div>
-    <div class="space-y-4">
-      {
-        allGroups.map((group) => (
-          <div data-tech-category>
-            <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
-            <div class="flex flex-wrap gap-1.5">
-              {group.items.map((item) => (
-                <TechPill name={item.name} />
-              ))}
+    <div data-tech-panel="search">
+      <div class="relative mb-4">
+        <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-[var(--color-muted)]">
+          <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5L20.5 19l-5-5zm-6 0a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />
+        </svg>
+        <input
+          type="search"
+          id="tech-search"
+          placeholder="Search technologies…"
+          class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 pl-9 pr-3 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)]"
+        />
+      </div>
+      <div class="space-y-4">
+        {
+          allGroups.map((group) => (
+            <div data-tech-category>
+              <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
+              <div class="flex flex-wrap gap-1.5">
+                {group.items.map((item) => (
+                  <TechPill name={item.name} />
+                ))}
+              </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        }
+      </div>
+      <p id="tech-search-empty" class="mt-4 hidden text-center text-sm text-[var(--color-muted)]">
+        No technologies match your search.
+      </p>
     </div>
-    <p id="tech-search-empty" class="mt-4 hidden text-center text-sm text-[var(--color-muted)]">
-      No technologies match your search.
-    </p>
 
     {preferredStack && (
-      // Hidden below sm: it's a nice-to-have architecture diagram, not core
-      // content, and even with the wider tier boxes it needs more room than
-      // a phone screen gives it — happier not shown at all there than shown
-      // as a squeezed, scroll-to-explore box.
-      <div class="hidden sm:block">
-        <p class="mb-3 mt-6 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-          My preferred stack
-        </p>
+      // No longer hidden below sm now that it's a dedicated tab instead of
+      // squeezed in underneath the search results: the diagram's own
+      // overflow-x-auto (with the width floor on each layer box) already
+      // handles a narrow screen by scrolling sideways, same as it always
+      // did on tablet widths.
+      <div data-tech-panel="stack" class="hidden">
         <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
           <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
             <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
@@ -305,9 +334,26 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
 </dialog>
 
 <script>
-  // Filters the flat "All Technologies" grid only — the preferred-stack
-  // diagram below it is a fixed architecture picture, not a list, so it
-  // stays put regardless of the search term.
+  // Switches between the "Search" and "Preferred stack" tabs (only present
+  // when there's a preferred stack to show a tab for). Reopening the
+  // dialog always lands back on "Search", the tab it opens on today, same
+  // "starts fresh" reasoning as the scroll-position/video resets on
+  // dialogopen elsewhere (see Layout.astro).
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-tech-tab]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-tech-panel]');
+  const techDialog = document.getElementById('technologies-more');
+
+  function selectTab(name: string | undefined) {
+    tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab.dataset.techTab === name)));
+    panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.techPanel !== name));
+  }
+
+  tabs.forEach((tab) => tab.addEventListener('click', () => selectTab(tab.dataset.techTab)));
+  techDialog?.addEventListener('dialogopen', () => selectTab('search'));
+
+  // Filters the flat "All Technologies" grid only. The preferred-stack
+  // diagram lives in its own tab, a fixed architecture picture rather than
+  // a list, so it stays put regardless of the search term.
   const searchInput = document.getElementById('tech-search') as HTMLInputElement | null;
   const emptyMessage = document.getElementById('tech-search-empty');
   const categories = document.querySelectorAll<HTMLElement>('[data-tech-category]');

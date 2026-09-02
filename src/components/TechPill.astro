@@ -105,10 +105,21 @@ const iconSize = icon?.sizePx ?? 18;
   // still works for pills that appear later inside a <dialog> (native
   // dialogs stay part of the document, so clicks inside them bubble here
   // same as anywhere else).
+  //
+  // The same technology can render as several separate pills (the compact
+  // "Technologies" list, the "All Technologies" search modal, the
+  // preferred-stack diagram): toggling one pins/unpins that technology,
+  // not just that one button, so it syncs across every instance keyed by
+  // `data-tech-name` regardless of which copy was actually clicked.
   document.addEventListener('click', (e) => {
     const pill = (e.target as HTMLElement)?.closest<HTMLElement>('[data-tech-pill]');
     if (!pill) return;
+    const name = pill.dataset.techName;
+    if (!name) return;
     const pressed = pill.getAttribute('aria-pressed') === 'true';
-    pill.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+    const next = pressed ? 'false' : 'true';
+    document.querySelectorAll<HTMLElement>(`[data-tech-pill][data-tech-name="${CSS.escape(name)}"]`).forEach((el) => {
+      el.setAttribute('aria-pressed', next);
+    });
   });
 </script>

@@ -139,19 +139,28 @@ const cities = hero.cities.flatMap((city, i) => {
       areas as {areasText}.
     </p>
 
-    <div class="mt-10 flex flex-wrap items-center gap-4">
-      <a
-        href="#projects"
-        class="rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
-      >
-        View projects
-      </a>
-      <a
-        href="#contact"
-        class="rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
-      >
-        Get in touch
-      </a>
+    <!-- "Download CV" is a plain underlined link, not a button, so once it
+         wrapped onto its own line below the two buttons (any phone
+         narrower than all three fitting inline) it sat right up against
+         them with no visual separation. Splitting it into its own flex
+         item below the button row, not just another entry in the same
+         wrapping row, gives it a real gap at every width narrow enough to
+         need one, instead of however much a lucky wrap happened to leave. -->
+    <div class="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="#projects"
+          class="rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
+        >
+          View projects
+        </a>
+        <a
+          href="#contact"
+          class="rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+        >
+          Get in touch
+        </a>
+      </div>
       <a
         href={site.site.cvPath}
         class="text-sm font-medium text-[var(--color-muted)] underline decoration-[var(--color-border)] underline-offset-4 transition hover:text-[var(--color-text)]"
