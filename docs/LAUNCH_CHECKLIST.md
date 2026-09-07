@@ -45,11 +45,11 @@ version if this drifts; update both when something here gets resolved.
       wording, seniority framing, and that nothing's stale, since most of
       it was drafted from context an agent had rather than dictated by you
       line by line.
-- [ ] **Klarna work — more current/detailed info.** Confirm the Klarna
-      career-stop entry and business-card tagline still reflect your
-      actual current role/scope at Klarna (`companies.klarna` and
-      `contact.klarna` in `site.json`) — this was largely written early on
-      and may be worth refreshing now.
+- [x] **Klarna work — more current/detailed info.** Done: the Klarna
+      career-stop entry now lists your 5 actual current projects
+      (Referrals & Deals, Cursor Data Modeler, Data Modeling Platform,
+      Data Modeling Chatbot, Klarna Knowledge Management Platform) with
+      real tech and achievements, replacing the old 2-project draft.
 
 ## Optional polish (not blocking — say the word on any of these)
 

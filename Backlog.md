@@ -35,6 +35,19 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Done** — Refreshed the Klarna career-stop entry with your current
+  project details: replaced the old 2-project placeholder (Klarna Referral
+  Program, Klarna Internal Knowledge Base) with 5 projects — Referrals &
+  Deals (the referral program revamp + discounts platform maintenance +
+  AppsFlyer linking/push notifications/peak-season testing/on-call),
+  Cursor Data Modeler (split out on its own since it's your most current
+  work), Data Modeling Platform (the Figma-like model builder), Data
+  Modeling Chatbot (the LangChain assistant), and Klarna Knowledge
+  Management Platform (the full-stack platform work, renamed from
+  Internal Knowledge Base). Top-level role line and KPIs updated to
+  match. A few new tech pills (Cursor, Prompt Engineering, Zod, React
+  Query, AppsFlyer, k6) don't have icons in `techIcons.ts` yet, so they
+  render as text-only pills — confirmed that works fine, no crash.
 - **Done** — About is gone as its own 2-column section. The "7 years..." bio
   now lives in the Hero as one line ("Project Engineering Manager with
   {years} years..." — years still computed live from `about.softwareSince`,
