@@ -192,30 +192,41 @@
       "logoInvert": true,
       "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
       "period": "2024 – Present",
-      "role": "Full-stack engineer, rotating across QlikSense DevOps, Data Modeling, Search, and the Internal Knowledge Base team, now on Referrals & Deals",
+      "role": "Full-stack engineer, rotating across QlikSense DevOps, Data Modeling, Search, and Knowledge Management, now on Referrals & Deals",
       "kpis": [
-        "Rotated across 5 teams in under 2 years: DevOps, Data Modeling, Search, Knowledge Base, now Referrals & Deals",
-        "Built a GenAI agent automating data modeling into Neo4j",
-        "Cut a Qliksense app's footprint 53%+ through usage analysis"
+        "Rotated across 5+ areas in under 2 years: QlikSense DevOps, Data Modeling, Search, Knowledge Management, now Referrals & Deals",
+        "Built a Cursor agent that turns a plain-language request into a complete, compliant data model",
+        "Revamped Klarna's referral program into a more interactive experience while keeping the discounts platform running",
+        "Cut a QlikSense app's footprint 53%+ through usage analysis"
       ],
       "projects": [
         {
-          "name": "Klarna Referral Program",
+          "name": "Referrals & Deals",
           "companies": [
             "klarna"
           ],
-          "tldr": "Rolling out Klarna's referral program: advocates share, friends redeem, both get rewarded.",
-          "description": "On the Referrals & Deals team, building and rolling out Klarna's referral program end to end: an advocate shares a personal link, a referred friend redeems it in the app, and both sides get their reward once the friend completes a qualifying purchase. Also maintain the discounts platform that powers Klarna's promotions.",
+          "tldr": "Revamped Klarna's referral program into a more interactive experience, and maintain the discounts platform powering Klarna's promotions.",
+          "description": "On the Referrals & Deals team: actively building out the referral program (an advocate shares a personal link, a friend redeems it, both sides get rewarded once a qualifying purchase completes) into a more interactive experience, while also maintaining the discounts platform in maintenance mode. Also covers the linking experience with AppsFlyer, push notifications, peak-season load and visual-regression testing, admin platform enhancements, DLT reporting runs, monitoring and analytics, and the team's on-call rotation.",
           "technologies": [
             "TypeScript",
             "React",
-            "Python",
-            "PostgreSQL",
-            "AWS"
+            "Node.js",
+            "Zod",
+            "React Query",
+            "AppsFlyer",
+            "AWS",
+            "RDS",
+            "Kafka",
+            "Playwright",
+            "k6"
           ],
           "achievements": [
-            "Shipping Klarna's referral program end-to-end, from share to reward",
-            "Maintain the discounts platform powering Klarna's promotions"
+            "Revamped the referral program end to end into a more interactive experience, from share to redemption to reward",
+            "Own the discounts platform in maintenance mode",
+            "Built the linking experience with AppsFlyer for shareable referral links",
+            "Ran peak-season load testing and visual-regression testing (Playwright, k6) to keep the program stable under traffic spikes",
+            "Shipped admin platform enhancements, push notifications, and DLT-based reporting runs",
+            "On monitoring, analytics, and on-call for the team's services"
           ],
           "demo": {
             "mode": "handoff",
@@ -241,24 +252,97 @@
           }
         },
         {
-          "name": "Klarna Internal Knowledge Base",
+          "name": "Cursor Data Modeler",
           "companies": [
             "klarna"
           ],
           "confidential": true,
-          "tldr": "Core contributor to Klarna's Internal Knowledge Base on Neo4j and WikiData, incl. a GenAI agent that automates populating it.",
-          "description": "Worked across the team building Klarna's Internal Knowledge Base on Neo4j and WikiData, from a stint improving search relevance over it, to core graph data modeling, to building \"Cursor Data Modeler\", a GenAI agent that automates data modeling work into the graph that was previously done by hand. Some specifics are confidential.",
+          "tldr": "Built a Cursor agent that turns a plain-language request into a complete, compliant data model.",
+          "description": "Configured a Cursor agent with Klarna's own data modeling rules and conventions, combining tools, scripts, and MCP servers with an LLM's reasoning to go from a plain-language request straight to a complete, compliant data model, work that was previously done by hand.",
           "technologies": [
-            "Neo4j",
-            "WikiData",
+            "Cursor",
+            "Prompt Engineering",
             "Python",
-            "GenAI / LLMs",
-            "OpenSearch"
+            "WikiData"
           ],
           "achievements": [
-            "Built a GenAI agent (\"Cursor Data Modeler\") that automates data modeling into Neo4j",
-            "Improved search relevance over Klarna's Internal Knowledge Base",
-            "Core contributor to the graph data model powering the Knowledge Base"
+            "Encoded Klarna's data modeling rules and conventions directly into a Cursor agent",
+            "Combines tools, scripts, and MCP servers with an LLM to produce a complete, compliant data model from a plain-language request",
+            "Replaces data modeling work that was previously done by hand"
+          ]
+        },
+        {
+          "name": "Data Modeling Platform",
+          "companies": [
+            "klarna"
+          ],
+          "confidential": true,
+          "tldr": "A Figma-like visual builder for creating and editing Klarna's data models.",
+          "description": "Building a Figma-like experience for Klarna's data modeling: a visual canvas where data modelers can see, build, and edit data models directly, backed by a Python/FastAPI service using LangChain and LangSmith over Neo4j.",
+          "technologies": [
+            "Python",
+            "LangChain",
+            "LangSmith",
+            "FastAPI",
+            "Pydantic",
+            "Neo4j",
+            "React",
+            "TypeScript",
+            "Zod",
+            "React Query"
+          ],
+          "achievements": [
+            "Built a Figma-like visual canvas for creating and editing data models directly",
+            "Backend combines LangChain and LangSmith over Neo4j with a FastAPI/Pydantic service"
+          ]
+        },
+        {
+          "name": "Data Modeling Chatbot",
+          "companies": [
+            "klarna"
+          ],
+          "confidential": true,
+          "tldr": "A conversational assistant for data modeling, built with LangChain over Klarna's graph.",
+          "description": "On the Data Modeling Chatbot team, building a conversational assistant that helps Klarna's data modelers work with the company's graph, using LangChain and LangSmith on a Python/FastAPI backend over Neo4j, WikiData, and PostgreSQL.",
+          "technologies": [
+            "Python",
+            "LangChain",
+            "LangSmith",
+            "Prompt Engineering",
+            "FastAPI",
+            "Neo4j",
+            "WikiData",
+            "PostgreSQL",
+            "Pydantic"
+          ],
+          "achievements": [
+            "Built a conversational assistant for data modeling on LangChain and LangSmith",
+            "Backend spans Neo4j, WikiData, and PostgreSQL behind a FastAPI/Pydantic service"
+          ]
+        },
+        {
+          "name": "Klarna Knowledge Management Platform",
+          "companies": [
+            "klarna"
+          ],
+          "confidential": true,
+          "myRole": "Full-stack developer",
+          "tldr": "Full-stack developer on the platform behind Klarna's Knowledge Management, built on Neo4j.",
+          "description": "Full-stack developer on the Knowledge Management platform: a Python/FastAPI backend over Neo4j, with a React and TypeScript front end for browsing and editing the underlying data model.",
+          "technologies": [
+            "Python",
+            "FastAPI",
+            "Pydantic",
+            "Neo4j",
+            "React",
+            "TypeScript",
+            "Zod",
+            "React Query",
+            "AWS"
+          ],
+          "achievements": [
+            "Full-stack ownership across the FastAPI/Pydantic backend and the React/TypeScript front end",
+            "Built on Klarna's graph data model in Neo4j"
           ]
         }
       ],
