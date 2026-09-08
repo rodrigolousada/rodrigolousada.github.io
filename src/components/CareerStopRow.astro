@@ -22,6 +22,8 @@ interface Props {
     /** Small Credly digital badges to show as a tiny logo strip (IBM, etc). Each links out to its own Credly page for the full-resolution badge. Set `highlight: true` on the handful worth calling out (e.g. AWS) — they render bigger, above the rest. */
     credlyBadges?: { name: string; img: string; url?: string; highlight?: boolean }[];
     credlyProfileUrl?: string;
+    /** True while this whole career stop isn't ready to show yet. Renders the row blurred with a "Coming soon" badge; clicking it shakes and flashes red instead of opening a modal — same treatment as a hidden project, see ProjectRow.astro. */
+    hidden?: boolean;
     projects: {
       name: string;
       companies?: string[];
@@ -71,34 +73,47 @@ const moreProjects = stop.projects.slice(3);
   <div class="min-w-0" id={stop.slug} data-stop-anchor={stop.slug} data-modal-id={modalId}>
     <button
       type="button"
-      onclick={`document.getElementById('${modalId}').showModal()`}
-      class="group flex w-full items-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left transition hover:border-[var(--color-accent)] sm:p-5"
+      onclick={stop.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
+      data-locked={stop.hidden ? 'true' : undefined}
+      aria-disabled={stop.hidden ? 'true' : undefined}
+      class={`group flex w-full items-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left transition sm:p-5 ${stop.hidden ? 'hover:border-red-500/60' : 'hover:border-[var(--color-accent)]'}`}
     >
-      <div class={`flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1.5 ${stop.chipClass}`}>
-        <img
-          src={stop.logo}
-          alt={`${stop.org} logo`}
-          class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-          style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
-        />
+      <div class={`flex min-w-0 flex-1 items-center gap-4 ${stop.hidden ? 'select-none blur-[3px]' : ''}`}>
+        <div class={`flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1.5 ${stop.chipClass}`}>
+          <img
+            src={stop.logo}
+            alt={`${stop.org} logo`}
+            class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
+            style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+          />
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold text-[var(--color-text)]">{stop.title}</p>
+          <p class="text-xs text-[var(--color-muted)]">
+            {stop.org}
+            <!-- Block below sm, not left to wrap inline: on narrow screens a
+                 long org name (e.g. "Instituto de Telecomunicações") pushed
+                 this onto multiple lines anyway, and plain word-wrap was
+                 splitting mid-date ("· 2018" / "– 2020") wherever it ran out
+                 of room. Forcing the period onto its own line keeps it whole. -->
+            <span class="block sm:inline">· {stop.period}</span>
+          </p>
+        </div>
       </div>
 
-      <div class="min-w-0 flex-1">
-        <p class="font-semibold text-[var(--color-text)]">{stop.title}</p>
-        <p class="text-xs text-[var(--color-muted)]">
-          {stop.org}
-          <!-- Block below sm, not left to wrap inline: on narrow screens a
-               long org name (e.g. "Instituto de Telecomunicações") pushed
-               this onto multiple lines anyway, and plain word-wrap was
-               splitting mid-date ("· 2018" / "– 2020") wherever it ran out
-               of room. Forcing the period onto its own line keeps it whole. -->
-          <span class="block sm:inline">· {stop.period}</span>
-        </p>
-      </div>
-
-      <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
-        View →
-      </span>
+      {stop.hidden ? (
+        <span class="flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+          <svg viewBox="0 0 24 24" class="h-3 w-3 fill-current">
+            <path d={icons.lock} />
+          </svg>
+          Coming soon
+        </span>
+      ) : (
+        <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+          View →
+        </span>
+      )}
     </button>
 
     <!-- sm:max-h-[85vh], not left uncapped: without it, a stop with enough
@@ -116,7 +131,12 @@ const moreProjects = stop.projects.slice(3);
          height. `fit-content` explicitly asks for shrink-to-fit sizing
          regardless of that stretch context, so a short stop sizes to its
          own content and a long one still clamps at the cap and scrolls,
-         exactly as before. -->
+         exactly as before.
+
+         Not rendered at all when stop.hidden — same reasoning as a hidden
+         project's dialog (ProjectRow.astro): the stop's real KPIs/projects
+         shouldn't reach the page's HTML unopened. -->
+    {!stop.hidden && (
     <dialog
       id={modalId}
       class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
@@ -336,5 +356,6 @@ const moreProjects = stop.projects.slice(3);
         </div>
       </div>
     </dialog>
+    )}
   </div>
 </div>

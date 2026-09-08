@@ -31,7 +31,7 @@ interface Props {
     isSideProject?: boolean;
     /** True for work that can only be described at a high level (NDA, internal-only, etc). */
     confidential?: boolean;
-    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the row blurred with a lock + "Coming soon" badge and no modal — the detail view (description, achievements, demo) is left out of the page entirely rather than just hidden client-side. */
+    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the row blurred with a "Coming soon" badge; clicking it shakes and flashes red (see the `[data-locked]` listener in Projects.astro) instead of opening a modal. The detail view (description, achievements, demo) is left out of the page entirely rather than just hidden client-side. */
     hidden?: boolean;
     tldr: string;
     description: string;
@@ -65,11 +65,12 @@ function formatNewsDate(date: string) {
   <button
     type="button"
     onclick={project.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
-    disabled={project.hidden}
+    data-locked={project.hidden ? 'true' : undefined}
+    aria-disabled={project.hidden ? 'true' : undefined}
     data-modal-id={modalId}
     data-project-companies={(project.companies ?? []).join(' ')}
     data-project-name={project.shortName ?? project.name}
-    class={`group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition ${project.hidden ? 'cursor-default' : 'hover:border-[var(--color-accent)]'}`}
+    class={`group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition ${project.hidden ? 'hover:border-red-500/60' : 'hover:border-[var(--color-accent)]'}`}
   >
     <div class={`flex min-w-0 flex-1 items-center gap-3 ${project.hidden ? 'select-none blur-[3px]' : ''}`}>
       <div class="flex shrink-0 items-center -space-x-2">

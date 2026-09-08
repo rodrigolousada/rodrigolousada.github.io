@@ -9,7 +9,7 @@ interface Props {
     title: string;
     subtitle: string;
     description: string;
-    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the cartridge blurred and locked, with no modal — the description/tech/demo are left out of the page entirely. */
+    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the cartridge blurred with a "Coming soon" badge; clicking it shakes and flashes red instead of opening a modal (see the `[data-locked]` listener in Projects.astro). The description/tech/demo are left out of the page entirely. */
     hidden?: boolean;
     technologies: string[];
     repoUrl?: string;
@@ -44,8 +44,9 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
   <button
     type="button"
     onclick={project.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
-    disabled={project.hidden}
-    class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition ${project.hidden ? 'cursor-default' : 'hover:-translate-y-1 hover:shadow-xl'} ${project.shellColor}`}
+    data-locked={project.hidden ? 'true' : undefined}
+    aria-disabled={project.hidden ? 'true' : undefined}
+    class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition ${project.hidden ? 'hover:ring-2 hover:ring-red-500/60' : 'hover:-translate-y-1 hover:shadow-xl'} ${project.shellColor}`}
     style="clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 8%); border-radius: 8px;"
   >
     <span class="absolute right-2.5 top-2.5 z-10 h-1.5 w-1.5 rounded-full bg-black/30" />

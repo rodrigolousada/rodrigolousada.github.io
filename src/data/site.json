@@ -205,6 +205,7 @@
           "companies": [
             "klarna"
           ],
+          "hidden": true,
           "tldr": "Revamped Klarna's referral program into a more interactive experience, and maintain the discounts platform powering Klarna's promotions.",
           "description": "On the Referrals & Deals team: actively building out the referral program (an advocate shares a personal link, a friend redeems it, both sides get rewarded once a qualifying purchase completes) into a more interactive experience, while also maintaining the discounts platform in maintenance mode. Also covers the linking experience with AppsFlyer, push notifications, peak-season load and visual-regression testing, admin platform enhancements, DLT reporting runs, monitoring and analytics, and the team's on-call rotation.",
           "technologies": [
@@ -796,6 +797,7 @@
   "sideProjects": [
     {
       "title": "CourtKit",
+      "hidden": true,
       "subtitle": "Watch-first basketball training app",
       "description": "A Watch-first basketball training app: the Apple Watch app captures shooting drills, timed and clocked drills, and live game stats through a 14-spot interactive court diagram, while the iPhone app reviews it all with a shooting heat map, trend charts, and searchable history. Built entirely in SwiftUI with bidirectional sync between Watch and iPhone via WatchConnectivity.",
       "technologies": [

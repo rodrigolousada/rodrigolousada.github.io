@@ -78,6 +78,50 @@ dialog[open] {
   }
 }
 
+/* "Nope" feedback when clicking a locked ("Coming soon") project, side
+   project, or career stop — ProjectRow.astro, GameCartridge.astro, and
+   CareerStopRow.astro all trigger this via the delegated click listener in
+   Projects.astro (looks for [data-locked], see the script at the bottom of
+   that file), rather than just being inert `disabled` buttons. Shake plus a
+   red flash reads as "blocked", not "broken". */
+@keyframes locked-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-6px);
+  }
+  30% {
+    transform: translateX(5px);
+  }
+  45% {
+    transform: translateX(-4px);
+  }
+  60% {
+    transform: translateX(3px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes locked-flash {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.55);
+  }
+}
+
+.locked-shake {
+  animation:
+    locked-shake 0.4s ease-in-out,
+    locked-flash 0.4s ease-in-out;
+}
+
 /* Small "confirm before we scroll you away" balloon shown by the
    cross-link jump logic in Organizations.astro. */
 .jump-confirm-popup {
