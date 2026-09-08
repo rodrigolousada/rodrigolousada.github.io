@@ -15,6 +15,10 @@ const site = getSite(locale);
 const resolvedTitle = title ?? site.site.title;
 const resolvedDescription = description ?? site.site.description;
 
+// Where each language's homepage lives, for the inline redirect script
+// below — built once here so that script never has to guess a URL shape.
+const localePaths = Object.fromEntries(locales.map((loc) => [loc, localePath(loc, defaultLocale)]));
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -35,6 +39,25 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- A returning visitor who's picked a language before (via the nav's
+         selector, see LanguageSelector.astro) should land straight on it,
+         even from a bare "/" link — this is the only place that decision
+         gets made. Deliberately NOT browser-language detection: a first-time
+         visitor with no stored choice always gets English, full stop, no
+         Accept-Language/navigator.language sniffing anywhere. Inline and
+         synchronous, as early in <head> as possible, so a redirect (rare —
+         only fires for a non-English preference) happens before anything
+         has rendered, rather than as a flash of English first. -->
+    <script is:inline define:vars={{ localePaths, locale }}>
+      try {
+        const preferred = localStorage.getItem('preferredLocale');
+        const target = preferred && preferred !== locale ? localePaths[preferred] : null;
+        if (target) location.replace(target + location.hash);
+      } catch {
+        // localStorage unavailable (private mode, disabled, etc) — falls
+        // back to whatever locale this page actually is, i.e. English.
+      }
+    </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />

@@ -34,6 +34,7 @@ const current = getLanguageMeta(locale);
             <li>
               <a
                 href={localePath(loc, defaultLocale)}
+                data-lang-option={loc}
                 aria-current={loc === locale ? 'true' : undefined}
                 class={`flex items-center gap-2 px-3 py-2 text-sm transition hover:bg-[var(--color-border)]/50 ${
                   loc === locale ? 'text-[var(--color-accent)]' : 'text-[var(--color-text)]'
@@ -56,6 +57,21 @@ const current = getLanguageMeta(locale);
   document.querySelectorAll<HTMLDetailsElement>('[data-lang-select]').forEach((details) => {
     document.addEventListener('click', (e) => {
       if (details.open && !details.contains(e.target as Node)) details.removeAttribute('open');
+    });
+  });
+
+  // Remembers whichever language was explicitly picked here (English
+  // included) so a later visit — to this page or any other — lands
+  // straight on it instead of always starting from English again. Read by
+  // the inline redirect script at the top of Layout.astro's <head>.
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-option]').forEach((link) => {
+    link.addEventListener('click', () => {
+      try {
+        localStorage.setItem('preferredLocale', link.dataset.langOption ?? '');
+      } catch {
+        // localStorage unavailable — the click still navigates normally,
+        // it just won't be remembered next time.
+      }
     });
   });
 </script>

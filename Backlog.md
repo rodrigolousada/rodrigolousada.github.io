@@ -35,6 +35,14 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Done** — The language picker now remembers the visitor's choice:
+  clicking a flag in the nav dropdown stores it (`localStorage`), and any
+  page load afterwards — this visit or a later one, landing on "/" or on
+  "/<locale>/" directly — checks that stored choice and redirects straight
+  to it if it's not already showing that language. A first-time visitor
+  with nothing stored always gets English; there's deliberately no
+  browser-language (`navigator.language`/`Accept-Language`) detection
+  anywhere, so nobody gets a language they didn't ask for.
 - **Done** — `site.json` is now structured for multiple languages: every
   section that used to sit at the top level now sits under a language code
   ("en" today), e.g. `{"en": {"site": ..., "hero": ..., ...}}`. To add a
