@@ -35,6 +35,16 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Done** — Added a `hidden` flag for a project, side project, or whole
+  career stop: set `"hidden": true` on any entry in `site.json` to keep it
+  off the site while it's not ready to announce, or the copy still needs a
+  pass. It renders blurred with a "Coming soon" badge; clicking it (it's
+  still a real, clickable button, not a disabled one) shakes and flashes
+  red instead of opening anything, plus a short "access denied" beep — no
+  gimmicky cursor, just enough feedback that it reads as intentionally
+  locked rather than broken. The real description/achievements never reach
+  the page's HTML while hidden, not just hidden with CSS. Marked CourtKit
+  and Referrals & Deals hidden with this for now.
 - **Done** — Refreshed the Klarna career-stop entry with your current
   project details: replaced the old 2-project placeholder (Klarna Referral
   Program, Klarna Internal Knowledge Base) with 5 projects — Referrals &
