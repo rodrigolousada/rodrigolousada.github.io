@@ -15,8 +15,18 @@ const years = Math.floor(
 );
 const areasText =
   about.areas.length > 1
-    ? `${about.areas.slice(0, -1).join(', ')} and ${about.areas[about.areas.length - 1]}`
+    ? `${about.areas.slice(0, -1).join(', ')} ${about.andWord} ${about.areas[about.areas.length - 1]}`
     : about.areas[0];
+
+// The sentence itself (not just its {title}/{years}/{areas} pieces) lives in
+// site.json as a template — word order and grammar differ enough
+// between languages ("X com Y anos..." vs "X with Y years...") that a
+// fixed English sentence with values slotted in wouldn't translate, only
+// its numbers would.
+const bioSummary = about.bioSummary
+  .replace('{title}', about.bioTitle)
+  .replace('{years}', String(years))
+  .replace('{areas}', areasText);
 
 // Pixel coordinates within the map SVG's viewBox — not content, so kept here
 // rather than in site.json (which only holds the per-city bio text). Only
@@ -26,6 +36,11 @@ const areasText =
 // against the outline) so adding one is just a new entry in `hero.cities`
 // in site.json — no code change needed. A city listed there without a
 // matching point here is skipped rather than crashing the page.
+//
+// Keyed by `city.mapKey`, a stable English identifier, not by `city.name` —
+// `name` is the translated display label (e.g. "Lisboa" in the pt locale),
+// which would silently drop every pin off the map the moment a locale
+// translates it, since it'd stop matching any key here.
 const MAP_VIEWBOX = { w: 506.0, h: 442.9 };
 const CITY_POINTS: Record<string, { x: number; y: number }> = {
   Lisbon: { x: 122.3, y: 393.5 },
@@ -37,7 +52,7 @@ const CITY_POINTS: Record<string, { x: number; y: number }> = {
 };
 
 const cities = hero.cities.flatMap((city, i) => {
-  const point = CITY_POINTS[city.name];
+  const point = CITY_POINTS[city.mapKey];
   if (!point) return [];
   const topPct = (point.y / MAP_VIEWBOX.h) * 100;
   return [
@@ -142,8 +157,7 @@ const cities = hero.cities.flatMap((city, i) => {
     </h1>
 
     <p class="mt-6 max-w-2xl text-justify text-sm leading-relaxed text-[var(--color-muted)] sm:text-lg">
-      {about.bioTitle} with {years} years experience on Software Development spanning a multitude of
-      areas as {areasText}.
+      {bioSummary}
     </p>
 
     <!-- "Download CV" is a plain underlined link, not a button, so once it

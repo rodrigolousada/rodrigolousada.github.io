@@ -35,6 +35,36 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Done** — Added a full Portuguese ("pt") translation to `site.json`, so
+  the language switcher has something real to switch to — visit `/pt/` or
+  pick the flag in the nav. Covers everything content-shaped: bio, career
+  history, project descriptions/achievements/KPIs, side projects, speaking
+  topics, contact copy, org study/work programme blurbs, the testimonial,
+  and the Technologies section's category headings and stack diagram
+  labels. Left as-is on purpose: actual technology/tool names (they're the
+  icon-lookup keys, e.g. "TypeScript", "React" — translating them would
+  just break the icon), real citations (the Portuguese-press news
+  clippings under M.A.R.I.A/BIA & Beatriz were already in Portuguese, so
+  they're identical in both locales, correctly), and official
+  certification/programme names (Credly badges, "IBM Top Talents
+  Portugal").
+  **Known gap**: quite a bit of on-page text is still hardcoded in
+  English directly in the `.astro` components rather than sourced from
+  `site.json` — section headings (PROJECTS, TECHNOLOGIES, ASSOCIATED
+  WITH, WORKED AT/CLIENTS/STUDIED AT...), button/badge microcopy (View
+  projects, Get in touch, Download CV, Coming soon, View →, Show
+  more...), and a few aria-labels. None of that is wired up to translate
+  yet, so the pt page will show a mix of Portuguese content and English
+  chrome until it is — say the word and I'll do a follow-up pass to move
+  that into `site.json` too.
+  Along the way, fixed two latent bugs this translation would otherwise
+  have hit: the Hero map's city pins were keyed by the (now-translatable)
+  city display name, so a translated "Lisboa"/"Berlim" would've silently
+  dropped both pins off the map — added a separate, locale-independent
+  `mapKey` for the lookup. And the "areas" sentence under the headline
+  joined its last two items with a hardcoded " and " — moved into
+  `about.andWord`/`about.bioSummary` so the whole sentence, not just the
+  words in it, is translatable.
 - **Done** — The language picker now remembers the visitor's choice:
   clicking a flag in the nav dropdown stores it (`localStorage`), and any
   page load afterwards — this visit or a later one, landing on "/" or on

@@ -59,11 +59,13 @@
       "cities": [
         {
           "name": "Lisbon",
-          "text": "Born and raised here. This is home."
+          "text": "Born and raised here. This is home.",
+          "mapKey": "Lisbon"
         },
         {
           "name": "Berlin",
-          "text": "Second time living in Berlin: first an Erasmus exchange for 6 months, then moved back in 2024 to join Klarna as a Software Engineer. Currently lives here."
+          "text": "Second time living in Berlin: first an Erasmus exchange for 6 months, then moved back in 2024 to join Klarna as a Software Engineer. Currently lives here.",
+          "mapKey": "Berlin"
         }
       ]
     },
@@ -103,7 +105,9 @@
           "name": "Ideation",
           "description": "People exceptionally talented in the Ideation theme are fascinated by ideas. They are able to find connections between seemingly disparate phenomena."
         }
-      ]
+      ],
+      "andWord": "and",
+      "bioSummary": "{title} with {years} years experience on Software Development spanning a multitude of areas as {areas}."
     },
     "companies": {
       "klarna": {
@@ -1359,6 +1363,1380 @@
         },
         "experimentation": {
           "label": "Experimentation",
+          "items": [
+            "Jupyter",
+            "TensorFlow",
+            "Keras",
+            "k6"
+          ]
+        }
+      }
+    }
+  },
+  "pt": {
+    "site": {
+      "title": "Rodrigo Lousada · Engenheiro de Software e Líder de Equipa de Engenharia",
+      "description": "Engenheiro de Software na Klarna, com um historial de liderança de equipas de engenharia (4-6 programadores em 2 equipas simultâneas na IBM). Aberto a funções de Engineering Manager / Tech Lead.",
+      "url": "https://rodrigolousada.me",
+      "jobTitle": "Engenheiro de Software",
+      "worksFor": "Klarna",
+      "email": "rodrigo.m.lousada@gmail.com",
+      "github": "https://github.com/rodrigolousada",
+      "linkedin": "https://www.linkedin.com/in/rodrigo-lousada-359685117",
+      "cvPath": "/CV_Rodrigo_Lousada.pdf",
+      "cliftonStrengthsPath": "/CliftonStrengths.pdf"
+    },
+    "nav": {
+      "initials": "RL",
+      "links": [
+        {
+          "href": "#tech",
+          "label": "Tecnologia"
+        },
+        {
+          "href": "#projects",
+          "label": "Projetos"
+        },
+        {
+          "href": "#speaking",
+          "label": "Palestras"
+        },
+        {
+          "href": "#contact",
+          "label": "Contacto"
+        },
+        {
+          "href": "#feedback",
+          "label": "Testemunhos"
+        }
+      ]
+    },
+    "hero": {
+      "name": "Rodrigo Lousada",
+      "photo": "/img/profile.jpg",
+      "roleLine": "Engenheiro de Software @ Klarna · Berlim, Alemanha",
+      "headline": "Lidero equipas de engenharia que entregam",
+      "stats": [
+        {
+          "value": "4–6",
+          "label": "programadores liderados em 2 equipas simultâneas"
+        },
+        {
+          "value": "2x",
+          "label": "de poupança em FTEs entregue numa operação com mais de 50 mil chamadas/mês"
+        },
+        {
+          "value": "70%",
+          "label": "da carga de trabalho da equipa reduzida através de automação"
+        }
+      ],
+      "cities": [
+        {
+          "name": "Lisboa",
+          "text": "Nasci e cresci aqui. Esta é a minha casa.",
+          "mapKey": "Lisbon"
+        },
+        {
+          "name": "Berlim",
+          "text": "Segunda vez a viver em Berlim: primeiro um Erasmus de 6 meses, depois regressei em 2024 para integrar a Klarna como Engenheiro de Software. Vive aqui atualmente.",
+          "mapKey": "Berlin"
+        }
+      ]
+    },
+    "about": {
+      "bioTitle": "Gestor de Engenharia de Projetos",
+      "softwareSince": "2018-09-01",
+      "areas": [
+        "Desenvolvimento Full Stack",
+        "Mobile",
+        "Web",
+        "IA",
+        "Engenharia de Dados",
+        "Análise de Dados",
+        "Chatbots",
+        "Voicebots"
+      ],
+      "lookingFor": "Funções de Engineering Manager ou Tech Lead, em Berlim/UE ou em regime totalmente remoto.",
+      "certificateImage": "/img/certificates/clifton-strengths-certificate.jpg",
+      "strengths": [
+        {
+          "name": "Realizador",
+          "description": "As pessoas com um talento excecional no tema Realizador trabalham arduamente e têm uma grande resistência. Sentem uma enorme satisfação em estar ocupadas e produtivas."
+        },
+        {
+          "name": "Futurista",
+          "description": "As pessoas com um talento excecional no tema Futurista inspiram-se no futuro e no que poderá vir a ser. Contagiam os outros com as suas visões do futuro."
+        },
+        {
+          "name": "Aprendiz",
+          "description": "As pessoas com um talento excecional no tema Aprendiz têm um grande desejo de aprender e querem melhorar continuamente. Em particular, é o processo de aprendizagem, mais do que o resultado, que as entusiasma."
+        },
+        {
+          "name": "Individualização",
+          "description": "As pessoas com um talento excecional no tema Individualização são fascinadas pelas qualidades únicas de cada pessoa. Têm o dom de perceber como pessoas diferentes podem trabalhar juntas de forma produtiva."
+        },
+        {
+          "name": "Ideação",
+          "description": "As pessoas com um talento excecional no tema Ideação são fascinadas por ideias. Conseguem encontrar ligações entre fenómenos aparentemente distintos."
+        }
+      ],
+      "andWord": "e",
+      "bioSummary": "{title} com {years} anos de experiência em Desenvolvimento de Software, abrangendo uma multiplicidade de áreas como {areas}."
+    },
+    "companies": {
+      "klarna": {
+        "name": "Klarna",
+        "logo": "/img/klarna-logo.svg",
+        "logoScale": 1.45,
+        "logoInvert": true,
+        "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent"
+      },
+      "ibm": {
+        "name": "IBM",
+        "logo": "/img/ibm-logo.png",
+        "logoInvert": true,
+        "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent"
+      },
+      "montepio": {
+        "name": "Banco Montepio",
+        "logo": "/img/montepio-icon.png",
+        "chipClass": "bg-white",
+        "logoFill": true
+      },
+      "bankinter": {
+        "name": "Bankinter",
+        "logo": "/img/bankinter-icon.png",
+        "chipClass": "bg-white",
+        "logoFill": true
+      },
+      "it": {
+        "name": "Instituto de Telecomunicações",
+        "logo": "/img/it-logo.png",
+        "chipClass": "bg-white"
+      },
+      "sinfo": {
+        "name": "SINFO",
+        "logo": "/img/sinfo-logo.svg",
+        "chipClass": "bg-[#2a5a8a]"
+      }
+    },
+    "focusCategories": [
+      {
+        "id": "pm",
+        "label": "Gestão de Projetos",
+        "color": "#3987e5"
+      },
+      {
+        "id": "swe",
+        "label": "Engenharia de Software",
+        "color": "#d95926"
+      },
+      {
+        "id": "analytics",
+        "label": "Análise de Dados",
+        "color": "#199e70"
+      },
+      {
+        "id": "de",
+        "label": "Engenharia de Dados",
+        "color": "#c98500"
+      },
+      {
+        "id": "ds",
+        "label": "Ciência de Dados",
+        "color": "#d55181"
+      },
+      {
+        "id": "sales",
+        "label": "Vendas",
+        "color": "#84cc16"
+      },
+      {
+        "id": "design",
+        "label": "Design de Produto",
+        "color": "#8b5cf6"
+      },
+      {
+        "id": "social",
+        "label": "Redes Sociais",
+        "color": "#06b6d4"
+      }
+    ],
+    "careerPath": [
+      {
+        "org": "Klarna",
+        "title": "Engenheiro Full-Stack",
+        "logo": "/img/klarna-logo.svg",
+        "logoScale": 1.15,
+        "logoInvert": true,
+        "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
+        "period": "2024 – Presente",
+        "role": "Engenheiro full-stack, com passagem por QlikSense DevOps, Modelação de Dados, Pesquisa e Gestão do Conhecimento, atualmente em Referrals & Deals",
+        "kpis": [
+          "Passou por mais de 5 áreas em menos de 2 anos: QlikSense DevOps, Modelação de Dados, Pesquisa, Gestão do Conhecimento e agora Referrals & Deals",
+          "Criou um agente no Cursor que transforma um pedido em linguagem natural num modelo de dados completo e em conformidade",
+          "Renovou o programa de referências da Klarna para uma experiência mais interativa, mantendo a plataforma de descontos em funcionamento",
+          "Reduziu a pegada de uma aplicação QlikSense em mais de 53% através de análise de utilização"
+        ],
+        "projects": [
+          {
+            "name": "Referrals & Deals",
+            "companies": [
+              "klarna"
+            ],
+            "hidden": true,
+            "tldr": "Renovou o programa de referências da Klarna para uma experiência mais interativa, e mantém a plataforma de descontos que alimenta as promoções da Klarna.",
+            "description": "Na equipa de Referrals & Deals: a desenvolver ativamente o programa de referências (um defensor da marca partilha um link pessoal, um amigo utiliza-o, e ambos são recompensados assim que se conclui uma compra elegível) para uma experiência mais interativa, mantendo também a plataforma de descontos em modo de manutenção. Abrange ainda a experiência de linking com a AppsFlyer, notificações push, testes de carga e de regressão visual em época alta, melhorias na plataforma de administração, execuções de reporting DLT, monitorização e análise, e a escala de prevenção (on-call) da equipa.",
+            "technologies": [
+              "TypeScript",
+              "React",
+              "Node.js",
+              "Zod",
+              "React Query",
+              "AppsFlyer",
+              "AWS",
+              "RDS",
+              "Kafka",
+              "Playwright",
+              "k6"
+            ],
+            "achievements": [
+              "Renovou o programa de referências de ponta a ponta para uma experiência mais interativa, desde a partilha até à recompensa",
+              "Responsável pela plataforma de descontos em modo de manutenção",
+              "Construiu a experiência de linking com a AppsFlyer para links de referência partilháveis",
+              "Realizou testes de carga e de regressão visual (Playwright, k6) em época alta para manter o programa estável sob picos de tráfego",
+              "Lançou melhorias na plataforma de administração, notificações push, e execuções de reporting baseadas em DLT",
+              "Responsável pela monitorização, análise, e escala de prevenção dos serviços da equipa"
+            ],
+            "demo": {
+              "mode": "handoff",
+              "steps": [
+                {
+                  "phone": "left",
+                  "caption": "O defensor da marca partilha o seu link de referência",
+                  "duration": 3
+                },
+                {
+                  "phone": "right",
+                  "caption": "O amigo utiliza o link na aplicação",
+                  "video": "/video/klarna-referral-friend.mp4",
+                  "duration": 20,
+                  "bubble": true
+                },
+                {
+                  "phone": "left",
+                  "caption": "Referência concluída: ambos os lados recompensados",
+                  "duration": 4
+                }
+              ]
+            }
+          },
+          {
+            "name": "Cursor Data Modeler",
+            "companies": [
+              "klarna"
+            ],
+            "confidential": true,
+            "tldr": "Criou um agente no Cursor que transforma um pedido em linguagem natural num modelo de dados completo e em conformidade.",
+            "description": "Configurou um agente no Cursor com as regras e convenções de modelação de dados da própria Klarna, combinando ferramentas, scripts e servidores MCP com o raciocínio de um LLM para passar diretamente de um pedido em linguagem natural a um modelo de dados completo e em conformidade, um trabalho que antes era feito manualmente.",
+            "technologies": [
+              "Cursor",
+              "Prompt Engineering",
+              "Python",
+              "WikiData"
+            ],
+            "achievements": [
+              "Codificou as regras e convenções de modelação de dados da Klarna diretamente num agente do Cursor",
+              "Combina ferramentas, scripts e servidores MCP com um LLM para produzir um modelo de dados completo e em conformidade a partir de um pedido em linguagem natural",
+              "Substitui um trabalho de modelação de dados que antes era feito manualmente"
+            ]
+          },
+          {
+            "name": "Data Modeling Platform",
+            "companies": [
+              "klarna"
+            ],
+            "confidential": true,
+            "tldr": "Um construtor visual ao estilo Figma para criar e editar os modelos de dados da Klarna.",
+            "description": "A construir uma experiência ao estilo Figma para a modelação de dados da Klarna: uma tela visual onde os modeladores de dados podem ver, construir e editar modelos de dados diretamente, suportada por um serviço em Python/FastAPI que usa LangChain e LangSmith sobre Neo4j.",
+            "technologies": [
+              "Python",
+              "LangChain",
+              "LangSmith",
+              "FastAPI",
+              "Pydantic",
+              "Neo4j",
+              "React",
+              "TypeScript",
+              "Zod",
+              "React Query"
+            ],
+            "achievements": [
+              "Construiu uma tela visual ao estilo Figma para criar e editar modelos de dados diretamente",
+              "O backend combina LangChain e LangSmith sobre Neo4j com um serviço FastAPI/Pydantic"
+            ]
+          },
+          {
+            "name": "Data Modeling Chatbot",
+            "companies": [
+              "klarna"
+            ],
+            "confidential": true,
+            "tldr": "Um assistente conversacional para modelação de dados, construído com LangChain sobre o grafo da Klarna.",
+            "description": "Na equipa do Data Modeling Chatbot, a construir um assistente conversacional que ajuda os modeladores de dados da Klarna a trabalhar com o grafo da empresa, usando LangChain e LangSmith num backend em Python/FastAPI sobre Neo4j, WikiData e PostgreSQL.",
+            "technologies": [
+              "Python",
+              "LangChain",
+              "LangSmith",
+              "Prompt Engineering",
+              "FastAPI",
+              "Neo4j",
+              "WikiData",
+              "PostgreSQL",
+              "Pydantic"
+            ],
+            "achievements": [
+              "Construiu um assistente conversacional para modelação de dados sobre LangChain e LangSmith",
+              "O backend abrange Neo4j, WikiData e PostgreSQL por trás de um serviço FastAPI/Pydantic"
+            ]
+          },
+          {
+            "name": "Klarna Knowledge Management Platform",
+            "companies": [
+              "klarna"
+            ],
+            "confidential": true,
+            "myRole": "Programador full-stack",
+            "tldr": "Programador full-stack na plataforma por trás da Gestão do Conhecimento da Klarna, construída sobre Neo4j.",
+            "description": "Programador full-stack na plataforma de Gestão do Conhecimento: um backend em Python/FastAPI sobre Neo4j, com um front end em React e TypeScript para navegar e editar o modelo de dados subjacente.",
+            "technologies": [
+              "Python",
+              "FastAPI",
+              "Pydantic",
+              "Neo4j",
+              "React",
+              "TypeScript",
+              "Zod",
+              "React Query",
+              "AWS"
+            ],
+            "achievements": [
+              "Responsabilidade full-stack sobre o backend FastAPI/Pydantic e o front end React/TypeScript",
+              "Construído sobre o modelo de dados em grafo da Klarna, em Neo4j"
+            ]
+          }
+        ],
+        "focus": {
+          "pm": 5,
+          "swe": 65,
+          "analytics": 10,
+          "de": 10,
+          "ds": 0,
+          "sales": 0,
+          "design": 10,
+          "social": 0
+        },
+        "slug": "klarna"
+      },
+      {
+        "org": "IBM Consulting",
+        "title": "Líder de Consultoria Tecnológica",
+        "logo": "/img/ibm-logo.png",
+        "logoInvert": true,
+        "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
+        "period": "2020 – 2024",
+        "role": "Consulting Lead, liderou uma equipa de 4 a 6 pessoas distribuída por 2 equipas simultâneas; contribuiu também para demos de pré-venda e MVPs para potenciais clientes (incl. Galp, Generali, Millennium BCP) e apoiou a redação de propostas da IBM",
+        "kpis": [
+          "Duplicou a poupança em FTEs",
+          "70% de redução da carga de trabalho através de automação",
+          "9+ de NPS",
+          "10+ funcionalidades lançadas, 8+ demos apresentadas"
+        ],
+        "honors": [
+          {
+            "label": "IBM Top Talents Portugal"
+          },
+          {
+            "label": "IBM Gold Champion Learner",
+            "type": "trophy"
+          }
+        ],
+        "projects": [
+          {
+            "name": "M.A.R.I.A: IBM Watson Voice Assistant",
+            "companies": [
+              "ibm",
+              "montepio"
+            ],
+            "tldr": "Cresceu de Analista a Consulting Lead & PM ao entregar a M.A.R.I.A, um assistente de voz em tempo real para o contact center do Banco Montepio, construído sobre o IBM Watson.",
+            "description": "A M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) é um agente de voz cognitivo construído sobre o IBM Watson Assistant for Voice, integrado no IVR do contact center do Banco Montepio para automatizar interações com clientes, desde a ativação de cartões até confirmações de conta. O meu papel cresceu com o projeto: comecei como Analista, depois Developer & Analista de Dados, depois Developer & Engenheiro de Dados, e por fim Consulting Lead & Project Manager.",
+            "technologies": [
+              "IBM Watson Assistant for Voice",
+              "RPA",
+              "Cognitive Bot Service",
+              "IBM Cloud",
+              "Data Pipelines"
+            ],
+            "achievements": [
+              "Automatizou 72 intenções de clientes no contact center, incl. ativação de cartões e confirmações de conta",
+              "Visou ~80% de automação dos fluxos do call center num ano após o lançamento",
+              "Duplicou a poupança em FTEs no call center do cliente (50 mil+ chamadas/mês)",
+              "9+ de NPS na solução entregue"
+            ],
+            "news": [
+              {
+                "title": "Nova assistente interativa do Montepio chama-se M.A.R.I.A e é \"filha\" do Watson da IBM",
+                "source": "SAPO Tek",
+                "date": "2020-03-03",
+                "url": "https://tek.sapo.pt/noticias/computadores/artigos/nova-assistente-interativa-do-montepio-chama-se-m-a-r-i-a-e-e-filha-do-watson-da-ibm/"
+              },
+              {
+                "title": "Montepio cria agente virtual M.A.R.I.A para \"revolucionar o atendimento ao cliente\"",
+                "source": "Jornal Económico",
+                "date": "2020-03-03",
+                "url": "https://jornaleconomico.sapo.pt/noticias/montepio-cria-agente-virtual-m-a-r-i-a-para-revolucionar-o-atendimento-ao-cliente-553703/"
+              },
+              {
+                "title": "Banco Montepio e IBM apresentam a assistente M.A.R.I.A",
+                "source": "PC Guia",
+                "date": "2020-03-04",
+                "url": "https://www.pcguia.pt/2020/03/banco-montepio-ibm-apresentam-assistente/"
+              }
+            ],
+            "myRole": "Analista → Developer & Analista de Dados → Developer & Engenheiro de Dados → Consulting Lead & PM",
+            "demo": {
+              "mode": "single",
+              "captions": [
+                "Gravação: uma chamada com a M.A.R.I.A"
+              ]
+            },
+            "shortName": "M.A.R.I.A"
+          },
+          {
+            "name": "Chatbots Data Pipeline (E2E)",
+            "companies": [
+              "ibm"
+            ],
+            "tldr": "Desenhou e construiu, sozinho e de ponta a ponta, o pipeline de dados que alimenta a análise e o reporting de todo o portefólio de chatbots/voicebots da IBM.",
+            "description": "Desenhou todo o pipeline de dados por trás do portefólio de chat/voicebots da IBM Consulting (M.A.R.I.A, BIA & Beatriz, entre outros): ingestão diretamente dos bots, limpeza e processamento, e depois uma passagem de registos OLTP em bruto para um modelo OLAP construído para reporting. Além disso, a distribuição: dashboards e relatórios à medida para developers, gestão, clientes e CXOs, cada um precisando de um nível de detalhe diferente a partir dos mesmos dados subjacentes.",
+            "technologies": [
+              "Python",
+              "SQL",
+              "Data Pipelines",
+              "ETL",
+              "OLTP → OLAP",
+              "Data Warehousing",
+              "Power BI",
+              "IBM Cloud"
+            ],
+            "achievements": [
+              "Poupou 3 FTEs ao automatizar reporting que antes era feito manualmente",
+              "Aumento de 100x nos insights analíticos obtidos a partir dos dados de interação dos chatbots",
+              "Detetou centenas de melhorias e correções em todo o portefólio de chatbots",
+              "As conclusões informaram diretamente as decisões de investimento no roadmap da IBM para a linha de chat/voicebots"
+            ],
+            "myRole": "Único responsável pelo design e construção, de ponta a ponta",
+            "shortName": "Pipeline de Dados de Chatbots"
+          },
+          {
+            "name": "BIA & Beatriz: Bankinter Voice Assistants",
+            "companies": [
+              "ibm",
+              "bankinter"
+            ],
+            "tldr": "Engenheiro de Dados & Analista de Dados na BIA e na Beatriz, assistentes de banca telefónica com IA para o Bankinter e o Bankinter Consumer Finance.",
+            "description": "A BIA (Bankinter) e a Beatriz (Bankinter Consumer Finance) atendem a linha de banca telefónica do Bankinter, autenticam quem liga, resolvem pedidos frequentes (desbloqueio/ativação de cartão, consulta de saldo, adesão a canais digitais, suporte à app/homebanking), e encaminham casos complexos para agentes humanos com contexto associado: voz-para-texto, orquestração da conversa com ML, e texto-para-voz, a correr sobre a mesma plataforma subjacente mais tarde reutilizada para a M.A.R.I.A do Banco Montepio.",
+            "technologies": [
+              "IBM Watson Assistant for Voice",
+              "Speech-to-Text / Text-to-Speech",
+              "RPA",
+              "IBM Cloud",
+              "Machine Learning"
+            ],
+            "achievements": [
+              "Cobrem ~40% dos cenários frequentes de contacto com clientes",
+              "Taxa de reconhecimento de intenção superior a 90%",
+              "~70% das chamadas totalmente resolvidas sem transferência para um humano",
+              "Disponibilidade 24/7 sem filas de espera"
+            ],
+            "news": [
+              {
+                "title": "BIA e Beatriz são as assistentes digitais que já respondem a 40% dos casos de interações com clientes do Bankinter",
+                "source": "SAPO Tek",
+                "date": "2022-12-13",
+                "url": "https://tek.sapo.pt/noticias/computadores/artigos/bia-e-beatriz-sao-as-assistentes-digitais-que-ja-respondem-a-40-dos-casos-de-interacoes-com-clientes-do-bankinter/"
+              },
+              {
+                "title": "BIA e Beatriz, as novas assistentes virtuais do Bankinter têm IA e falam connosco ao telefone",
+                "source": "PC Guia",
+                "date": "2022-02-10",
+                "url": "https://www.pcguia.pt/2022/02/bia-e-beatriz-as-novas-assistentes-virtuais-do-bankinter-tem-ia-e-falam-connosco-ao-telefone/"
+              },
+              {
+                "title": "Assistente de voz do Bankinter resolve cerca de 40% das chamadas na linha telefónica do banco",
+                "source": "Jornal Económico",
+                "date": "2022-12-13",
+                "url": "https://jornaleconomico.sapo.pt/noticias/assistente-de-voz-do-bankinter-resolve-cerca-de-40-das-chamadas-na-linha-telefonica-do-banco/"
+              }
+            ],
+            "myRole": "Engenheiro de Dados & Analista de Dados",
+            "demo": {
+              "mode": "single",
+              "captions": [
+                "Gravação: uma chamada com a BIA / Beatriz"
+              ]
+            },
+            "shortName": "BIA & Beatriz"
+          },
+          {
+            "name": "Bankinter Voicebot Platform",
+            "companies": [
+              "ibm",
+              "bankinter"
+            ],
+            "confidential": true,
+            "tldr": "Contribuiu para outro produto interno de voicebot do Bankinter. Detalhes confidenciais.",
+            "description": "Trabalhou noutro produto interno de voicebot para o Bankinter, além da BIA e da Beatriz. Os detalhes deste não são públicos.",
+            "technologies": [
+              "IBM Watson Assistant for Voice",
+              "Speech-to-Text / Text-to-Speech",
+              "IBM Cloud"
+            ],
+            "achievements": [],
+            "shortName": "Voicebot do Bankinter"
+          },
+          {
+            "name": "Montepio HR Virtual Assistant",
+            "companies": [
+              "ibm",
+              "montepio"
+            ],
+            "tldr": "Tech Lead & PM de um chatbot interno que automatiza pedidos de RH no Banco Montepio.",
+            "description": "Liderou a entrega, como Tech Lead e Project Manager, de um chatbot interno que automatizou pedidos comuns de RH para os colaboradores do Banco Montepio.",
+            "technologies": [
+              "IBM Watson Assistant",
+              "Chatbot Development",
+              "IBM Cloud"
+            ],
+            "achievements": [
+              "Tech Lead & PM do projeto, desde o design até à entrega",
+              "Automatizou fluxos comuns de pedidos de RH para os colaboradores do Montepio"
+            ],
+            "shortName": "Assistente Virtual de RH"
+          },
+          {
+            "name": "Personal Finance Manager (MVP)",
+            "companies": [
+              "ibm",
+              "montepio"
+            ],
+            "tldr": "Data Scientist & Programador de Chatbot num MVP de chatbot de gestão de finanças pessoais.",
+            "description": "Construiu um MVP de chatbot de gestão de finanças pessoais, combinando UX conversacional com data science para ajudar os utilizadores a compreender e gerir as suas despesas.",
+            "technologies": [
+              "Python",
+              "Chatbot Development",
+              "Data Science"
+            ],
+            "achievements": [
+              "Entregou o MVP acumulando os papéis de Data Scientist e Programador de Chatbot"
+            ],
+            "shortName": "PFM"
+          }
+        ],
+        "focus": {
+          "pm": 35,
+          "swe": 20,
+          "analytics": 15,
+          "de": 15,
+          "ds": 10,
+          "sales": 5,
+          "design": 0,
+          "social": 0
+        },
+        "credlyBadges": [
+          {
+            "name": "Banking Insights and Solutions (Bronze)",
+            "img": "/img/badges/banking-insights-and-solutions-bronze.png",
+            "url": "https://www.credly.com/badges/a17496b0-df4b-49d7-b437-f5e55335b066"
+          },
+          {
+            "name": "IBM Garage Essentials",
+            "img": "/img/badges/ibm-garage-essentials.png",
+            "url": "https://www.credly.com/badges/7cb6f82c-a3dc-4ae7-baa7-2b972d8acf1e"
+          },
+          {
+            "name": "Hadoop Foundations - Level 1",
+            "img": "/img/badges/hadoop-foundations-level-1.png",
+            "url": "https://www.credly.com/badges/76d15af3-6dbe-44a8-abfb-5a869a5d4a5a"
+          },
+          {
+            "name": "Banking Industry Jumpstart",
+            "img": "/img/badges/banking-industry-jumpstart.png",
+            "url": "https://www.credly.com/badges/b2d5aefc-23ed-41d1-9ce3-e5834901aa3d"
+          },
+          {
+            "name": "IBM AI Associate Data Scientist",
+            "img": "/img/badges/ibm-ai-associate-data-scientist.png",
+            "url": "https://www.credly.com/badges/e5e30f95-ae76-4e6d-8612-7f997c764262",
+            "highlight": true
+          },
+          {
+            "name": "Big Data Foundations - Level 1",
+            "img": "/img/badges/big-data-foundations-level-1.png",
+            "url": "https://www.credly.com/badges/67f01568-5cf4-40ed-b1b4-3dc3dba6aadf"
+          },
+          {
+            "name": "The IBM Way",
+            "img": "/img/badges/the-ibm-way.png",
+            "url": "https://www.credly.com/badges/a3dcbd45-26d8-4fca-a3ba-f314dbb45c3a"
+          },
+          {
+            "name": "Data Science Foundations - Level 2 (V2)",
+            "img": "/img/badges/data-science-foundations-level-2-v2.png",
+            "url": "https://www.credly.com/badges/3f9d803b-7acd-42cb-a449-2a0d599fc475"
+          },
+          {
+            "name": "Data Science Methodologies",
+            "img": "/img/badges/data-science-methodologies.png",
+            "url": "https://www.credly.com/badges/3f93a610-bcba-457d-8124-3eed7513757f"
+          },
+          {
+            "name": "Data Science Tools",
+            "img": "/img/badges/data-science-tools.png",
+            "url": "https://www.credly.com/badges/2a5e61ea-5953-4ab0-8698-74c09e44fd95"
+          },
+          {
+            "name": "Data Science Foundations - Level 1",
+            "img": "/img/badges/data-science-foundations-level-1.png",
+            "url": "https://www.credly.com/badges/5d250f70-0b78-43ed-9d8e-c9757aa6914d"
+          },
+          {
+            "name": "Docker Essentials: A Developer Introduction",
+            "img": "/img/badges/docker-essentials-a-developer-introduction.png",
+            "url": "https://www.credly.com/badges/a70221dc-0004-4c56-8abd-9e5bd4a87a2b"
+          },
+          {
+            "name": "Watson Assistant for Customer Care",
+            "img": "/img/badges/watson-assistant-for-customer-care.png",
+            "url": "https://www.credly.com/badges/6ced6539-bf51-4ce1-b771-cd985bc326ca"
+          },
+          {
+            "name": "IBM Cloud Pak for Data V3.0.x Data Science",
+            "img": "/img/badges/ibm-cloud-pak-for-data-v3-0-x-data-science.png",
+            "url": "https://www.credly.com/badges/eaddb6de-5022-4116-b3dc-b09d07006c3c"
+          },
+          {
+            "name": "Watson Studio Essentials",
+            "img": "/img/badges/watson-studio-essentials.png",
+            "url": "https://www.credly.com/badges/187f6a39-4eef-402f-b1fc-d8b83f381f76"
+          },
+          {
+            "name": "Enterprise Design Thinking Practitioner",
+            "img": "/img/badges/enterprise-design-thinking-practitioner.png",
+            "url": "https://www.credly.com/badges/69638961-524c-4698-b6d8-39fa785f0307"
+          },
+          {
+            "name": "Node-RED: basics to bots",
+            "img": "/img/badges/node-red-basics-to-bots.png",
+            "url": "https://www.credly.com/badges/7695d626-4abc-498c-93f9-e66e9af5ccae"
+          },
+          {
+            "name": "Cognitive Practitioner",
+            "img": "/img/badges/cognitive-practitioner.png",
+            "url": "https://www.credly.com/badges/e6029bd1-a041-46ba-a9d7-62bca4632bc7"
+          },
+          {
+            "name": "Watson Assistant Hands-On",
+            "img": "/img/badges/watson-assistant-hands-on.png",
+            "url": "https://www.credly.com/badges/857f5bea-9b63-400d-8b9a-71a24b83894f"
+          },
+          {
+            "name": "AWS Certified Cloud Practitioner",
+            "img": "/img/badges/aws-certified-cloud-practitioner.png",
+            "url": "https://www.credly.com/badges/706fb657-6baf-4b0b-8768-c323057900cf",
+            "highlight": true
+          },
+          {
+            "name": "watsonx.ai Practitioner Advanced",
+            "img": "/img/badges/watsonx-ai-practitioner-advanced.png",
+            "url": "https://www.credly.com/badges/9529938f-c887-46bf-a03c-ea66daf86389",
+            "highlight": true
+          },
+          {
+            "name": "Watson Assistant Methodology",
+            "img": "/img/badges/watson-assistant-methodology.png",
+            "url": "https://www.credly.com/badges/fc01f852-bf22-4186-a9b4-4f3d8696e540"
+          },
+          {
+            "name": "Watson Assistant Foundations",
+            "img": "/img/badges/watson-assistant-foundations.png",
+            "url": "https://www.credly.com/badges/ad78944d-6c0e-431e-b520-c35a5a716d70"
+          }
+        ],
+        "credlyProfileUrl": "https://www.credly.com/users/rodrigo-lousada/badges/credly",
+        "slug": "ibm-consulting"
+      },
+      {
+        "org": "Instituto de Telecomunicações",
+        "title": "Investigador / Data Scientist",
+        "logo": "/img/it-logo.png",
+        "chipClass": "bg-white",
+        "period": "2018 – 2020",
+        "role": "Investigador de Tese / Data Scientist",
+        "kpis": [
+          "Precisão de decisão superior a 48%",
+          "100% de Retorno sobre o Risco",
+          "Rácio de Sharpe de 1.90"
+        ],
+        "projects": [
+          {
+            "name": "ML Trading Simulator (SPY Options)",
+            "companies": [
+              "it"
+            ],
+            "tldr": "Um modelo de trading Mixture-of-Experts para opções SPY, construído para a minha tese de Mestrado.",
+            "description": "Concebeu e implementou um modelo Mixture of Experts com Random Forests para prever transações de opções SPY, avaliado através de backtesting sobre dados reais de mercado.",
+            "technologies": [
+              "Python",
+              "Random Forests",
+              "Time Series",
+              "scikit-learn"
+            ],
+            "achievements": [
+              "Precisão de decisão superior a 48%",
+              "100% de Retorno sobre o Risco",
+              "Rácio de Sharpe de 1.90"
+            ],
+            "url": "https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997261079/81115-rodrigo-lousada_dissertacao_final.pdf",
+            "urlLabel": "Ler a tese (PDF) →",
+            "urlStyle": "paper",
+            "urlSource": "Tese do IST"
+          }
+        ],
+        "focus": {
+          "pm": 5,
+          "swe": 15,
+          "analytics": 10,
+          "de": 10,
+          "ds": 60,
+          "sales": 0,
+          "design": 0,
+          "social": 0
+        },
+        "slug": "instituto-de-telecomunicacoes"
+      }
+    ],
+    "careerPathMore": [
+      {
+        "org": "SINFO",
+        "title": "Gestor de Projeto / Coordenador de Eventos",
+        "logo": "/img/sinfo-logo.svg",
+        "chipClass": "bg-[#2a5a8a]",
+        "period": "2016 – 2019",
+        "role": "Gestor de Projeto / Coordenador de Eventos, recrutou e liderou equipas de voluntários para uma grande conferência tecnológica organizada por estudantes",
+        "kpis": [
+          "Recrutou mais de 10 voluntários",
+          "Angariou mais de 7.000€ em patrocínios",
+          "Aumentou em 10x o engagement nas redes sociais em contas com mais de 10 mil seguidores"
+        ],
+        "projects": [
+          {
+            "name": "SINFO Annual Tech Conference",
+            "companies": [
+              "sinfo"
+            ],
+            "tldr": "Organizou equipas de voluntários, patrocínios e redes sociais ao longo de 3 edições consecutivas da SINFO.",
+            "description": "Como Gestor de Projeto / Coordenador de Eventos, recrutou e liderou equipas de voluntários, angariou patrocínios e geriu as redes sociais ao longo de 3 edições consecutivas da SINFO, a conferência tecnológica anual organizada por estudantes do IST.",
+            "technologies": [
+              "Event Management",
+              "Sponsorship",
+              "Social Media",
+              "Team Leadership"
+            ],
+            "achievements": [
+              "Recrutou mais de 10 voluntários",
+              "Angariou mais de 7.000€ em patrocínios",
+              "Aumentou em 10x o engagement nas redes sociais em contas com mais de 10 mil seguidores"
+            ]
+          }
+        ],
+        "focus": {
+          "pm": 30,
+          "swe": 5,
+          "analytics": 10,
+          "de": 0,
+          "ds": 0,
+          "sales": 45,
+          "design": 0,
+          "social": 10
+        },
+        "slug": "sinfo"
+      }
+    ],
+    "sideProjects": [
+      {
+        "title": "CourtKit",
+        "hidden": true,
+        "subtitle": "App de treino de basquetebol, pensada primeiro para o Watch",
+        "description": "Uma app de treino de basquetebol pensada primeiro para o Apple Watch: a app do Watch regista exercícios de lançamento, exercícios cronometrados e estatísticas de jogo em tempo real através de um diagrama interativo do campo com 14 posições, enquanto a app do iPhone revê tudo com um mapa de calor de lançamentos, gráficos de tendência e histórico pesquisável. Construída inteiramente em SwiftUI, com sincronização bidirecional entre o Watch e o iPhone via WatchConnectivity.",
+        "technologies": [
+          "Swift",
+          "SwiftUI",
+          "WatchConnectivity",
+          "Swift Charts"
+        ],
+        "shellColor": "bg-orange-600",
+        "labelColor": "bg-neutral-900",
+        "screenshot": "/img/side-projects/courtkit.jpg",
+        "deviceDemo": {
+          "watch": {
+            "caption": "Adicionar vídeo do Apple Watch"
+          },
+          "phone": {
+            "caption": "Adicionar vídeo do iPhone"
+          }
+        }
+      },
+      {
+        "title": "Magic Mirror",
+        "subtitle": "Espelho inteligente · Raspberry Pi",
+        "description": "Um espelho inteligente construído em casa, do zero: um Raspberry Pi e um monitor antigo ficam por trás de um vidro espelhado bidirecional, a correr a plataforma open-source MagicMirror² para mostrar um painel pessoal diretamente no vidro. Construído com materiais baratos, na sua maioria reaproveitados, por bem menos de 50€ ao todo.",
+        "technologies": [
+          "Raspberry Pi",
+          "Node.js",
+          "JavaScript"
+        ],
+        "demoPlaceholders": [
+          "Foto",
+          "Vídeo"
+        ],
+        "shellColor": "bg-cyan-600",
+        "labelColor": "bg-cyan-50"
+      },
+      {
+        "title": "Space Invaders",
+        "subtitle": "Recriação em 3D · Three.js",
+        "description": "Uma recriação em 3D do Space Invaders, construída com Three.js para a cadeira de Computação Gráfica no IST. Múltiplas vistas de câmara (topo, perspetiva, nave), sombreamento Gouraud/Phong alternável, iluminação dinâmica de sol e holofote, e um modo de depuração em wireframe. Obteve 19,50/20 em todas as entregas.",
+        "technologies": [
+          "JavaScript",
+          "Three.js",
+          "WebGL"
+        ],
+        "repoUrl": "https://github.com/rodrigolousada/ist-leic-cg-space-invaders-game",
+        "demoUrl": "http://web.ist.utl.pt/~ist181115/CG/",
+        "demoLabel": "Ver a demo ao vivo",
+        "shellColor": "bg-emerald-600",
+        "labelColor": "bg-emerald-50",
+        "screenshot": "/img/side-projects/space-invaders.jpg"
+      },
+      {
+        "title": "Nobel Prizes",
+        "subtitle": "Visualização de dados · D3.js",
+        "description": "Um painel interativo em D3.js que explora os vencedores do Prémio Nobel em Física e Química: um mapa-múndi, um gráfico de dispersão, um chord chart e um diagrama de Sankey a traçar ligações entre laureados, construído para a cadeira de Visualização de Informação no IST.",
+        "technologies": [
+          "D3.js",
+          "JavaScript",
+          "Bootstrap"
+        ],
+        "repoUrl": "https://github.com/rodrigolousada/ist-meic-vi-d3js-nobels-visualization",
+        "demoUrl": "https://rodrigolousada.me/ist-meic-vi-d3js-nobels-visualization/",
+        "demoLabel": "Abrir o painel ao vivo",
+        "shellColor": "bg-indigo-600",
+        "labelColor": "bg-indigo-50",
+        "screenshot": "/img/side-projects/nobel-prizes.jpg"
+      }
+    ],
+    "speaking": {
+      "intro": "Contacte-me se quiser que eu fale sobre algum destes temas:",
+      "topics": [
+        "Um mergulho a fundo num dos meus projetos",
+        "IA ao nível empresarial",
+        "Como a IA está a mudar expectativas",
+        "Fundamentos de engenharia de software (GitHub, Python, etc.)",
+        "Como construir um voicebot ou chatbot bem-sucedido",
+        "Como os dados podem enriquecer os seus projetos",
+        "Como tomar decisões orientadas por dados"
+      ],
+      "talks": [
+        {
+          "photo": "/img/IT talk.JPG",
+          "caption": "MoE Trading Simulator",
+          "placeholder": true,
+          "rotate": -4
+        },
+        {
+          "photo": "/img/ISCTE Talk.JPG",
+          "caption": "Palestra GitHub 101",
+          "placeholder": true,
+          "rotate": 3
+        }
+      ]
+    },
+    "contact": {
+      "intro": "Aberto a oportunidades de Engineering Manager / Tech Lead, convites para palestras, e conversas interessantes.",
+      "personal": {
+        "name": "Rodrigo Lousada",
+        "photo": "/img/profile.jpg",
+        "tagline": "Aberto a funções de EM / Tech Lead",
+        "stripColor": "bg-blue-600",
+        "backColor": "bg-blue-600",
+        "backTitle": "Rodrigo Lousada",
+        "backSubtitle": "cartão pessoal",
+        "links": [
+          {
+            "type": "mail",
+            "href": "mailto:rodrigo.m.lousada+pw@gmail.com",
+            "value": "rodrigo.m.lousada+pw@gmail.com"
+          },
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/rodrigo-lousada-359685117",
+            "value": "in/rodrigo-lousada"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/rodrigolousada",
+            "value": "@rodrigolousada"
+          }
+        ]
+      },
+      "klarna": {
+        "name": "Rodrigo Lousada",
+        "photo": "/img/profile.jpg",
+        "tagline": "Software Engineer · Referrals & Deals",
+        "stripColor": "bg-[#ffb3c7]",
+        "backColor": "bg-[#ffb3c7]",
+        "logo": "/img/klarna-logo.svg",
+        "links": [
+          {
+            "type": "mail",
+            "href": "mailto:rodrigo.lousada+pw@klarna.com",
+            "value": "rodrigo.lousada+pw@klarna.com"
+          }
+        ]
+      }
+    },
+    "organizations": [
+      {
+        "name": "Klarna",
+        "logo": "/img/klarna-logo.svg",
+        "logoScale": 2.2,
+        "category": "worked",
+        "scrollTo": "klarna"
+      },
+      {
+        "name": "IBM",
+        "logo": "/img/ibm-logo.png",
+        "category": "worked",
+        "scrollTo": "ibm-consulting"
+      },
+      {
+        "name": "SINFO",
+        "logo": "/img/sinfo-logo.svg",
+        "category": "worked",
+        "alreadyWhite": true,
+        "scrollTo": "sinfo"
+      },
+      {
+        "name": "Banco Montepio",
+        "logo": "/img/montepio-logo-horizontal.png",
+        "category": "client",
+        "scrollToCompany": "montepio",
+        "scrollTo": "ibm-consulting"
+      },
+      {
+        "name": "Bankinter",
+        "logo": "/img/bankinter-logo.svg",
+        "category": "client",
+        "scrollToCompany": "bankinter",
+        "scrollTo": "ibm-consulting"
+      },
+      {
+        "name": "Instituto de Telecomunicações",
+        "logo": "/img/it-logo.png",
+        "logoScale": 1.3,
+        "category": "worked",
+        "scrollTo": "instituto-de-telecomunicacoes"
+      },
+      {
+        "name": "Instituto Superior Técnico",
+        "logo": "/img/ist-logo.png",
+        "logoScale": 1.3,
+        "category": "studied",
+        "program": "Licenciatura e Mestrado em Engenharia Informática e de Computadores"
+      },
+      {
+        "name": "TU Berlin",
+        "logo": "/img/tu-berlin-logo.svg",
+        "logoScale": 1.4,
+        "category": "studied",
+        "program": "Semestre de intercâmbio Erasmus"
+      },
+      {
+        "name": "Humboldt-Universität zu Berlin",
+        "logo": "/img/humboldt-logo.png",
+        "logoScale": 1.6,
+        "category": "studied",
+        "program": "Semestre de intercâmbio Erasmus"
+      },
+      {
+        "name": "Generali",
+        "logo": "/img/generali-logo.svg",
+        "category": "client",
+        "scrollTo": "ibm-consulting"
+      },
+      {
+        "name": "AESE Business School",
+        "logo": "/img/aese-logo.png",
+        "logoScale": 1.3,
+        "category": "studied",
+        "program": "Programa de formação executiva"
+      },
+      {
+        "name": "Externato S. José",
+        "logo": "/img/esj-logo.svg",
+        "category": "studied",
+        "program": "Ensino Básico e Secundário"
+      }
+    ],
+    "testimonials": [
+      {
+        "text": "\"O Rodrigo destacou-se pelas suas competências técnicas, funcionais e relacionais, tendo assumido posições de coordenação de projetos e liderança de forma natural, ainda numa fase inicial da sua carreira.\"",
+        "name": "António Pedro Cerejeira",
+        "role": "Senior Manager da IBM, Diretor de Service Line",
+        "initials": "APC",
+        "photo": "/img/apc_photo.png",
+        "scrollTo": "ibm-consulting",
+        "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
+        "company": "IBM Consulting"
+      }
+    ],
+    "footer": {
+      "name": "Rodrigo Lousada",
+      "location": "Berlim, Alemanha"
+    },
+    "technologies": {
+      "items": [
+        {
+          "name": "TypeScript",
+          "category": "Linguagens",
+          "recent": true
+        },
+        {
+          "name": "React",
+          "category": "Frameworks e Bibliotecas",
+          "recent": true
+        },
+        {
+          "name": "React Native",
+          "category": "Frameworks e Bibliotecas",
+          "recent": true
+        },
+        {
+          "name": "Node.js",
+          "category": "Frameworks e Bibliotecas",
+          "recent": true
+        },
+        {
+          "name": "Tailwind CSS",
+          "category": "Frameworks e Bibliotecas",
+          "recent": true
+        },
+        {
+          "name": "Python",
+          "category": "Linguagens",
+          "recent": true
+        },
+        {
+          "name": "FastAPI",
+          "category": "Frameworks e Bibliotecas",
+          "recent": true
+        },
+        {
+          "name": "Neo4j",
+          "category": "Dados e Bases de Dados"
+        },
+        {
+          "name": "PostgreSQL",
+          "category": "Dados e Bases de Dados",
+          "recent": true
+        },
+        {
+          "name": "RDS",
+          "category": "Dados e Bases de Dados",
+          "recent": true
+        },
+        {
+          "name": "Kafka",
+          "category": "Dados e Bases de Dados",
+          "recent": true
+        },
+        {
+          "name": "OpenSearch",
+          "category": "Dados e Bases de Dados"
+        },
+        {
+          "name": "AWS",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "IBM Cloud",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Terraform",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Jenkins",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "Datadog",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "Sentry",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "SentinelOne",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "k6",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "GenAI / LLMs",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "IBM Watson",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "WikiData",
+          "category": "Dados e Bases de Dados"
+        },
+        {
+          "name": "scikit-learn",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "D3.js",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "GitHub",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Jupyter",
+          "category": "IA e Ciência de Dados"
+        }
+      ],
+      "extra": [
+        {
+          "name": "JavaScript",
+          "category": "Linguagens"
+        },
+        {
+          "name": "Java",
+          "category": "Linguagens"
+        },
+        {
+          "name": "HTML & CSS",
+          "category": "Linguagens"
+        },
+        {
+          "name": "C",
+          "category": "Linguagens"
+        },
+        {
+          "name": "Bash",
+          "category": "Linguagens"
+        },
+        {
+          "name": "Flask",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "Three.js",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "MySQL",
+          "category": "Dados e Bases de Dados"
+        },
+        {
+          "name": "NumPy",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "Pandas",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "TensorFlow",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "Keras",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "LangChain",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "Git",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Azure",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Docker",
+          "category": "Infraestrutura e Ferramentas",
+          "recent": true
+        },
+        {
+          "name": "Power BI",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Excel",
+          "category": "Infraestrutura e Ferramentas"
+        }
+      ],
+      "preferredStack": {
+        "consumers": {
+          "layers": [
+            {
+              "label": "Utilizadores Mobile"
+            },
+            {
+              "label": "Utilizadores Web"
+            },
+            {
+              "label": "Stakeholders"
+            }
+          ],
+          "connectorGroups": [
+            [
+              0,
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        "tiers": [
+          {
+            "layers": [
+              {
+                "label": "Frontend",
+                "items": [
+                  "TypeScript",
+                  "React",
+                  "React Native"
+                ]
+              },
+              {
+                "label": "Relatórios",
+                "items": [
+                  "Power BI",
+                  "Excel"
+                ]
+              }
+            ],
+            "connectorGroups": [
+              [
+                0
+              ],
+              [
+                1
+              ]
+            ]
+          },
+          {
+            "layers": [
+              {
+                "label": "Backend",
+                "options": [
+                  {
+                    "label": "Python",
+                    "items": [
+                      "Python",
+                      "FastAPI"
+                    ]
+                  },
+                  {
+                    "label": "Node.js",
+                    "items": [
+                      "Node.js",
+                      "TypeScript"
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "Pipeline de Dados",
+                "items": [
+                  "Kafka",
+                  "OpenSearch"
+                ]
+              }
+            ]
+          },
+          {
+            "layers": [
+              {
+                "label": "Armazenamento",
+                "items": [
+                  "PostgreSQL",
+                  "RDS",
+                  "Neo4j"
+                ]
+              },
+              {
+                "label": "IA / LLMs",
+                "items": [
+                  "GenAI / LLMs",
+                  "LangChain"
+                ]
+              },
+              {
+                "label": "Ciência de Dados",
+                "items": [
+                  "scikit-learn",
+                  "Pandas",
+                  "NumPy"
+                ]
+              }
+            ]
+          }
+        ],
+        "infra": {
+          "label": "Infraestrutura",
+          "items": [
+            "AWS",
+            "Docker",
+            "Terraform",
+            "Datadog",
+            "Sentry"
+          ]
+        },
+        "experimentation": {
+          "label": "Experimentação",
           "items": [
             "Jupyter",
             "TensorFlow",
