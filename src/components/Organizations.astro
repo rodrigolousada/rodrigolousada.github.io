@@ -1,5 +1,9 @@
 ---
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
 
 interface Organization {
   name: string;
@@ -13,7 +17,8 @@ interface Organization {
   scrollTo?: string;
   scrollToCompany?: string;
 }
-const organizations = site.organizations as unknown as Organization[];
+const { locale } = Astro.props;
+const organizations = getSite(locale).organizations as unknown as Organization[];
 
 // Known category keys get a hand-picked label and a fixed order. A category
 // value in site.json that isn't listed here still gets its own group

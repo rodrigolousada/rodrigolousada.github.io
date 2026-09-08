@@ -4,6 +4,13 @@
 // "Looking for" / Clifton Strengths moved into Hero right after the numbers).
 import { icons } from '../data/icons';
 import TechStack from './TechStack.astro';
+import type { Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
 
 <section id="tech" class="mx-auto max-w-3xl px-6 py-10">
@@ -16,5 +23,5 @@ import TechStack from './TechStack.astro';
     <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">TECHNOLOGIES</h2>
   </div>
 
-  <TechStack />
+  <TechStack locale={locale} />
 </section>

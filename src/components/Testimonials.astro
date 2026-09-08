@@ -5,10 +5,16 @@
 // pattern as the career timeline and side projects (see Projects.astro):
 // the first two people show up front, anyone past that hides behind "Show
 // more" so the section doesn't grow without bound as more feedback is added.
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
 import { icons } from '../data/icons';
 import TestimonialCard from './TestimonialCard.astro';
-const { testimonials, about } = site;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { testimonials, about } = getSite(locale);
 const visibleTestimonials = testimonials.slice(0, 2);
 const moreTestimonials = testimonials.slice(2);
 const certModalId = 'clifton-strengths-certificate';

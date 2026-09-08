@@ -1,0 +1,18 @@
+---
+// A homepage for every non-default language in site.json, at "/<locale>/"
+// (the default locale stays unprefixed at "/", see src/pages/index.astro).
+// Generated straight from site.json's keys, so adding a new language there
+// is enough to get it a working page here — no new files needed.
+import HomePage from '../../components/HomePage.astro';
+import { locales, defaultLocale, type Locale } from '../../data/site';
+
+export function getStaticPaths() {
+  return locales
+    .filter((locale) => locale !== defaultLocale)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+---
+
+<HomePage locale={locale} />

@@ -1,6 +1,13 @@
 ---
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
 import { icons } from '../data/icons';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const site = getSite(locale);
 const { contact } = site;
 ---
 

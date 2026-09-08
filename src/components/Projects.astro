@@ -1,9 +1,15 @@
 ---
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
 import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
 import { icons } from '../data/icons';
-const { careerPath, careerPathMore, sideProjects, about } = site;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { careerPath, careerPathMore, sideProjects, about } = getSite(locale);
 
 // Cartridges are sized to fit exactly 4 per row (2 on narrow screens) via a
 // grid rather than a fixed pixel width in a wrapping flex row — the fixed
@@ -53,7 +59,7 @@ const moreSideProjects = sideProjects.slice(4);
       </a>
     </div>
 
-    {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} />)}
+    {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} locale={locale} />)}
 
     <details class="group/more">
       <summary class="grid cursor-pointer list-none grid-cols-[1.5rem_1fr] gap-4 [&::-webkit-details-marker]:hidden">
@@ -72,6 +78,7 @@ const moreSideProjects = sideProjects.slice(4);
             stop={stop}
             modalId={`career-modal-more-${i}`}
             showLine={i !== careerPathMore.length - 1}
+            locale={locale}
           />
         ))}
       </div>

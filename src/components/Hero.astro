@@ -1,5 +1,12 @@
 ---
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const site = getSite(locale);
 const { hero, about } = site;
 
 // Recomputed on every build, not hardcoded — see about.softwareSince.

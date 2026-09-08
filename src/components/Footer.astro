@@ -1,6 +1,12 @@
 ---
-import site from '../data/site.json';
-const { footer } = site;
+import { getSite, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { footer } = getSite(locale);
 ---
 
 <footer class="mx-auto max-w-3xl px-6 py-10 text-sm text-[var(--color-muted)]">

@@ -1,35 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import Technologies from '../components/Technologies.astro';
-import Projects from '../components/Projects.astro';
-import Speaking from '../components/Speaking.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Contact from '../components/Contact.astro';
-import Organizations from '../components/Organizations.astro';
-import Footer from '../components/Footer.astro';
+// The default locale's homepage, served unprefixed at "/". Every other
+// language in site.json gets its own page at "/<locale>/" instead — see
+// src/pages/[locale]/index.astro. Both just render HomePage with a
+// different locale; the actual markup lives there.
+import HomePage from '../components/HomePage.astro';
+import { defaultLocale } from '../data/site';
 ---
 
-<!-- `nav.links` in site.json (rendered directly by Nav.astro) must list its
-     entries in this same top-to-bottom order: clicking a nav link jumps
-     straight to the matching id, so a mismatch between the two makes the
-     jump feel like it lands somewhere "wrong" relative to what the visitor
-     expects to scroll past next. This section order is the source of
-     truth; nav.links is kept in sync with it by hand, since Hero and
-     Organizations don't have nav entries of their own (Hero is above
-     everything, Organizations is a closing "as seen in" strip) so the two
-     lists can't just be generated from one another. -->
-<Layout>
-  <Nav />
-  <main>
-    <Hero />
-    <Technologies />
-    <Projects />
-    <Speaking />
-    <Contact />
-    <Testimonials />
-    <Organizations />
-  </main>
-  <Footer />
-</Layout>
+<HomePage locale={defaultLocale} />

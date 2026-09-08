@@ -1,0 +1,61 @@
+---
+// The typical top-bar flag dropdown — but only when there's something to
+// switch between. site.json's top-level keys are the full list of
+// languages the site offers (see src/data/site.ts); with just one ("en"
+// today) there's nothing to pick between, so this renders nothing at all
+// rather than a selector with a single, disabled-feeling option.
+import { locales, defaultLocale, type Locale } from '../data/site';
+import { getLanguageMeta, localePath } from '../data/languages';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const current = getLanguageMeta(locale);
+---
+
+{
+  locales.length > 1 && (
+    <details data-lang-select class="group/lang relative">
+      <summary
+        aria-label={`Change language (current: ${current.label})`}
+        class="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-[var(--color-border)] px-2.5 py-1 text-sm text-[var(--color-text)] transition hover:border-[var(--color-accent)] [&::-webkit-details-marker]:hidden"
+      >
+        <span aria-hidden="true">{current.flag}</span>
+        <svg viewBox="0 0 24 24" class="h-3 w-3 fill-current text-[var(--color-muted)] transition group-open/lang:rotate-180">
+          <path d="M7 10l5 5 5-5z" />
+        </svg>
+      </summary>
+      <ul class="absolute right-0 z-50 mt-2 w-40 overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-lg">
+        {locales.map((loc) => {
+          const meta = getLanguageMeta(loc);
+          return (
+            <li>
+              <a
+                href={localePath(loc, defaultLocale)}
+                aria-current={loc === locale ? 'true' : undefined}
+                class={`flex items-center gap-2 px-3 py-2 text-sm transition hover:bg-[var(--color-border)]/50 ${
+                  loc === locale ? 'text-[var(--color-accent)]' : 'text-[var(--color-text)]'
+                }`}
+              >
+                <span aria-hidden="true">{meta.flag}</span>
+                {meta.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </details>
+  )
+}
+
+<script>
+  // Closes like a normal dropdown on an outside click — a native <details>
+  // otherwise stays open until its own summary is clicked again.
+  document.querySelectorAll<HTMLDetailsElement>('[data-lang-select]').forEach((details) => {
+    document.addEventListener('click', (e) => {
+      if (details.open && !details.contains(e.target as Node)) details.removeAttribute('open');
+    });
+  });
+</script>

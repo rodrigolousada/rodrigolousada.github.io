@@ -1,5 +1,13 @@
 ---
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
+import LanguageSelector from './LanguageSelector.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const site = getSite(locale);
 ---
 
 <!-- Below sm, there's no header bar at all, not even a collapsed one: the
@@ -11,17 +19,20 @@ import site from '../data/site.json';
 <header class="sticky top-0 z-50 hidden border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur sm:block">
   <nav class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
     <a href="#" class="font-mono text-sm font-semibold text-[var(--color-text)]">{site.nav.initials}</a>
-    <ul class="flex items-center gap-6 text-sm text-[var(--color-muted)]">
-      {
-        site.nav.links.map((link) => (
-          <li>
-            <a href={link.href} class="transition hover:text-[var(--color-text)]">
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="flex items-center gap-6">
+      <ul class="flex items-center gap-6 text-sm text-[var(--color-muted)]">
+        {
+          site.nav.links.map((link) => (
+            <li>
+              <a href={link.href} class="transition hover:text-[var(--color-text)]">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <LanguageSelector locale={locale} />
+    </div>
   </nav>
 </header>
 
@@ -67,6 +78,9 @@ import site from '../data/site.json';
       ))
     }
   </ul>
+  <div class="mt-auto pt-5">
+    <LanguageSelector locale={locale} />
+  </div>
 </aside>
 
 <script>

@@ -35,6 +35,19 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Done** — `site.json` is now structured for multiple languages: every
+  section that used to sit at the top level now sits under a language code
+  ("en" today), e.g. `{"en": {"site": ..., "hero": ..., ...}}`. To add a
+  language, copy the `"en"` block to a new key (e.g. `"pt"`) and translate
+  its values — that's it, nothing else needs touching. It automatically
+  gets a page at `/<code>/` (the default, "en", stays at `/` with no
+  prefix), and once there's more than one language, a flag dropdown appears
+  in the nav (both the desktop bar and the mobile slide-in panel) letting
+  visitors switch. With only "en" defined, as now, the dropdown stays
+  hidden entirely rather than showing a single greyed-out option. Flags
+  come from a small lookup (`src/data/languages.ts`) covering pt/de/es/fr
+  already; an unlisted code still works, just shows its bare uppercased
+  code instead of a flag until one's added there.
 - **Done** — Added a `hidden` flag for a project, side project, or whole
   career stop: set `"hidden": true` on any entry in `site.json` to keep it
   off the site while it's not ready to announce, or the copy still needs a

@@ -1,5 +1,5 @@
 ---
-import { companies } from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
 import PhoneMockup, { type HandoffStep } from './PhoneMockup.astro';
 import TechPill from './TechPill.astro';
 import { icons } from '../data/icons';
@@ -13,7 +13,6 @@ interface Company {
   /** True for a logo that's already a full-bleed square mark (app icon style) — skip the inner padding so it fills the chip instead of floating in a margin. */
   logoFill?: boolean;
 }
-const companyMap = companies as unknown as Record<string, Company>;
 
 interface NewsItem {
   title: string;
@@ -23,6 +22,7 @@ interface NewsItem {
 }
 
 interface Props {
+  locale: Locale;
   project: {
     name: string;
     /** Short label used in the cross-link jump balloon (e.g. "PFM" for "Personal Finance Manager (MVP)"). */
@@ -52,7 +52,8 @@ interface Props {
   modalId: string;
 }
 
-const { project, modalId } = Astro.props;
+const { project, modalId, locale } = Astro.props;
+const companyMap = getSite(locale).companies as unknown as Record<string, Company>;
 const badgeCompanies = (project.companies ?? []).map((id) => companyMap[id]);
 const newsItems = project.news ?? [];
 

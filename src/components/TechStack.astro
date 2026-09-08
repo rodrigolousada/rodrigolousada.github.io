@@ -2,11 +2,16 @@
 // Compact, grouped technology badges rendered inside the standalone
 // Technologies section (Technologies.astro). A "View more" button opens a
 // dialog with the wider skill set from the CV/LinkedIn.
-import site from '../data/site.json';
+import { getSite, type Locale } from '../data/site';
 import TechPill from './TechPill.astro';
 import StackConnector, { type BusConnector, type GroupedConnector } from './StackConnector.astro';
 
-const { technologies } = site;
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { technologies } = getSite(locale);
 // Preferred display order for the categories we know about today. A
 // category value in site.json that isn't listed here still renders — just
 // appended after these, in the order it's first seen — so adding a brand

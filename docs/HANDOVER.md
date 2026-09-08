@@ -77,12 +77,39 @@ hardcode text. This means:
   fixed number of slots.
 - **Two lists are *not* auto-derived from each other and must be kept in
   sync by hand**: `nav.links` (the header's link order) and the actual
-  `<section>` order inside `<main>` in `src/pages/index.astro`. The page's
-  section order is the source of truth (it's what the visitor actually
-  scrolls through); `nav.links` is edited to match it, not the reverse —
-  see the comment block at the top of `index.astro`. They can't just be
-  generated from one list because not every section has a nav entry (Hero
-  and Organizations don't).
+  `<section>` order inside `<main>` in `src/components/HomePage.astro`. The
+  page's section order is the source of truth (it's what the visitor
+  actually scrolls through); `nav.links` is edited to match it, not the
+  reverse — see the comment block at the top of `HomePage.astro`. They
+  can't just be generated from one list because not every section has a
+  nav entry (Hero and Organizations don't).
+
+### Multi-language structure
+
+Everything described above sits one level deeper than it looks at first
+glance: `site.json`'s actual top level is a map of language code → the
+whole object described above, e.g. `{"en": {"site": ..., "hero": ...,
+"careerPath": ..., ...}}`. `src/data/site.ts` is the only place that reads
+that top level directly (`getSite(locale)`, `locales`, `defaultLocale`);
+every component takes a `locale` prop and calls `getSite(locale)` rather
+than importing `site.json` itself, so a component's own code never needs
+to know how many languages exist.
+
+Routing follows the same data: `src/pages/index.astro` renders the default
+locale ("en") at `/`; `src/pages/[locale]/index.astro` uses
+`getStaticPaths()` over `locales` (minus the default) to generate a page
+at `/<locale>/` for every other language — both just render
+`HomePage.astro` with a different `locale`. **Adding a language is a data
+change, not a code change**: copy the `"en"` block in `site.json` to a new
+key and translate its values, and the new page and its nav entry both
+appear automatically at the next build.
+
+The nav's flag dropdown (`LanguageSelector.astro`) reads `locales` the
+same way and renders nothing at all when there's only one — today's
+state, with just `"en"` defined. `src/data/languages.ts` maps a locale
+code to its flag emoji + label for that dropdown (pt/de/es/fr are already
+in there); a locale added to `site.json` without an entry there still
+works, it just shows its bare uppercased code until one's added.
 
 Two other data files support `site.json`:
 
