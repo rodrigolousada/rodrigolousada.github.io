@@ -2,6 +2,7 @@
 import { companies } from '../data/site.json';
 import PhoneMockup, { type HandoffStep } from './PhoneMockup.astro';
 import TechPill from './TechPill.astro';
+import { icons } from '../data/icons';
 
 interface Company {
   name: string;
@@ -30,6 +31,8 @@ interface Props {
     isSideProject?: boolean;
     /** True for work that can only be described at a high level (NDA, internal-only, etc). */
     confidential?: boolean;
+    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the row blurred with a lock + "Coming soon" badge and no modal — the detail view (description, achievements, demo) is left out of the page entirely rather than just hidden client-side. */
+    hidden?: boolean;
     tldr: string;
     description: string;
     /** Rodrigo's specific role on this project, when it differs from (or grew within) the stop-level title. */
@@ -61,41 +64,53 @@ function formatNewsDate(date: string) {
 <div class="relative">
   <button
     type="button"
-    onclick={`document.getElementById('${modalId}').showModal()`}
+    onclick={project.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
+    disabled={project.hidden}
     data-modal-id={modalId}
     data-project-companies={(project.companies ?? []).join(' ')}
     data-project-name={project.shortName ?? project.name}
-    class="group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition hover:border-[var(--color-accent)]"
+    class={`group flex w-full items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-left transition ${project.hidden ? 'cursor-default' : 'hover:border-[var(--color-accent)]'}`}
   >
-    <div class="flex shrink-0 items-center -space-x-2">
-      {
-        project.isSideProject ? (
-          <span class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
-            Side project
-          </span>
-        ) : (
-          badgeCompanies.map((c) => (
-            <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] ${c.logoFill ? '' : 'p-1'} ${c.chipClass}`}>
-              <img
-                src={c.logo}
-                alt={c.name}
-                class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
-                style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
-              />
+    <div class={`flex min-w-0 flex-1 items-center gap-3 ${project.hidden ? 'select-none blur-[3px]' : ''}`}>
+      <div class="flex shrink-0 items-center -space-x-2">
+        {
+          project.isSideProject ? (
+            <span class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+              Side project
             </span>
-          ))
-        )
-      }
+          ) : (
+            badgeCompanies.map((c) => (
+              <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] ${c.logoFill ? '' : 'p-1'} ${c.chipClass}`}>
+                <img
+                  src={c.logo}
+                  alt={c.name}
+                  class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
+                  style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
+                />
+              </span>
+            ))
+          )
+        }
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-semibold text-[var(--color-text)]">{project.name}</p>
+        <p class="truncate text-xs text-[var(--color-muted)]">{project.tldr}</p>
+      </div>
     </div>
 
-    <div class="min-w-0 flex-1">
-      <p class="truncate text-sm font-semibold text-[var(--color-text)]">{project.name}</p>
-      <p class="truncate text-xs text-[var(--color-muted)]">{project.tldr}</p>
-    </div>
-
-    <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
-      View →
-    </span>
+    {project.hidden ? (
+      <span class="flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+        <svg viewBox="0 0 24 24" class="h-3 w-3 fill-current">
+          <path d={icons.lock} />
+        </svg>
+        Coming soon
+      </span>
+    ) : (
+      <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+        View →
+      </span>
+    )}
   </button>
 
   <!-- sm:max-h-[85vh], not left uncapped: see CareerStopRow's dialog for why,
@@ -110,7 +125,13 @@ function formatNewsDate(date: string) {
        instead of its own (much shorter) content height. `fit-content`
        explicitly asks for shrink-to-fit sizing regardless of that stretch
        context, so a short project sizes to its own content and a long one
-       still clamps at the cap and scrolls, exactly as before. -->
+       still clamps at the cap and scrolls, exactly as before.
+
+       Not rendered at all when project.hidden — the point of hiding a
+       project is that its real copy isn't ready or approved yet, so the
+       detail view (description, achievements, demo) shouldn't reach the
+       page's HTML even unopened. -->
+  {!project.hidden && (
   <dialog
     id={modalId}
     class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
@@ -276,4 +297,5 @@ function formatNewsDate(date: string) {
       </div>
     </div>
   </dialog>
+  )}
 </div>

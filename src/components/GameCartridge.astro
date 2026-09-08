@@ -2,12 +2,15 @@
 import QRCode from 'qrcode';
 import DeviceDuo from './DeviceDuo.astro';
 import TechPill from './TechPill.astro';
+import { icons } from '../data/icons';
 
 interface Props {
   project: {
     title: string;
     subtitle: string;
     description: string;
+    /** True while the project isn't ready to show yet (not ready to announce, or the copy needs another pass). Renders the cartridge blurred and locked, with no modal — the description/tech/demo are left out of the page entirely. */
+    hidden?: boolean;
     technologies: string[];
     repoUrl?: string;
     demoUrl?: string;
@@ -32,7 +35,7 @@ interface Props {
 
 const { project, modalId } = Astro.props;
 
-const qrCodeSvg = project.appDownloadUrl
+const qrCodeSvg = project.appDownloadUrl && !project.hidden
   ? await QRCode.toString(project.appDownloadUrl, { type: 'svg', margin: 1 })
   : null;
 ---
@@ -40,12 +43,13 @@ const qrCodeSvg = project.appDownloadUrl
 <div>
   <button
     type="button"
-    onclick={`document.getElementById('${modalId}').showModal()`}
-    class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition hover:-translate-y-1 hover:shadow-xl ${project.shellColor}`}
+    onclick={project.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
+    disabled={project.hidden}
+    class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition ${project.hidden ? 'cursor-default' : 'hover:-translate-y-1 hover:shadow-xl'} ${project.shellColor}`}
     style="clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 8%); border-radius: 8px;"
   >
     <span class="absolute right-2.5 top-2.5 z-10 h-1.5 w-1.5 rounded-full bg-black/30" />
-    <div class={`relative h-full w-full overflow-hidden rounded-[3px] shadow-sm ${project.labelColor}`}>
+    <div class={`relative h-full w-full overflow-hidden rounded-[3px] shadow-sm ${project.labelColor} ${project.hidden ? 'select-none blur-[3px]' : ''}`}>
       {
         project.screenshot ? (
           <img src={project.screenshot} alt="" class="h-full w-full object-cover" loading="lazy" />
@@ -65,19 +69,33 @@ const qrCodeSvg = project.appDownloadUrl
         </div>
       )}
     </div>
-    {!project.screenshot && (
-      // Sits directly on `labelColor`, which is one of the light `-50` tints
-      // used for the fallback text label (see the neutral-900/neutral-500
-      // title/subtitle above) — not the dark screenshot backing the other
-      // branch gets, so it needs a dark, not white, tone to stay readable.
-      <span class="absolute bottom-2 right-2.5 z-10 font-mono text-[7px] uppercase tracking-widest text-neutral-500 transition group-hover:text-neutral-700">
-        Insert →
+    {project.hidden ? (
+      <span class="absolute inset-x-2 bottom-2 z-10 flex items-center justify-center gap-1.5 rounded-full bg-black/60 px-2 py-1 font-mono text-[7px] uppercase tracking-widest text-white/90">
+        <svg viewBox="0 0 24 24" class="h-2.5 w-2.5 fill-current">
+          <path d={icons.lock} />
+        </svg>
+        Coming soon
       </span>
+    ) : (
+      !project.screenshot && (
+        // Sits directly on `labelColor`, which is one of the light `-50` tints
+        // used for the fallback text label (see the neutral-900/neutral-500
+        // title/subtitle above) — not the dark screenshot backing the other
+        // branch gets, so it needs a dark, not white, tone to stay readable.
+        <span class="absolute bottom-2 right-2.5 z-10 font-mono text-[7px] uppercase tracking-widest text-neutral-500 transition group-hover:text-neutral-700">
+          Insert →
+        </span>
+      )
     )}
   </button>
 
   <!-- Compact centered card at every width, not full-screen-on-mobile:
-       short enough content that it doesn't need the extra screen space. -->
+       short enough content that it doesn't need the extra screen space.
+
+       Not rendered at all when project.hidden — same reasoning as
+       ProjectRow.astro's dialog: an unannounced project's real
+       description/tech/demo shouldn't reach the page's HTML unopened. -->
+  {!project.hidden && (
   <dialog
     id={modalId}
     class="m-auto w-[min(92vw,40rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
@@ -213,6 +231,7 @@ const qrCodeSvg = project.appDownloadUrl
       </div>
     </div>
   </dialog>
+  )}
 </div>
 
 <style>

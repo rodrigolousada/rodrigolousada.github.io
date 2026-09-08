@@ -27,6 +27,8 @@ interface Props {
       companies?: string[];
       isSideProject?: boolean;
       confidential?: boolean;
+      /** True while the project isn't ready to show yet. See ProjectRow.astro for the rendered lock/blur treatment. */
+      hidden?: boolean;
       tldr: string;
       description: string;
       myRole?: string;
