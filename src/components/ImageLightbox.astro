@@ -1,0 +1,158 @@
+---
+// Site-wide click-to-enlarge viewer for project detail media — images
+// (ProjectRow.astro's `project.image`, TestimonialCard.astro's
+// `letterImage`) and videos (PhoneMockup.astro's demo clips), anything
+// marked with `[data-lightbox-src]` (add `data-lightbox-type="video"` for a
+// clip; omitted/anything else means image). One dialog, mounted once in
+// Layout.astro, opened by a delegated click listener — same pattern as
+// ProjectDeepLink's share button. Nests on top of whatever project/career-
+// stop/testimonial dialogs are already open underneath it; native <dialog>
+// stacking handles that for free.
+---
+
+<dialog
+  id="image-lightbox"
+  class="m-0 h-dvh max-h-none w-full max-w-none border-0 bg-black/95 p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+>
+  <button
+    type="button"
+    data-lightbox-playpause
+    aria-label="Pause"
+    hidden
+    class="fixed right-16 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+  >
+    ⏸
+  </button>
+  <button
+    type="button"
+    data-lightbox-close
+    aria-label="Close"
+    class="fixed right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+  >
+    ✕
+  </button>
+  <div class="h-full w-full overflow-y-auto overflow-x-auto">
+    <div class="flex min-h-full w-full items-center justify-center p-6">
+      <img
+        id="image-lightbox-img"
+        src=""
+        alt=""
+        class="lightbox-media max-h-[88vh] max-w-[92vw] object-contain transition-transform duration-150"
+      />
+      <video
+        id="image-lightbox-video"
+        class="lightbox-media hidden max-h-[88vh] max-w-[92vw] object-contain transition-transform duration-150"
+        autoplay
+        muted
+        loop
+        playsinline
+      ></video>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('image-lightbox') as HTMLDialogElement | null;
+  const img = document.getElementById('image-lightbox-img') as HTMLImageElement | null;
+  const video = document.getElementById('image-lightbox-video') as HTMLVideoElement | null;
+  const playPauseBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-playpause]');
+
+  if (dialog && img) {
+    const MIN_SCALE = 1;
+    const MAX_SCALE = 4;
+    const ZOOM_STEP = 0.4;
+    let scale = MIN_SCALE;
+    let active: HTMLImageElement | HTMLVideoElement = img;
+
+    function applyScale() {
+      active.style.transform = scale > MIN_SCALE ? `scale(${scale})` : '';
+      active.style.cursor = scale > MIN_SCALE ? 'zoom-out' : 'zoom-in';
+    }
+
+    // Opening a project's own share button, deep link, etc. shouldn't be
+    // affected — this only ever reacts to [data-lightbox-src] triggers.
+    document.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-lightbox-src]');
+      if (!trigger) return;
+      const src = trigger.dataset.lightboxSrc;
+      if (!src || !dialog) return;
+
+      scale = MIN_SCALE;
+      if (trigger.dataset.lightboxType === 'video' && video) {
+        img.classList.add('hidden');
+        video.classList.remove('hidden');
+        video.style.transform = '';
+        video.src = src;
+        video.currentTime = 0;
+        video.play().catch(() => {});
+        active = video;
+        if (playPauseBtn) {
+          playPauseBtn.hidden = false;
+          playPauseBtn.textContent = '⏸';
+          playPauseBtn.setAttribute('aria-label', 'Pause');
+        }
+      } else {
+        video?.classList.add('hidden');
+        img.classList.remove('hidden');
+        img.style.transform = '';
+        img.src = src;
+        img.alt = trigger.dataset.lightboxAlt ?? '';
+        active = img;
+        if (playPauseBtn) playPauseBtn.hidden = true;
+      }
+      applyScale();
+      dialog.showModal();
+    });
+
+    // Click toggles between "fit" and a fixed zoomed-in level; the wheel
+    // gives finer-grained control for anyone who wants a specific zoom.
+    // Either way, once bigger than the viewport the dialog's own
+    // overflow-auto container lets the media be panned by scrolling.
+    function toggleZoom(e: Event) {
+      e.stopPropagation();
+      scale = scale > MIN_SCALE ? MIN_SCALE : 2.5;
+      applyScale();
+    }
+    function wheelZoom(e: WheelEvent) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+      scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + delta));
+      applyScale();
+    }
+    img.addEventListener('click', toggleZoom);
+    img.addEventListener('wheel', wheelZoom, { passive: false });
+    video?.addEventListener('click', toggleZoom);
+    video?.addEventListener('wheel', wheelZoom, { passive: false });
+
+    // Clicking anywhere except the media itself closes the viewer. The
+    // media's own click handler above calls stopPropagation(), so a click
+    // that reaches this listener at all is, by construction, a click
+    // outside it.
+    const close = () => dialog.close();
+    dialog.addEventListener('click', close);
+    dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', close);
+    // A looping demo clip has no reason to keep playing (or buffering) once
+    // the viewer is closed.
+    dialog.addEventListener('close', () => video?.pause());
+
+    // A looping autoplay clip otherwise has no way to be stopped short of
+    // closing the whole viewer — this gives it one, same idea as a native
+    // video player's own play/pause control.
+    playPauseBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!video) return;
+      if (video.paused) void video.play();
+      else video.pause();
+    });
+    video?.addEventListener('play', () => {
+      if (!playPauseBtn) return;
+      playPauseBtn.textContent = '⏸';
+      playPauseBtn.setAttribute('aria-label', 'Pause');
+    });
+    video?.addEventListener('pause', () => {
+      if (!playPauseBtn) return;
+      playPauseBtn.textContent = '▶';
+      playPauseBtn.setAttribute('aria-label', 'Play');
+    });
+  }
+</script>

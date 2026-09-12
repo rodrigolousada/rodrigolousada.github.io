@@ -1,8 +1,10 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import { icons } from '../data/icons';
 import ProjectRow from './ProjectRow.astro';
 import type { HandoffStep } from './PhoneMockup.astro';
+import type { FlowStep, FlowIntent } from './IntentFlow.astro';
 
 interface Props {
   locale: Locale;
@@ -37,7 +39,17 @@ interface Props {
       myRole?: string;
       technologies: string[];
       achievements: string[];
-      demo?: { mode?: string; captions?: string[]; videos?: (string | null)[]; steps?: HandoffStep[] };
+      demo?: {
+        mode?: string;
+        captions?: string[];
+        videos?: (string | null)[];
+        steps?: HandoffStep[];
+        intake?: FlowStep[];
+        router?: FlowStep;
+        intents?: FlowIntent[];
+        fallback?: FlowStep;
+        note?: string;
+      };
       news?: { title: string; source: string; date: string; url: string }[];
       /** External link to the project itself (thesis PDF, publication, live app, etc.). */
       url?: string;
@@ -52,6 +64,7 @@ interface Props {
 
 const { stop, modalId, showLine = true, locale } = Astro.props;
 const { focusCategories } = getSite(locale);
+const ui = getUI(locale);
 
 // Same "first N, then Show more" pattern as the career timeline and side
 // projects grid in Projects.astro — a stop with a long project list (e.g.
@@ -61,8 +74,11 @@ const visibleProjects = stop.projects.slice(0, 3);
 const moreProjects = stop.projects.slice(3);
 ---
 
-<div class="grid grid-cols-[1.5rem_1fr] gap-4">
-  <!-- Rail: dot centers on this row regardless of its height, line bleeds into the gap to meet the next row's dot -->
+<div class="grid grid-cols-[1rem_1fr] gap-2 sm:grid-cols-[1.5rem_1fr] sm:gap-4">
+  <!-- Rail: dot centers on this row regardless of its height, line bleeds into the gap to meet the next row's dot.
+       Narrower on mobile (1rem rail, gap-2) than sm+ (1.5rem, gap-4) — the
+       timeline doesn't need as much horizontal real estate on a narrow
+       screen, and every margin there is precious. -->
   <div class="relative">
     {
       showLine && (
@@ -99,7 +115,7 @@ const moreProjects = stop.projects.slice(3);
                  this onto multiple lines anyway, and plain word-wrap was
                  splitting mid-date ("· 2018" / "– 2020") wherever it ran out
                  of room. Forcing the period onto its own line keeps it whole. -->
-            <span class="block sm:inline">· {stop.period}</span>
+            <span class="block sm:inline"><span class="hidden sm:inline"> · </span>{stop.period}</span>
           </p>
         </div>
       </div>
@@ -109,31 +125,34 @@ const moreProjects = stop.projects.slice(3);
           <svg viewBox="0 0 24 24" class="h-3 w-3 fill-current">
             <path d={icons.lock} />
           </svg>
-          Coming soon
+          {ui.common.comingSoon}
         </span>
       ) : (
         <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
-          View →
+          {ui.common.view}
         </span>
       )}
     </button>
 
-    <!-- sm:max-h-[85vh], not left uncapped: without it, a stop with enough
-         content (KPIs, projects, badges) grows the dialog right up to the
-         browser's own near-100%-of-viewport default on laptop widths too,
-         reading as another full-screen popup rather than a compact card
-         that happens to scroll.
+    <!-- A compact centered card at every width, not a full-screen sheet on
+         mobile — it should always read as a popup floating over the page,
+         just with less breathing room around it than the sm:+ version.
+         max-h-[calc(100dvh-1.5rem)]/w-[calc(100%-1.5rem)] cap the box
+         1.5rem short of the viewport in each dimension; combined with
+         m-auto those margins get auto-split evenly (so ~0.75rem on every
+         side once content is tall/wide enough to hit the cap — a "tiny
+         margin" popup rather than edge-to-edge), same as the wider
+         sm:max-h-[85vh]/sm:w-[min(92vw,40rem)] cap already did on desktop.
 
-         sm:h-fit, not sm:h-auto: a native <dialog>'s default `showModal()`
-         centering pins both `top` and `bottom` to 0 (see the UA
-         stylesheet's `dialog:modal { inset-block: 0 }`), and `height: auto`
-         against two pinned edges resolves to stretch-to-fill, not
-         shrink-to-content: a short stop was rendering at the full
-         sm:max-h-[85vh] cap instead of its own (much shorter) content
-         height. `fit-content` explicitly asks for shrink-to-fit sizing
-         regardless of that stretch context, so a short stop sizes to its
-         own content and a long one still clamps at the cap and scrolls,
-         exactly as before.
+         h-fit (not h-auto), at every width: a native <dialog>'s default
+         `showModal()` centering pins both `top` and `bottom` to 0 (see the
+         UA stylesheet's `dialog:modal { inset-block: 0 }`), and `height:
+         auto` against two pinned edges resolves to stretch-to-fill, not
+         shrink-to-content: a short stop was rendering at the full max-h
+         cap instead of its own (much shorter) content height. `fit-content`
+         explicitly asks for shrink-to-fit sizing regardless of that stretch
+         context, so a short stop sizes to its own content and a long one
+         still clamps at the cap and scrolls, exactly as before.
 
          Not rendered at all when stop.hidden — same reasoning as a hidden
          project's dialog (ProjectRow.astro): the stop's real KPIs/projects
@@ -141,9 +160,9 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="h-dvh w-full max-w-full rounded-none border-0 m-0 bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border sm:border-[var(--color-border)]"
+      class="m-auto h-fit max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] max-w-[calc(100%-1.5rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:max-w-none"
     >
-      <div class="overflow-hidden rounded-none sm:rounded-xl">
+      <div class="overflow-hidden rounded-xl">
         <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>
           <img
             src={stop.logo}
@@ -153,7 +172,7 @@ const moreProjects = stop.projects.slice(3);
           />
           <form method="dialog" class="absolute right-3 top-3">
             <button
-              aria-label="Close"
+              aria-label={ui.common.close}
               class="flex h-7 w-7 items-center justify-center rounded-full bg-black/30 text-white transition hover:bg-black/50"
             >
               ✕
@@ -169,10 +188,10 @@ const moreProjects = stop.projects.slice(3);
           <p class="text-[var(--color-muted)]">{stop.role}</p>
 
           <div
-            class={`mt-8 gap-x-8 gap-y-8 ${stop.honors && stop.honors.length > 0 ? 'grid sm:grid-cols-[2fr_1fr]' : ''}`}
+            class={`mt-8 gap-x-8 gap-y-8 ${stop.honors && stop.honors.length > 0 && stop.honors.length <= 2 ? 'grid sm:grid-cols-[2fr_1fr]' : ''}`}
           >
             <div>
-              <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">KPIs</p>
+              <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.careerStop.kpis}</p>
               <ul class="mt-3 space-y-2">
                 {stop.kpis.map((kpi) => (
                   <li class="flex gap-2 text-[var(--color-text)]">
@@ -186,7 +205,7 @@ const moreProjects = stop.projects.slice(3);
             {stop.honors && stop.honors.length > 0 && (
               <div>
                 <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-                  Achievements
+                  {ui.common.achievements}
                 </p>
                 <div class="mt-3 flex flex-wrap gap-5">
                   {stop.honors.map((honor) => {
@@ -231,10 +250,10 @@ const moreProjects = stop.projects.slice(3);
             )}
           </div>
 
-          <p class="mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Projects</p>
+          <p class="mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.careerStop.projectsHeading}</p>
           <div class="mt-3 space-y-2">
             {visibleProjects.map((project, pi) => (
-              <ProjectRow project={project} modalId={`${modalId}-project-${pi}`} locale={locale} />
+              <ProjectRow project={project} modalId={`${modalId}-project-${pi}`} locale={locale} stopSlug={stop.slug} />
             ))}
           </div>
 
@@ -242,18 +261,18 @@ const moreProjects = stop.projects.slice(3);
             <details class="group/projectsmore mt-2">
               <summary class="flex cursor-pointer list-none items-center gap-2 py-1 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
                 <span class="inline-block transition group-open/projectsmore:rotate-90">▸</span>
-                View more
+                {ui.common.showMore}
               </summary>
               <div class="mt-2 space-y-2">
                 {moreProjects.map((project, pi) => (
-                  <ProjectRow project={project} modalId={`${modalId}-project-${pi + visibleProjects.length}`} locale={locale} />
+                  <ProjectRow project={project} modalId={`${modalId}-project-${pi + visibleProjects.length}`} locale={locale} stopSlug={stop.slug} />
                 ))}
               </div>
             </details>
           )}
 
           <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-            Focus this era
+            {ui.careerStop.focusThisEra}
           </p>
           <div class="flex h-5 w-full overflow-hidden rounded-full bg-[var(--color-border)]">
             {focusCategories
@@ -287,7 +306,7 @@ const moreProjects = stop.projects.slice(3);
           {stop.credlyBadges && stop.credlyBadges.length > 0 && (
             <div>
               <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-                Badges
+                {ui.careerStop.badges}
               </p>
               {(() => {
                 const highlighted = stop.credlyBadges!.filter((b) => b.highlight);
@@ -301,7 +320,7 @@ const moreProjects = stop.projects.slice(3);
                             href={badge.url ?? stop.credlyProfileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`View ${badge.name} on Credly`}
+                            aria-label={`View ${badge.name} credential`}
                             title={badge.name}
                             class="transition hover:scale-105"
                           >
@@ -324,7 +343,7 @@ const moreProjects = stop.projects.slice(3);
                             href={badge.url ?? stop.credlyProfileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`View ${badge.name} on Credly`}
+                            aria-label={`View ${badge.name} credential`}
                             title={badge.name}
                             class="transition hover:scale-105"
                           >
@@ -350,7 +369,7 @@ const moreProjects = stop.projects.slice(3);
                   rel="noopener noreferrer"
                   class="mt-2 inline-block text-xs text-[var(--color-accent)] underline underline-offset-4"
                 >
-                  See all badges on Credly →
+                  {ui.careerStop.seeAllBadgesOnCredly}
                 </a>
               )}
             </div>

@@ -262,6 +262,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Built a Cursor agent that turns a plain-language request into a complete, compliant data model.",
             "description": "Configured a Cursor agent with Klarna's own data modeling rules and conventions, combining tools, scripts, and MCP servers with an LLM's reasoning to go from a plain-language request straight to a complete, compliant data model, work that was previously done by hand.",
@@ -282,6 +283,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "A Figma-like visual builder for creating and editing Klarna's data models.",
             "description": "Building a Figma-like experience for Klarna's data modeling: a visual canvas where data modelers can see, build, and edit data models directly, backed by a Python/FastAPI service using LangChain and LangSmith over Neo4j.",
@@ -307,6 +309,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "A conversational assistant for data modeling, built with LangChain over Klarna's graph.",
             "description": "On the Data Modeling Chatbot team, building a conversational assistant that helps Klarna's data modelers work with the company's graph, using LangChain and LangSmith on a Python/FastAPI backend over Neo4j, WikiData, and PostgreSQL.",
@@ -331,6 +334,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "myRole": "Full-stack developer",
             "tldr": "Full-stack developer on the platform behind Klarna's Knowledge Management, built on Neo4j.",
@@ -371,7 +375,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
         "period": "2020 – 2024",
-        "role": "Consulting Lead, led a 4–6 person team across 2 concurrent teams; also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing",
+        "role": "Consulting Lead, running 2 concurrent teams — one on chatbots, one co-creating GenAI initiatives from the ground up when GenAI was first emerging — each staffed with 4–6 developers. Also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing.",
         "kpis": [
           "Doubled FTE savings",
           "70% workload cut via automation",
@@ -394,8 +398,8 @@
               "ibm",
               "montepio"
             ],
-            "tldr": "Grew from Analyst to Consulting Lead & PM delivering M.A.R.I.A, a real-time voice assistant for Banco Montepio's contact center, built on IBM Watson.",
-            "description": "M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) is a cognitive voice agent built on IBM Watson Assistant for Voice, integrated into Banco Montepio's contact-center IVR to automate customer interactions, from card activation to account confirmations. My role grew with the project: started as an Analyst, then Developer & Data Analyst, then Developer & Data Engineer, and finally Consulting Lead & Project Manager.",
+            "tldr": "A real-time voicebot for the first line of Banco Montepio's contact centre.",
+            "description": "It handled 50k+ calls a month, resolving the highest-volume requests outright and triaging the rest to a human agent.",
             "technologies": [
               "IBM Watson Assistant for Voice",
               "RPA",
@@ -404,10 +408,10 @@
               "Data Pipelines"
             ],
             "achievements": [
-              "Automated 72 customer intentions in the contact center, incl. card activation and account confirmations",
-              "Targeted ~80% of call center workflow automation within a year of launch",
-              "Doubled FTE savings for the client’s call center (50k+ calls/month)",
-              "9+ NPS on the delivered solution"
+              "Automated 72 distinct customer intentions",
+              "~80% of call-centre workflow targeted for automation within a year of launch",
+              "Doubled the call centre's FTE savings",
+              "9+ NPS on delivery"
             ],
             "news": [
               {
@@ -431,10 +435,29 @@
             ],
             "myRole": "Analyst → Developer & Data Analyst → Developer & Data Engineer → Consulting Lead & PM",
             "demo": {
-              "mode": "single",
-              "captions": [
-                "Recording: a call with M.A.R.I.A"
-              ]
+              "mode": "flow",
+              "note": "Built on the old intent + entity orchestration — IBM Watson Assistant for Voice",
+              "intake": [
+                { "label": "Incoming call", "detail": "Routed in from Banco Montepio's contact-center IVR" },
+                { "label": "Caller triage", "detail": "Work out who is calling and route them to the right flow" },
+                { "label": "Recording consent", "detail": "Asked for and captured before anything else happens" }
+              ],
+              "router": {
+                "label": "Intent + entity recognition",
+                "detail": "One spoken utterance classified into an intent, with its entities pulled out"
+              },
+              "intents": [
+                { "label": "Activate a card" },
+                { "label": "Check account balance" },
+                { "label": "Check credit-card balance" },
+                { "label": "List account movements", "entity": "time frame" },
+                { "label": "Make a payment" },
+                { "label": "Make a transfer" }
+              ],
+              "fallback": {
+                "label": "Any other topic",
+                "detail": "Triaged and handed off to a human agent"
+              }
             },
             "shortName": "M.A.R.I.A"
           },
@@ -443,6 +466,7 @@
             "companies": [
               "ibm"
             ],
+            "hidden": true,
             "tldr": "Designed and built, end-to-end and solo, the data pipeline feeding analytics and reporting for IBM's entire chatbot/voicebot portfolio.",
             "description": "Designed the full data pipeline behind IBM Consulting's chat/voicebot portfolio (M.A.R.I.A, BIA & Beatriz, and others): ingestion straight from the bots, cleaning and processing, then a move from raw OLTP records into an OLAP model built for reporting. On top of that, distribution: tailored dashboards and reports for developers, management, clients, and CXOs, each needing a different level of detail from the same underlying data.",
             "technologies": [
@@ -470,6 +494,7 @@
               "ibm",
               "bankinter"
             ],
+            "hidden": true,
             "tldr": "Data Engineer & Data Analyst on BIA and Beatriz, AI phone-banking assistants for Bankinter and Bankinter Consumer Finance.",
             "description": "BIA (Bankinter) and Beatriz (Bankinter Consumer Finance) answer Bankinter's phone-banking line, authenticate callers, resolve frequent requests (card unlock/activation, balance checks, digital-channel enrollment, app/homebanking support), and route complex cases to human agents with context attached: voice-to-text, ML conversation orchestration, and text-to-voice, running on the same underlying platform later reused for Banco Montepio's M.A.R.I.A.",
             "technologies": [
@@ -520,6 +545,7 @@
               "ibm",
               "bankinter"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Contributed to another internal Bankinter voicebot product. Details confidential.",
             "description": "Worked on another internal voicebot product for Bankinter beyond BIA and Beatriz. The specifics of this one aren't public.",
@@ -537,6 +563,7 @@
               "ibm",
               "montepio"
             ],
+            "hidden": true,
             "tldr": "Tech Lead & PM for an internal chatbot automating HR requests at Banco Montepio.",
             "description": "Led delivery, as Tech Lead and Project Manager, of an internal chatbot that automated common HR requests for Banco Montepio employees.",
             "technologies": [
@@ -556,6 +583,7 @@
               "ibm",
               "montepio"
             ],
+            "hidden": true,
             "tldr": "Data Scientist & Chatbot Developer on an MVP personal finance manager chatbot.",
             "description": "Built an MVP for a personal finance manager chatbot, combining conversational UX with data science to help users understand and manage their spending.",
             "technologies": [
@@ -689,6 +717,12 @@
             "highlight": true
           },
           {
+            "name": "Introduction to Generative AI",
+            "img": "/img/badges/introduction-to-generative-ai.png",
+            "url": "https://www.skills.google/public_profiles/c6c50b0f-0d14-4b1f-8ade-4e8b4d57ccef/badges/4199414",
+            "highlight": true
+          },
+          {
             "name": "Watson Assistant Methodology",
             "img": "/img/badges/watson-assistant-methodology.png",
             "url": "https://www.credly.com/badges/fc01f852-bf22-4186-a9b4-4f3d8696e540"
@@ -724,9 +758,14 @@
             "description": "Designed and implemented a Mixture of Experts model using Random Forests to predict SPY options trades, evaluated via backtesting against real market data.",
             "technologies": [
               "Python",
+              "Pandas",
+              "NumPy",
+              "scikit-learn",
+              "XGBoost",
+              "Matplotlib",
+              "Zipline",
               "Random Forests",
-              "Time Series",
-              "scikit-learn"
+              "Time Series"
             ],
             "achievements": [
               "48%+ decision accuracy",
@@ -736,7 +775,13 @@
             "url": "https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997261079/81115-rodrigo-lousada_dissertacao_final.pdf",
             "urlLabel": "Read the thesis (PDF) →",
             "urlStyle": "paper",
-            "urlSource": "IST Thesis"
+            "urlSource": "IST Thesis",
+            "image": {
+              "src": "/img/projects/thesis-architecture.png",
+              "alt": "System architecture diagram: Data, Logic, and Presentation layers",
+              "caption": "Fig. 3.1 — General view of the system, from the thesis",
+              "background": "light"
+            }
           }
         ],
         "focus": {
@@ -762,28 +807,76 @@
         "role": "Project Manager / Event Coordinator, recruited and led volunteer teams for a large student-run tech conference",
         "kpis": [
           "Recruited 10+ volunteers",
-          "Raised €7,000+ in sponsorship",
+          "Raised €9,000+ in sponsorship",
           "10x social media engagement on 10k+ follower accounts"
         ],
         "projects": [
           {
-            "name": "SINFO Annual Tech Conference",
+            "name": "SINFO 26",
             "companies": [
               "sinfo"
             ],
-            "tldr": "Organized volunteer teams, sponsorship, and social media across 3 consecutive editions of SINFO.",
-            "description": "As Project Manager / Event Coordinator, recruited and led volunteer teams, secured sponsorship, and ran social media across 3 consecutive editions of SINFO, IST's annual student-run tech conference.",
+            "tldr": "Coordinated the 26th edition of SINFO, IST's annual student-run tech conference, overseeing volunteer teams end to end.",
+            "description": "As Coordinator, oversaw SINFO 26 (2019) end to end: recruiting and leading volunteer teams across the conference's committees, building on 2 previous years running the event's communication and social media.",
             "technologies": [
               "Event Management",
-              "Sponsorship",
+              "Team Leadership",
+              "Volunteer Coordination"
+            ],
+            "achievements": [
+              "Recruited 10+ volunteers across the conference's committees",
+              "Oversaw end-to-end coordination of the 26th edition"
+            ],
+            "image": {
+              "src": "/img/sinfo-26.jpg",
+              "alt": "SINFO 26 event poster: schedule, speakers, and sponsors for the 2019 edition"
+            }
+          },
+          {
+            "name": "SINFO 25",
+            "companies": [
+              "sinfo"
+            ],
+            "tldr": "Led the Social Networks & Communication team for SINFO's 25th edition, driving sponsorship and engagement.",
+            "description": "As Social Networks & Communication Team Leader, ran outreach to speakers and sponsors and grew engagement on SINFO's social accounts, co-creating original content formats with the Multimedia team.",
+            "technologies": [
               "Social Media",
+              "Sponsorship",
+              "Content Strategy",
               "Team Leadership"
             ],
             "achievements": [
-              "Recruited 10+ volunteers",
-              "Raised €7,000+ in sponsorship",
+              "Contacted 26 potential speakers, landing 27% of the final speaker panel",
+              "Secured €3,400 in sponsorship from 12 companies",
+              "Co-created engagement formats (Talk of the Week, Programmer Jokes, Tag a Friend, Speakers Feedback) with the Multimedia team",
               "10x social media engagement on 10k+ follower accounts"
-            ]
+            ],
+            "image": {
+              "src": "/img/sinfo-25.jpg",
+              "alt": "SINFO 25 event poster: schedule, speakers, and sponsors for the 2018 edition"
+            }
+          },
+          {
+            "name": "SINFO 24",
+            "companies": [
+              "sinfo"
+            ],
+            "tldr": "Ran communication and social media for SINFO's 24th edition, growing every channel and landing sponsors.",
+            "description": "As Communication & Social Media Manager, produced daily content across SINFO's social accounts and worked speaker and sponsor outreach for the conference's 24th edition.",
+            "technologies": [
+              "Social Media",
+              "Content Creation",
+              "Sponsorship"
+            ],
+            "achievements": [
+              "Grew SINFO's accounts with daily content: Facebook (+8k), Instagram (+2k), Twitter (+1.5k), YouTube (+1k), LinkedIn (+700 followers)",
+              "Contacted 15 potential speakers",
+              "Secured €5,650 in sponsorship from 16 companies"
+            ],
+            "image": {
+              "src": "/img/sinfo-24.jpg",
+              "alt": "SINFO 24 event poster: schedule, speakers, and sponsors for the 2017 edition"
+            }
           }
         ],
         "focus": {
@@ -900,6 +993,8 @@
     },
     "contact": {
       "intro": "Open to Engineering Manager / Tech Lead opportunities, speaking invitations, and interesting conversations.",
+      "scheduleUrl": "https://calendar.app.google/SFFL9KTzT1VyuFtM9",
+      "engagementDelaySeconds": 600,
       "personal": {
         "name": "Rodrigo Lousada",
         "photo": "/img/profile.jpg",
@@ -989,7 +1084,8 @@
         "logo": "/img/ist-logo.png",
         "logoScale": 1.3,
         "category": "studied",
-        "program": "BSc & MSc, Computer Science and Engineering"
+        "program": "BSc & MSc, Computer Science and Engineering",
+        "grade": "17/20"
       },
       {
         "name": "TU Berlin",
@@ -1636,6 +1732,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Criou um agente no Cursor que transforma um pedido em linguagem natural num modelo de dados completo e em conformidade.",
             "description": "Configurou um agente no Cursor com as regras e convenções de modelação de dados da própria Klarna, combinando ferramentas, scripts e servidores MCP com o raciocínio de um LLM para passar diretamente de um pedido em linguagem natural a um modelo de dados completo e em conformidade, um trabalho que antes era feito manualmente.",
@@ -1656,6 +1753,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Um construtor visual ao estilo Figma para criar e editar os modelos de dados da Klarna.",
             "description": "A construir uma experiência ao estilo Figma para a modelação de dados da Klarna: uma tela visual onde os modeladores de dados podem ver, construir e editar modelos de dados diretamente, suportada por um serviço em Python/FastAPI que usa LangChain e LangSmith sobre Neo4j.",
@@ -1681,6 +1779,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Um assistente conversacional para modelação de dados, construído com LangChain sobre o grafo da Klarna.",
             "description": "Na equipa do Data Modeling Chatbot, a construir um assistente conversacional que ajuda os modeladores de dados da Klarna a trabalhar com o grafo da empresa, usando LangChain e LangSmith num backend em Python/FastAPI sobre Neo4j, WikiData e PostgreSQL.",
@@ -1705,6 +1804,7 @@
             "companies": [
               "klarna"
             ],
+            "hidden": true,
             "confidential": true,
             "myRole": "Programador full-stack",
             "tldr": "Programador full-stack na plataforma por trás da Gestão do Conhecimento da Klarna, construída sobre Neo4j.",
@@ -1745,7 +1845,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
         "period": "2020 – 2024",
-        "role": "Consulting Lead, liderou uma equipa de 4 a 6 pessoas distribuída por 2 equipas simultâneas; contribuiu também para demos de pré-venda e MVPs para potenciais clientes (incl. Galp, Generali, Millennium BCP) e apoiou a redação de propostas da IBM",
+        "role": "Consulting Lead, a gerir 2 equipas em simultâneo — uma de chatbots, outra a co-criar iniciativas de GenAI de raiz quando a GenAI estava a emergir — cada uma com 4 a 6 developers. Contribuiu também para demos de pré-venda e MVPs para potenciais clientes (incl. Galp, Generali, Millennium BCP) e apoiou a redação de propostas da IBM.",
         "kpis": [
           "Duplicou a poupança em FTEs",
           "70% de redução da carga de trabalho através de automação",
@@ -1768,8 +1868,8 @@
               "ibm",
               "montepio"
             ],
-            "tldr": "Cresceu de Analista a Consulting Lead & PM ao entregar a M.A.R.I.A, um assistente de voz em tempo real para o contact center do Banco Montepio, construído sobre o IBM Watson.",
-            "description": "A M.A.R.I.A (Montepio's Automated Real-Time Interaction Assistant) é um agente de voz cognitivo construído sobre o IBM Watson Assistant for Voice, integrado no IVR do contact center do Banco Montepio para automatizar interações com clientes, desde a ativação de cartões até confirmações de conta. O meu papel cresceu com o projeto: comecei como Analista, depois Developer & Analista de Dados, depois Developer & Engenheiro de Dados, e por fim Consulting Lead & Project Manager.",
+            "tldr": "Um voicebot em tempo real para a primeira linha do contact center do Banco Montepio.",
+            "description": "Recebia mais de 50 mil chamadas por mês, resolvendo diretamente os pedidos de maior volume e encaminhando os restantes para um assistente humano.",
             "technologies": [
               "IBM Watson Assistant for Voice",
               "RPA",
@@ -1778,10 +1878,10 @@
               "Data Pipelines"
             ],
             "achievements": [
-              "Automatizou 72 intenções de clientes no contact center, incl. ativação de cartões e confirmações de conta",
-              "Visou ~80% de automação dos fluxos do call center num ano após o lançamento",
-              "Duplicou a poupança em FTEs no call center do cliente (50 mil+ chamadas/mês)",
-              "9+ de NPS na solução entregue"
+              "Automatizou 72 intenções distintas de clientes",
+              "~80% dos fluxos do call center visados para automação no primeiro ano",
+              "Duplicou a poupança em FTEs do call center",
+              "9+ de NPS na entrega"
             ],
             "news": [
               {
@@ -1805,10 +1905,29 @@
             ],
             "myRole": "Analista → Developer & Analista de Dados → Developer & Engenheiro de Dados → Consulting Lead & PM",
             "demo": {
-              "mode": "single",
-              "captions": [
-                "Gravação: uma chamada com a M.A.R.I.A"
-              ]
+              "mode": "flow",
+              "note": "Construído sobre a antiga orquestração de intenções e entidades — IBM Watson Assistant for Voice",
+              "intake": [
+                { "label": "Chamada recebida", "detail": "Encaminhada a partir do IVR do contact center do Banco Montepio" },
+                { "label": "Triagem do interlocutor", "detail": "Perceber quem está a ligar e encaminhar para o fluxo certo" },
+                { "label": "Consentimento de gravação", "detail": "Pedido e registado antes de mais nada" }
+              ],
+              "router": {
+                "label": "Reconhecimento de intenção e entidades",
+                "detail": "Cada frase dita é classificada numa intenção, com as entidades extraídas"
+              },
+              "intents": [
+                { "label": "Ativar um cartão" },
+                { "label": "Consultar saldo da conta" },
+                { "label": "Consultar saldo do cartão de crédito" },
+                { "label": "Listar movimentos da conta", "entity": "período" },
+                { "label": "Efetuar um pagamento" },
+                { "label": "Efetuar uma transferência" }
+              ],
+              "fallback": {
+                "label": "Qualquer outro tema",
+                "detail": "Triado e encaminhado para um assistente humano"
+              }
             },
             "shortName": "M.A.R.I.A"
           },
@@ -1817,6 +1936,7 @@
             "companies": [
               "ibm"
             ],
+            "hidden": true,
             "tldr": "Desenhou e construiu, sozinho e de ponta a ponta, o pipeline de dados que alimenta a análise e o reporting de todo o portefólio de chatbots/voicebots da IBM.",
             "description": "Desenhou todo o pipeline de dados por trás do portefólio de chat/voicebots da IBM Consulting (M.A.R.I.A, BIA & Beatriz, entre outros): ingestão diretamente dos bots, limpeza e processamento, e depois uma passagem de registos OLTP em bruto para um modelo OLAP construído para reporting. Além disso, a distribuição: dashboards e relatórios à medida para developers, gestão, clientes e CXOs, cada um precisando de um nível de detalhe diferente a partir dos mesmos dados subjacentes.",
             "technologies": [
@@ -1844,6 +1964,7 @@
               "ibm",
               "bankinter"
             ],
+            "hidden": true,
             "tldr": "Engenheiro de Dados & Analista de Dados na BIA e na Beatriz, assistentes de banca telefónica com IA para o Bankinter e o Bankinter Consumer Finance.",
             "description": "A BIA (Bankinter) e a Beatriz (Bankinter Consumer Finance) atendem a linha de banca telefónica do Bankinter, autenticam quem liga, resolvem pedidos frequentes (desbloqueio/ativação de cartão, consulta de saldo, adesão a canais digitais, suporte à app/homebanking), e encaminham casos complexos para agentes humanos com contexto associado: voz-para-texto, orquestração da conversa com ML, e texto-para-voz, a correr sobre a mesma plataforma subjacente mais tarde reutilizada para a M.A.R.I.A do Banco Montepio.",
             "technologies": [
@@ -1894,6 +2015,7 @@
               "ibm",
               "bankinter"
             ],
+            "hidden": true,
             "confidential": true,
             "tldr": "Contribuiu para outro produto interno de voicebot do Bankinter. Detalhes confidenciais.",
             "description": "Trabalhou noutro produto interno de voicebot para o Bankinter, além da BIA e da Beatriz. Os detalhes deste não são públicos.",
@@ -1911,6 +2033,7 @@
               "ibm",
               "montepio"
             ],
+            "hidden": true,
             "tldr": "Tech Lead & PM de um chatbot interno que automatiza pedidos de RH no Banco Montepio.",
             "description": "Liderou a entrega, como Tech Lead e Project Manager, de um chatbot interno que automatizou pedidos comuns de RH para os colaboradores do Banco Montepio.",
             "technologies": [
@@ -1930,6 +2053,7 @@
               "ibm",
               "montepio"
             ],
+            "hidden": true,
             "tldr": "Data Scientist & Programador de Chatbot num MVP de chatbot de gestão de finanças pessoais.",
             "description": "Construiu um MVP de chatbot de gestão de finanças pessoais, combinando UX conversacional com data science para ajudar os utilizadores a compreender e gerir as suas despesas.",
             "technologies": [
@@ -2063,6 +2187,12 @@
             "highlight": true
           },
           {
+            "name": "Introduction to Generative AI",
+            "img": "/img/badges/introduction-to-generative-ai.png",
+            "url": "https://www.skills.google/public_profiles/c6c50b0f-0d14-4b1f-8ade-4e8b4d57ccef/badges/4199414",
+            "highlight": true
+          },
+          {
             "name": "Watson Assistant Methodology",
             "img": "/img/badges/watson-assistant-methodology.png",
             "url": "https://www.credly.com/badges/fc01f852-bf22-4186-a9b4-4f3d8696e540"
@@ -2098,9 +2228,14 @@
             "description": "Concebeu e implementou um modelo Mixture of Experts com Random Forests para prever transações de opções SPY, avaliado através de backtesting sobre dados reais de mercado.",
             "technologies": [
               "Python",
+              "Pandas",
+              "NumPy",
+              "scikit-learn",
+              "XGBoost",
+              "Matplotlib",
+              "Zipline",
               "Random Forests",
-              "Time Series",
-              "scikit-learn"
+              "Time Series"
             ],
             "achievements": [
               "Precisão de decisão superior a 48%",
@@ -2110,7 +2245,13 @@
             "url": "https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997261079/81115-rodrigo-lousada_dissertacao_final.pdf",
             "urlLabel": "Ler a tese (PDF) →",
             "urlStyle": "paper",
-            "urlSource": "Tese do IST"
+            "urlSource": "Tese do IST",
+            "image": {
+              "src": "/img/projects/thesis-architecture.png",
+              "alt": "Diagrama da arquitetura do sistema: camadas de Dados, Lógica e Apresentação",
+              "caption": "Fig. 3.1 — Vista geral do sistema, retirada da tese",
+              "background": "light"
+            }
           }
         ],
         "focus": {
@@ -2136,27 +2277,75 @@
         "role": "Gestor de Projeto / Coordenador de Eventos, recrutou e liderou equipas de voluntários para uma grande conferência tecnológica organizada por estudantes",
         "kpis": [
           "Recrutou mais de 10 voluntários",
-          "Angariou mais de 7.000€ em patrocínios",
+          "Angariou mais de 9.000€ em patrocínios",
           "Aumentou em 10x o engagement nas redes sociais em contas com mais de 10 mil seguidores"
         ],
         "projects": [
           {
-            "name": "SINFO Annual Tech Conference",
+            "name": "SINFO 26",
             "companies": [
               "sinfo"
             ],
-            "tldr": "Organizou equipas de voluntários, patrocínios e redes sociais ao longo de 3 edições consecutivas da SINFO.",
-            "description": "Como Gestor de Projeto / Coordenador de Eventos, recrutou e liderou equipas de voluntários, angariou patrocínios e geriu as redes sociais ao longo de 3 edições consecutivas da SINFO, a conferência tecnológica anual organizada por estudantes do IST.",
+            "tldr": "Coordenou a 26.ª edição do SINFO, a conferência tecnológica anual organizada por estudantes do IST, supervisionando as equipas de voluntários de ponta a ponta.",
+            "description": "Como Coordenador, supervisionou o SINFO 26 (2019) de ponta a ponta: recrutando e liderando equipas de voluntários pelas várias comissões da conferência, após 2 anos anteriores à frente da comunicação e das redes sociais do evento.",
+            "image": {
+              "src": "/img/sinfo-26.jpg",
+              "alt": "Cartaz do SINFO 26: programa, oradores e patrocinadores da edição de 2019"
+            },
             "technologies": [
               "Event Management",
-              "Sponsorship",
+              "Team Leadership",
+              "Volunteer Coordination"
+            ],
+            "achievements": [
+              "Recrutou mais de 10 voluntários pelas comissões da conferência",
+              "Supervisionou a coordenação de ponta a ponta da 26.ª edição"
+            ]
+          },
+          {
+            "name": "SINFO 25",
+            "companies": [
+              "sinfo"
+            ],
+            "tldr": "Liderou a equipa de Redes Sociais e Comunicação na 25.ª edição do SINFO, impulsionando patrocínios e engagement.",
+            "description": "Como Líder da equipa de Redes Sociais e Comunicação, geriu o contacto com oradores e patrocinadores e aumentou o engagement nas contas de redes sociais do SINFO, cocriando novos formatos de conteúdo com a equipa de Multimédia.",
+            "image": {
+              "src": "/img/sinfo-25.jpg",
+              "alt": "Cartaz do SINFO 25: programa, oradores e patrocinadores da edição de 2018"
+            },
+            "technologies": [
               "Social Media",
+              "Sponsorship",
+              "Content Strategy",
               "Team Leadership"
             ],
             "achievements": [
-              "Recrutou mais de 10 voluntários",
-              "Angariou mais de 7.000€ em patrocínios",
+              "Contactou 26 potenciais oradores, garantindo 27% do painel final de oradores",
+              "Angariou 3.400€ em patrocínios junto de 12 empresas",
+              "Cocriou rubricas de engagement (Talk of the Week, Programmer Jokes, Tag a Friend, Speakers Feedback) com a equipa de Multimédia",
               "Aumentou em 10x o engagement nas redes sociais em contas com mais de 10 mil seguidores"
+            ]
+          },
+          {
+            "name": "SINFO 24",
+            "companies": [
+              "sinfo"
+            ],
+            "tldr": "Geriu a comunicação e as redes sociais na 24.ª edição do SINFO, fazendo crescer todos os canais e angariando patrocinadores.",
+            "description": "Como Gestor de Comunicação e Redes Sociais, produziu conteúdo diário nas contas do SINFO e fez a angariação de oradores e patrocinadores para a 24.ª edição da conferência.",
+            "image": {
+              "src": "/img/sinfo-24.jpg",
+              "alt": "Cartaz do SINFO 24: programa, oradores e patrocinadores da edição de 2017"
+            },
+            "technologies": [
+              "Social Media",
+              "Content Creation",
+              "Sponsorship"
+            ],
+            "achievements": [
+              "Fez crescer as contas do SINFO com conteúdo diário: Facebook (+8 mil), Instagram (+2 mil), Twitter (+1.500), YouTube (+1 mil), LinkedIn (+700 seguidores)",
+              "Contactou 15 potenciais oradores",
+              "Angariou 5.650€ em patrocínios junto de 16 empresas"
             ]
           }
         ],
@@ -2274,6 +2463,8 @@
     },
     "contact": {
       "intro": "Aberto a oportunidades de Engineering Manager / Tech Lead, convites para palestras, e conversas interessantes.",
+      "scheduleUrl": "https://calendar.app.google/SFFL9KTzT1VyuFtM9",
+      "engagementDelaySeconds": 600,
       "personal": {
         "name": "Rodrigo Lousada",
         "photo": "/img/profile.jpg",
@@ -2363,7 +2554,8 @@
         "logo": "/img/ist-logo.png",
         "logoScale": 1.3,
         "category": "studied",
-        "program": "Licenciatura e Mestrado em Engenharia Informática e de Computadores"
+        "program": "Licenciatura e Mestrado em Engenharia Informática e de Computadores",
+        "grade": "17/20"
       },
       {
         "name": "TU Berlin",

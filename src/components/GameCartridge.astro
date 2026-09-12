@@ -3,6 +3,9 @@ import QRCode from 'qrcode';
 import DeviceDuo from './DeviceDuo.astro';
 import TechPill from './TechPill.astro';
 import { icons } from '../data/icons';
+import { getUI } from '../data/ui';
+import type { Locale } from '../data/site';
+import { slugify } from '../data/slug';
 
 interface Props {
   project: {
@@ -31,21 +34,26 @@ interface Props {
     labelColor: string;
   };
   modalId: string;
+  locale: Locale;
 }
 
-const { project, modalId } = Astro.props;
+const { project, modalId, locale } = Astro.props;
+const ui = getUI(locale);
+const shareKey = project.hidden ? undefined : `side.${slugify(project.title)}`;
 
 const qrCodeSvg = project.appDownloadUrl && !project.hidden
   ? await QRCode.toString(project.appDownloadUrl, { type: 'svg', margin: 1 })
   : null;
 ---
 
-<div>
+<div class="relative">
   <button
     type="button"
     onclick={project.hidden ? undefined : `document.getElementById('${modalId}').showModal()`}
     data-locked={project.hidden ? 'true' : undefined}
     aria-disabled={project.hidden ? 'true' : undefined}
+    data-modal-id={modalId}
+    data-deep-link-target={shareKey}
     class={`cartridge-shell group relative flex aspect-[11/7] w-full items-center justify-center p-2 text-left shadow-lg transition ${project.hidden ? 'hover:ring-2 hover:ring-red-500/60' : 'hover:-translate-y-1 hover:shadow-xl'} ${project.shellColor}`}
     style="clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 8%); border-radius: 8px;"
   >
@@ -65,7 +73,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
         <div class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-black/70 px-1.5 py-1">
           <p class="truncate font-pixel text-[7px] leading-tight tracking-tight text-white">{project.title}</p>
           <span class="shrink-0 font-mono text-[6px] uppercase tracking-widest text-white/60 transition group-hover:text-white/90">
-            Insert →
+            {ui.cartridge.insert}
           </span>
         </div>
       )}
@@ -75,7 +83,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
         <svg viewBox="0 0 24 24" class="h-2.5 w-2.5 fill-current">
           <path d={icons.lock} />
         </svg>
-        Coming soon
+        {ui.common.comingSoon}
       </span>
     ) : (
       !project.screenshot && (
@@ -84,7 +92,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
         // title/subtitle above) — not the dark screenshot backing the other
         // branch gets, so it needs a dark, not white, tone to stay readable.
         <span class="absolute bottom-2 right-2.5 z-10 font-mono text-[7px] uppercase tracking-widest text-neutral-500 transition group-hover:text-neutral-700">
-          Insert →
+          {ui.cartridge.insert}
         </span>
       )
     )}
@@ -107,29 +115,47 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
           <p class="font-pixel text-xs text-white">{project.title}</p>
           <p class="mt-1 font-mono text-[10px] uppercase tracking-wide text-white/70">{project.subtitle}</p>
         </div>
-        <form method="dialog" class="relative z-10">
-          <button
-            aria-label="Close"
-            class="flex h-7 w-7 items-center justify-center rounded-full bg-black/20 text-white transition hover:bg-black/40"
-          >
-            ✕
-          </button>
-        </form>
+        <div class="relative z-10 flex shrink-0 items-center gap-2">
+          {shareKey && (
+            <button
+              type="button"
+              data-share-key={shareKey}
+              aria-label={ui.common.shareProject}
+              title={ui.common.shareProject}
+              class="share-button flex h-7 w-7 items-center justify-center rounded-full bg-black/20 text-white transition hover:bg-black/40"
+            >
+              <svg viewBox="0 0 20 20" class="share-icon-default h-3.5 w-3.5 fill-current">
+                <path d={icons.share} />
+              </svg>
+              <svg viewBox="0 0 20 20" class="share-icon-check hidden h-3.5 w-3.5 fill-current">
+                <path d={icons.check} />
+              </svg>
+            </button>
+          )}
+          <form method="dialog">
+            <button
+              aria-label={ui.common.close}
+              class="flex h-7 w-7 items-center justify-center rounded-full bg-black/20 text-white transition hover:bg-black/40"
+            >
+              ✕
+            </button>
+          </form>
+        </div>
       </div>
 
       <div class="p-6">
         <p class="text-[var(--color-muted)]">{project.description}</p>
 
-        <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Technologies</p>
+        <p class="mt-4 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.common.technologies}</p>
         <div class="mt-2 flex flex-wrap gap-1.5">
           {project.technologies.map((tech) => (
-            <TechPill name={tech} />
+            <TechPill name={tech} locale={locale} />
           ))}
         </div>
 
         {project.demoUrl && (
           <>
-            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Demo</p>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.cartridge.demo}</p>
             <a
               href={project.demoUrl}
               target="_blank"
@@ -156,14 +182,14 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
 
         {project.deviceDemo && (
           <>
-            <p class="mb-3 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Demo</p>
+            <p class="mb-3 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.cartridge.demo}</p>
             <DeviceDuo watch={project.deviceDemo.watch} phone={project.deviceDemo.phone} />
           </>
         )}
 
         {project.demoPlaceholders && project.demoPlaceholders.length > 0 && (
           <>
-            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">Demo</p>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.cartridge.demo}</p>
             <div class="grid grid-cols-2 gap-3">
               {project.demoPlaceholders.map((label) => (
                 <div class="flex h-28 flex-col items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-[var(--color-border)] bg-[var(--color-bg)] text-center">
@@ -171,7 +197,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
                     <path d="M15 8v8H5V8h10m1-2H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4V7a1 1 0 00-1-1z" />
                   </svg>
                   <span class="px-2 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
-                    [Add {label}]
+                    {ui.cartridge.addFootage.replace('{label}', label)}
                   </span>
                 </div>
               ))}
@@ -182,7 +208,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
         {project.modules && project.modules.length > 0 && (
           <>
             <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-              Favorite Modules
+              {ui.cartridge.favoriteModules}
             </p>
             <ul class="grid grid-cols-2 gap-x-4 gap-y-1">
               {project.modules.map((mod) => (
@@ -198,7 +224,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
         {qrCodeSvg && (
           <>
             <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-              Get the app
+              {ui.cartridge.getTheApp}
             </p>
             <a
               href={project.appDownloadUrl}
@@ -207,7 +233,7 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
               class="flex items-center gap-3 rounded-lg border border-[var(--color-border)] p-3 transition hover:border-[var(--color-accent)]"
             >
               <div class="h-16 w-16 shrink-0 rounded-md bg-white p-1" set:html={qrCodeSvg} />
-              <span class="text-sm font-medium text-[var(--color-text)]">Scan to download {project.title}</span>
+              <span class="text-sm font-medium text-[var(--color-text)]">{ui.cartridge.scanToDownload.replace('{title}', project.title)}</span>
             </a>
           </>
         )}
@@ -219,14 +245,14 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
             rel="noopener noreferrer"
             class="mt-5 flex items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] p-3 text-sm font-medium text-[var(--color-text)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            View on GitHub →
+            {ui.cartridge.viewOnGithub}
           </a>
         ) : (
           <div class="mt-5 flex items-center justify-center gap-2 rounded-lg border border-dashed border-[var(--color-border)] p-3 text-sm text-[var(--color-muted)]">
             <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
               <path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm0 2a3 3 0 013 3v3H9V6a3 3 0 013-3z" />
             </svg>
-            This project is not open source yet
+            {ui.cartridge.notOpenSource}
           </div>
         )}
       </div>

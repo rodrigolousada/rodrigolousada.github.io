@@ -1,5 +1,7 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
+import { icons } from '../data/icons';
 
 interface Props {
   locale: Locale;
@@ -8,6 +10,7 @@ interface Props {
 const { locale } = Astro.props;
 const site = getSite(locale);
 const { hero, about } = site;
+const ui = getUI(locale);
 
 // Recomputed on every build, not hardcoded — see about.softwareSince.
 const years = Math.floor(
@@ -150,9 +153,14 @@ const cities = hero.cities.flatMap((city, i) => {
          sizes below (a lone "ship" stranded on its own line) — the 6xl step
          was simply wider than the max-w-3xl column has room for. Sized down
          a notch at sm/md specifically (measured against the actual column
-         width) so the headline holds one line from sm up; it still wraps
-         naturally on the smallest phones, which reads fine there. -->
-    <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:whitespace-nowrap sm:text-[2.75rem] md:text-[3.5rem]">
+         width) so the headline holds one line from sm up on English's
+         wording, and `text-balance` (not a hard `whitespace-nowrap`) evens
+         out the line breaks whenever it doesn't fit on one — a translated
+         headline can run substantially longer than the English original
+         (Portuguese does), and `nowrap` would just push it past the column
+         edge instead of wrapping, which is exactly the overflow this
+         replaced. -->
+    <h1 class="text-balance text-4xl font-extrabold leading-[1.1] tracking-tight text-[var(--color-text)] sm:text-[2.75rem] md:text-[3.5rem]">
       {hero.headline}
     </h1>
 
@@ -160,33 +168,34 @@ const cities = hero.cities.flatMap((city, i) => {
       {bioSummary}
     </p>
 
-    <!-- "Download CV" is a plain underlined link, not a button, so once it
-         wrapped onto its own line below the two buttons (any phone
-         narrower than all three fitting inline) it sat right up against
-         them with no visual separation. Splitting it into its own flex
-         item below the button row, not just another entry in the same
-         wrapping row, gives it a real gap at every width narrow enough to
-         need one, instead of however much a lucky wrap happened to leave. -->
-    <div class="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-      <div class="flex flex-wrap items-center gap-4">
-        <a
-          href="#projects"
-          class="rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
-        >
-          View projects
-        </a>
-        <a
-          href="#contact"
-          class="rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
-        >
-          Get in touch
-        </a>
-      </div>
+    <!-- "Download CV" used to be a plain underlined link split into its own
+         row below the two buttons — on a narrow phone it read as a stray
+         line of text rather than a third thing to click. Styling it as a
+         (quieter, icon-led) button in the same wrapping row as the other
+         two means all three read as one consistent action group at any
+         width: side by side where there's room, or wrapping as a whole
+         unit — never one lone underlined link sitting apart from the rest. -->
+    <div class="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
+      <a
+        href="#projects"
+        class="rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
+      >
+        {ui.hero.viewProjects}
+      </a>
+      <a
+        href="#contact"
+        class="rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+      >
+        {ui.hero.getInTouch}
+      </a>
       <a
         href={site.site.cvPath}
-        class="text-sm font-medium text-[var(--color-muted)] underline decoration-[var(--color-border)] underline-offset-4 transition hover:text-[var(--color-text)]"
+        class="flex items-center gap-1.5 rounded-md border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-text)]"
       >
-        Download CV
+        <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current">
+          <path d={icons.download} />
+        </svg>
+        {ui.hero.downloadCv}
       </a>
     </div>
 
@@ -233,12 +242,18 @@ const cities = hero.cities.flatMap((city, i) => {
 <script>
   const toggles = document.querySelectorAll<HTMLButtonElement>('[data-city-toggle]');
   const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-city-close]');
+  // Whichever trigger opened the currently-visible popup, so Escape/close
+  // can hand focus back to it — otherwise a keyboard user's focus would be
+  // left on a now-hidden close button with nothing announcing where it went.
+  let lastTrigger: HTMLButtonElement | null = null;
 
-  function closeAll() {
+  function closeAll(restoreFocus = false) {
     document.querySelectorAll<HTMLElement>('.city-popup').forEach((popup) => {
       popup.classList.add('hidden');
     });
     toggles.forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+    if (restoreFocus) lastTrigger?.focus();
+    lastTrigger = null;
   }
 
   toggles.forEach((btn) => {
@@ -252,6 +267,12 @@ const cities = hero.cities.flatMap((city, i) => {
       if (popup && !wasOpen) {
         popup.classList.remove('hidden');
         btn.setAttribute('aria-expanded', 'true');
+        lastTrigger = btn;
+        // Move focus into the popup itself (its close button, always
+        // present) so a keyboard/screen-reader user actually lands on the
+        // content that just appeared, instead of it opening silently
+        // somewhere off in the page while focus stays on the marker.
+        popup.querySelector<HTMLButtonElement>('[data-city-close]')?.focus();
       }
     });
   });
@@ -259,9 +280,15 @@ const cities = hero.cities.flatMap((city, i) => {
   closeButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      closeAll();
+      closeAll(true);
     });
   });
 
   document.addEventListener('click', () => closeAll());
+  // These are plain divs, not native <dialog>, so Escape does nothing for
+  // them unless wired up explicitly — every other overlay on the site gets
+  // this for free from the browser.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll(true);
+  });
 </script>

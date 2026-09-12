@@ -1,0 +1,26 @@
+---
+// GitHub Pages serves this file (built at the site root regardless of which
+// locale path 404'd — Astro/GitHub Pages 404s aren't locale-aware) for any
+// unmatched URL instead of falling through to GitHub's own generic 404
+// page. Kept English-only and independent of site.json: a visitor who hit a
+// dead link isn't reading it for the copy, they're reading it to find their
+// way back.
+import Layout from '../layouts/Layout.astro';
+import { defaultLocale } from '../data/site';
+---
+
+<Layout locale={defaultLocale} title="Page not found" description="This page doesn't exist.">
+  <main class="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center px-6 text-center">
+    <p class="font-display text-sm tracking-widest text-[var(--color-accent)]">404</p>
+    <h1 class="mt-3 font-display text-3xl font-bold text-[var(--color-text)] sm:text-4xl">Page not found</h1>
+    <p class="mt-3 max-w-sm text-[var(--color-muted)]">
+      That page doesn't exist, or the link's out of date. Let's get you back to somewhere real.
+    </p>
+    <a
+      href="/"
+      class="mt-8 inline-block rounded-md bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
+    >
+      Back to the homepage
+    </a>
+  </main>
+</Layout>

@@ -35,6 +35,38 @@ here is missing exactly — say the word on any of these and I'll add it:
 
 
 # Feedback
+- **Temporary** — Marked 9 of Klarna's and IBM's projects `"hidden": true`
+  in `site.json` (both `en` and `pt`) — same flag `GameCartridge.astro`
+  already uses for "not ready yet" projects (blurred cartridge, "Coming
+  soon" lock), reused here just to declutter the two biggest career stops
+  while doing the old-site-vs-new-site copy review below. Only "Referrals &
+  Deals" (Klarna) and "M.A.R.I.A" (IBM) were left visible; everything
+  stayed in place in the `projects` array, nothing moved or deleted. To
+  restore: delete the `"hidden": true,` line from each of those 9 project
+  objects in both locale blocks (they're the only project-level `hidden`
+  flags besides Klarna's own pre-existing one on "Referrals & Deals" — keep
+  that one).
+- **Done** — Made the GitHub repo (`rodrigolousada/rodrigolousada.github.io`)
+  private. Doesn't affect the deployed Pages site once live — GitHub Pages
+  serves publicly regardless of source-repo visibility on the Free plan —
+  it just hides the source/backlog/in-progress content from public view.
+- **Done** — Closed the "Known gap" from the pt-translation pass below:
+  every hardcoded UI-chrome string across the `.astro` components (section
+  headings, button/badge microcopy, aria-labels, modal titles, the
+  Organizations cross-link popup's dynamically-built text) now lives in a
+  new `src/data/ui.json` — same `{"en": {...}, "pt": {...}}` shape as
+  `site.json`, read via `src/data/ui.ts`'s `getUI(locale)` — instead of
+  being typed straight into JSX. `/pt/` now switches language completely;
+  there's no more English chrome left behind. A handful of components that
+  render translatable text but didn't take a `locale` prop yet
+  (`GameCartridge`, `PhoneMockup`, `TechPill`, `TestimonialCard`) now do.
+  Also fixed a quick bug flagged alongside this: the hero headline had a
+  hardcoded `sm:whitespace-nowrap` (tuned so the English wording holds one
+  line) — a longer translated headline (Portuguese's does) just ran past
+  the column edge instead of wrapping. Replaced with Tailwind's
+  `text-balance` utility, which wraps and evens out the line lengths
+  whenever a headline doesn't fit on one line, in any language, and does
+  nothing extra when it already does.
 - **Done** — Added a full Portuguese ("pt") translation to `site.json`, so
   the language switcher has something real to switch to — visit `/pt/` or
   pick the flag in the nav. Covers everything content-shaped: bio, career

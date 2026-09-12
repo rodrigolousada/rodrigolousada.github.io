@@ -1,5 +1,6 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 
 interface Props {
   locale: Locale;
@@ -19,15 +20,16 @@ interface Organization {
 }
 const { locale } = Astro.props;
 const organizations = getSite(locale).organizations as unknown as Organization[];
+const ui = getUI(locale);
 
 // Known category keys get a hand-picked label and a fixed order. A category
 // value in site.json that isn't listed here still gets its own group
 // (title-cased from the raw key, appended after the known ones) instead of
 // being silently dropped — so a new category only needs adding to the data.
 const groups = [
-  { key: 'worked', label: 'Worked at' },
-  { key: 'client', label: 'Clients' },
-  { key: 'studied', label: 'Studied at' },
+  { key: 'worked', label: ui.organizations.worked },
+  { key: 'client', label: ui.organizations.client },
+  { key: 'studied', label: ui.organizations.studied },
 ];
 const knownKeys = new Set(groups.map((g) => g.key));
 const extraKeys = [...new Set(organizations.map((org) => org.category).filter((c) => !knownKeys.has(c)))];
@@ -35,11 +37,27 @@ const allGroups = [
   ...groups,
   ...extraKeys.map((key) => ({ key, label: key.charAt(0).toUpperCase() + key.slice(1) })),
 ];
+
+// Handed to the cross-link script below via a `data-jump-ui` attribute on
+// the section (see the JSON.stringify below) — that script builds its
+// popup text at click time from plain strings, not JSX, and (being a
+// normally-bundled, non-inline script with real TS syntax in it) can't use
+// `define:vars` to read `ui` directly, since that would force it inline and
+// break its type annotations at runtime.
+const jumpUi = {
+  checkProjectsWith: ui.organizations.checkProjectsWith,
+  checkWorkAt: ui.organizations.checkWorkAt,
+  jumpToProject: ui.organizations.jumpToProject,
+  jumpHere: ui.organizations.jumpHere,
+  cancel: ui.organizations.cancel,
+  thisPartOfTimeline: ui.organizations.thisPartOfTimeline,
+  projectFallback: ui.organizations.projectFallback,
+};
 ---
 
-<section class="mx-auto max-w-3xl px-6 py-14">
+<section class="mx-auto max-w-3xl px-6 py-14" data-jump-ui={JSON.stringify(jumpUi)}>
   <p class="mb-10 text-center font-mono text-xs tracking-widest text-[var(--color-muted)]">
-    ASSOCIATED WITH
+    {ui.organizations.heading}
   </p>
 
   <div class="flex flex-col gap-8">
@@ -49,7 +67,7 @@ const allGroups = [
         if (orgs.length === 0) return null;
         return (
           <div>
-            <p class="mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]/60">
+            <p class="mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
               {group.label}
             </p>
             <!-- Tighter horizontal gap below sm: once the logos themselves
@@ -90,7 +108,7 @@ const allGroups = [
                         data-scroll-target={org.scrollTo}
                         data-scroll-company={org.scrollToCompany}
                         data-scroll-label={org.name}
-                        aria-label={`Jump to ${org.name} in the timeline`}
+                        aria-label={ui.organizations.jumpToTimeline.replace('{name}', org.name)}
                       >
                         {logoImg}
                       </button>
@@ -106,7 +124,7 @@ const allGroups = [
                       type="button"
                       class="study-marker group relative cursor-pointer"
                       aria-expanded="false"
-                      aria-label={`Show details for ${org.name}`}
+                      aria-label={ui.organizations.showDetailsFor.replace('{name}', org.name)}
                       data-study-toggle={popupId}
                     >
                       {logoImg}
@@ -119,7 +137,7 @@ const allGroups = [
                     >
                       <button
                         type="button"
-                        aria-label="Close"
+                        aria-label={ui.common.close}
                         class="absolute right-2 top-2 cursor-pointer text-[var(--color-muted)] transition hover:text-[var(--color-text)]"
                         data-study-close={popupId}
                       >
@@ -128,8 +146,10 @@ const allGroups = [
                       <p class="pr-4 text-xs font-semibold text-[var(--color-accent)]">{org.name}</p>
                       <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{org.program}</p>
                       {org.grade && (
-                        <p class="mt-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
-                          Grade: {org.grade}
+                        <p class="mt-2">
+                          <span class="inline-block rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-[var(--color-muted)]">
+                            {ui.organizations.grade.replace('{grade}', org.grade)}
+                          </span>
                         </p>
                       )}
                     </div>
@@ -145,14 +165,40 @@ const allGroups = [
 </section>
 
 <script>
+  import { openStop } from '../scripts/careerJump';
+
+  // Translated copy for the jump-confirm popup below, read back off the
+  // section's own `data-jump-ui` attribute (see the frontmatter's `jumpUi`)
+  // rather than a hardcoded English object — this script has no access to
+  // Astro's per-locale `ui` data directly, only whatever's serialized into
+  // the DOM.
+  interface JumpUi {
+    checkProjectsWith: string;
+    checkWorkAt: string;
+    jumpToProject: string;
+    jumpHere: string;
+    cancel: string;
+    thisPartOfTimeline: string;
+    projectFallback: string;
+  }
+  const jumpUi: JumpUi = JSON.parse(
+    document.querySelector('[data-jump-ui]')?.getAttribute('data-jump-ui') ?? '{}'
+  );
+
   const toggles = document.querySelectorAll<HTMLButtonElement>('[data-study-toggle]');
   const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-study-close]');
+  // Whichever trigger opened the currently-visible popup, so Escape/close
+  // can hand focus back to it — otherwise a keyboard user's focus would be
+  // left on a now-hidden close button with nothing announcing where it went.
+  let lastTrigger: HTMLButtonElement | null = null;
 
-  function closeAll() {
+  function closeAll(restoreFocus = false) {
     document.querySelectorAll<HTMLElement>('.study-popup').forEach((popup) => {
       popup.classList.add('hidden');
     });
     toggles.forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
+    if (restoreFocus) lastTrigger?.focus();
+    lastTrigger = null;
   }
 
   toggles.forEach((btn) => {
@@ -166,6 +212,12 @@ const allGroups = [
       if (popup && !wasOpen) {
         popup.classList.remove('hidden');
         btn.setAttribute('aria-expanded', 'true');
+        lastTrigger = btn;
+        // Move focus into the popup itself (its close button, always
+        // present) so a keyboard/screen-reader user actually lands on the
+        // content that just appeared, instead of it opening silently
+        // somewhere off in the page while focus stays on the marker.
+        popup.querySelector<HTMLButtonElement>('[data-study-close]')?.focus();
       }
     });
   });
@@ -173,30 +225,17 @@ const allGroups = [
   closeButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      closeAll();
+      closeAll(true);
     });
   });
 
   document.addEventListener('click', () => closeAll());
-
-  // Smooth-scroll to the target at a normal pace — the pause that makes a
-  // jump feel deliberate (rather than an accidental scroll+open) belongs
-  // before the destination modal appears, not in the scroll itself.
-  function scrollToStop(el: HTMLElement, duration = 600) {
-    const rect = el.getBoundingClientRect();
-    const startY = window.scrollY;
-    const targetY = startY + rect.top - window.innerHeight / 2 + rect.height / 2;
-    const diff = targetY - startY;
-    const startTime = performance.now();
-
-    function step(now: number) {
-      const t = Math.min((now - startTime) / duration, 1);
-      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      window.scrollTo(0, startY + diff * eased);
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
+  // These are plain divs, not native <dialog>, so Escape does nothing for
+  // them unless wired up explicitly — every other overlay on the site gets
+  // this for free from the browser.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll(true);
+  });
 
   // Cross-links: "Worked at" / "Clients" logos here and the testimonial in
   // Testimonials.astro jump into the matching Projects timeline entry (and,
@@ -205,42 +244,9 @@ const allGroups = [
   // below — a bare click used to feel like an accidental scroll+open. Once
   // confirmed, the page scrolls there at a normal pace, then pauses for a
   // beat (so the destination is clearly in view) before the modal pops up.
-  function openStop(stopEl: HTMLElement, projectEl: HTMLElement | null = null) {
-    const details = stopEl.closest('details');
-    if (details && !details.open) details.open = true;
-
-    scrollToStop(stopEl, 600);
-    // Start the pulse once the scroll has actually settled, not at the same
-    // moment it starts moving — lit up while the page is still sliding into
-    // place it was mostly spent (and unnoticed) by the time anyone could
-    // look at it.
-    const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
-    setTimeout(() => {
-      highlightTarget.classList.add('scroll-highlight');
-      setTimeout(() => highlightTarget.classList.remove('scroll-highlight'), 1600);
-    }, 600);
-
-    const stopModalId = stopEl.dataset.modalId;
-    const stopDialog = stopModalId && document.getElementById(stopModalId);
-    if (stopDialog instanceof HTMLDialogElement) {
-      setTimeout(() => {
-        if (!stopDialog.open) stopDialog.showModal();
-        if (projectEl) {
-          // Give the project row its own hover-style highlight so it's clear
-          // which box is about to open, then hold on it for a beat before
-          // that second popup appears — two modals landing back-to-back
-          // felt like a glitch rather than a deliberate drill-down.
-          projectEl.classList.add('scroll-highlight');
-          setTimeout(() => projectEl.classList.remove('scroll-highlight'), 1600);
-          const projModalId = projectEl.dataset.modalId;
-          const projDialog = projModalId && document.getElementById(projModalId);
-          if (projDialog instanceof HTMLDialogElement && !projDialog.open) {
-            setTimeout(() => projDialog.showModal(), 500);
-          }
-        }
-      }, 1600);
-    }
-  }
+  // `openStop` itself lives in careerJump.ts, shared with the `?p=`
+  // deep-link resolver (ProjectDeepLink.astro) so a shared project link
+  // opens with the exact same sequence as clicking through from here.
 
   let jumpPopup: HTMLElement | null = null;
   function closeJumpPopup() {
@@ -254,7 +260,7 @@ const allGroups = [
     // letter), the popup must be its child to share the dialog's top-layer
     // stacking — a plain body-appended element would render behind it.
     const hostDialog = triggerEl.closest('dialog');
-    const label = triggerEl.dataset.scrollLabel ?? 'this part of the timeline';
+    const label = triggerEl.dataset.scrollLabel ?? jumpUi.thisPartOfTimeline;
 
     const popup = document.createElement('div');
     popup.className = 'jump-confirm-popup';
@@ -262,7 +268,9 @@ const allGroups = [
     const text = document.createElement('p');
     text.className = 'mb-2 text-xs text-[var(--color-text)]';
     text.textContent =
-      projectEls.length > 0 ? `Check the projects I did with ${label}:` : `Check my work at ${label}:`;
+      projectEls.length > 0
+        ? jumpUi.checkProjectsWith.replace('{label}', label)
+        : jumpUi.checkWorkAt.replace('{label}', label);
     popup.appendChild(text);
 
     const actions = document.createElement('div');
@@ -284,15 +292,17 @@ const allGroups = [
     }
 
     if (projectEls.length > 0) {
-      projectEls.forEach((p) => addJumpButton(`Jump to ${p.dataset.projectName ?? 'project'} →`, p));
+      projectEls.forEach((p) =>
+        addJumpButton(jumpUi.jumpToProject.replace('{name}', p.dataset.projectName ?? jumpUi.projectFallback), p)
+      );
     } else {
-      addJumpButton('Jump here →', null);
+      addJumpButton(jumpUi.jumpHere, null);
     }
 
     const cancel = document.createElement('button');
     cancel.type = 'button';
     cancel.className = 'rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs text-[var(--color-muted)] transition hover:text-[var(--color-text)]';
-    cancel.textContent = 'Cancel';
+    cancel.textContent = jumpUi.cancel;
     cancel.addEventListener('click', (e) => {
       e.stopPropagation();
       closeJumpPopup();

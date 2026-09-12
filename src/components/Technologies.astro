@@ -5,12 +5,14 @@
 import { icons } from '../data/icons';
 import TechStack from './TechStack.astro';
 import type { Locale } from '../data/site';
+import { getUI } from '../data/ui';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const ui = getUI(locale);
 ---
 
 <section id="tech" class="mx-auto max-w-3xl px-6 py-10">
@@ -20,7 +22,7 @@ const { locale } = Astro.props;
         <path d={icons.code} />
       </svg>
     </span>
-    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">TECHNOLOGIES</h2>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">{ui.technologies.heading}</h2>
   </div>
 
   <TechStack locale={locale} />

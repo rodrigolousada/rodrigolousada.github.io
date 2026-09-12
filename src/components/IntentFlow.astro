@@ -1,0 +1,168 @@
+---
+import type { Locale } from '../data/site';
+
+// A static call-routing diagram, used in place of PhoneMockup for a voice
+// assistant whose "demo" is really its intent map, not a screen recording
+// (M.A.R.I.A). Structure mirrors how the call actually worked: a strictly
+// ordered opening (`intake` — every call goes through these, in this order,
+// so they're numbered), a single branch point (`router` — intent + entity
+// recognition), the unordered set of intents it could resolve on its own
+// (`intents` — a grid, no sequence implied), and the catch-all (`fallback`).
+//
+// Driven entirely by data from site.json (per-project `demo` block, both
+// locales), so the wording is translated alongside the rest of the content.
+// The one-shot downward "trace" animation on modal open is gated the same
+// way PhoneMockup's is (dialogopen/dialogclose from Layout.astro) and is
+// skipped under prefers-reduced-motion — the diagram is fully readable at
+// rest without it.
+export interface FlowStep {
+  label: string;
+  /** One line under the label. Optional — a bare label is fine. */
+  detail?: string;
+}
+
+export interface FlowIntent {
+  label: string;
+  /** An entity the NLU pulls out of the utterance for this intent, shown as
+   * a small tag (e.g. the time frame for a "movements" request) — this is
+   * what makes it entity orchestration and not just intent matching. */
+  entity?: string;
+}
+
+interface Props {
+  locale: Locale;
+  /** The strictly-ordered opening of every call, before anything branches. */
+  intake?: FlowStep[];
+  /** The branch point: intent classification + entity extraction. */
+  router?: FlowStep;
+  /** The intents the assistant could resolve end to end on its own. */
+  intents?: FlowIntent[];
+  /** The catch-all for everything outside the handled set. */
+  fallback?: FlowStep;
+  /** One-line footnote naming the underlying orchestration. */
+  note?: string;
+}
+
+const { intake = [], router, intents = [], fallback, note } = Astro.props;
+
+const connector = 'mx-auto block h-4 w-px bg-[var(--color-border)]';
+---
+
+<div class="mx-auto max-w-md px-4" data-intent-flow>
+  {
+    intake.map((step, i) => (
+      <>
+        {i > 0 && <span class={connector} aria-hidden="true" />}
+        <div class="flow-node rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5">
+          <p class="flex items-center gap-2 text-xs font-semibold text-[var(--color-text)]">
+            <span class="font-mono text-[10px] text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')}</span>
+            {step.label}
+          </p>
+          {step.detail && (
+            <p class="mt-0.5 pl-6 text-[11px] leading-snug text-[var(--color-muted)]">{step.detail}</p>
+          )}
+        </div>
+      </>
+    ))
+  }
+
+  {
+    router && (
+      <>
+        <span class={connector} aria-hidden="true" />
+        <div class="flow-node rounded-lg border border-[var(--color-accent)]/60 bg-[var(--color-accent-dim)] px-3.5 py-2.5">
+          <p class="flex items-center gap-2 text-xs font-semibold text-[var(--color-text)]">
+            <span class="inline-block h-2 w-2 rotate-45 border border-[var(--color-accent)]" aria-hidden="true" />
+            {router.label}
+          </p>
+          {router.detail && (
+            <p class="mt-0.5 pl-4 text-[11px] leading-snug text-[var(--color-muted)]">{router.detail}</p>
+          )}
+        </div>
+      </>
+    )
+  }
+
+  {
+    intents.length > 0 && (
+      <>
+        <span class={connector} aria-hidden="true" />
+        <ul class="grid grid-cols-2 gap-2">
+          {intents.map((intent) => (
+            <li class="flow-intent flex flex-col gap-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2">
+              <span class="flex items-center gap-2 text-[11px] font-medium leading-tight text-[var(--color-text)]">
+                <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
+                {intent.label}
+              </span>
+              {intent.entity && (
+                <span class="ml-3.5 w-fit rounded border border-[var(--color-border)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide text-[var(--color-muted)]">
+                  {intent.entity}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  {
+    fallback && (
+      <>
+        <span class={connector} aria-hidden="true" />
+        <div class="flow-node rounded-lg border border-dashed border-[var(--color-border)] px-3.5 py-2.5">
+          <p class="flex items-center gap-2 text-xs font-semibold text-[var(--color-muted)]">
+            <span aria-hidden="true">↪</span>
+            {fallback.label}
+          </p>
+          {fallback.detail && (
+            <p class="mt-0.5 pl-4 text-[11px] leading-snug text-[var(--color-muted)]">{fallback.detail}</p>
+          )}
+        </div>
+      </>
+    )
+  }
+
+  {note && (
+    <p class="mt-4 text-center font-mono text-[10px] uppercase leading-relaxed tracking-wide text-[var(--color-muted)]">
+      {note}
+    </p>
+  )}
+</div>
+
+<script>
+  // One-shot downward "trace" when the project modal opens: each node fades
+  // up in sequence so the eye follows the call from the incoming ring, down
+  // through triage and consent, into the intent/entity branch point, and
+  // out to the handled intents. The diagram is fully readable at rest — this
+  // only runs on a fresh dialog open, and not at all under
+  // prefers-reduced-motion. Gated on the dialogopen/dialogclose events
+  // Layout.astro dispatches, same as PhoneMockup.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-intent-flow]').forEach((flow) => {
+    const nodes = [...flow.querySelectorAll<HTMLElement>('.flow-node, .flow-intent')];
+    if (reduce || nodes.length === 0) return;
+
+    function play() {
+      nodes.forEach((node, i) => {
+        node.style.transition = 'none';
+        node.style.opacity = '0';
+        node.style.transform = 'translateY(6px)';
+        void node.offsetHeight;
+        node.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        node.style.transitionDelay = `${i * 55}ms`;
+        node.style.opacity = '1';
+        node.style.transform = 'translateY(0)';
+      });
+    }
+
+    const dialog = flow.closest('dialog');
+    if (!dialog) {
+      play();
+      return;
+    }
+    if (dialog.hasAttribute('open')) play();
+    dialog.addEventListener('dialogopen', play);
+  });
+</script>

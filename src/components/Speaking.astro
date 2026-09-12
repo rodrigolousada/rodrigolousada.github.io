@@ -1,5 +1,6 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import { icons } from '../data/icons';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const { speaking } = getSite(locale);
+const ui = getUI(locale);
 ---
 
 <section id="speaking" class="mx-auto max-w-3xl px-6 py-14">
@@ -17,7 +19,7 @@ const { speaking } = getSite(locale);
         <path d={icons.microphone} />
       </svg>
     </span>
-    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">SPEAKING</h2>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">{ui.speaking.heading}</h2>
   </div>
 
   <p class="max-w-xl text-[var(--color-muted)]">{speaking.intro}</p>
@@ -63,6 +65,6 @@ const { speaking } = getSite(locale);
     href="#contact"
     class="mt-6 inline-block text-sm font-medium text-[var(--color-accent)] underline underline-offset-4"
   >
-    Invite me to speak →
+    {ui.speaking.inviteMeToSpeak}
   </a>
 </section>

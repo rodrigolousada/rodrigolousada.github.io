@@ -105,11 +105,39 @@ key and translate its values, and the new page and its nav entry both
 appear automatically at the next build.
 
 The nav's flag dropdown (`LanguageSelector.astro`) reads `locales` the
-same way and renders nothing at all when there's only one — today's
-state, with just `"en"` defined. `src/data/languages.ts` maps a locale
-code to its flag emoji + label for that dropdown (pt/de/es/fr are already
-in there); a locale added to `site.json` without an entry there still
-works, it just shows its bare uppercased code until one's added.
+same way and renders nothing at all when there's only one — `site.json`
+currently defines `"en"` and `"pt"`, so the dropdown shows today.
+`src/data/languages.ts` maps a locale code to its flag emoji + label for
+that dropdown (pt/de/es/fr are already in there); a locale added to
+`site.json` without an entry there still works, it just shows its bare
+uppercased code until one's added.
+
+The choice is sticky: picking a language in the dropdown writes it to
+`localStorage` (`preferredLocale`), and an inline synchronous script at
+the very top of `Layout.astro`'s `<head>` redirects to that locale's page
+before anything paints if it differs from the one being served —
+deliberately with no `navigator.language`/`Accept-Language` sniffing, so a
+first-time visitor always lands on English regardless of browser
+language.
+
+Section headings, button/badge microcopy, and aria-labels (anything that
+isn't per-content data) live in a second locale-map file, `src/data/ui.json`
+— same `{"en": {...}, "pt": {...}}` shape as `site.json`, read the same
+way via `src/data/ui.ts`'s `getUI(locale)`. It's a separate file rather
+than folded into `site.json` because it's UI chrome, not content: every
+component that renders any of it takes `locale` (or already had it) and
+calls `getUI(locale)` alongside `getSite(locale)`. A few strings are
+built at runtime rather than being static (`ui.organizations.grade`:
+`"Grade: {grade}"`, `ui.cartridge.scanToDownload`: `"Scan to download
+{title}"`, etc.) — filled in via plain `.replace('{token}', value)`, the
+same template-substitution pattern `Hero.astro`'s `about.bioSummary` uses
+for the computed years-of-experience sentence. One spot needed an extra
+step: `Organizations.astro`'s cross-link "jump to timeline" popup is built
+by a plain, normally-bundled `<script>` (real TypeScript syntax in it, so
+it can't be made `is:inline`/`define:vars` without breaking that syntax
+at runtime) — its slice of `ui.organizations` copy is serialized onto the
+section's own `data-jump-ui` attribute and read back with `JSON.parse` at
+click time instead.
 
 Two other data files support `site.json`:
 

@@ -1,5 +1,6 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import LanguageSelector from './LanguageSelector.astro';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const site = getSite(locale);
+const ui = getUI(locale);
 ---
 
 <!-- Below sm, there's no header bar at all, not even a collapsed one: the
@@ -39,7 +41,7 @@ const site = getSite(locale);
 <button
   type="button"
   data-nav-open
-  aria-label="Open menu"
+  aria-label={ui.nav.openMenu}
   aria-expanded="false"
   aria-controls="nav-panel"
   class="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]/90 text-[var(--color-text)] shadow-lg backdrop-blur transition hover:text-[var(--color-accent)] sm:hidden"
@@ -62,7 +64,7 @@ const site = getSite(locale);
   <button
     type="button"
     data-nav-close
-    aria-label="Close menu"
+    aria-label={ui.nav.closeMenu}
     class="mb-6 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
   >
     ✕

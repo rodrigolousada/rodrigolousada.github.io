@@ -6,6 +6,7 @@
 // the first two people show up front, anyone past that hides behind "Show
 // more" so the section doesn't grow without bound as more feedback is added.
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import { icons } from '../data/icons';
 import TestimonialCard from './TestimonialCard.astro';
 
@@ -15,6 +16,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const { testimonials, about } = getSite(locale);
+const ui = getUI(locale);
 const visibleTestimonials = testimonials.slice(0, 2);
 const moreTestimonials = testimonials.slice(2);
 const certModalId = 'clifton-strengths-certificate';
@@ -27,13 +29,13 @@ const certModalId = 'clifton-strengths-certificate';
         <path d={icons.chat} />
       </svg>
     </span>
-    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">WHAT PEOPLE SAY</h2>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">{ui.testimonials.heading}</h2>
   </div>
 
   <div class="space-y-4">
     {
       visibleTestimonials.map((t, i) => (
-        <TestimonialCard testimonial={t} modalId={`testimonial-letter-${i}`} />
+        <TestimonialCard testimonial={t} modalId={`testimonial-letter-${i}`} locale={locale} />
       ))
     }
   </div>
@@ -42,12 +44,12 @@ const certModalId = 'clifton-strengths-certificate';
     <details class="group/testimonialsmore mt-4">
       <summary class="flex cursor-pointer list-none items-center gap-2 py-1 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
         <span class="inline-block transition group-open/testimonialsmore:rotate-90">▸</span>
-        Show more
+        {ui.common.showMore}
       </summary>
       <div class="mt-4 space-y-4">
         {
           moreTestimonials.map((t, i) => (
-            <TestimonialCard testimonial={t} modalId={`testimonial-letter-${i + visibleTestimonials.length}`} />
+            <TestimonialCard testimonial={t} modalId={`testimonial-letter-${i + visibleTestimonials.length}`} locale={locale} />
           ))
         }
       </div>
@@ -56,7 +58,7 @@ const certModalId = 'clifton-strengths-certificate';
 
   <div class="mt-8">
     <p class="mb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
-      My Clifton Strengths
+      {ui.testimonials.cliftonStrengths}
     </p>
     <div class="flex flex-wrap items-center gap-2">
       {
@@ -69,18 +71,30 @@ const certModalId = 'clifton-strengths-certificate';
               {s.name}
             </button>
 
-            <div class="strength-popup pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-left opacity-0 shadow-xl transition duration-150 group-hover/strength:pointer-events-auto group-hover/strength:opacity-100 group-focus-within/strength:pointer-events-auto group-focus-within/strength:opacity-100">
-              <p class="text-xs font-semibold text-[var(--color-accent)]">{s.name}</p>
-              <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{s.description}</p>
-              {about.certificateImage && (
-                <button
-                  type="button"
-                  onclick={`document.getElementById('${certModalId}').showModal()`}
-                  class="mt-2 text-xs text-[var(--color-accent)] underline underline-offset-4"
-                >
-                  See certificate →
-                </button>
-              )}
+            {/* The visible tooltip sits `pb-2` above the chip rather than
+                using a margin, so the hoverable box (this outer div) reaches
+                all the way down to touch the button with no dead gap in
+                between — a plain margin-based gap is a strip the cursor has
+                to cross that belongs to neither element, which drops
+                group-hover the instant the mouse enters it on the way up
+                from the chip to the "See certificate" link. Padding is part
+                of the box for hover purposes, so it bridges that gap while
+                the inner div keeps the actual card look (border/bg/shadow)
+                clear of the padding, preserving the same visual spacing. */}
+            <div class="strength-popup pointer-events-none absolute bottom-full left-1/2 z-50 w-64 max-w-[calc(100vw-2rem)] pb-2 opacity-0 transition duration-150 group-hover/strength:pointer-events-auto group-hover/strength:opacity-100 group-focus-within/strength:pointer-events-auto group-focus-within/strength:opacity-100">
+              <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-left shadow-xl">
+                <p class="text-xs font-semibold text-[var(--color-accent)]">{s.name}</p>
+                <p class="mt-1 text-xs leading-relaxed text-[var(--color-text)]">{s.description}</p>
+                {about.certificateImage && (
+                  <button
+                    type="button"
+                    onclick={`document.getElementById('${certModalId}').showModal()`}
+                    class="mt-2 text-xs text-[var(--color-accent)] underline underline-offset-4"
+                  >
+                    {ui.testimonials.seeCertificate}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))
@@ -95,10 +109,10 @@ const certModalId = 'clifton-strengths-certificate';
     class="m-auto w-[min(92vw,30rem)] max-h-[90vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
   >
     <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
-      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">CliftonStrengths certificate</p>
+      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.testimonials.certificateHeading}</p>
       <form method="dialog">
         <button
-          aria-label="Close"
+          aria-label={ui.common.close}
           class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
         >
           ✕

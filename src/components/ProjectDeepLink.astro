@@ -1,0 +1,87 @@
+---
+// Two things, both project-level, both site-wide:
+//
+// 1. Every project (work or side) renders a small share-icon corner button
+//    (ProjectRow.astro / GameCartridge.astro, `[data-share-key]`) — clicking
+//    it copies (or hands to the OS share sheet) a link straight back to
+//    that project.
+// 2. On load, a URL carrying `?p=<key>` finds the matching project and
+//    opens it with the exact same scroll-and-reveal sequence as clicking
+//    through from the "Associated with" logos (see careerJump.ts).
+//
+// One component so both halves of the round trip — the link a share button
+// produces, and what opening that link does — stay obviously in sync.
+---
+
+<script>
+  import { openStop, openSideProject } from '../scripts/careerJump';
+
+  function buildShareUrl(key: string): string {
+    const url = new URL(window.location.href);
+    url.hash = '';
+    url.searchParams.set('p', key);
+    return url.toString();
+  }
+
+  document.addEventListener('click', (e) => {
+    const button = (e.target as HTMLElement).closest<HTMLElement>('[data-share-key]');
+    if (!button) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const key = button.dataset.shareKey;
+    if (!key) return;
+
+    const showCopiedFeedback = () => {
+      const defaultIcon = button.querySelector('.share-icon-default');
+      const checkIcon = button.querySelector('.share-icon-check');
+      defaultIcon?.classList.add('hidden');
+      checkIcon?.classList.remove('hidden');
+      setTimeout(() => {
+        defaultIcon?.classList.remove('hidden');
+        checkIcon?.classList.add('hidden');
+      }, 1500);
+    };
+
+    const url = buildShareUrl(key);
+    const shareData = { title: document.title, url };
+
+    (async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch {
+          // Cancelled, or unsupported in this context — fall through to
+          // the clipboard copy below.
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        showCopiedFeedback();
+      } catch {
+        /* clipboard unavailable — nothing more we can do without a UI to paste into */
+      }
+    })();
+  });
+
+  // Deep-link resolution: `[data-deep-link-target]` is set on both a career
+  // project's row button (ProjectRow.astro) and a side project's cartridge
+  // button (GameCartridge.astro) to its own share key, so a single lookup
+  // finds either. Whether it's a career project is then just "does it sit
+  // inside a career stop" — side projects never do.
+  const params = new URLSearchParams(window.location.search);
+  const targetKey = params.get('p');
+  if (targetKey) {
+    const targetEl = document.querySelector<HTMLElement>(
+      `[data-deep-link-target="${CSS.escape(targetKey)}"]`
+    );
+    if (targetEl) {
+      const stopEl = targetEl.closest<HTMLElement>('[data-stop-anchor]');
+      if (stopEl) {
+        openStop(stopEl, targetEl);
+      } else {
+        openSideProject(targetEl);
+      }
+    }
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
 import { icons } from '../data/icons';
@@ -10,6 +11,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const { careerPath, careerPathMore, sideProjects, about } = getSite(locale);
+const ui = getUI(locale);
 
 // Cartridges are sized to fit exactly 4 per row (2 on narrow screens) via a
 // grid rather than a fixed pixel width in a wrapping flex row — the fixed
@@ -27,7 +29,7 @@ const moreSideProjects = sideProjects.slice(4);
         <path d={icons.briefcase} />
       </svg>
     </span>
-    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">PROJECTS</h2>
+    <h2 class="font-mono text-sm tracking-widest text-[var(--color-accent)]">{ui.projects.heading}</h2>
   </div>
 
   <div class="space-y-4">
@@ -35,7 +37,7 @@ const moreSideProjects = sideProjects.slice(4);
          timeline: a dashed project waiting for its next chapter. Clicking
          it jumps to the Get In Touch section rather than opening a modal
          (or an email client directly — that's still one click away there). -->
-    <div class="grid grid-cols-[1.5rem_1fr] gap-4">
+    <div class="grid grid-cols-[1rem_1fr] gap-2 sm:grid-cols-[1.5rem_1fr] sm:gap-4">
       <div class="relative">
         <span class="absolute left-1/2 top-0 h-[calc(100%+1rem)] w-px -translate-x-1/2 bg-[var(--color-border)]" />
         <span class="absolute left-1/2 top-1/2 z-10 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-bg)] ring-4 ring-[var(--color-bg)]" />
@@ -50,11 +52,11 @@ const moreSideProjects = sideProjects.slice(4);
           </svg>
         </div>
         <div class="min-w-0 flex-1">
-          <p class="font-semibold text-[var(--color-text)]">What's next?</p>
+          <p class="font-semibold text-[var(--color-text)]">{ui.projects.whatsNext}</p>
           <p class="text-xs text-[var(--color-muted)]">{about.lookingFor}</p>
         </div>
         <span class="shrink-0 font-mono text-xs text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
-          Let's talk →
+          {ui.projects.letsTalk}
         </span>
       </a>
     </div>
@@ -62,14 +64,14 @@ const moreSideProjects = sideProjects.slice(4);
     {careerPath.map((stop, i) => <CareerStopRow stop={stop} modalId={`career-modal-${i}`} locale={locale} />)}
 
     <details class="group/more">
-      <summary class="grid cursor-pointer list-none grid-cols-[1.5rem_1fr] gap-4 [&::-webkit-details-marker]:hidden">
+      <summary class="grid cursor-pointer list-none grid-cols-[1rem_1fr] gap-2 [&::-webkit-details-marker]:hidden sm:grid-cols-[1.5rem_1fr] sm:gap-4">
         <div class="relative">
           <span class="absolute left-1/2 top-0 hidden h-[calc(100%+1rem)] w-px -translate-x-1/2 bg-[var(--color-border)] group-open/more:block" />
           <span class="absolute left-1/2 top-1/2 z-10 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-muted)] ring-4 ring-[var(--color-bg)]" />
         </div>
         <span class="flex items-center gap-2 py-2 font-mono text-xs text-[var(--color-muted)] transition group-hover/more:text-[var(--color-accent)]">
           <span class="inline-block transition group-open/more:rotate-90">▸</span>
-          Show more
+          {ui.common.showMore}
         </span>
       </summary>
       <div class="mt-4 space-y-4">
@@ -87,15 +89,15 @@ const moreSideProjects = sideProjects.slice(4);
 
   <div class="mt-14">
     <h3 class="mb-1 text-sm font-medium tracking-wide text-[var(--color-muted)]">
-      SIDE PROJECTS
+      {ui.projects.sideProjectsHeading}
     </h3>
-    <p class="mb-6 text-xs text-[var(--color-muted)]/70">
-      Click a cartridge to load it.
+    <p class="mb-6 text-xs text-[var(--color-muted)]">
+      {ui.projects.clickToLoad}
     </p>
     <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
       {
         visibleSideProjects.map((sp, i) => (
-          <GameCartridge project={sp} modalId={`side-project-modal-${i}`} />
+          <GameCartridge project={sp} modalId={`side-project-modal-${i}`} locale={locale} />
         ))
       }
     </div>
@@ -104,12 +106,12 @@ const moreSideProjects = sideProjects.slice(4);
       <details class="group/sidemore">
         <summary class="mt-4 flex cursor-pointer list-none items-center gap-2 font-mono text-xs text-[var(--color-muted)] transition hover:text-[var(--color-accent)] [&::-webkit-details-marker]:hidden">
           <span class="inline-block transition group-open/sidemore:rotate-90">▸</span>
-          Show more
+          {ui.common.showMore}
         </summary>
         <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {
             moreSideProjects.map((sp, i) => (
-              <GameCartridge project={sp} modalId={`side-project-modal-more-${i}`} />
+              <GameCartridge project={sp} modalId={`side-project-modal-more-${i}`} locale={locale} />
             ))
           }
         </div>

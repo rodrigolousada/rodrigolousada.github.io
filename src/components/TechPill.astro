@@ -16,12 +16,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { techIcons } from '../data/techIcons';
 import { techAliases } from '../data/techAliases';
+import { getUI } from '../data/ui';
+import type { Locale } from '../data/site';
 
 interface Props {
   name: string;
+  locale: Locale;
 }
 
-const { name } = Astro.props;
+const { name, locale } = Astro.props;
+const ui = getUI(locale);
+const highlightLabel = ui.technologies.highlight.replace('{name}', name);
 const icon = techIcons.find((t) => t.name === name);
 
 // Normalized search tokens for this pill: its own name plus any known
@@ -77,7 +82,7 @@ const iconSize = icon?.sizePx ?? 18;
   data-tech-name={name.toLowerCase()}
   data-tech-search={searchTokens}
   aria-pressed="false"
-  title={`Highlight ${name}`}
+  title={highlightLabel}
   class="tech-pill inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1.5 pl-2.5 pr-3.5 text-left transition hover:scale-110 hover:border-[var(--color-accent)] aria-pressed:border-[var(--color-accent)] aria-pressed:bg-[var(--color-accent)]/10"
 >
   {icon && (

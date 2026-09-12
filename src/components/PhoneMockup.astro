@@ -1,4 +1,7 @@
 ---
+import { getUI } from '../data/ui';
+import type { Locale } from '../data/site';
+
 // Reusable phone-frame mockup for showcasing a video/recording. Renders a
 // clear placeholder (dashed border + play icon + caption) per slot until a
 // real recording is supplied via `videos`/`steps`, so footage can be
@@ -54,6 +57,7 @@ export interface HandoffStep {
 }
 
 interface Props {
+  locale: Locale;
   mode?: string;
   /** single mode only: one caption. */
   captions?: string[];
@@ -64,7 +68,8 @@ interface Props {
   steps?: HandoffStep[];
 }
 
-const { mode = 'single', captions, videos, steps = [] } = Astro.props;
+const { locale, mode = 'single', captions, videos, steps = [] } = Astro.props;
+const ui = getUI(locale);
 
 // Handoff timeline, built from each step's own hold duration rather than
 // fixed percentages of an arbitrary total. FADE is the crossfade length
@@ -120,7 +125,15 @@ const lastIndex = steps.length - 1;
     <div class="mx-auto w-40" data-single-demo>
       <div class="relative aspect-[9/19] rounded-[1.75rem] border-4 border-neutral-700 bg-neutral-900 p-1.5 shadow-xl">
         {videos?.[0] ? (
-          <video src={videos[0]} class="h-full w-full rounded-[1.25rem] object-cover" autoplay muted loop playsinline />
+          <button
+            type="button"
+            data-lightbox-src={videos[0]}
+            data-lightbox-type="video"
+            aria-label="View fullscreen"
+            class="block h-full w-full cursor-zoom-in"
+          >
+            <video src={videos[0]} class="h-full w-full rounded-[1.25rem] object-cover" autoplay muted loop playsinline />
+          </button>
         ) : (
           <div class="flex h-full w-full flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-neutral-600 bg-neutral-800/60 p-3 text-center">
             <svg viewBox="0 0 24 24" class="h-7 w-7 fill-neutral-500">
@@ -132,7 +145,7 @@ const lastIndex = steps.length - 1;
         <span class="absolute left-1/2 top-2.5 h-1 w-8 -translate-x-1/2 rounded-full bg-neutral-700" />
       </div>
       {!videos?.[0] && (
-        <p class="mt-2 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage</p>
+        <p class="mt-2 text-center text-[10px] text-[var(--color-muted)]">{ui.phoneMockup.placeholder}</p>
       )}
     </div>
   ) : (
@@ -149,11 +162,19 @@ const lastIndex = steps.length - 1;
                 step.phone === 'left' && (
                   <div
                     data-step={i}
-                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                     style={`transition: opacity ${FADE}s ease;`}
                   >
                     {step.video ? (
-                      <video src={step.video} class="h-full w-full object-cover" muted playsinline />
+                      <button
+                        type="button"
+                        data-lightbox-src={step.video}
+                        data-lightbox-type="video"
+                        aria-label="View fullscreen"
+                        class="block h-full w-full cursor-zoom-in"
+                      >
+                        <video src={step.video} class="h-full w-full object-cover" muted playsinline />
+                      </button>
                     ) : i === lastIndex ? (
                       <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
                         <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
@@ -193,11 +214,19 @@ const lastIndex = steps.length - 1;
                 step.phone === 'right' && (
                   <div
                     data-step={i}
-                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    class={`absolute inset-1.5 overflow-hidden rounded-[1.25rem] ${i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                     style={`transition: opacity ${FADE}s ease;`}
                   >
                     {step.video ? (
-                      <video src={step.video} class="h-full w-full object-cover" muted playsinline />
+                      <button
+                        type="button"
+                        data-lightbox-src={step.video}
+                        data-lightbox-type="video"
+                        aria-label="View fullscreen"
+                        class="block h-full w-full cursor-zoom-in"
+                      >
+                        <video src={step.video} class="h-full w-full object-cover" muted playsinline />
+                      </button>
                     ) : i === lastIndex ? (
                       <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-emerald-700/60 bg-emerald-900/20 p-3 text-center">
                         <svg viewBox="0 0 24 24" class="h-6 w-6 fill-emerald-500">
@@ -221,7 +250,7 @@ const lastIndex = steps.length - 1;
         </div>
       </div>
       {steps.some((s) => !s.video) && (
-        <p class="mt-3 text-center text-[10px] text-[var(--color-muted)]/70">Placeholder: add real footage for each step</p>
+        <p class="mt-3 text-center text-[10px] text-[var(--color-muted)]">{ui.phoneMockup.placeholderSteps}</p>
       )}
     </div>
   )
@@ -289,6 +318,7 @@ const lastIndex = steps.length - 1;
     function cutIn(step: HTMLElement) {
       step.style.transitionProperty = 'none';
       step.style.opacity = '1';
+      step.style.pointerEvents = 'auto';
       void step.offsetHeight;
       step.style.transitionProperty = '';
     }
@@ -308,6 +338,7 @@ const lastIndex = steps.length - 1;
           playFromStart(step);
         } else {
           step.style.opacity = '0';
+          step.style.pointerEvents = 'none';
         }
       });
       if (bubbleEl) {
@@ -322,11 +353,15 @@ const lastIndex = steps.length - 1;
             const step = stepEls.get(event.index);
             if (step) {
               step.style.opacity = '1';
+              step.style.pointerEvents = 'auto';
               playFromStart(step);
             }
           } else if (event.type === 'hide' && event.index !== undefined) {
             const step = stepEls.get(event.index);
-            if (step) step.style.opacity = '0';
+            if (step) {
+              step.style.opacity = '0';
+              step.style.pointerEvents = 'none';
+            }
           } else if (event.type === 'bubbleIn' && bubbleEl) {
             if (bubbleIcon) bubbleIcon.style.transform = event.dir === 'back' ? 'scaleX(-1)' : '';
             bubbleEl.style.transform = 'translateX(0)';

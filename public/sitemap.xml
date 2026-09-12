@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Static by hand, not generated: the site is a single page per locale (all
+  sections live at anchors on one URL), so there's exactly one <url> entry
+  per locale in src/data/site.json — see src/data/languages.ts for how each
+  locale's path is derived (default locale unprefixed at "/", every other
+  locale at "/<locale>/"). Add a <url> block (and its hreflang alternates in
+  every existing block) if a new locale is ever added there.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://rodrigolousada.me/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+  </url>
+  <url>
+    <loc>https://rodrigolousada.me/pt/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+  </url>
+</urlset>

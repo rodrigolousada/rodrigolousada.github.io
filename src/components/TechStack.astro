@@ -3,6 +3,7 @@
 // Technologies section (Technologies.astro). A "View more" button opens a
 // dialog with the wider skill set from the CV/LinkedIn.
 import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import TechPill from './TechPill.astro';
 import StackConnector, { type BusConnector, type GroupedConnector } from './StackConnector.astro';
 
@@ -12,6 +13,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const { technologies } = getSite(locale);
+const ui = getUI(locale);
 // Preferred display order for the categories we know about today. A
 // category value in site.json that isn't listed here still renders — just
 // appended after these, in the order it's first seen — so adding a brand
@@ -117,7 +119,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
 <div>
   <div class="flex flex-wrap gap-1.5">
     {compactItems.map((item) => (
-      <TechPill name={item.name} />
+      <TechPill name={item.name} locale={locale} />
     ))}
   </div>
 
@@ -127,7 +129,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
       onclick={`document.getElementById('${modalId}').showModal()`}
       class="mt-3 text-xs text-[var(--color-accent)] underline underline-offset-4"
     >
-      View more →
+      {ui.technologies.viewMore}
     </button>
   )}
 </div>
@@ -155,10 +157,10 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
   class="open:flex m-auto h-fit max-h-[85vh] w-[min(94vw,54rem)] flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
 >
   <div class="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
-    <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">All Technologies</p>
+    <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.technologies.allTechnologies}</p>
     <form method="dialog">
       <button
-        aria-label="Close"
+        aria-label={ui.common.close}
         class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
       >
         ✕
@@ -181,7 +183,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         aria-selected="true"
         class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
       >
-        Search
+        {ui.technologies.search}
       </button>
       <button
         type="button"
@@ -189,7 +191,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         aria-selected="false"
         class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
       >
-        Preferred stack
+        {ui.technologies.preferredStack}
       </button>
     </div>
   )}
@@ -203,7 +205,8 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         <input
           type="search"
           id="tech-search"
-          placeholder="Search technologies…"
+          placeholder={ui.technologies.searchPlaceholder}
+          aria-label={ui.technologies.searchPlaceholder}
           class="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] py-2 pl-9 pr-3 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)]"
         />
       </div>
@@ -211,10 +214,10 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         {
           allGroups.map((group) => (
             <div data-tech-category>
-              <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]/60">{group.category}</p>
+              <p class="mb-1.5 text-[10px] uppercase tracking-wide text-[var(--color-muted)]">{group.category}</p>
               <div class="flex flex-wrap gap-1.5">
                 {group.items.map((item) => (
-                  <TechPill name={item.name} />
+                  <TechPill name={item.name} locale={locale} />
                 ))}
               </div>
             </div>
@@ -222,7 +225,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
         }
       </div>
       <p id="tech-search-empty" class="mt-4 hidden text-center text-sm text-[var(--color-muted)]">
-        No technologies match your search.
+        {ui.technologies.noMatches}
       </p>
     </div>
 
@@ -256,7 +259,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                 </span>
                 <div class="flex flex-wrap justify-end gap-1.5">
                   {(preferredStack.infra.items ?? []).map((name) => (
-                    <TechPill name={name} />
+                    <TechPill name={name} locale={locale} />
                   ))}
                 </div>
               </div>
@@ -283,7 +286,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                                 <>
                                   {oi > 0 && (
                                     <span class="shrink-0 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide text-[var(--color-muted)]">
-                                      or
+                                      {ui.technologies.or}
                                     </span>
                                   )}
                                   <div class="flex flex-col gap-1">
@@ -292,7 +295,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                                     </p>
                                     <div class="flex flex-wrap gap-1.5">
                                       {(opt.items ?? []).map((name) => (
-                                        <TechPill name={name} />
+                                        <TechPill name={name} locale={locale} />
                                       ))}
                                     </div>
                                   </div>
@@ -302,7 +305,7 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
                           ) : (
                             <div class="flex flex-wrap gap-1.5">
                               {(layer.items ?? []).map((name) => (
-                                <TechPill name={name} />
+                                <TechPill name={name} locale={locale} />
                               ))}
                             </div>
                           )}
@@ -322,11 +325,11 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
               <div class="mx-auto mt-6 w-full max-w-[14rem] rounded-lg border border-dashed border-[var(--color-border)] bg-[var(--color-surface)]/30 p-2.5">
                 <p class="mb-1.5 truncate text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">
                   {preferredStack.experimentation.label}
-                  <span class="ml-1 font-normal normal-case text-[var(--color-muted)]/70">(not wired in)</span>
+                  <span class="ml-1 font-normal normal-case text-[var(--color-muted)]">{ui.technologies.notWiredIn}</span>
                 </p>
                 <div class="flex flex-wrap gap-1.5">
                   {(preferredStack.experimentation.items ?? []).map((name) => (
-                    <TechPill name={name} />
+                    <TechPill name={name} locale={locale} />
                   ))}
                 </div>
               </div>

@@ -1,0 +1,114 @@
+---
+// Shows after a delay of a visitor sitting on the page, offering to book
+// time on the calendar or share the site with someone else. Gated behind
+// localStorage so it shows at most once per visitor rather than popping up
+// again on every refresh/revisit — an unrequested modal reappearing on every
+// page load reads as intrusive rather than helpful past the first time.
+import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = getUI(locale);
+const site = getSite(locale);
+const scheduleUrl = site.contact.scheduleUrl;
+const engagementDelayMs = site.contact.engagementDelaySeconds * 1000;
+---
+
+<dialog
+  id="engagement-prompt"
+  class="m-auto w-[min(90vw,26rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+>
+  <div class="p-6">
+    <div class="flex items-start justify-between gap-3">
+      <h3 class="text-lg font-bold text-[var(--color-text)]">{ui.engagement.heading}</h3>
+      <form method="dialog">
+        <button
+          aria-label={ui.common.close}
+          class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+        >
+          ✕
+        </button>
+      </form>
+    </div>
+    <p class="mt-2 text-sm text-[var(--color-muted)]">{ui.engagement.message}</p>
+    <div class="mt-5 flex flex-col gap-2 sm:flex-row">
+      <a
+        href={scheduleUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex flex-1 items-center justify-center gap-2 rounded-md bg-[var(--color-accent)] px-4 py-2.5 text-center text-sm font-semibold text-[#04141c] shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:brightness-110"
+      >
+        <span aria-hidden="true">📅</span>
+        {ui.engagement.bookCall}
+      </a>
+      <button
+        type="button"
+        id="engagement-share"
+        class="flex flex-1 items-center justify-center gap-2 rounded-md border border-[var(--color-border)] px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+      >
+        <span aria-hidden="true">📤</span>
+        <span id="engagement-share-label">{ui.engagement.share}</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script
+  is:inline
+  define:vars={{ shareText: ui.engagement.share, copiedText: ui.engagement.linkCopied, engagementDelayMs }}
+>
+  (function () {
+    const STORAGE_KEY = 'engagementPromptShown';
+    let alreadyShown = false;
+    try {
+      alreadyShown = localStorage.getItem(STORAGE_KEY) === 'true';
+    } catch {
+      // localStorage unavailable (private mode, disabled, etc) — falls back
+      // to showing it, same as a first-time visitor.
+    }
+    if (alreadyShown) return;
+
+    const timer = setTimeout(() => {
+      const dialog = document.getElementById('engagement-prompt');
+      if (!dialog || typeof dialog.showModal !== 'function' || dialog.open) return;
+      dialog.showModal();
+      try {
+        localStorage.setItem(STORAGE_KEY, 'true');
+      } catch {
+        // Unavailable — it'll just show again next visit, same as before.
+      }
+    }, engagementDelayMs);
+
+    // Don't leave a dangling timer if the visitor navigates to another
+    // locale/page within the same tab before the delay is up.
+    window.addEventListener('pagehide', () => clearTimeout(timer));
+
+    const shareButton = document.getElementById('engagement-share');
+    const shareLabel = document.getElementById('engagement-share-label');
+    shareButton?.addEventListener('click', async () => {
+      const shareData = { title: document.title, url: window.location.href };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch {
+          // User dismissed the native share sheet, or it isn't wired up
+          // for this context — fall through to the clipboard copy below.
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        if (shareLabel) shareLabel.textContent = copiedText;
+        setTimeout(() => {
+          if (shareLabel) shareLabel.textContent = shareText;
+        }, 2000);
+      } catch {
+        /* clipboard unavailable — nothing more we can do without a UI to paste into */
+      }
+    });
+  })();
+</script>

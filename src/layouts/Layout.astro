@@ -3,6 +3,9 @@ import '../styles/global.css';
 import { getSite, locales, defaultLocale, type Locale } from '../data/site';
 import { localePath } from '../data/languages';
 import AmbientBackground from '../components/AmbientBackground.astro';
+import EngagementPrompt from '../components/EngagementPrompt.astro';
+import ProjectDeepLink from '../components/ProjectDeepLink.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 
 interface Props {
   locale: Locale;
@@ -78,49 +81,28 @@ const jsonLd = {
     <meta property="og:image" content={`${site.site.url}${site.hero.photo}`} />
     <meta name="twitter:card" content="summary" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- `display=optional`, not `swap`: with `swap` the page first paints in
-         a fallback font and then jumps to Inter/Space Grotesk a moment
-         later once it downloads, since the two have different metrics
-         (visible as text "jumping" on every fresh load). `optional` gives
-         the webfont a very short window to be ready before first paint and
-         otherwise just keeps the fallback for that visit — no later swap,
-         no jump.
-
-         Loaded via the `media="print"` + `onload` trick, not a plain
-         `rel="stylesheet"`: a plain cross-origin stylesheet link is
-         render-blocking, so on a cold cache (no local copy to fall back on)
-         the whole page sits blank until this file round-trips to Google's
-         server, then paints everything at once — which reads as a flicker,
-         and only on a clean cache since a warm one resolves instantly.
-         `media="print"` doesn't match screen rendering, so the browser
-         fetches it without blocking paint; the `onload` then flips it to
-         `all` so it applies as soon as it's ready. `<noscript>` covers
-         browsers with JS disabled, where this trick can't run. -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&family=Press+Start+2P&display=optional"
-        rel="stylesheet"
-      />
-    </noscript>
+    <!-- Fonts (Inter, Space Grotesk, Source Serif 4, Press Start 2P) are
+         self-hosted — see src/styles/fonts.css for why (removes a GDPR-
+         relevant request to Google on every page load) and how. It's
+         `@import`-ed from global.css, which this file already imports up
+         in its frontmatter, so Vite bundles it into the page's own
+         stylesheet automatically — no separate <link> needed here.
+         `font-display: optional` there gives each webfont a short window
+         to be ready before first paint and otherwise keeps the fallback
+         for that visit — no later swap/jump once it does load — so there's
+         no preload/print-media trick needed either: the files are
+         same-origin and small (~155KB total across all five), not a
+         render-blocking cross-origin round-trip to Google's server on a
+         cold cache. -->
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
   <body class="font-sans antialiased">
     <AmbientBackground />
     <slot />
+    <EngagementPrompt locale={locale} />
+    <ProjectDeepLink />
+    <ImageLightbox />
   </body>
 </html>
 

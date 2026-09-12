@@ -1,0 +1,242 @@
+{
+  "en": {
+    "nav": {
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "common": {
+      "close": "Close",
+      "showMore": "Show more",
+      "comingSoon": "Coming soon",
+      "view": "View →",
+      "technologies": "Technologies and Skills",
+      "achievements": "Achievements",
+      "shareProject": "Copy link to this project",
+      "linkCopied": "Link copied!"
+    },
+    "hero": {
+      "viewProjects": "View projects",
+      "getInTouch": "Get in touch",
+      "downloadCv": "Download CV"
+    },
+    "technologies": {
+      "heading": "TECHNOLOGIES",
+      "viewMore": "View more →",
+      "allTechnologies": "All Technologies",
+      "search": "Search",
+      "preferredStack": "Preferred stack",
+      "searchPlaceholder": "Search technologies…",
+      "noMatches": "No technologies match your search.",
+      "notWiredIn": "(not wired in)",
+      "or": "or",
+      "highlight": "Highlight {name}"
+    },
+    "projects": {
+      "heading": "PROJECTS",
+      "whatsNext": "What's next?",
+      "letsTalk": "Let's talk →",
+      "sideProjectsHeading": "SIDE PROJECTS",
+      "clickToLoad": "Click a cartridge to load it."
+    },
+    "careerStop": {
+      "kpis": "KPIs",
+      "projectsHeading": "Projects",
+      "focusThisEra": "Focus this era",
+      "badges": "Badges",
+      "seeAllBadgesOnCredly": "See all badges on Credly →"
+    },
+    "project": {
+      "sideProject": "Side project",
+      "backToCareerStop": "Back to the career stop",
+      "back": "← Back",
+      "confidential": "Confidential",
+      "myRole": "My role: ",
+      "read": "Read",
+      "readArrow": "Read →",
+      "viewArrow": "View →",
+      "news": "News",
+      "readTheArticle": "Read the article →"
+    },
+    "cartridge": {
+      "demo": "Demo",
+      "favoriteModules": "Favorite Modules",
+      "getTheApp": "Get the app",
+      "scanToDownload": "Scan to download {title}",
+      "viewOnGithub": "View on GitHub →",
+      "notOpenSource": "This project is not open source yet",
+      "addFootage": "[Add {label}]",
+      "insert": "Insert →"
+    },
+    "organizations": {
+      "heading": "ASSOCIATED WITH",
+      "worked": "Worked at",
+      "client": "Clients",
+      "studied": "Studied at",
+      "jumpToTimeline": "Jump to {name} in the timeline",
+      "showDetailsFor": "Show details for {name}",
+      "grade": "Grade: {grade}",
+      "checkProjectsWith": "Check the projects I did with {label}:",
+      "checkWorkAt": "Check my work at {label}:",
+      "jumpToProject": "Jump to {name} →",
+      "jumpHere": "Jump here →",
+      "cancel": "Cancel",
+      "thisPartOfTimeline": "this part of the timeline",
+      "projectFallback": "project"
+    },
+    "speaking": {
+      "heading": "SPEAKING",
+      "inviteMeToSpeak": "Invite me to speak →"
+    },
+    "contact": {
+      "heading": "GET IN TOUCH",
+      "downloadCv": "Download my CV",
+      "flipPersonalCard": "Flip personal card",
+      "flipKlarnaCard": "Flip Klarna card",
+      "clickToRotate": "click me to rotate ↻"
+    },
+    "testimonials": {
+      "heading": "WHAT PEOPLE SAY",
+      "cliftonStrengths": "My Clifton Strengths",
+      "seeCertificate": "See certificate →",
+      "certificateHeading": "CliftonStrengths certificate"
+    },
+    "testimonialCard": {
+      "readFullLetter": "Read the full letter →",
+      "recommendationLetter": "Recommendation letter",
+      "signatureBlurred": "Signature blurred for privacy. Happy to share the original on request.",
+      "writtenDuringMyTimeAt": "Written during my time at {company} →"
+    },
+    "phoneMockup": {
+      "placeholder": "Placeholder: add real footage",
+      "placeholderSteps": "Placeholder: add real footage for each step"
+    },
+    "engagement": {
+      "heading": "Still here?",
+      "message": "You've been exploring for a while, want to grab 15 mins on my calendar, or pass this along to someone who'd find it useful?",
+      "bookCall": "Book 15 mins →",
+      "share": "Share this site",
+      "linkCopied": "Link copied!",
+      "dismiss": "Maybe later"
+    }
+  },
+  "pt": {
+    "nav": {
+      "openMenu": "Abrir menu",
+      "closeMenu": "Fechar menu"
+    },
+    "common": {
+      "close": "Fechar",
+      "showMore": "Ver mais",
+      "comingSoon": "Brevemente",
+      "view": "Ver →",
+      "technologies": "Tecnologias e Competências",
+      "achievements": "Conquistas",
+      "shareProject": "Copiar link para este projeto",
+      "linkCopied": "Link copiado!"
+    },
+    "hero": {
+      "viewProjects": "Ver projetos",
+      "getInTouch": "Entrar em contacto",
+      "downloadCv": "Transferir CV"
+    },
+    "technologies": {
+      "heading": "TECNOLOGIAS",
+      "viewMore": "Ver mais →",
+      "allTechnologies": "Todas as Tecnologias",
+      "search": "Pesquisar",
+      "preferredStack": "Stack preferida",
+      "searchPlaceholder": "Pesquisar tecnologias…",
+      "noMatches": "Nenhuma tecnologia corresponde à pesquisa.",
+      "notWiredIn": "(não integrado)",
+      "or": "ou",
+      "highlight": "Destacar {name}"
+    },
+    "projects": {
+      "heading": "PROJETOS",
+      "whatsNext": "O que vem a seguir?",
+      "letsTalk": "Vamos falar →",
+      "sideProjectsHeading": "PROJETOS PARALELOS",
+      "clickToLoad": "Clique num cartucho para o carregar."
+    },
+    "careerStop": {
+      "kpis": "KPIs",
+      "projectsHeading": "Projetos",
+      "focusThisEra": "Foco desta era",
+      "badges": "Distintivos",
+      "seeAllBadgesOnCredly": "Ver todos os distintivos no Credly →"
+    },
+    "project": {
+      "sideProject": "Projeto paralelo",
+      "backToCareerStop": "Voltar à etapa de carreira",
+      "back": "← Voltar",
+      "confidential": "Confidencial",
+      "myRole": "A minha função: ",
+      "read": "Ler",
+      "readArrow": "Ler →",
+      "viewArrow": "Ver →",
+      "news": "Notícias",
+      "readTheArticle": "Ler o artigo →"
+    },
+    "cartridge": {
+      "demo": "Demonstração",
+      "favoriteModules": "Módulos Favoritos",
+      "getTheApp": "Obter a aplicação",
+      "scanToDownload": "Digitalize para transferir {title}",
+      "viewOnGithub": "Ver no GitHub →",
+      "notOpenSource": "Este projeto ainda não é open source",
+      "addFootage": "[Adicionar {label}]",
+      "insert": "Inserir →"
+    },
+    "organizations": {
+      "heading": "ASSOCIADO A",
+      "worked": "Trabalhou em",
+      "client": "Clientes",
+      "studied": "Estudou em",
+      "jumpToTimeline": "Ir para {name} na cronologia",
+      "showDetailsFor": "Mostrar detalhes de {name}",
+      "grade": "Nota: {grade}",
+      "checkProjectsWith": "Veja os projetos que fiz com {label}:",
+      "checkWorkAt": "Veja o meu trabalho em {label}:",
+      "jumpToProject": "Ir para {name} →",
+      "jumpHere": "Ir para aqui →",
+      "cancel": "Cancelar",
+      "thisPartOfTimeline": "esta parte da cronologia",
+      "projectFallback": "projeto"
+    },
+    "speaking": {
+      "heading": "PALESTRAS",
+      "inviteMeToSpeak": "Convide-me para falar →"
+    },
+    "contact": {
+      "heading": "ENTRE EM CONTACTO",
+      "downloadCv": "Transferir o meu CV",
+      "flipPersonalCard": "Virar o cartão pessoal",
+      "flipKlarnaCard": "Virar o cartão da Klarna",
+      "clickToRotate": "clique para rodar ↻"
+    },
+    "testimonials": {
+      "heading": "O QUE DIZEM",
+      "cliftonStrengths": "As Minhas CliftonStrengths",
+      "seeCertificate": "Ver certificado →",
+      "certificateHeading": "Certificado CliftonStrengths"
+    },
+    "testimonialCard": {
+      "readFullLetter": "Ler a carta completa →",
+      "recommendationLetter": "Carta de recomendação",
+      "signatureBlurred": "Assinatura desfocada por privacidade. Terei todo o gosto em partilhar o original a pedido.",
+      "writtenDuringMyTimeAt": "Escrita durante o meu tempo na {company} →"
+    },
+    "phoneMockup": {
+      "placeholder": "Placeholder: adicionar filmagem real",
+      "placeholderSteps": "Placeholder: adicionar filmagem real para cada etapa"
+    },
+    "engagement": {
+      "heading": "Ainda por aqui?",
+      "message": "Já andas a explorar há um bom bocado, queres marcar 15 min na minha agenda, ou partilhar isto com alguém que possa achar interessante?",
+      "bookCall": "Marcar 15 min →",
+      "share": "Partilhar este site",
+      "linkCopied": "Link copiado!",
+      "dismiss": "Talvez mais tarde"
+    }
+  }
+}
