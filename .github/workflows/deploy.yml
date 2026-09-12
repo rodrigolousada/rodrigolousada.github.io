@@ -19,7 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # withastro/action@v3 defaults to Node 20, but package.json's engines
+      # field requires >=22.12.0 (Astro 7 itself refuses to run on 20) — the
+      # very first deploy run failed on exactly this before this line was
+      # added, since `npx astro check`/`npm run build` only ever verify
+      # against whatever Node happens to be installed locally, never CI's.
       - uses: withastro/action@v3
+        with:
+          node-version: 22.12.0
 
   deploy:
     needs: build
