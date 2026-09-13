@@ -267,19 +267,44 @@ const jsonLd = {
     //  - `getComputedStyle(handle).display === 'none'` skips all of this at
     //    sm: and up, where this isn't a bottom sheet at all — a mouse-drag
     //    flick on a centered desktop dialog shouldn't dismiss it.
+    //  - on a genuinely scrollable sheet (the "All Technologies" list is the
+    //    one long enough to matter), reaching the top at all is itself
+    //    usually the tail end of a fling — inertial scrolling keeps firing
+    //    `scroll` events for a bit after the finger lifts, including the
+    //    little rubber-band snap-back once it hits the top edge. A second
+    //    quick flick thrown in right then reads, physically, as exactly the
+    //    same gesture as "scroll further toward the top" — it's only once
+    //    that settling has genuinely stopped that a fresh swipe down can
+    //    mean "close" instead. So a new touch starting within
+    //    SCROLL_SETTLE_MS of the last `scroll` event on this sheet's
+    //    scrollable box never starts tracking at all, no matter where its
+    //    scrollTop lands — it's left to behave as whatever plain scroll/
+    //    bounce gesture it would anyway. Repeated fast swipes to climb a
+    //    long list therefore never mis-fire a close, but pausing for a
+    //    beat once you're at the top and then swiping again does.
     const QUICK_SWIPE_MIN_DISTANCE = 24; // px, floors out a plain tap
+    const SCROLL_SETTLE_MS = 250;
 
     let anywhereStartX = 0;
     let anywhereStartY = 0;
     let anywhereStartTime = 0;
     let anywhereTracking = false;
     let anywhereScrollEl: Element | null = null;
+    let lastScrollAt = 0;
+
+    // Capture phase, not bubble: `scroll` doesn't bubble, so a listener on
+    // the dialog only sees it for scrolling on the dialog itself unless it's
+    // registered to run on the way down instead — that still fires for the
+    // nested `overflow-y-auto` div's own scroll events (or the dialog's, if
+    // it's the one scrolling directly, as on the non-list sheets).
+    dialog.addEventListener('scroll', () => { lastScrollAt = performance.now(); }, true);
 
     dialog.addEventListener('pointerdown', (e) => {
       if (e.target === handle || handle.contains(e.target as Node)) return; // the handle already has its own live-drag handler above
       if (getComputedStyle(handle).display === 'none') return;
       const scrollEl = (e.target as HTMLElement).closest?.('[class*="overflow-y-auto"]') ?? dialog;
       if (scrollEl.scrollTop > 0) return;
+      if (performance.now() - lastScrollAt < SCROLL_SETTLE_MS) return; // still mid fling/bounce, not a deliberate second swipe
       anywhereTracking = true;
       anywhereStartX = e.clientX;
       anywhereStartY = e.clientY;
@@ -305,5 +330,39 @@ const jsonLd = {
 
     dialog.addEventListener('pointerup', finishAnywhereSwipe);
     dialog.addEventListener('pointercancel', finishAnywhereSwipe);
+
+    // The pointer-based version above is a poor fit for a genuinely
+    // scrollable panel specifically (the "All Technologies" list is the one
+    // long enough to hit this): the instant a touch starts moving over a
+    // scrollable box, the browser hands the gesture to its own native
+    // scrolling and fires `pointercancel` right then — usually well before
+    // the finger has covered QUICK_SWIPE_MIN_DISTANCE — so a real fling
+    // over the list's own content almost never reads back enough movement
+    // to pass that check, no matter how deliberate it was.
+    //
+    // iOS's own elastic overscroll already tracks exactly the gesture being
+    // asked for here, and it isn't subject to that same handoff: pulling
+    // down once a box is already scrolled to the top runs its `scrollTop`
+    // negative (the rubber-band stretch), and it springs back on its own if
+    // released early. Only past a firm threshold — a deliberate continued
+    // pull, well beyond the mild overshoot an ordinary momentum scroll
+    // settles with by itself — does that count as "close this", so climbing
+    // a long list with repeated fast swipes up to the top never mis-fires
+    // it: each of those only nudges scrollTop down toward 0, never past it,
+    // unless the last one is genuinely held and pulled on beyond the top.
+    const OVERSCROLL_DISMISS_PX = 60;
+    let overscrollDismissing = false;
+    dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]').forEach((scrollEl) => {
+      scrollEl.addEventListener('scroll', () => {
+        if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
+        overscrollDismissing = true;
+        dialog!.style.transition = 'transform 0.2s ease-out';
+        dialog!.style.transform = `translateY(100%)`;
+        setTimeout(() => dialog!.close(), 200);
+      });
+    });
+    dialog.addEventListener('dialogclose', () => {
+      overscrollDismissing = false;
+    });
   });
 </script>
