@@ -150,11 +150,14 @@ function formatNewsDate(date: string) {
     )}
   </button>
 
-  <!-- A compact centered card at every width, not a full-screen sheet on
-       mobile — see CareerStopRow's dialog for the full rationale (same
-       max-h/w caps + m-auto for a "tiny margin" popup instead of
-       edge-to-edge, same h-fit for shrink-to-content instead of
-       stretch-to-fill).
+  <!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
+       CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor +
+       w-full + rounded-t-2xl + the [data-sheet-handle] drag-to-dismiss grab
+       bar floating on top of the header rather than pushed above it as its
+       own strip, back to the original m-auto/92vw-40rem/all-corners
+       centered card at sm:, h-fit throughout for shrink-to-content instead
+       of stretch-to-fill, max-h-[94dvh] to leave just a sliver of backdrop
+       rather than a full 15%).
 
        Not rendered at all when project.hidden — the point of hiding a
        project is that its real copy isn't ready or approved yet, so the
@@ -163,9 +166,10 @@ function formatNewsDate(date: string) {
   {!project.hidden && (
   <dialog
     id={modalId}
-    class="m-auto h-fit max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] max-w-[calc(100%-1.5rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:max-w-none"
+    class="m-0 mt-auto h-fit max-h-[94dvh] w-full max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
   >
-    <div class="overflow-hidden rounded-xl">
+    <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
+      <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
       <div class="relative flex items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)] px-6 py-4">
         <div class="flex items-center gap-3">
           <!-- This modal only ever opens from inside a career-stop modal

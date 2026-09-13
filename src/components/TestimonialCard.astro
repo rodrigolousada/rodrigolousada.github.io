@@ -60,12 +60,19 @@ const ui = getUI(locale);
   </div>
 </button>
 
+<!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
+     CareerStopRow's dialog for the full bottom-sheet rationale (the
+     [data-sheet-handle] grab bar floats on top of the header itself, no
+     separate wrapper needed here). The inner scroll div's max-h tracks the
+     dialog's own (94dvh mobile / 90vh at sm:) minus the ~4rem header, same
+     relationship as before. -->
 {testimonial.letterImage && (
   <dialog
     id={modalId}
-    class="m-auto w-[min(92vw,34rem)] max-h-[90vh] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+    class="m-0 mt-auto max-h-[94dvh] w-full max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[90vh] sm:w-[min(92vw,34rem)] sm:rounded-xl sm:border"
   >
-    <div class="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+    <div class="relative flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+      <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
       <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.testimonialCard.recommendationLetter}</p>
       <form method="dialog">
         <button
@@ -76,7 +83,7 @@ const ui = getUI(locale);
         </button>
       </form>
     </div>
-    <div class="max-h-[calc(90vh-4rem)] overflow-y-auto p-6">
+    <div class="max-h-[calc(94dvh-4rem)] overflow-y-auto p-6 sm:max-h-[calc(90vh-4rem)]">
       <button
         type="button"
         data-lightbox-src={testimonial.letterImage}

@@ -123,6 +123,18 @@ dialog[open] {
     locked-flash 0.4s ease-in-out;
 }
 
+/* Grab bar at the top of every mobile bottom sheet (see CareerStopRow's
+   dialog for the fullest comment on the sheet treatment itself, and
+   Layout.astro's `[data-sheet-handle]` script for the drag-to-dismiss
+   gesture this bar drives). `touch-action: none` stops the browser trying
+   to interpret a drag starting here as its own scroll/pan gesture — this
+   bar has nothing to scroll, so nothing is lost by opting out, and it's
+   exactly what lets our own pointer handlers track the drag smoothly
+   instead of fighting the browser for it. */
+.sheet-handle {
+  touch-action: none;
+}
+
 /* Small "confirm before we scroll you away" balloon shown by the
    cross-link jump logic in Organizations.astro. */
 .jump-confirm-popup {

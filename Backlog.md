@@ -626,3 +626,21 @@ here is missing exactly — say the word on any of these and I'll add it:
   clicking "Feedback" first felt like it skipped past what was actually
   coming up next. Reordered `nav.links` to match the page's real
   top-to-bottom order rather than moving the sections themselves.
+
+
+More data:
+
+
+  MARIA:
+  - Technologies and Skills: IBM Watson, IBM Cloud, JavaScript, APIs, Consulting, Project Management, Excel, PowerBI, A/B Testing
+  - 
+
+
+  Klarna:
+   - Descirptions
+      - Full-stack Software Engineer, rotating as an Individual Contributor around DevOps, Backend, Frontend, Full-Stack, Mobile, Product and AI teams, around the company. I joined Klarna to be on the edge of AI adoption while deepening my technical knowledge, while leading small initiatives in the company.
+
+  - Main KPIs:
+     - From >1m to 5/6s for current Klarna users to accept friends invites and act on incentivized actions
+     - From almost 0 to around 90% successfull queries in main search bar of internal Knowledge Platform
+     - 35% memory/infra cost saved on QlikSense apps by performing cleanup analysis

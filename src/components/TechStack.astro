@@ -134,9 +134,16 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
   )}
 </div>
 
-<!-- Compact centered card at every width, not full-screen-on-mobile: this
-     list scrolls fine within a normal card, so it didn't need the extra
-     screen real estate the way a longer/denser modal does.
+<!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
+     CareerStopRow's dialog for the full bottom-sheet rationale (mt-auto
+     bottom-anchor + w-full + rounded-t-2xl + the [data-sheet-handle]
+     drag-to-dismiss grab bar floating on top of the header rather than
+     pushed above it as its own strip — this dialog has no separate rounded
+     wrapper the way CareerStopRow's does, so the handle sits directly in
+     the header itself, which is what `relative` on it below is for — back
+     to the original centered 94vw/54rem all-corners card at sm:). This
+     list scrolls fine within that shape at either size, so it never needed
+     full-screen real estate the way a longer/denser modal might.
 
      `open:flex`, not a bare `flex`: an unconditional `display` utility on
      <dialog> itself beats the browser's own `dialog { display: none }`
@@ -151,12 +158,16 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
      to the max-height cap instead of shrinking to content. Matters here
      specifically because this list's visible content shrinks a lot once
      the search narrows it down to a couple of pills: `h-auto` left the
-     card at its full height with a big empty gap below a short result set. -->
+     card at its full height with a big empty gap below a short result set.
+
+     max-h-[94dvh], not the tighter 85 the very first pass used — see
+     CareerStopRow's dialog for why. -->
 <dialog
   id={modalId}
-  class="open:flex m-auto h-fit max-h-[85vh] w-[min(94vw,54rem)] flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+  class="open:flex m-0 mt-auto h-fit max-h-[94dvh] w-full max-w-none flex-col rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border"
 >
-  <div class="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+  <div class="relative flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
+    <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
     <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.technologies.allTechnologies}</p>
     <form method="dialog">
       <button

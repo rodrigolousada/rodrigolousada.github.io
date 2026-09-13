@@ -98,8 +98,17 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
     )}
   </button>
 
-  <!-- Compact centered card at every width, not full-screen-on-mobile:
-       short enough content that it doesn't need the extra screen space.
+  <!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
+       CareerStopRow's dialog for the full bottom-sheet rationale (mt-auto
+       bottom-anchor + w-full + rounded-t-2xl + the [data-sheet-handle]
+       drag-to-dismiss grab bar floating on top of the header rather than
+       pushed above it as its own strip, back to the original centered
+       92vw/40rem all-corners card at sm:). Unlike CareerStopRow/ProjectRow
+       this never needed an explicit height cap at sm: — short enough
+       content that native <dialog> auto-sizing was never a problem there —
+       but the mobile sheet gets one anyway (max-h-[94dvh] + overflow-y-auto)
+       as a safety net for a short/very-zoomed viewport, since a full-width
+       sheet reads worse overflowing top-first than a centered card would.
 
        Not rendered at all when project.hidden — same reasoning as
        ProjectRow.astro's dialog: an unannounced project's real
@@ -107,9 +116,10 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
   {!project.hidden && (
   <dialog
     id={modalId}
-    class="m-auto w-[min(92vw,40rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+    class="m-0 mt-auto max-h-[94dvh] w-full max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-none sm:w-[min(92vw,40rem)] sm:overflow-visible sm:rounded-xl sm:border"
   >
-    <div class="overflow-hidden rounded-xl">
+    <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
+      <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
       <div class={`cartridge-shell relative flex items-center justify-between px-6 py-5 ${project.shellColor}`}>
         <div class="relative z-10">
           <p class="font-pixel text-xs text-white">{project.title}</p>

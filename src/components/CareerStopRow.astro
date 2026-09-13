@@ -134,25 +134,47 @@ const moreProjects = stop.projects.slice(3);
       )}
     </button>
 
-    <!-- A compact centered card at every width, not a full-screen sheet on
-         mobile — it should always read as a popup floating over the page,
-         just with less breathing room around it than the sm:+ version.
-         max-h-[calc(100dvh-1.5rem)]/w-[calc(100%-1.5rem)] cap the box
-         1.5rem short of the viewport in each dimension; combined with
-         m-auto those margins get auto-split evenly (so ~0.75rem on every
-         side once content is tall/wide enough to hit the cap — a "tiny
-         margin" popup rather than edge-to-edge), same as the wider
-         sm:max-h-[85vh]/sm:w-[min(92vw,40rem)] cap already did on desktop.
+    <!-- A bottom sheet on mobile, a compact centered card at sm: and up —
+         not a full-screen sheet either way, it should always read as a
+         popup floating over the page rather than taking over the screen.
 
-         h-fit (not h-auto), at every width: a native <dialog>'s default
-         `showModal()` centering pins both `top` and `bottom` to 0 (see the
-         UA stylesheet's `dialog:modal { inset-block: 0 }`), and `height:
-         auto` against two pinned edges resolves to stretch-to-fill, not
-         shrink-to-content: a short stop was rendering at the full max-h
-         cap instead of its own (much shorter) content height. `fit-content`
-         explicitly asks for shrink-to-fit sizing regardless of that stretch
-         context, so a short stop sizes to its own content and a long one
-         still clamps at the cap and scrolls, exactly as before.
+         Mobile: `mt-auto` (with the other margins left at the `m-0` reset)
+         pushes the box to the bottom of the viewport rather than centering
+         it — a native <dialog>'s `showModal()` pins both `top` and `bottom`
+         to 0 (the UA stylesheet's `dialog:modal { inset-block: 0 }`), so an
+         auto top margin against a fixed bottom edge absorbs all the leftover
+         space above instead of splitting it, which is exactly bottom-anchor.
+         `w-full` + `rounded-t-2xl` (no bottom rounding — it's flush with the
+         screen edge) complete the sheet look. A `[data-sheet-handle]` grab
+         bar (wired up generically in Layout.astro, styled in global.css's
+         `.sheet-handle`) floats on top of the header via `absolute`
+         positioning, inside the same rounded/clipped wrapper the header
+         itself uses — not stacked above it as its own flat strip, which
+         doubled up the rounded-corner look (the wrapper's own top corners
+         rounding a second time right under the dialog's already-rounded
+         top edge) and looked like two nested cards. `top-2` clears every
+         header's actual content in every dialog this pattern is used in
+         (title text/close buttons all start at `py-4`/`py-5`, well below
+         it), so the handle never sits on top of anything meant to be read
+         or clicked.
+
+         sm: and up reverts to the original centered-popup treatment: back to
+         `m-auto` centering, a cap 92vw/40rem wide instead of full-width, and
+         rounded on every corner instead of just the top two.
+
+         h-fit (not h-auto), at every width: `height: auto` against those two
+         pinned edges resolves to stretch-to-fill, not shrink-to-content: a
+         short stop was rendering at the full max-h cap instead of its own
+         (much shorter) content height. `fit-content` explicitly asks for
+         shrink-to-fit sizing regardless of that stretch context, so a short
+         stop sizes to its own content and a long one still clamps at the cap
+         and scrolls, exactly as before.
+
+         max-h-[94dvh], not the tighter 85 the very first pass used: there's
+         no real reason to leave 15% of the screen as bare backdrop when the
+         content could use that room instead — a sliver at the top (~6%) is
+         plenty to still read as "a sheet over the page" rather than a
+         full-screen takeover.
 
          Not rendered at all when stop.hidden — same reasoning as a hidden
          project's dialog (ProjectRow.astro): the stop's real KPIs/projects
@@ -160,9 +182,10 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="m-auto h-fit max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] max-w-[calc(100%-1.5rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:max-w-none"
+      class="m-0 mt-auto h-fit max-h-[94dvh] w-full max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
     >
-      <div class="overflow-hidden rounded-xl">
+      <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
+        <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
         <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>
           <img
             src={stop.logo}

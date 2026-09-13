@@ -163,3 +163,85 @@ const jsonLd = {
     });
   });
 </script>
+
+<script>
+  // Background-scroll lock: with a dialog open (especially the mobile
+  // bottom sheets below), a touch dragging on the page behind it used to
+  // scroll the page itself — nothing was stopping that touch from reaching
+  // it. Ref-counted rather than a plain boolean so a dialog opening on top
+  // of another already-open one (the image lightbox over a project's
+  // detail dialog, for instance) doesn't have the first one's close
+  // re-enable scrolling while the second is still up.
+  let openDialogCount = 0;
+  document.addEventListener('dialogopen', () => {
+    openDialogCount++;
+    if (openDialogCount === 1) document.body.style.overflow = 'hidden';
+  });
+  document.addEventListener('dialogclose', () => {
+    openDialogCount = Math.max(0, openDialogCount - 1);
+    if (openDialogCount === 0) document.body.style.overflow = '';
+  });
+
+  // Swipe-down-to-dismiss for every mobile bottom sheet, generically: any
+  // dialog with a `[data-sheet-handle]` element (see CareerStopRow's dialog
+  // for the fullest comment on the sheet styling itself) gets this wired up
+  // automatically, no per-component script needed. The handle is `sm:hidden`
+  // in every dialog that has one — only mobile renders it as a bottom sheet
+  // in the first place, so there's nothing to grab at sm: and up and this
+  // simply never triggers there.
+  //
+  // Pointer Events (not touch/mouse separately) so mouse-drag works too for
+  // free. `setPointerCapture` keeps move/up events coming to the handle even
+  // once the finger has moved past its small hit area.
+  const DISMISS_DISTANCE = 120; // px dragged down
+  const DISMISS_VELOCITY = 0.5; // px/ms, for a fast flick that didn't quite reach DISMISS_DISTANCE
+
+  document.querySelectorAll<HTMLElement>('[data-sheet-handle]').forEach((handle) => {
+    const dialog = handle.closest('dialog');
+    if (!dialog) return;
+
+    let startY = 0;
+    let startTime = 0;
+    let dragging = false;
+
+    function reset() {
+      dialog!.style.transition = '';
+      dialog!.style.transform = '';
+    }
+
+    handle.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startY = e.clientY;
+      startTime = e.timeStamp;
+      dialog!.style.transition = 'none';
+      handle.setPointerCapture(e.pointerId);
+    });
+
+    handle.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const delta = Math.max(0, e.clientY - startY); // only follow downward drag
+      dialog!.style.transform = `translateY(${delta}px)`;
+    });
+
+    function finishDrag(e: PointerEvent) {
+      if (!dragging) return;
+      dragging = false;
+      const delta = Math.max(0, e.clientY - startY);
+      const elapsed = Math.max(1, e.timeStamp - startTime);
+      const velocity = delta / elapsed;
+      dialog!.style.transition = 'transform 0.2s ease-out';
+      if (delta > DISMISS_DISTANCE || velocity > DISMISS_VELOCITY) {
+        dialog!.style.transform = `translateY(100%)`;
+        setTimeout(() => dialog!.close(), 200);
+      } else {
+        dialog!.style.transform = '';
+      }
+    }
+
+    handle.addEventListener('pointerup', finishDrag);
+    handle.addEventListener('pointercancel', finishDrag);
+    // Reopening should never start mid-drag-away from a previous dismiss
+    // that got interrupted, or with a stale transform left over.
+    dialog.addEventListener('dialogclose', reset);
+  });
+</script>
