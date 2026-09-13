@@ -161,6 +161,28 @@ const jsonLd = {
     dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]').forEach((el) => {
       el.scrollTop = 0;
     });
+
+    // Pin a mobile bottom sheet's `max-h-[94dvh]` to a fixed pixel value for
+    // as long as it stays open, instead of leaving it live. `dvh` tracks the
+    // mobile browser's address bar live, and that bar can re-animate from
+    // something as small as a tap moving focus inside the sheet — noticeable
+    // on the "All Technologies" sheet, where switching its Search/Preferred
+    // Stack tabs kept nudging it to a slightly different height each time
+    // instead of holding still. Freezing it to whatever `dvh` resolved to
+    // right when the sheet opened keeps the intent (use as much of the
+    // screen as the address bar's current state allows) without the jitter
+    // every later tap could otherwise cause. Only on mobile — a
+    // `[data-sheet-handle]` hidden past `sm:` means this is the centered
+    // desktop card instead, sized off a plain (non-dynamic) `vh` that was
+    // never subject to this in the first place.
+    const handle = dialog.querySelector<HTMLElement>('[data-sheet-handle]');
+    if (handle && getComputedStyle(handle).display !== 'none') {
+      dialog.style.maxHeight = `${window.innerHeight * 0.94}px`;
+    }
+  });
+
+  document.addEventListener('dialogclose', (e) => {
+    (e.target as HTMLElement).style.maxHeight = '';
   });
 </script>
 
@@ -350,9 +372,16 @@ const jsonLd = {
     // a long list with repeated fast swipes up to the top never mis-fires
     // it: each of those only nudges scrollTop down toward 0, never past it,
     // unless the last one is genuinely held and pulled on beyond the top.
+    //
+    // The scrollable box isn't always a nested `overflow-y-auto` div either
+    // — CareerStopRow/ProjectRow's dialogs have no such div, they scroll the
+    // `<dialog>` element itself (its `overflow-y` comes out `auto` by
+    // default once it's showing modal, no class needed), so that's just as
+    // much a target here as any inner one.
     const OVERSCROLL_DISMISS_PX = 60;
     let overscrollDismissing = false;
-    dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]').forEach((scrollEl) => {
+    const overscrollTargets = new Set<HTMLElement>([dialog, ...dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]')]);
+    overscrollTargets.forEach((scrollEl) => {
       scrollEl.addEventListener('scroll', () => {
         if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
         overscrollDismissing = true;

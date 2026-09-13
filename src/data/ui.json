@@ -29,7 +29,8 @@
       "noMatches": "No technologies match your search.",
       "notWiredIn": "(not wired in)",
       "or": "or",
-      "highlight": "Highlight {name}"
+      "highlight": "Highlight {name}",
+      "scrollForMore": "Swipe to see more →"
     },
     "projects": {
       "heading": "PROJECTS",
@@ -149,7 +150,8 @@
       "noMatches": "Nenhuma tecnologia corresponde à pesquisa.",
       "notWiredIn": "(não integrado)",
       "or": "ou",
-      "highlight": "Destacar {name}"
+      "highlight": "Destacar {name}",
+      "scrollForMore": "Deslize para ver mais →"
     },
     "projects": {
       "heading": "PROJETOS",

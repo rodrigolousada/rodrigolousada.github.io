@@ -267,7 +267,17 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
       // handles a narrow screen by scrolling sideways, same as it always
       // did on tablet widths.
       <div data-tech-panel="stack" class="hidden">
-        <div class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
+        <!-- Shown only while the diagram below is actually wider than its
+             box (the tier with three layers side by side — Storage, AI/LLMs,
+             Data Science — is the one that triggers it on a phone; the
+             two-layer tiers usually fit without it), and only until the
+             visitor scrolls it once — see this file's script for both. With
+             no such cue, that tier's last box just looked cut off at the
+             edge rather than one swipe away. -->
+        <p data-stack-scroll-hint class="mb-2 hidden text-center font-mono text-[10px] uppercase tracking-widest text-[var(--color-muted)]">
+          {ui.technologies.scrollForMore}
+        </p>
+        <div data-stack-scrollbox class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
           <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
             <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
             <div class="flex items-stretch gap-2">
@@ -389,6 +399,37 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
 
   tabs.forEach((tab) => tab.addEventListener('click', () => selectTab(tab.dataset.techTab)));
   techDialog?.addEventListener('dialogopen', () => selectTab('search'));
+
+  // The "swipe to see more" hint above the preferred-stack diagram: only on
+  // while there's actually more to see. `scrollWidth`/`clientWidth` both
+  // read 0 on a `display: none` panel, so this can only run once the stack
+  // tab is the one showing — right after switching to it, and again on
+  // resize (an orientation flip can flip whether it overflows at all)
+  // while it's still the visible panel. Goes away for good once scrolled
+  // once, same "you've found it, stop pointing at it" reasoning as the
+  // handle-drag/swipe-to-dismiss gestures elsewhere needing no repeat
+  // reminder either — reopening the dialog (always landing back on Search)
+  // is what brings it back for the next visit to this tab.
+  const stackScrollBox = document.querySelector<HTMLElement>('[data-stack-scrollbox]');
+  const stackScrollHint = document.querySelector<HTMLElement>('[data-stack-scroll-hint]');
+
+  function updateStackScrollHint() {
+    if (!stackScrollBox || !stackScrollHint) return;
+    stackScrollHint.classList.toggle('hidden', stackScrollBox.scrollWidth <= stackScrollBox.clientWidth);
+  }
+
+  document.querySelector('[data-tech-tab="stack"]')?.addEventListener('click', updateStackScrollHint);
+  window.addEventListener('resize', () => {
+    if (stackScrollBox?.closest<HTMLElement>('[data-tech-panel]')?.classList.contains('hidden')) return;
+    updateStackScrollHint();
+  });
+  stackScrollBox?.addEventListener(
+    'scroll',
+    () => {
+      if (stackScrollBox.scrollLeft > 8) stackScrollHint?.classList.add('hidden');
+    },
+    { passive: true },
+  );
 
   // Filters the flat "All Technologies" grid only. The preferred-stack
   // diagram lives in its own tab, a fixed architecture picture rather than
