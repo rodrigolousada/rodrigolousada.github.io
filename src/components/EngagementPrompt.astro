@@ -20,14 +20,17 @@ const engagementDelayMs = site.contact.engagementDelaySeconds * 1000;
 
 <!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
      CareerStopRow's dialog for the full bottom-sheet rationale (the
-     [data-sheet-handle] grab bar floats on top of the content padding, no
-     separate wrapper needed here — `top-2` sits well above where the
-     heading text actually starts). -->
+     mx-3/w-[calc(...)] side-margin trick, the [data-sheet-handle] grab bar
+     floating on top of the content padding with no separate wrapper needed
+     here — `top-2` plus the extra `pt-8` (vs. `p-6`'s usual `1.5rem`,
+     reverted at sm:) sits well clear of where the heading text actually
+     starts — and the quick-swipe-anywhere dismiss wired up in
+     Layout.astro). -->
 <dialog
   id="engagement-prompt"
-  class="m-0 mt-auto w-full max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:w-[min(90vw,26rem)] sm:rounded-xl sm:border"
+  class="mx-3 mb-0 mt-auto w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:w-[min(90vw,26rem)] sm:rounded-xl sm:border"
 >
-  <div class="relative p-6">
+  <div class="relative px-6 pb-6 pt-8 sm:pt-6">
     <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
     <div class="flex items-start justify-between gap-3">
       <h3 class="text-lg font-bold text-[var(--color-text)]">{ui.engagement.heading}</h3>

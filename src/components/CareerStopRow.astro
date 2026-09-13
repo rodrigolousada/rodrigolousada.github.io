@@ -138,25 +138,39 @@ const moreProjects = stop.projects.slice(3);
          not a full-screen sheet either way, it should always read as a
          popup floating over the page rather than taking over the screen.
 
-         Mobile: `mt-auto` (with the other margins left at the `m-0` reset)
-         pushes the box to the bottom of the viewport rather than centering
-         it — a native <dialog>'s `showModal()` pins both `top` and `bottom`
-         to 0 (the UA stylesheet's `dialog:modal { inset-block: 0 }`), so an
-         auto top margin against a fixed bottom edge absorbs all the leftover
-         space above instead of splitting it, which is exactly bottom-anchor.
-         `w-full` + `rounded-t-2xl` (no bottom rounding — it's flush with the
-         screen edge) complete the sheet look. A `[data-sheet-handle]` grab
-         bar (wired up generically in Layout.astro, styled in global.css's
-         `.sheet-handle`) floats on top of the header via `absolute`
-         positioning, inside the same rounded/clipped wrapper the header
-         itself uses — not stacked above it as its own flat strip, which
-         doubled up the rounded-corner look (the wrapper's own top corners
-         rounding a second time right under the dialog's already-rounded
-         top edge) and looked like two nested cards. `top-2` clears every
-         header's actual content in every dialog this pattern is used in
-         (title text/close buttons all start at `py-4`/`py-5`, well below
-         it), so the handle never sits on top of anything meant to be read
-         or clicked.
+         Mobile: `mt-auto` (paired with `mb-0`, since margins are otherwise
+         left at their default) pushes the box to the bottom of the viewport
+         rather than centering it — a native <dialog>'s `showModal()` pins
+         both `top` and `bottom` to 0 (the UA stylesheet's
+         `dialog:modal { inset-block: 0 }`), so an auto top margin against a
+         fixed bottom edge absorbs all the leftover space above instead of
+         splitting it, which is exactly bottom-anchor. `mx-3` +
+         `w-[calc(100%-1.5rem)]` (rather than a plain `w-full`) leaves a
+         small gap on either side instead of running the sheet edge-to-edge —
+         the margin and the width add back up to the full inset:0 box, so it
+         still spans the same space, just with breathing room left and right
+         instead of touching the screen's sides. `rounded-t-2xl` (no bottom
+         rounding — it's still flush with the screen edge underneath)
+         completes the sheet look. A `[data-sheet-handle]` grab bar (wired up
+         generically in Layout.astro, styled in global.css's `.sheet-handle`)
+         floats on top of the header via `absolute` positioning, inside the
+         same rounded/clipped wrapper the header itself uses — not stacked
+         above it as its own flat strip, which doubled up the rounded-corner
+         look (the wrapper's own top corners rounding a second time right
+         under the dialog's already-rounded top edge) and looked like two
+         nested cards. `top-2`, plus `h-28` (vs. the header's usual `h-24`,
+         reverted at sm:) giving it a bit more headroom below the handle,
+         clears every header's actual content in every dialog this pattern is
+         used in, so the handle never sits on top of anything meant to be
+         read or clicked, and never crowds it either.
+
+         A quick, genuinely fast swipe down dismisses the sheet from anywhere
+         on it, not just the handle — see Layout.astro's script for why that
+         needs its own (gated) logic rather than just widening the handle's
+         drag zone. If this dialog is stacked over another (the image
+         lightbox opening from within one of these, say), closing it this
+         way naturally reveals whatever's underneath — no separate "back"
+         action needed, that's just what closing the top of a stack does.
 
          sm: and up reverts to the original centered-popup treatment: back to
          `m-auto` centering, a cap 92vw/40rem wide instead of full-width, and
@@ -182,11 +196,11 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="m-0 mt-auto h-fit max-h-[94dvh] w-full max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+      class="mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
     >
       <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
         <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
-        <div class={`relative flex h-24 items-center justify-center overflow-hidden ${stop.chipClass}`}>
+        <div class={`relative flex h-28 items-center justify-center overflow-hidden sm:h-24 ${stop.chipClass}`}>
           <img
             src={stop.logo}
             alt={`${stop.org} logo`}

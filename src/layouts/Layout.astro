@@ -243,5 +243,67 @@ const jsonLd = {
     // Reopening should never start mid-drag-away from a previous dismiss
     // that got interrupted, or with a stale transform left over.
     dialog.addEventListener('dialogclose', reset);
+
+    // A genuinely quick swipe down also dismisses the sheet from anywhere on
+    // it, not just the handle — someone flicking a thumb down from the
+    // middle of a card shouldn't have to find the grab bar first. This can't
+    // just widen the handle's own drag zone to the whole sheet, though:
+    // most of a sheet's body either scrolls (an `overflow-y-auto` div, or
+    // the dialog itself) or holds tappable content, and live-following the
+    // finger with `translateY` the way the handle does would fight both —
+    // every scroll attempt would look like the sheet was being dragged off.
+    // So this only judges the gesture once it's over, and gates it two ways
+    // first so it only catches the flick it's meant to:
+    //  - the pointer has to have gone down already at the top of whichever
+    //    scrollable box it landed in (or a non-scrolling one) — mid-scroll,
+    //    a fast swipe down just means "scroll back up", the single most
+    //    common gesture on a long list, and treating that as "close" would
+    //    be maddening.
+    //  - the motion has to read as a flick, not a drag: past the same
+    //    velocity bar as the handle, mostly vertical rather than a diagonal
+    //    or horizontal gesture that happens to end lower than it started,
+    //    and past a small minimum distance so an ordinary fast tap (~0px in
+    //    ~1ms, which is technically an "infinite" velocity) never counts.
+    //  - `getComputedStyle(handle).display === 'none'` skips all of this at
+    //    sm: and up, where this isn't a bottom sheet at all — a mouse-drag
+    //    flick on a centered desktop dialog shouldn't dismiss it.
+    const QUICK_SWIPE_MIN_DISTANCE = 24; // px, floors out a plain tap
+
+    let anywhereStartX = 0;
+    let anywhereStartY = 0;
+    let anywhereStartTime = 0;
+    let anywhereTracking = false;
+    let anywhereScrollEl: Element | null = null;
+
+    dialog.addEventListener('pointerdown', (e) => {
+      if (e.target === handle || handle.contains(e.target as Node)) return; // the handle already has its own live-drag handler above
+      if (getComputedStyle(handle).display === 'none') return;
+      const scrollEl = (e.target as HTMLElement).closest?.('[class*="overflow-y-auto"]') ?? dialog;
+      if (scrollEl.scrollTop > 0) return;
+      anywhereTracking = true;
+      anywhereStartX = e.clientX;
+      anywhereStartY = e.clientY;
+      anywhereStartTime = e.timeStamp;
+      anywhereScrollEl = scrollEl;
+    });
+
+    function finishAnywhereSwipe(e: PointerEvent) {
+      if (!anywhereTracking) return;
+      anywhereTracking = false;
+      if (!dialog!.hasAttribute('open')) return; // closed some other way mid-gesture
+      if (anywhereScrollEl && anywhereScrollEl.scrollTop > 0) return; // scrolled away from the top during the gesture itself
+      const dy = e.clientY - anywhereStartY;
+      const dx = Math.abs(e.clientX - anywhereStartX);
+      const elapsed = Math.max(1, e.timeStamp - anywhereStartTime);
+      const velocity = dy / elapsed;
+      if (dy > QUICK_SWIPE_MIN_DISTANCE && dy > dx && velocity > DISMISS_VELOCITY) {
+        dialog!.style.transition = 'transform 0.2s ease-out';
+        dialog!.style.transform = `translateY(100%)`;
+        setTimeout(() => dialog!.close(), 200);
+      }
+    }
+
+    dialog.addEventListener('pointerup', finishAnywhereSwipe);
+    dialog.addEventListener('pointercancel', finishAnywhereSwipe);
   });
 </script>
