@@ -147,13 +147,29 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
      scrolls fine within that shape at either size, so it never needed
      full-screen real estate the way a longer/denser modal might.
 
-     `open:flex`, not a bare `flex`: an unconditional `display` utility on
+     `open:grid`, not a bare `grid`: an unconditional `display` utility on
      <dialog> itself beats the browser's own `dialog { display: none }`
      once closed (Tailwind's class outranks that bare type-selector rule),
      so the dialog stayed rendered on screen after .close() — even with the
      `open` attribute gone. Scoping it to the `open:` variant only ever
      sets `display` while `[open]` is present, so the UA rule is free to
      hide it the rest of the time.
+
+     Grid, not flex-col, for the two rows below (header+tabs, then the
+     scrollable panel): iOS Safari was clipping the panel right at the
+     bottom edge of the tabs — reproduced on a real iPhone, never in
+     Chrome, desktop or device-emulated — because it doesn't reliably
+     redo a `flex: 1 1 0%` child's height once a `height: fit-content`
+     ancestor gets clamped by `max-height`: the child stays sized off the
+     fit-content/max-content pass instead of the row it actually has once
+     that clamp applies, so it renders at (near) zero height and the whole
+     list disappears. CSS Grid's row-sizing algorithm resolves "shrink to
+     content, but respect the outer clamp" consistently across browsers,
+     so the header and tabs are wrapped in one plain div — a single `auto`
+     row — and the scrollable panel is the other row, `minmax(0,1fr)`; the
+     `0` floor is what lets that row shrink below its content's height
+     instead of forcing the whole dialog to grow and show everything
+     unscrolled.
 
      `h-fit`, not `h-auto`: see CareerStopRow's dialog for why. `height:
      auto` against a native modal dialog's pinned top/bottom edges stretches
@@ -166,50 +182,52 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
      CareerStopRow's dialog for why. -->
 <dialog
   id={modalId}
-  class="open:flex mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none flex-col rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border"
+  class="open:grid mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none grid-rows-[auto_minmax(0,1fr)] rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border"
 >
-  <div class="relative flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-6 pt-6 pb-4 sm:pt-4">
-    <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
-    <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.technologies.allTechnologies}</p>
-    <form method="dialog">
-      <button
-        aria-label={ui.common.close}
-        class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-      >
-        ✕
-      </button>
-    </form>
+  <div>
+    <div class="relative flex items-center justify-between border-b border-[var(--color-border)] px-6 pt-6 pb-4 sm:pt-4">
+      <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
+      <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.technologies.allTechnologies}</p>
+      <form method="dialog">
+        <button
+          aria-label={ui.common.close}
+          class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+        >
+          ✕
+        </button>
+      </form>
+    </div>
+
+    {preferredStack && (
+      // Two tabs rather than stacking the architecture diagram underneath
+      // the search list in the same view: they're different tasks (skim my
+      // preferred stack vs. hunt for one specific technology), and splitting
+      // them keeps either view from feeling cluttered by the other. Plain
+      // buttons + JS, not <details>/native tabs: this needs exactly one
+      // panel visible at a time with a persistent header, which neither
+      // gives you for free.
+      <div class="flex gap-4 border-b border-[var(--color-border)] px-6">
+        <button
+          type="button"
+          data-tech-tab="search"
+          aria-selected="true"
+          class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
+        >
+          {ui.technologies.search}
+        </button>
+        <button
+          type="button"
+          data-tech-tab="stack"
+          aria-selected="false"
+          class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
+        >
+          {ui.technologies.preferredStack}
+        </button>
+      </div>
+    )}
   </div>
 
-  {preferredStack && (
-    // Two tabs rather than stacking the architecture diagram underneath
-    // the search list in the same view: they're different tasks (skim my
-    // preferred stack vs. hunt for one specific technology), and splitting
-    // them keeps either view from feeling cluttered by the other. Plain
-    // buttons + JS, not <details>/native tabs: this needs exactly one
-    // panel visible at a time with a persistent header, which neither
-    // gives you for free.
-    <div class="flex shrink-0 gap-4 border-b border-[var(--color-border)] px-6">
-      <button
-        type="button"
-        data-tech-tab="search"
-        aria-selected="true"
-        class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
-      >
-        {ui.technologies.search}
-      </button>
-      <button
-        type="button"
-        data-tech-tab="stack"
-        aria-selected="false"
-        class="border-b-2 border-transparent py-2.5 font-mono text-xs uppercase tracking-widest text-[var(--color-muted)] transition hover:text-[var(--color-text)] aria-selected:border-[var(--color-accent)] aria-selected:text-[var(--color-accent)]"
-      >
-        {ui.technologies.preferredStack}
-      </button>
-    </div>
-  )}
-
-  <div class="min-h-0 flex-1 overflow-y-auto p-6">
+  <div class="min-h-0 overflow-y-auto p-6">
     <div data-tech-panel="search">
       <div class="relative mb-4">
         <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-[var(--color-muted)]">
