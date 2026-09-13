@@ -197,12 +197,12 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Present",
-        "role": "Full-stack engineer, rotating across QlikSense DevOps, Data Modeling, Search, and Knowledge Management, now on Referrals & Deals",
+        "role": "Full-stack engineer, rotating as an individual contributor across DevOps, Backend, Frontend, Full-Stack, Mobile, Product, and AI teams — joined Klarna to stay on the edge of AI adoption while deepening technical foundations, leading small initiatives along the way",
         "kpis": [
-          "Rotated across 5+ areas in under 2 years: QlikSense DevOps, Data Modeling, Search, Knowledge Management, now Referrals & Deals",
-          "Built a Cursor agent that turns a plain-language request into a complete, compliant data model",
-          "Revamped Klarna's referral program into a more interactive experience while keeping the discounts platform running",
-          "Cut a QlikSense app's footprint 53%+ through usage analysis"
+          "Cut the time for Klarna users to accept a friend's invite and act on it from over a minute to 5–6 seconds",
+          "Took the internal Knowledge Platform's search bar from near-zero to ~90% successful queries",
+          "Saved 35% in memory/infra cost on QlikSense apps through cleanup analysis",
+          "Saved weeks of cross-team alignment with a Cursor agent that simplified communication and interpretation across different competences"
         ],
         "projects": [
           {
@@ -401,11 +401,15 @@
             "tldr": "A real-time voicebot for the first line of Banco Montepio's contact centre.",
             "description": "It handled 50k+ calls a month, resolving the highest-volume requests outright and triaging the rest to a human agent.",
             "technologies": [
-              "IBM Watson Assistant for Voice",
-              "RPA",
-              "Cognitive Bot Service",
+              "IBM Watson",
               "IBM Cloud",
-              "Data Pipelines"
+              "JavaScript",
+              "APIs",
+              "Consulting",
+              "Project Management",
+              "Excel",
+              "Power BI",
+              "A/B Testing"
             ],
             "achievements": [
               "Automated 72 distinct customer intentions",
@@ -1667,12 +1671,12 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Presente",
-        "role": "Engenheiro full-stack, com passagem por QlikSense DevOps, Modelação de Dados, Pesquisa e Gestão do Conhecimento, atualmente em Referrals & Deals",
+        "role": "Engenheiro full-stack, com passagem como contribuidor individual por equipas de DevOps, Backend, Frontend, Full-Stack, Mobile, Produto e IA — juntou-se à Klarna para estar na vanguarda da adoção de IA enquanto aprofunda os fundamentos técnicos, liderando pequenas iniciativas pelo caminho",
         "kpis": [
-          "Passou por mais de 5 áreas em menos de 2 anos: QlikSense DevOps, Modelação de Dados, Pesquisa, Gestão do Conhecimento e agora Referrals & Deals",
-          "Criou um agente no Cursor que transforma um pedido em linguagem natural num modelo de dados completo e em conformidade",
-          "Renovou o programa de referências da Klarna para uma experiência mais interativa, mantendo a plataforma de descontos em funcionamento",
-          "Reduziu a pegada de uma aplicação QlikSense em mais de 53% através de análise de utilização"
+          "Reduziu de mais de um minuto para 5–6 segundos o tempo para os utilizadores da Klarna aceitarem o convite de um amigo e agirem sobre ele",
+          "Levou a barra de pesquisa da Knowledge Platform interna de quase 0% para cerca de 90% de queries bem-sucedidas",
+          "Poupou 35% em custos de memória/infraestrutura em apps QlikSense através de análise de limpeza",
+          "Poupou semanas de alinhamento entre equipas com um agente no Cursor que simplificou a comunicação e interpretação entre diferentes competências"
         ],
         "projects": [
           {
@@ -1871,11 +1875,15 @@
             "tldr": "Um voicebot em tempo real para a primeira linha do contact center do Banco Montepio.",
             "description": "Recebia mais de 50 mil chamadas por mês, resolvendo diretamente os pedidos de maior volume e encaminhando os restantes para um assistente humano.",
             "technologies": [
-              "IBM Watson Assistant for Voice",
-              "RPA",
-              "Cognitive Bot Service",
+              "IBM Watson",
               "IBM Cloud",
-              "Data Pipelines"
+              "JavaScript",
+              "APIs",
+              "Consulting",
+              "Project Management",
+              "Excel",
+              "Power BI",
+              "A/B Testing"
             ],
             "achievements": [
               "Automatizou 72 intenções distintas de clientes",
