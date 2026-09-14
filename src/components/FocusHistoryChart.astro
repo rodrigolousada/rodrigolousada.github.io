@@ -1,9 +1,10 @@
 ---
-// Shared "Focus areas over the years" line chart: one dialog for the whole
-// page (not one per career stop) since it plots every stop's focus split on
-// the same axes. Rendered once by Projects.astro; opened from any stop's
-// "Focus this era" button (CareerStopRow.astro) via a `data-open-focus-chart`
-// click, delegated to here rather than each stop owning a copy of this data.
+// Shared "Focus areas over the years" stacked area chart: one dialog for the
+// whole page (not one per career stop) since it plots every stop's focus
+// split on the same axes. Rendered once by Projects.astro; opened from any
+// stop's "Focus this era" button (CareerStopRow.astro) via a
+// `data-open-focus-chart` click, delegated to here rather than each stop
+// owning a copy of this data.
 import { getSite, type Locale } from '../data/site';
 import { getUI } from '../data/ui';
 
@@ -60,18 +61,42 @@ function yFor(value: number) {
   return PLOT_Y1 - (value / 100) * (PLOT_Y1 - PLOT_Y0);
 }
 
-// One polyline per category, skipping a category that's 0% at every single
-// stop — an all-zero flat line along the bottom is noise, not information.
-const lines = focusCategories
+// Stacking order, bottom to top: what an Engineering Manager hiring loop
+// actually weighs, most first — leading delivery and people (pm) anchors
+// the stack, then the hands-on technical credibility a strong EM still
+// needs (swe), then the more specialized, narrower-scope skills roughly in
+// order of how directly they bear on running an engineering org day to day
+// (owning data/infra platforms, working from what the data says, deep data
+// science, cross-functional fluency with design), down to the two that
+// matter least for this specific role (sales, social). A category not
+// listed here (a new one added to site.json later) falls back to the end
+// rather than disappearing.
+const EM_PRIORITY = ['pm', 'swe', 'de', 'analytics', 'ds', 'design', 'sales', 'social'];
+function emPriorityRank(id: string) {
+  const i = EM_PRIORITY.indexOf(id);
+  return i === -1 ? EM_PRIORITY.length : i;
+}
+
+// Each stop's focus split sums to 100 (it's "how this era's time divided
+// up"), which is exactly what a 100%-stacked area chart wants: at every x,
+// the bands fill the full 0–100 height between them, so a band's thickness
+// *is* its percentage — no separate value axis to cross-reference. Skips a
+// category that's 0% at every single stop first (an invisible sliver of
+// stack isn't worth its own legend entry).
+const orderedCategories = [...focusCategories].sort((a, b) => emPriorityRank(a.id) - emPriorityRank(b.id));
+const runningTop = stops.map(() => 0);
+const bands = orderedCategories
   .map((cat) => {
-    const points = stops.map((stop, i) => ({
-      x: xFor(i),
-      y: yFor(stop.focus[cat.id] ?? 0),
-      value: stop.focus[cat.id] ?? 0,
-    }));
+    const points = stops.map((stop, i) => {
+      const value = stop.focus[cat.id] ?? 0;
+      const base = runningTop[i];
+      const top = base + value;
+      runningTop[i] = top;
+      return { x: xFor(i), baseY: yFor(base), topY: yFor(top), value };
+    });
     return { ...cat, points, everUsed: points.some((p) => p.value > 0) };
   })
-  .filter((line) => line.everUsed);
+  .filter((band) => band.everUsed);
 
 const gridlineValues = [0, 25, 50, 75, 100];
 
@@ -150,23 +175,33 @@ const chartMinWidthRem =
             {gridlineValues.map((v) => (
               <line x1={PLOT_X0 - 3} x2={VIEW_WIDTH} y1={yFor(v)} y2={yFor(v)} stroke="var(--color-border)" stroke-width="0.3" />
             ))}
-            {lines.map((line) => (
-              <>
-                <polyline
-                  points={line.points.map((p) => `${p.x},${p.y}`).join(' ')}
-                  fill="none"
-                  stroke={line.color}
-                  stroke-width="0.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                {line.points.map((p) => (
-                  <circle cx={p.x} cy={p.y} r="1.1" fill={line.color}>
-                    <title>{`${line.label}: ${p.value}%`}</title>
-                  </circle>
-                ))}
-              </>
-            ))}
+            {bands.map((band) => {
+              // One closed shape per band: its top edge left to right, then
+              // its base edge back right to left, which is what turns "a top
+              // line and a base line" into one fillable polygon rather than
+              // two open ones.
+              const top = band.points.map((p) => `${p.x},${p.topY}`);
+              const base = band.points
+                .slice()
+                .reverse()
+                .map((p) => `${p.x},${p.baseY}`);
+              return (
+                <>
+                  <polygon
+                    points={[...top, ...base].join(' ')}
+                    fill={band.color}
+                    fill-opacity="0.82"
+                    stroke="var(--color-surface)"
+                    stroke-width="0.3"
+                  />
+                  {band.points.map((p) => (
+                    <circle cx={p.x} cy={p.topY} r="0.7" fill="var(--color-surface)" stroke={band.color} stroke-width="0.5">
+                      <title>{`${band.label}: ${p.value}%`}</title>
+                    </circle>
+                  ))}
+                </>
+              );
+            })}
           </svg>
         </div>
 
@@ -176,11 +211,21 @@ const chartMinWidthRem =
              under `justify-between` land their centers inset from the true
              0%/100% edges by half their own width, not exactly on them),
              centering each tick on its own point is what a translateX(-50%)
-             absolute position gets for free regardless of label width. The
-             `pl-[2.5rem]` (the percent column's own `w-8` plus the `gap-2`
-             beside it above) is what makes this row's own 0%..100% start
-             exactly under the SVG rather than under the percent labels too. -->
-        <div class="relative mt-2 h-14 pl-[2.5rem]">
+             absolute position gets for free regardless of label width.
+
+             `ml-[2.5rem]`, not `pl-[2.5rem]`: a percentage `left` on an
+             absolutely positioned child resolves against this div's own
+             padding-box width, measured from its outer (padding) edge —
+             padding never enters into that math, it just leaves blank
+             space inside the same box. So `pl-[2.5rem]` left every tick's
+             0%..100% spanning the *full* row width (the percent column's
+             own `w-8` + `gap-2` included), not just the part beside the
+             SVG, and every tick landed too far right by a shrinking amount
+             (most on stop 0, ~0 on the last stop) as a result. A left
+             *margin* actually shrinks the box itself, so the box this
+             percentage resolves against is already exactly as wide as the
+             SVG beside it above. -->
+        <div class="relative mt-2 h-14 ml-[2.5rem]">
           {stops.map((stop, i) => (
             <div
               data-axis-stop={stop.slug}
@@ -211,11 +256,13 @@ const chartMinWidthRem =
       </div>
       </div>
 
+      <!-- Same order as the stack itself (most valued for an EM first), so
+           "why is this one at the bottom" has an answer right below it. -->
       <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-[var(--color-border)] pt-4">
-        {lines.map((line) => (
+        {bands.map((band) => (
           <div class="flex items-center gap-1.5">
-            <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${line.color};`} />
-            <span class="text-[11px] text-[var(--color-muted)]">{line.label}</span>
+            <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+            <span class="text-[11px] text-[var(--color-muted)]">{band.label}</span>
           </div>
         ))}
       </div>
