@@ -367,6 +367,10 @@
           "design": 10,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 5, "swe": 65, "analytics": 10, "de": 10, "ds": 0, "sales": 0, "design": 10, "social": 0 },
+          { "pm": 5, "swe": 65, "analytics": 10, "de": 10, "ds": 0, "sales": 0, "design": 10, "social": 0 }
+        ],
         "slug": "klarna"
       },
       {
@@ -614,6 +618,12 @@
           "design": 0,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 }
+        ],
         "credlyBadges": [
           {
             "name": "Banking Insights and Solutions (Bronze)",
@@ -802,6 +812,10 @@
           "design": 0,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
+        ],
         "slug": "instituto-de-telecomunicacoes"
       }
     ],
@@ -897,6 +911,11 @@
           "design": 0,
           "social": 10
         },
+        "focusByYear": [
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 }
+        ],
         "slug": "sinfo"
       }
     ],
@@ -1917,6 +1936,10 @@
           "design": 10,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 5, "swe": 65, "analytics": 10, "de": 10, "ds": 0, "sales": 0, "design": 10, "social": 0 },
+          { "pm": 5, "swe": 65, "analytics": 10, "de": 10, "ds": 0, "sales": 0, "design": 10, "social": 0 }
+        ],
         "slug": "klarna"
       },
       {
@@ -2164,6 +2187,12 @@
           "design": 0,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
+          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 }
+        ],
         "credlyBadges": [
           {
             "name": "Banking Insights and Solutions (Bronze)",
@@ -2352,6 +2381,10 @@
           "design": 0,
           "social": 0
         },
+        "focusByYear": [
+          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
+        ],
         "slug": "instituto-de-telecomunicacoes"
       }
     ],
@@ -2447,6 +2480,11 @@
           "design": 0,
           "social": 10
         },
+        "focusByYear": [
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
+          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 }
+        ],
         "slug": "sinfo"
       }
     ],

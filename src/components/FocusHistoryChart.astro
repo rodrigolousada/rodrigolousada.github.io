@@ -31,6 +31,14 @@ interface HistoryStop {
   chipClass: string;
   period: string;
   focus: Record<string, number>;
+  /** One focus split per year this stop actually spanned (IBM's 4 years get
+   * 4 entries, SINFO's 3 get 3, and so on), so a longer stop plots as more
+   * points along the x-axis instead of the same single flat one every stop
+   * got before. Today every entry in here just repeats `focus` (no
+   * per-year breakdown has been written yet), but the shape is what lets a
+   * future edit change one year without touching the rest. Falls back to a
+   * single point (`[focus]`) when unset. */
+  focusByYear?: Record<string, number>[];
 }
 
 const { locale } = Astro.props;
@@ -42,13 +50,29 @@ const ui = getUI(locale);
 // than asking every consumer of this order to remember to.
 const stops = ([...careerPath, ...careerPathMore] as unknown as HistoryStop[]).slice().reverse();
 
+// Flatten every stop's `focusByYear` (or its single `focus` when a stop
+// has no per-year breakdown yet) into one ordered list of points. This is
+// what actually drives the x-axis now: a 4-year stop contributes 4 of
+// these, a 2-year stop only 2, so spacing them evenly along x gives a
+// longer stop proportionally more width instead of the same one slot every
+// stop got when there was only ever one point per stop. It's still
+// "sequential eras", not true calendar dates (two stops that really
+// overlapped, like SINFO and Instituto de Telecomunicações, still plot
+// one after the other) — just at year-level granularity instead of
+// stop-level.
+interface HistoryPoint {
+  stopIndex: number;
+  focus: Record<string, number>;
+}
+const points: HistoryPoint[] = stops.flatMap((stop, stopIndex) =>
+  (stop.focusByYear ?? [stop.focus]).map((focus) => ({ stopIndex, focus })),
+);
+
 // A 0–100 coordinate space either axis of the SVG can be read as: x is
-// "which stop, in order" (evenly spaced — there's one focus split per stop,
-// not per calendar year, so spacing stops by their actual year gaps would
-// imply precision this data doesn't have) and y is "percent of that stop's
-// time". PLOT_* insets leave room for the 0/25/50/75/100 gridline labels
-// (left) and a little breathing room (right/top) without the plotted points
-// ever touching the chart's own edge.
+// "how far through the flattened year-points list" (evenly spaced) and y is
+// "percent of that point's year". PLOT_* insets leave room for the
+// 0/25/50/75/100 gridline labels (left) and a little breathing room
+// (right/top) without the plotted points ever touching the chart's own edge.
 const VIEW_WIDTH = 100;
 const VIEW_HEIGHT = 45;
 const PLOT_X0 = 8;
@@ -57,11 +81,20 @@ const PLOT_Y0 = 4;
 const PLOT_Y1 = 40;
 
 function xFor(i: number) {
-  return stops.length <= 1 ? (PLOT_X0 + PLOT_X1) / 2 : PLOT_X0 + (i / (stops.length - 1)) * (PLOT_X1 - PLOT_X0);
+  return points.length <= 1 ? (PLOT_X0 + PLOT_X1) / 2 : PLOT_X0 + (i / (points.length - 1)) * (PLOT_X1 - PLOT_X0);
 }
 function yFor(value: number) {
   return PLOT_Y1 - (value / 100) * (PLOT_Y1 - PLOT_Y0);
 }
+
+// One tick per stop (its logo shouldn't repeat once per year), centered on
+// the midpoint of that stop's own run of points within the flattened list
+// above.
+const stopTickX = stops.map((_stop, stopIndex) => {
+  const first = points.findIndex((p) => p.stopIndex === stopIndex);
+  const last = points.length - 1 - [...points].reverse().findIndex((p) => p.stopIndex === stopIndex);
+  return (xFor(first) + xFor(last)) / 2;
+});
 
 // Stacking order, bottom to top: what an Engineering Manager hiring loop
 // actually weighs, most first — leading delivery and people (pm) anchors
@@ -79,24 +112,24 @@ function emPriorityRank(id: string) {
   return i === -1 ? EM_PRIORITY.length : i;
 }
 
-// Each stop's focus split sums to 100 (it's "how this era's time divided
-// up"), which is exactly what a 100%-stacked area chart wants: at every x,
-// the bands fill the full 0–100 height between them, so a band's thickness
-// *is* its percentage — no separate value axis to cross-reference. Skips a
-// category that's 0% at every single stop first (an invisible sliver of
+// Each point's focus split sums to 100 (it's "how this year divided up"),
+// which is exactly what a 100%-stacked area chart wants: at every x, the
+// bands fill the full 0–100 height between them, so a band's thickness *is*
+// its percentage — no separate value axis to cross-reference. Skips a
+// category that's 0% at every single point first (an invisible sliver of
 // stack isn't worth its own legend entry).
 const orderedCategories = [...focusCategories].sort((a, b) => emPriorityRank(a.id) - emPriorityRank(b.id));
-const runningTop = stops.map(() => 0);
+const runningTop = points.map(() => 0);
 const bands = orderedCategories
   .map((cat) => {
-    const points = stops.map((stop, i) => {
-      const value = stop.focus[cat.id] ?? 0;
+    const bandPoints = points.map((point, i) => {
+      const value = point.focus[cat.id] ?? 0;
       const base = runningTop[i];
       const top = base + value;
       runningTop[i] = top;
       return { x: xFor(i), baseY: yFor(base), topY: yFor(top), value };
     });
-    return { ...cat, points, everUsed: points.some((p) => p.value > 0) };
+    return { ...cat, points: bandPoints, everUsed: bandPoints.some((p) => p.value > 0) };
   })
   .filter((band) => band.everUsed);
 
@@ -223,10 +256,11 @@ const chartMinWidthRem =
           </svg>
         </div>
 
-        <!-- x-axis: one tick per stop, absolutely positioned at the same
-             percentage `xFor()` used for that stop's points above — a plain
-             flex row can't guarantee that (unequal-width logo+label ticks
-             under `justify-between` land their centers inset from the true
+        <!-- x-axis: one tick per stop (not one per year-point above — its
+             logo shouldn't repeat), absolutely positioned at `stopTickX`,
+             the midpoint of that stop's own run of points — a plain flex
+             row can't guarantee that (unequal-width logo+label ticks under
+             `justify-between` land their centers inset from the true
              0%/100% edges by half their own width, not exactly on them),
              centering each tick on its own point is what a translateX(-50%)
              absolute position gets for free regardless of label width.
@@ -249,7 +283,7 @@ const chartMinWidthRem =
               data-axis-stop={stop.slug}
               title={`${stop.org} · ${stop.period}`}
               class="axis-tick absolute top-0 flex w-20 -translate-x-1/2 flex-col items-center gap-1 rounded-md px-0.5 transition"
-              style={`left:${xFor(i)}%`}
+              style={`left:${stopTickX[i]}%`}
             >
               <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${stop.chipClass}`}>
                 <img
