@@ -113,7 +113,7 @@
       "klarna": {
         "name": "Klarna",
         "logo": "/img/klarna-logo.svg",
-        "logoScale": 1.45,
+        "logoScale": 1.65,
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent"
       },
@@ -193,7 +193,7 @@
         "org": "Klarna",
         "title": "Full-Stack Engineer",
         "logo": "/img/klarna-logo.svg",
-        "logoScale": 1.15,
+        "logoScale": 1.65,
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Present",
@@ -1659,7 +1659,7 @@
       "klarna": {
         "name": "Klarna",
         "logo": "/img/klarna-logo.svg",
-        "logoScale": 1.45,
+        "logoScale": 1.65,
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent"
       },
@@ -1739,7 +1739,7 @@
         "org": "Klarna",
         "title": "Engenheiro Full-Stack",
         "logo": "/img/klarna-logo.svg",
-        "logoScale": 1.15,
+        "logoScale": 1.65,
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Presente",
