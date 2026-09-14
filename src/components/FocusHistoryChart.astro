@@ -120,19 +120,15 @@ const segments = stops.map((stop, stopIndex) => {
 // you're looking, not just at the labels.
 const segmentBoundaries = segments.slice(1).map((seg) => seg.left);
 
-// Stacking order, bottom to top: the hands-on technical categories grouped
-// together first, then the more people- and business-facing ones — reading
-// as two clean bands instead of eight interleaved colors is worth more here
-// than a strict single priority ranking. It also happens to keep the
-// emerald trio (analytics/de/ds, see the color comment below) contiguous
-// either way. Within each group, still roughly most EM-relevant first: swe
-// anchors the technical group as the baseline engineering credibility a
-// hiring loop actually checks for, then the data-adjacent trio; pm anchors
-// the other group since it's what the role is actually about, then design,
-// sales, social in descending relevance. A category not listed here (a new
-// one added to site.json later) falls back to the end rather than
-// disappearing.
-const CATEGORY_ORDER = ['swe', 'de', 'analytics', 'ds', 'pm', 'design', 'sales', 'social'];
+// Stacking order, bottom to top (so top to bottom, reading down from 100%,
+// it's Project Managing, Product Design, Sales, Social Media, Data
+// Analytics, Data Science, Data Engineering, Software Engineering): the
+// hands-on technical categories anchor the bottom of the stack as one
+// contiguous group, the people- and business-facing ones sit above as the
+// other, so the chart reads as two bands instead of eight interleaved
+// colors. A category not listed here (a new one added to site.json later)
+// falls back to the end rather than disappearing.
+const CATEGORY_ORDER = ['swe', 'de', 'ds', 'analytics', 'social', 'sales', 'design', 'pm'];
 function categoryRank(id: string) {
   const i = CATEGORY_ORDER.indexOf(id);
   return i === -1 ? CATEGORY_ORDER.length : i;
@@ -231,11 +227,25 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
           <div class="sticky left-0 z-10 flex w-8 shrink-0 flex-col-reverse justify-between bg-[var(--color-surface)] py-1 text-right font-mono text-[9px] text-[var(--color-muted)]">
             {gridlineValues.map((v) => <span>{v}%</span>)}
           </div>
+          <!-- data-y0/data-y1/data-x/data-series hand the script below
+               everything it needs to recompute the stack in a different
+               order at runtime (pulling a hovered band to the baseline, see
+               that script's own comment) without duplicating the yFor/xFor
+               math or the raw per-point values in two places. This can't be
+               `define:vars`: the script uses real TS type annotations
+               further down, and define:vars forces a script to render
+               is:inline (unprocessed, no TS stripping) — same constraint
+               already documented in ImageLightbox.astro and
+               Organizations.astro for their own scripts. -->
           <svg
             viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
             preserveAspectRatio="none"
             class="block min-w-0 flex-1"
             style={`aspect-ratio: ${VIEW_WIDTH} / ${VIEW_HEIGHT}; height: auto;`}
+            data-y0={PLOT_Y0}
+            data-y1={PLOT_Y1}
+            data-x={JSON.stringify(bands[0]?.points.map((p) => p.x) ?? [])}
+            data-series={JSON.stringify(bands.map((b) => ({ id: b.id, values: b.points.map((p) => p.value) })))}
           >
             {gridlineValues.map((v) => (
               <line x1={PLOT_X0 - 3} x2={VIEW_WIDTH} y1={yFor(v)} y2={yFor(v)} stroke="var(--color-border)" stroke-width="0.3" />
@@ -466,23 +476,161 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   });
   chart?.addEventListener('close', hideTooltip);
 
-  // Legend hover -> chart highlight: dim every `.chart-band` except the one
-  // whose `data-category` matches the hovered legend entry. `pointerenter`/
-  // `pointerleave` rather than `mouseenter`/`mouseleave` for the same reason
-  // as the tooltip above (consistent pointer-event handling across mouse
-  // and touch), even though a hover-only affordance mostly matters for a
-  // mouse; a tap on touch just won't trigger it, which is fine since the
-  // chart's own tooltip already tells a touch visitor what they tapped.
-  function setHighlightedCategory(id: string | null) {
-    chart?.querySelectorAll<SVGElement>('.chart-band').forEach((band) => {
+  // Legend hover -> dim every `.chart-band` except the hovered category's,
+  // *and* pull that band down to the baseline (base 0%) by re-stacking the
+  // whole chart with it first in the order. A band buried in the middle of
+  // an eight-way stack has a wavy top *and* a wavy base, both shaped by
+  // whatever's below it. Only its thickness is actually "its" data; sitting
+  // it on the baseline instead makes its own top edge the only wavy line
+  // left, so its real shape (not everyone else's) is what you're reading.
+  // Everything else keeps its existing relative order, just shifted up to
+  // make room, so nothing else visibly reshuffles past what the new base
+  // forces.
+  //
+  // A click pins the reorder+highlight so it survives the pointer leaving
+  // (to read a chart with the mouse off to the side, or on a touch device
+  // where there's no hover at all): reclicking the pinned category, or
+  // clicking a different one, is the only way to change it while a pin is
+  // active — plain hover is ignored until then, see the `pinnedCategory`
+  // guard below. Closing the dialog always clears the pin; reopening it
+  // should never surprise anyone with yesterday's selection still active.
+  interface CategorySeries {
+    id: string;
+    values: number[];
+  }
+  const seriesById: Record<string, number[]> = {};
+  let xs: number[] = [];
+  let plotY0 = 0;
+  let plotY1 = 0;
+  try {
+    (JSON.parse(svg?.dataset.series ?? '[]') as CategorySeries[]).forEach((s) => {
+      seriesById[s.id] = s.values;
+    });
+    xs = JSON.parse(svg?.dataset.x ?? '[]') as number[];
+    plotY0 = Number(svg?.dataset.y0 ?? 0);
+    plotY1 = Number(svg?.dataset.y1 ?? 0);
+  } catch {
+    // Malformed data-* JSON would only happen from a hand-edited DOM; fail
+    // quiet and leave the chart in its server-rendered (unreorderable, but
+    // still correct) layout rather than throwing across the rest of the page.
+  }
+  function yFor(value: number) {
+    return plotY1 - (value / 100) * (plotY1 - plotY0);
+  }
+
+  const bandEls = [...(chart?.querySelectorAll<SVGPolygonElement>('.chart-band') ?? [])];
+  // The order the server rendered them in, read back off the DOM rather
+  // than re-deriving CATEGORY_ORDER here, so this script never has to be
+  // kept in sync with that array by hand.
+  const defaultOrder = bandEls.map((el) => el.dataset.category ?? '').filter(Boolean);
+
+  // One category's points string for a given stacking order: same "top
+  // edge left to right, then base edge back right to left" shape the
+  // server built, just computed here so it can run again with a different
+  // order. Returns every band's string at once since stacking one band
+  // depends on the running total of every band already placed under it.
+  function computeBandPoints(order: string[]): Record<string, string> {
+    const runningTop = xs.map(() => 0);
+    const result: Record<string, string> = {};
+    order.forEach((id) => {
+      const values = seriesById[id];
+      if (!values) return;
+      const top: string[] = [];
+      const base: string[] = [];
+      values.forEach((value, i) => {
+        const from = runningTop[i];
+        const to = from + value;
+        runningTop[i] = to;
+        top.push(`${xs[i]},${yFor(to)}`);
+        base.unshift(`${xs[i]},${yFor(from)}`);
+      });
+      result[id] = [...top, ...base].join(' ');
+    });
+    return result;
+  }
+  const defaultPoints = computeBandPoints(defaultOrder);
+
+  function parsePoints(str: string): number[][] {
+    return str
+      .trim()
+      .split(' ')
+      .map((pair) => pair.split(',').map(Number));
+  }
+
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animationFrame: number | null = null;
+  // Interpolates every band's polygon from wherever it currently is to its
+  // points in `target` — x never changes between stacking orders (only
+  // which category owns which vertical slice does), so this only has to
+  // ease each vertex's y, not solve a general shape-morph.
+  function animateBandsTo(target: Record<string, string>, durationMs: number) {
+    if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+    if (REDUCED_MOTION || durationMs === 0) {
+      bandEls.forEach((el) => {
+        const id = el.dataset.category ?? '';
+        if (target[id]) el.setAttribute('points', target[id]);
+      });
+      return;
+    }
+    const from: Record<string, number[][]> = {};
+    const to: Record<string, number[][]> = {};
+    bandEls.forEach((el) => {
+      const id = el.dataset.category ?? '';
+      if (!target[id]) return;
+      from[id] = parsePoints(el.getAttribute('points') ?? '');
+      to[id] = parsePoints(target[id]);
+    });
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / durationMs);
+      const eased = 1 - (1 - t) ** 3; // ease-out cubic
+      bandEls.forEach((el) => {
+        const id = el.dataset.category ?? '';
+        const a = from[id];
+        const b = to[id];
+        if (!a || !b || a.length !== b.length) return;
+        const points = a.map(([x, y], i) => `${x},${y + (b[i][1] - y) * eased}`).join(' ');
+        el.setAttribute('points', points);
+      });
+      animationFrame = t < 1 ? requestAnimationFrame(step) : null;
+    };
+    animationFrame = requestAnimationFrame(step);
+  }
+
+  let pinnedCategory: string | null = null;
+  function setActiveCategory(id: string | null) {
+    bandEls.forEach((band) => {
       const isMatch = band.dataset.category === id;
       band.classList.toggle('is-dimmed', id !== null && !isMatch);
       band.classList.toggle('is-highlighted', id !== null && isMatch);
     });
+    const order = id ? [id, ...defaultOrder.filter((catId) => catId !== id)] : defaultOrder;
+    animateBandsTo(id ? computeBandPoints(order) : defaultPoints, 400);
   }
+
   chart?.querySelectorAll<HTMLElement>('[data-legend-category]').forEach((item) => {
     const id = item.dataset.legendCategory ?? null;
-    item.addEventListener('pointerenter', () => setHighlightedCategory(id));
-    item.addEventListener('pointerleave', () => setHighlightedCategory(null));
+    item.addEventListener('pointerenter', () => {
+      if (pinnedCategory === null) setActiveCategory(id);
+    });
+    item.addEventListener('pointerleave', () => {
+      if (pinnedCategory === null) setActiveCategory(null);
+    });
+    item.addEventListener('click', () => {
+      pinnedCategory = pinnedCategory === id ? null : id;
+      // Re-apply as a plain hover state when unpinning: the pointer is
+      // still over this item (a click can't happen without it), so falling
+      // straight back to "nothing active" would flicker off then rely on a
+      // pointerleave that hasn't fired yet to explain why.
+      setActiveCategory(pinnedCategory ?? id);
+    });
+  });
+  // Snap back to the default, unpinned layout the instant the dialog
+  // closes (no animation: it's already invisible) so reopening it later
+  // never shows a leftover reorder from the last visit.
+  chart?.addEventListener('close', () => {
+    pinnedCategory = null;
+    animateBandsTo(defaultPoints, 0);
+    bandEls.forEach((band) => band.classList.remove('is-dimmed', 'is-highlighted'));
   });
 </script>
