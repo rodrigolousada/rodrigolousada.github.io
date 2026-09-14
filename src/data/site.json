@@ -804,8 +804,8 @@
         ],
         "focus": {
           "pm": 5,
-          "swe": 15,
-          "analytics": 10,
+          "swe": 5,
+          "analytics": 20,
           "de": 10,
           "ds": 60,
           "sales": 0,
@@ -813,8 +813,8 @@
           "social": 0
         },
         "focusByYear": [
-          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
-          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
+          { "pm": 5, "swe": 5, "analytics": 20, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 5, "analytics": 20, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
         ],
         "slug": "instituto-de-telecomunicacoes"
       }
@@ -2373,8 +2373,8 @@
         ],
         "focus": {
           "pm": 5,
-          "swe": 15,
-          "analytics": 10,
+          "swe": 5,
+          "analytics": 20,
           "de": 10,
           "ds": 60,
           "sales": 0,
@@ -2382,8 +2382,8 @@
           "social": 0
         },
         "focusByYear": [
-          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
-          { "pm": 5, "swe": 15, "analytics": 10, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
+          { "pm": 5, "swe": 5, "analytics": 20, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 5, "analytics": 20, "de": 10, "ds": 60, "sales": 0, "design": 0, "social": 0 }
         ],
         "slug": "instituto-de-telecomunicacoes"
       }
