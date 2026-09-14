@@ -110,13 +110,20 @@ stops.forEach((stop, stopIndex) => {
 // "how far through the flattened year-points list" (evenly spaced) and y is
 // "percent of that point's year". PLOT_* insets leave room for the
 // 0/25/50/75/100 gridline labels (left) and a little breathing room
-// (right/top) without the plotted points ever touching the chart's own edge.
+// (right/top) without the plotted points ever touching the chart's own
+// edge. `PLOT_Y1` in particular is kept close to `VIEW_HEIGHT` rather than
+// symmetric with `PLOT_Y0`: the 0% line sits right above the x-axis row
+// (the stop logos/periods) below this SVG, and a wide gap there read as
+// dead space between two things that are actually describing the same
+// x-position, not real breathing room the way the top margin is. What's
+// left is just enough that the 0%-line band's own stroke doesn't get
+// clipped by the viewBox edge.
 const VIEW_WIDTH = 100;
 const VIEW_HEIGHT = 45;
 const PLOT_X0 = 8;
 const PLOT_X1 = 96;
 const PLOT_Y0 = 4;
-const PLOT_Y1 = 40;
+const PLOT_Y1 = 44;
 
 function xFor(i: number) {
   return points.length <= 1 ? (PLOT_X0 + PLOT_X1) / 2 : PLOT_X0 + (i / (points.length - 1)) * (PLOT_X1 - PLOT_X0);
@@ -423,7 +430,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
              the two spacer children below (widths `PLOT_X0`/`100-PLOT_X1`)
              land the segments between them under the exact same x the
              chart above draws its bands at. -->
-        <div class="relative mt-2 ml-[2.5rem]">
+        <div class="relative mt-1 ml-[2.5rem]">
           <div class="flex h-11">
             <div style={`width:${PLOT_X0}%`} aria-hidden="true"></div>
             {segments.map((seg, i) => (
