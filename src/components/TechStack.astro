@@ -114,6 +114,36 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
   const allXs = [...topXs, ...bottomXs];
   return { mode: 'bus', topXs, bottomXs, busX1: Math.min(...allXs), busX2: Math.max(...allXs) };
 });
+
+// The diagram's own minimum width: wide enough that no row's layer boxes
+// ever have to shrink below their own `min-w` floor (see the scrollbox's
+// comment below for why that matters — a plain block's `width: auto` never
+// grows to fit an overflowing child on its own, so this has to be worked
+// out and handed to it explicitly instead). Each row's own required width
+// is just its column count times that row's per-box floor, plus the gaps
+// between them (`gap-2` = 0.5rem) — the consumer boxes and the tier layer
+// boxes use different floors (`min-w-[6rem]` vs `min-w-[8.5rem]`, see their
+// own markup below), so this takes a floor per row rather than assuming one
+// for the whole diagram. `20` is the pre-existing floor for a stack with
+// barely anything in it, kept as-is.
+function rowMinRem(columns: number, floorRem: number, gapRem = 0.5) {
+  return columns * floorRem + Math.max(0, columns - 1) * gapRem;
+}
+// Unlike the consumers row, every tier row sits one level deeper — inside
+// the dashed "infra" box's own `border-2` + `p-3` — so its contribution
+// needs that box's horizontal chrome added on top, or the outer diagram
+// ends up sized just for the row's own content with nothing left over for
+// the box wrapped around it (border-2 → 0.25rem, p-3 → 1.5rem: this is
+// exactly what got missed the first time this was measured, and it doesn't
+// resize itself if that box's own classes ever change).
+const INFRA_BOX_CHROME_REM = 1.75;
+const diagramMinWidthRem = preferredStack
+  ? Math.max(
+      20,
+      rowMinRem(preferredStack.consumers.layers.length, 6),
+      ...preferredStack.tiers.map((tier) => rowMinRem(tier.layers.length, 8.5) + INFRA_BOX_CHROME_REM),
+    )
+  : 20;
 ---
 
 <div>
@@ -306,7 +336,40 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
           {ui.technologies.scrollForMore}
         </p>
         <div data-stack-scrollbox class="overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
-          <div class="mx-auto flex min-w-[20rem] max-w-2xl flex-col">
+          <!-- `min-w-[20rem]` alone let this shrink below its own content on a
+               phone: a plain block's `width: auto` only ever *fills* the space
+               available (up to `max-w-2xl`) — it never grows past that to fit
+               something wider, even though the layers below carry an explicit
+               `min-w-[8.5rem]` floor apiece. So once a tier needed more than
+               the available width (three layers side by side — Storage,
+               AI/LLMs, Data Science — is the one that does it), those layers
+               didn't push this box wider; they just overflowed past its own
+               right edge, poking out past the dashed border below instead of
+               widening it and scrolling as one piece the way the "swipe to
+               see more" hint promises.
+
+               The fix isn't a CSS one: tried `min-width: max(20rem,
+               min-content)` first, on the theory that a flex item's
+               min-content contribution is exactly its own explicit min-width
+               summed across columns (which it is) — but `min-content` isn't
+               a `<length-percentage>`, and `max()`/`min()`/`clamp()` only
+               accept those, so Chrome parses the whole declaration as invalid
+               and drops it silently (computed `min-width` came back `0px` in
+               dev *and* in the built output — this was never going to show up
+               from reading the generated CSS text, only from checking what
+               the browser actually did with it). `diagramMinWidthRem` above
+               computes the same number a different way: knowing each row's
+               column count and its per-box floor is exactly the input a real
+               CSS min-content calculation would need anyway, so it's worked
+               out in plain JS at build time instead and handed down as an
+               ordinary length — nothing for the browser to reject. It's a
+               `style` attribute below rather than another `min-w-[...]`
+               class for the same reason a template-literal class never
+               works with Tailwind: the scanner reads this file as plain
+               text, so a class built from `${diagramMinWidthRem}` would
+               never actually get generated — the source never contains the
+               resolved number, only the expression that produces it. -->
+          <div class="mx-auto flex max-w-2xl flex-col" style={`min-width: ${diagramMinWidthRem}rem`}>
             <!-- Consumers: not tech, so plain dashed labels rather than tech-pill boxes. -->
             <div class="flex items-stretch gap-2">
               {preferredStack.consumers.layers.map((layer) => (
