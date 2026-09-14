@@ -276,7 +276,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
 
 <dialog
   id="focus-history-chart"
-  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,42rem)] sm:rounded-xl sm:border"
+  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[78vh] sm:w-[min(90vw,34rem)] sm:rounded-xl sm:border"
 >
   <!-- Bottom sheet on mobile, centered card at sm: and up — see
        CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor,
@@ -288,11 +288,11 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
        the legend or squeezing the chart down to illegible. -->
   <div class="relative">
     <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
-    <div class="p-6 pt-8 sm:pt-6">
+    <div class="p-5 pt-7 sm:pt-5">
       <div class="flex items-start justify-between gap-3">
         <div>
-          <h3 class="text-base font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
-          <p class="mt-1 text-xs text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
+          <h3 class="text-sm font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
+          <p class="mt-0.5 text-[11px] text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
         </div>
         <DialogCloseButton label={ui.common.close} shrink />
       </div>
@@ -301,7 +301,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
            rather than squeezing every tick down to fit whatever width the
            dialog happens to have — same "widen it, don't shrink the
            content" fix as the Preferred Stack diagram's own overflow. -->
-      <div class="mt-6 overflow-x-auto">
+      <div class="mt-4 overflow-x-auto">
       <div class="mx-auto" style={`min-width: ${chartMinWidthRem}rem`}>
         <div class="flex gap-2">
           <!-- Percent axis: a plain fixed-width column, not baked into the
@@ -431,7 +431,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
              land the segments between them under the exact same x the
              chart above draws its bands at. -->
         <div class="relative mt-1 ml-[2.5rem]">
-          <div class="flex h-11">
+          <div class="flex h-9">
             <div style={`width:${PLOT_X0}%`} aria-hidden="true"></div>
             {segments.map((seg, i) => (
               <div
@@ -440,7 +440,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                 class={`axis-segment flex min-w-0 flex-col items-center gap-1 px-1 pt-0.5 transition ${i > 0 ? 'border-l border-[var(--color-border)]' : ''}`}
                 style={`width:${seg.widthPct}%`}
               >
-                <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${seg.stop.chipClass}`}>
+                <div class={`flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${seg.stop.chipClass}`}>
                   <ScaledLogo
                     src={seg.stop.logo}
                     alt={seg.stop.org}
@@ -480,11 +480,11 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
            `legend-swatch`/`legend-label` are hooks for that script's CSS
            (the `:hover` state and the `is-clicked` class it toggles),
            not styled directly here. -->
-      <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-[var(--color-border)] pt-4">
+      <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3">
         {bands.map((band) => (
           <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
-            <span class="legend-swatch h-2 w-2 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
-            <span class="legend-label text-[11px] text-[var(--color-muted)]">{band.label}</span>
+            <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+            <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
           </div>
         ))}
       </div>
