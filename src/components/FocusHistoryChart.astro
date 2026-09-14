@@ -190,24 +190,30 @@ const chartMinWidthRem =
                 .map((p) => `${p.x},${p.baseY}`);
               return (
                 <>
+                  {/* `data-tooltip`, not a native `<title>`: a browser's own
+                      title tooltip only shows after its own fixed hover
+                      delay (close to a second in Chrome), which read as
+                      broken for something meant to answer "what am I
+                      looking at" right away. The script below shows a
+                      custom tooltip on the first `pointermove`, instantly. */}
                   <polygon
                     points={[...top, ...base].join(' ')}
                     fill={band.color}
                     fill-opacity="0.82"
                     stroke="var(--color-surface)"
                     stroke-width="0.3"
-                  >
-                    {/* Hovering anywhere in the fill, not just one of the
-                        boundary dots below, names which area this band is —
-                        a wide flat stretch of color with nothing else on it
-                        had no way to tell what it was without hunting for a
-                        dot right on its edge. */}
-                    <title>{band.label}</title>
-                  </polygon>
+                    data-tooltip={band.label}
+                  />
                   {band.points.map((p) => (
-                    <circle cx={p.x} cy={p.topY} r="0.7" fill="var(--color-surface)" stroke={band.color} stroke-width="0.5">
-                      <title>{`${band.label}: ${p.value}%`}</title>
-                    </circle>
+                    <circle
+                      cx={p.x}
+                      cy={p.topY}
+                      r="0.7"
+                      fill="var(--color-surface)"
+                      stroke={band.color}
+                      stroke-width="0.5"
+                      data-tooltip={`${band.label}: ${p.value}%`}
+                    />
                   ))}
                 </>
               );
@@ -277,6 +283,15 @@ const chartMinWidthRem =
         ))}
       </div>
     </div>
+
+    <!-- Follows the pointer over the chart above, filled in by the script
+         below — see the `data-tooltip` comment on the polygons/circles for
+         why this exists instead of just a native `<title>` on each. -->
+    <div
+      data-chart-tooltip
+      hidden
+      class="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-[calc(100%+0.5rem)] whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-2 py-1 text-[11px] text-[var(--color-text)] shadow-lg"
+    ></div>
   </div>
 </dialog>
 
@@ -317,4 +332,48 @@ const chartMinWidthRem =
     // after the visitor thinks to scroll for it.
     current?.scrollIntoView({ block: 'nearest', inline: 'center' });
   });
+
+  // Instant tooltip for the chart's own `[data-tooltip]` shapes (see the
+  // comment on the polygons/circles) — a native `<title>` was the first
+  // attempt, but its browser-default hover delay (close to a second in
+  // Chrome) read as broken for something meant to say "what's this" right
+  // away. `pointermove`, not `mouseenter`, on the SVG itself: a chart this
+  // densely packed has bands right up against each other, so the pointer
+  // crosses from one shape straight into the next without the SVG element
+  // itself ever firing its own leave/enter pair, only the shape under the
+  // cursor changing — recomputing which shape that is on every move is what
+  // catches that, `mouseenter` alone would leave the tooltip stuck showing
+  // whichever band the pointer first landed on.
+  const chart = document.getElementById('focus-history-chart');
+  const tooltip = chart?.querySelector<HTMLElement>('[data-chart-tooltip]');
+  const svg = chart?.querySelector('svg');
+
+  function showTooltip(text: string, clientX: number, clientY: number) {
+    if (!tooltip) return;
+    tooltip.textContent = text;
+    tooltip.hidden = false;
+    tooltip.style.left = `${clientX}px`;
+    tooltip.style.top = `${clientY}px`;
+  }
+  function hideTooltip() {
+    if (tooltip) tooltip.hidden = true;
+  }
+
+  svg?.addEventListener('pointermove', (e) => {
+    const target = (e.target as Element | null)?.closest<SVGElement>('[data-tooltip]');
+    if (!target) {
+      hideTooltip();
+      return;
+    }
+    showTooltip(target.dataset.tooltip ?? '', e.clientX, e.clientY);
+  });
+  svg?.addEventListener('pointerleave', hideTooltip);
+  // A tap on a touchscreen fires its own pointer events with real
+  // coordinates, so the tooltip already works there too — this just makes
+  // sure it doesn't linger once the finger lifts, since there's no
+  // pointerleave equivalent for a tap.
+  svg?.addEventListener('pointerup', (e) => {
+    if (e.pointerType === 'touch') setTimeout(hideTooltip, 1200);
+  });
+  chart?.addEventListener('close', hideTooltip);
 </script>
