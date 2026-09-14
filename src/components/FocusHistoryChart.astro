@@ -305,9 +305,32 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                below needs to know that same width up front to line its own
                ticks up with the SVG beside it (`self-stretch`, the flex
                default here, is what makes its height match the SVG's own
-               aspect-ratio-driven height rather than just what 5 labels need). -->
-          <div class="sticky left-0 z-10 flex w-8 shrink-0 flex-col-reverse justify-between bg-[var(--color-surface)] py-1 text-right font-mono text-[9px] text-[var(--color-muted)]">
-            {gridlineValues.map((v) => <span>{v}%</span>)}
+               aspect-ratio-driven height rather than just what 5 labels need).
+
+               Each label is positioned with the exact same `yFor(v)` the
+               SVG's own gridlines and bands use, not spread evenly with
+               flexbox `justify-between` (the previous approach): the plot
+               area doesn't fill the SVG's full 0–{VIEW_HEIGHT} height, it
+               sits inset within it (`PLOT_Y0`–`PLOT_Y1`, leaving breathing
+               room top and bottom) — spreading 5 labels edge-to-edge over
+               the *full* height put "100%" above where the chart's own
+               100% line actually was and "0%" below its actual 0% line, an
+               inch or so off at this chart's size. Percent `top` on an
+               absolutely positioned element resolves against this
+               container's own height, which the parent flex row's
+               `self-stretch` already pins to the SVG's rendered height, so
+               this tracks the SVG's plot area exactly, including if
+               `PLOT_Y0`/`PLOT_Y1` ever change. -->
+          <!-- No separate `relative`: `sticky` already establishes a
+               positioned containing block for the absolutely-positioned
+               labels below, and stacking `relative` alongside it on the
+               same element would fight it over the `position` property. -->
+          <div class="sticky left-0 z-10 w-8 shrink-0 bg-[var(--color-surface)] text-right font-mono text-[9px] text-[var(--color-muted)]">
+            {gridlineValues.map((v) => (
+              <span class="absolute right-0 -translate-y-1/2" style={`top: ${(yFor(v) / VIEW_HEIGHT) * 100}%`}>
+                {v}%
+              </span>
+            ))}
           </div>
           <!-- data-y0/data-y1/data-x/data-series/data-steps hand the script
                below everything it needs to recompute the stack (including
