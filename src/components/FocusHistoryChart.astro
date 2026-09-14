@@ -36,10 +36,11 @@ interface HistoryStop {
   /** One focus split per year this stop actually spanned (IBM's 4 years get
    * 4 entries, SINFO's 3 get 3, and so on), so a longer stop plots as more
    * points along the x-axis instead of the same single flat one every stop
-   * got before. Today every entry in here just repeats `focus` (no
-   * per-year breakdown has been written yet), but the shape is what lets a
-   * future edit change one year without touching the rest. Falls back to a
-   * single point (`[focus]`) when unset. */
+   * got before. Stops with a real remembered progression (IBM, SINFO) have
+   * genuinely different values year to year; stops that were flat the whole
+   * time just repeat the same split at each point. Falls back to a single
+   * point (`[focus]`) when unset entirely. `focus` itself is kept as the
+   * average of these, the whole-tenure summary shown on the stop's own row. */
   focusByYear?: Record<string, number>[];
 }
 

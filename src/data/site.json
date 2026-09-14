@@ -609,20 +609,20 @@
           }
         ],
         "focus": {
-          "pm": 35,
+          "pm": 14,
           "swe": 20,
-          "analytics": 15,
-          "de": 15,
-          "ds": 10,
-          "sales": 5,
-          "design": 0,
+          "analytics": 20,
+          "de": 14,
+          "ds": 7,
+          "sales": 14,
+          "design": 11,
           "social": 0
         },
         "focusByYear": [
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 }
+          { "pm": 0, "swe": 35, "analytics": 35, "de": 0, "ds": 0, "sales": 30, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 25, "analytics": 25, "de": 10, "ds": 15, "sales": 20, "design": 0, "social": 0 },
+          { "pm": 20, "swe": 15, "analytics": 15, "de": 20, "ds": 10, "sales": 5, "design": 15, "social": 0 },
+          { "pm": 30, "swe": 5, "analytics": 5, "de": 25, "ds": 5, "sales": 0, "design": 30, "social": 0 }
         ],
         "credlyBadges": [
           {
@@ -902,19 +902,19 @@
           }
         ],
         "focus": {
-          "pm": 30,
+          "pm": 17,
           "swe": 5,
           "analytics": 10,
           "de": 0,
           "ds": 0,
           "sales": 45,
           "design": 0,
-          "social": 10
+          "social": 23
         },
         "focusByYear": [
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 }
+          { "pm": 0, "swe": 5, "analytics": 5, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 45 },
+          { "pm": 15, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 25 },
+          { "pm": 35, "swe": 5, "analytics": 15, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 0 }
         ],
         "slug": "sinfo"
       }
@@ -2178,20 +2178,20 @@
           }
         ],
         "focus": {
-          "pm": 35,
+          "pm": 14,
           "swe": 20,
-          "analytics": 15,
-          "de": 15,
-          "ds": 10,
-          "sales": 5,
-          "design": 0,
+          "analytics": 20,
+          "de": 14,
+          "ds": 7,
+          "sales": 14,
+          "design": 11,
           "social": 0
         },
         "focusByYear": [
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 },
-          { "pm": 35, "swe": 20, "analytics": 15, "de": 15, "ds": 10, "sales": 5, "design": 0, "social": 0 }
+          { "pm": 0, "swe": 35, "analytics": 35, "de": 0, "ds": 0, "sales": 30, "design": 0, "social": 0 },
+          { "pm": 5, "swe": 25, "analytics": 25, "de": 10, "ds": 15, "sales": 20, "design": 0, "social": 0 },
+          { "pm": 20, "swe": 15, "analytics": 15, "de": 20, "ds": 10, "sales": 5, "design": 15, "social": 0 },
+          { "pm": 30, "swe": 5, "analytics": 5, "de": 25, "ds": 5, "sales": 0, "design": 30, "social": 0 }
         ],
         "credlyBadges": [
           {
@@ -2471,19 +2471,19 @@
           }
         ],
         "focus": {
-          "pm": 30,
+          "pm": 17,
           "swe": 5,
           "analytics": 10,
           "de": 0,
           "ds": 0,
           "sales": 45,
           "design": 0,
-          "social": 10
+          "social": 23
         },
         "focusByYear": [
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 },
-          { "pm": 30, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 10 }
+          { "pm": 0, "swe": 5, "analytics": 5, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 45 },
+          { "pm": 15, "swe": 5, "analytics": 10, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 25 },
+          { "pm": 35, "swe": 5, "analytics": 15, "de": 0, "ds": 0, "sales": 45, "design": 0, "social": 0 }
         ],
         "slug": "sinfo"
       }
