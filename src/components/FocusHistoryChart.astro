@@ -87,14 +87,35 @@ function yFor(value: number) {
   return PLOT_Y1 - (value / 100) * (PLOT_Y1 - PLOT_Y0);
 }
 
-// One tick per stop (its logo shouldn't repeat once per year), centered on
-// the midpoint of that stop's own run of points within the flattened list
-// above.
-const stopTickX = stops.map((_stop, stopIndex) => {
-  const first = points.findIndex((p) => p.stopIndex === stopIndex);
-  const last = points.length - 1 - [...points].reverse().findIndex((p) => p.stopIndex === stopIndex);
-  return (xFor(first) + xFor(last)) / 2;
+// The x-axis is a row of contiguous segments, one per stop, tiling
+// [PLOT_X0, PLOT_X1] edge to edge — not one floating tick per stop like
+// before `focusByYear` existed. With every stop now contributing a
+// different number of points, a fixed-width tick centered on a single x
+// stopped meaning anything: nothing tied a tick's own width to the span it
+// labeled, so a 4-point stop and a 2-point stop looked identical on the
+// axis despite the chart above them being visibly different widths. A
+// segment's `widthPct` instead comes straight from how many points it
+// owns, so the axis and the chart agree: IBM's segment reads wider because
+// IBM has more points, not because of leftover space. Each segment's own
+// half-step of padding goes to whichever stop is next to the boundary
+// (split evenly), except the two outer edges, which land exactly on
+// PLOT_X0/PLOT_X1 since there's no neighbor to split with there.
+const step = points.length > 1 ? (PLOT_X1 - PLOT_X0) / (points.length - 1) : 0;
+let pointCursor = 0;
+const segments = stops.map((stop, stopIndex) => {
+  const count = (stop.focusByYear ?? [stop.focus]).length;
+  const firstIdx = pointCursor;
+  const lastIdx = pointCursor + count - 1;
+  pointCursor += count;
+  const left = stopIndex === 0 ? PLOT_X0 : xFor(firstIdx) - step / 2;
+  const right = stopIndex === stops.length - 1 ? PLOT_X1 : xFor(lastIdx) + step / 2;
+  return { stop, left, right, widthPct: right - left };
 });
+// Where one stop's segment ends and the next begins — drawn as a subtle
+// vertical divider through the chart body itself (not just the axis row
+// below it), so a boundary between two eras reads as a boundary wherever
+// you're looking, not just at the labels.
+const segmentBoundaries = segments.slice(1).map((seg) => seg.left);
 
 // Stacking order, bottom to top: what an Engineering Manager hiring loop
 // actually weighs, most first — leading delivery and people (pm) anchors
@@ -112,6 +133,13 @@ function emPriorityRank(id: string) {
   return i === -1 ? EM_PRIORITY.length : i;
 }
 
+// Colors themselves live on `focusCategories` in site.json, not here, but
+// worth noting why they're not eight arbitrary hues: `analytics`, `de`, and
+// `ds` are one emerald family at three depths (lightest to darkest) because
+// they're the three data-adjacent skills, related enough that a shared hue
+// says so at a glance; everything else (pm, swe, sales, design, social)
+// gets its own standalone color so it doesn't read as part of that family.
+//
 // Each point's focus split sums to 100 (it's "how this year divided up"),
 // which is exactly what a 100%-stacked area chart wants: at every x, the
 // bands fill the full 0–100 height between them, so a band's thickness *is*
@@ -135,24 +163,25 @@ const bands = orderedCategories
 
 const gridlineValues = [0, 25, 50, 75, 100];
 
-// Each x-axis tick needs real room for its own period text without running
-// into its neighbor — on a phone-width dialog, spreading 4+ stops evenly
-// across the available width alone gives each one less space than its own
-// label needs (a `truncate` on the label stops it from visibly bleeding
-// into the next tick, but everything still reads as a cramped pile-up
-// rather than a chart). So, same fix as the "Preferred Stack" diagram's
-// own overflow (TechStack.astro): work out the width this actually needs
-// from the data (one tick-width per stop, plus the gaps between) and let
-// it scroll horizontally below that, rather than squeezing ticks down to
-// illegible to force a fit. Narrower than it needed to be when a tick also
-// carried its own org name in full (the logo alone identifies the company
-// now) — just "2024 – Present" itself, the longest period string across
-// both locales, is what sets the floor.
+// Each segment needs real room for its own period text without running
+// into its neighbor — on a phone-width dialog, letting segments size purely
+// off their `widthPct` share of whatever width the dialog happens to have
+// gives the narrowest stop (Klarna and Instituto de Telecomunicações, 2
+// points each) less space than their own label needs long before the wider
+// ones feel tight (a `truncate` on the label stops it from visibly bleeding
+// into the next segment, but everything still reads as a cramped pile-up
+// rather than a chart). So, same fix as the "Preferred Stack" diagram's own
+// overflow (TechStack.astro): work out the width the *narrowest* segment
+// actually needs and size the whole chart up from there, letting it scroll
+// horizontally below that floor rather than squeezing every segment down
+// to illegible to force a fit. `TICK_MIN_REM` is narrower than it needed to
+// be when a segment also carried its own org name in full (the logo alone
+// identifies the company now) — just "2024 – Present" itself, the longest
+// period string across both locales, is what sets the floor.
 const TICK_MIN_REM = 5;
-const TICK_GAP_REM = 0.5;
 const AXIS_LABEL_COL_REM = 2.5; // the percent column (`w-8`) plus the `gap-2` beside it
-const chartMinWidthRem =
-  AXIS_LABEL_COL_REM + stops.length * TICK_MIN_REM + Math.max(0, stops.length - 1) * TICK_GAP_REM;
+const minSegmentWidthPct = Math.min(...segments.map((seg) => seg.widthPct));
+const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minSegmentWidthPct;
 ---
 
 <dialog
@@ -217,96 +246,97 @@ const chartMinWidthRem =
               // One closed shape per band: its top edge left to right, then
               // its base edge back right to left, which is what turns "a top
               // line and a base line" into one fillable polygon rather than
-              // two open ones.
+              // two open ones. No per-point markers on top of it: the shape
+              // itself (and the kinks in its own top edge, one per point) is
+              // the thing to read, not the points that produced it.
               const top = band.points.map((p) => `${p.x},${p.topY}`);
               const base = band.points
                 .slice()
                 .reverse()
                 .map((p) => `${p.x},${p.baseY}`);
               return (
-                <>
-                  {/* `data-tooltip`, not a native `<title>`: a browser's own
-                      title tooltip only shows after its own fixed hover
-                      delay (close to a second in Chrome), which read as
-                      broken for something meant to answer "what am I
-                      looking at" right away. The script below shows a
-                      custom tooltip on the first `pointermove`, instantly. */}
-                  <polygon
-                    points={[...top, ...base].join(' ')}
-                    fill={band.color}
-                    fill-opacity="0.82"
-                    stroke="var(--color-surface)"
-                    stroke-width="0.3"
-                    data-tooltip={band.label}
-                  />
-                  {band.points.map((p) => (
-                    <circle
-                      cx={p.x}
-                      cy={p.topY}
-                      r="0.7"
-                      fill="var(--color-surface)"
-                      stroke={band.color}
-                      stroke-width="0.5"
-                      data-tooltip={`${band.label}: ${p.value}%`}
-                    />
-                  ))}
-                </>
+                // `data-tooltip`, not a native `<title>`: a browser's own
+                // title tooltip only shows after its own fixed hover delay
+                // (close to a second in Chrome), which read as broken for
+                // something meant to answer "what am I looking at" right
+                // away. The script below shows a custom tooltip on the
+                // first `pointermove`, instantly.
+                <polygon
+                  points={[...top, ...base].join(' ')}
+                  fill={band.color}
+                  fill-opacity="0.82"
+                  stroke="var(--color-surface)"
+                  stroke-width="0.3"
+                  data-tooltip={band.label}
+                />
               );
             })}
+            {/* One era ends, the next begins — echoed as the same dashed
+                line through the axis row below (`border-l` on each segment
+                but the first), so the boundary reads consistently whether
+                you're looking at the shape or the labels under it. */}
+            {segmentBoundaries.map((x) => (
+              <line x1={x} x2={x} y1={PLOT_Y0} y2={PLOT_Y1} stroke="var(--color-border)" stroke-width="0.3" stroke-dasharray="1,1" />
+            ))}
           </svg>
         </div>
 
-        <!-- x-axis: one tick per stop (not one per year-point above — its
-             logo shouldn't repeat), absolutely positioned at `stopTickX`,
-             the midpoint of that stop's own run of points — a plain flex
-             row can't guarantee that (unequal-width logo+label ticks under
-             `justify-between` land their centers inset from the true
-             0%/100% edges by half their own width, not exactly on them),
-             centering each tick on its own point is what a translateX(-50%)
+        <!-- x-axis: one segment per stop, tiling [PLOT_X0, PLOT_X1] edge to
+             edge at `segments[i].widthPct` each (see that variable's own
+             comment for why a segment's width has to come from its point
+             count now) — a plain flex row can't place that by itself
+             (percentage `width`s on flex children need a definite basis
+             they'd otherwise share evenly under `flex-1`), so each gets an
+             explicit `style="width:…%"` rather than relying on flex to
+             divide space up. The two spacer children on either end are the
+             small margins PLOT_X0/PLOT_X1 themselves leave (for the
+             y-gridline labels and a little breathing room), so this row's
+             segments land under the exact same x the chart above draws
+             them at.
              absolute position gets for free regardless of label width.
 
              `ml-[2.5rem]`, not `pl-[2.5rem]`: a percentage `left` on an
-             absolutely positioned child resolves against this div's own
-             padding-box width, measured from its outer (padding) edge —
-             padding never enters into that math, it just leaves blank
-             space inside the same box. So `pl-[2.5rem]` left every tick's
-             0%..100% spanning the *full* row width (the percent column's
-             own `w-8` + `gap-2` included), not just the part beside the
-             SVG, and every tick landed too far right by a shrinking amount
-             (most on stop 0, ~0 on the last stop) as a result. A left
-             *margin* actually shrinks the box itself, so the box this
-             percentage resolves against is already exactly as wide as the
-             SVG beside it above. -->
-        <div class="relative mt-2 h-11 ml-[2.5rem]">
-          {stops.map((stop, i) => (
-            <div
-              data-axis-stop={stop.slug}
-              title={`${stop.org} · ${stop.period}`}
-              class="axis-tick absolute top-0 flex w-20 -translate-x-1/2 flex-col items-center gap-1 rounded-md px-0.5 transition"
-              style={`left:${stopTickX[i]}%`}
-            >
-              <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${stop.chipClass}`}>
-                <img
-                  src={stop.logo}
-                  alt={stop.org}
-                  class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-                  style={(() => {
-                    const scale = stop.tickLogoScale ?? stop.logoScale;
-                    return scale ? `transform: scale(${scale})` : undefined;
-                  })()}
-                />
+             `ml-[2.5rem]` aligns this row's left edge with the SVG's own
+             (matching the percent column's `w-8` + `gap-2` beside it), so
+             the two spacer children below (widths `PLOT_X0`/`100-PLOT_X1`)
+             land the segments between them under the exact same x the
+             chart above draws its bands at. -->
+        <div class="relative mt-2 ml-[2.5rem]">
+          <div class="flex h-11">
+            <div style={`width:${PLOT_X0}%`} aria-hidden="true"></div>
+            {segments.map((seg, i) => (
+              <div
+                data-axis-stop={seg.stop.slug}
+                title={`${seg.stop.org} · ${seg.stop.period}`}
+                class={`axis-segment flex min-w-0 flex-col items-center gap-1 px-1 pt-0.5 transition ${i > 0 ? 'border-l border-[var(--color-border)]' : ''}`}
+                style={`width:${seg.widthPct}%`}
+              >
+                <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${seg.stop.chipClass}`}>
+                  <img
+                    src={seg.stop.logo}
+                    alt={seg.stop.org}
+                    class={`h-full w-full object-contain ${seg.stop.logoInvert ? 'brightness-0 invert' : ''}`}
+                    style={(() => {
+                      const scale = seg.stop.tickLogoScale ?? seg.stop.logoScale;
+                      return scale ? `transform: scale(${scale})` : undefined;
+                    })()}
+                  />
+                </div>
+                <!-- No org name spelled out here — the logo above is
+                     already the company, and the timeline elsewhere on the
+                     page (and the `title` above, for a hover or a
+                     long-press) already carries the name in full for
+                     whoever needs it. Just the period underneath, so a
+                     segment still says *which* era. `w-full truncate` in
+                     case a locale's own period string ever outgrows even
+                     the narrowest segment (Klarna/Instituto de
+                     Telecomunicações, 2 points each) at the narrowest
+                     phone width — it never has yet. -->
+                <span class="w-full truncate text-center text-[8px] leading-tight text-[var(--color-muted)]">{seg.stop.period}</span>
               </div>
-              <!-- No org name spelled out here — the logo above is already
-                   the company, and the timeline elsewhere on the page (and
-                   the `title` above, for a hover or a long-press) already
-                   carries the name in full for whoever needs it. Just the
-                   period underneath, so a tick still says *which* era.
-                   `w-full truncate` in case a locale's own period string
-                   ever runs long enough to threaten the ~35px gap between
-                   ticks at the narrowest phone width — it never has yet. -->
-              <span class="w-full truncate text-center text-[8px] leading-tight text-[var(--color-muted)]">{stop.period}</span>
-            </div>
-          ))}
+            ))}
+            <div style={`width:${100 - PLOT_X1}%`} aria-hidden="true"></div>
+          </div>
         </div>
       </div>
       </div>
@@ -335,15 +365,15 @@ const chartMinWidthRem =
 </dialog>
 
 <style>
-  /* The tick for whichever stop the chart was opened from — set via
+  /* The segment for whichever stop the chart was opened from — set via
      [data-open-focus-chart] below, cleared whenever the dialog isn't
-     showing that stop's tick highlighted. Plain CSS class rather than an
+     showing that stop's segment highlighted. Plain CSS class rather than an
      inline style so it can be toggled with one classList call per open. */
-  .axis-tick.is-current {
+  .axis-segment.is-current {
     background: color-mix(in srgb, var(--color-accent) 15%, transparent);
     box-shadow: 0 0 0 1px var(--color-accent);
   }
-  .axis-tick.is-current span {
+  .axis-segment.is-current span {
     color: var(--color-accent);
   }
 </style>

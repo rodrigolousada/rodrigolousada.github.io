@@ -160,22 +160,22 @@
       {
         "id": "analytics",
         "label": "Data Analytics",
-        "color": "#199e70"
+        "color": "#6ee7b7"
       },
       {
         "id": "de",
         "label": "Data Engineering",
-        "color": "#c98500"
+        "color": "#10b981"
       },
       {
         "id": "ds",
         "label": "Data Science",
-        "color": "#d55181"
+        "color": "#047857"
       },
       {
         "id": "sales",
         "label": "Sales",
-        "color": "#84cc16"
+        "color": "#c98500"
       },
       {
         "id": "design",
@@ -185,7 +185,7 @@
       {
         "id": "social",
         "label": "Social Media",
-        "color": "#06b6d4"
+        "color": "#ec4899"
       }
     ],
     "careerPath": [
@@ -1729,22 +1729,22 @@
       {
         "id": "analytics",
         "label": "Análise de Dados",
-        "color": "#199e70"
+        "color": "#6ee7b7"
       },
       {
         "id": "de",
         "label": "Engenharia de Dados",
-        "color": "#c98500"
+        "color": "#10b981"
       },
       {
         "id": "ds",
         "label": "Ciência de Dados",
-        "color": "#d55181"
+        "color": "#047857"
       },
       {
         "id": "sales",
         "label": "Vendas",
-        "color": "#84cc16"
+        "color": "#c98500"
       },
       {
         "id": "design",
@@ -1754,7 +1754,7 @@
       {
         "id": "social",
         "label": "Redes Sociais",
-        "color": "#06b6d4"
+        "color": "#ec4899"
       }
     ],
     "careerPath": [
