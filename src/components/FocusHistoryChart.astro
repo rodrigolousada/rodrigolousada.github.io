@@ -120,20 +120,22 @@ const segments = stops.map((stop, stopIndex) => {
 // you're looking, not just at the labels.
 const segmentBoundaries = segments.slice(1).map((seg) => seg.left);
 
-// Stacking order, bottom to top: what an Engineering Manager hiring loop
-// actually weighs, most first — leading delivery and people (pm) anchors
-// the stack, then the hands-on technical credibility a strong EM still
-// needs (swe), then the more specialized, narrower-scope skills roughly in
-// order of how directly they bear on running an engineering org day to day
-// (owning data/infra platforms, working from what the data says, deep data
-// science, cross-functional fluency with design), down to the two that
-// matter least for this specific role (sales, social). A category not
-// listed here (a new one added to site.json later) falls back to the end
-// rather than disappearing.
-const EM_PRIORITY = ['pm', 'swe', 'de', 'analytics', 'ds', 'design', 'sales', 'social'];
-function emPriorityRank(id: string) {
-  const i = EM_PRIORITY.indexOf(id);
-  return i === -1 ? EM_PRIORITY.length : i;
+// Stacking order, bottom to top: the hands-on technical categories grouped
+// together first, then the more people- and business-facing ones — reading
+// as two clean bands instead of eight interleaved colors is worth more here
+// than a strict single priority ranking. It also happens to keep the
+// emerald trio (analytics/de/ds, see the color comment below) contiguous
+// either way. Within each group, still roughly most EM-relevant first: swe
+// anchors the technical group as the baseline engineering credibility a
+// hiring loop actually checks for, then the data-adjacent trio; pm anchors
+// the other group since it's what the role is actually about, then design,
+// sales, social in descending relevance. A category not listed here (a new
+// one added to site.json later) falls back to the end rather than
+// disappearing.
+const CATEGORY_ORDER = ['swe', 'de', 'analytics', 'ds', 'pm', 'design', 'sales', 'social'];
+function categoryRank(id: string) {
+  const i = CATEGORY_ORDER.indexOf(id);
+  return i === -1 ? CATEGORY_ORDER.length : i;
 }
 
 // Colors themselves live on `focusCategories` in site.json, not here, but
@@ -149,7 +151,7 @@ function emPriorityRank(id: string) {
 // its percentage — no separate value axis to cross-reference. Skips a
 // category that's 0% at every single point first (an invisible sliver of
 // stack isn't worth its own legend entry).
-const orderedCategories = [...focusCategories].sort((a, b) => emPriorityRank(a.id) - emPriorityRank(b.id));
+const orderedCategories = [...focusCategories].sort((a, b) => categoryRank(a.id) - categoryRank(b.id));
 const runningTop = points.map(() => 0);
 const bands = orderedCategories
   .map((cat) => {
@@ -256,7 +258,10 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                 // (close to a second in Chrome), which read as broken for
                 // something meant to answer "what am I looking at" right
                 // away. The script below shows a custom tooltip on the
-                // first `pointermove`, instantly.
+                // first `pointermove`, instantly. `data-category` is what
+                // the legend hover below matches against to dim every other
+                // band; `chart-band` is just a hook for that CSS, it carries
+                // no styling of its own.
                 <polygon
                   points={[...top, ...base].join(' ')}
                   fill={band.color}
@@ -264,6 +269,8 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                   stroke="var(--color-surface)"
                   stroke-width="0.3"
                   data-tooltip={band.label}
+                  data-category={band.id}
+                  class="chart-band"
                 />
               );
             })}
@@ -334,11 +341,15 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
       </div>
       </div>
 
-      <!-- Same order as the stack itself (most valued for an EM first), so
-           "why is this one at the bottom" has an answer right below it. -->
+      <!-- Same order as the stack itself (technical group first, then the
+           people/business one), so "why is this one at the bottom" has an
+           answer right below it. `data-legend-category` is read by the
+           script below to dim every band but this one on hover, so a
+           visitor can pick one color out of an eight-way stack without
+           having to trace it by eye first. -->
       <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-[var(--color-border)] pt-4">
         {bands.map((band) => (
-          <div class="flex items-center gap-1.5">
+          <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
             <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
             <span class="text-[11px] text-[var(--color-muted)]">{band.label}</span>
           </div>
@@ -368,6 +379,22 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   }
   .axis-segment.is-current span {
     color: var(--color-accent);
+  }
+
+  /* Legend hover -> chart highlight (see the script below): dim every band
+     but the hovered category's, and nudge that one to full opacity so it
+     visibly lifts off the rest instead of just leaving everyone else alone. */
+  .chart-band {
+    transition: opacity 150ms ease;
+  }
+  .chart-band.is-dimmed {
+    opacity: 0.15;
+  }
+  .chart-band.is-highlighted {
+    fill-opacity: 1;
+  }
+  .legend-item {
+    cursor: default;
   }
 </style>
 
@@ -438,4 +465,24 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     if (e.pointerType === 'touch') setTimeout(hideTooltip, 1200);
   });
   chart?.addEventListener('close', hideTooltip);
+
+  // Legend hover -> chart highlight: dim every `.chart-band` except the one
+  // whose `data-category` matches the hovered legend entry. `pointerenter`/
+  // `pointerleave` rather than `mouseenter`/`mouseleave` for the same reason
+  // as the tooltip above (consistent pointer-event handling across mouse
+  // and touch), even though a hover-only affordance mostly matters for a
+  // mouse; a tap on touch just won't trigger it, which is fine since the
+  // chart's own tooltip already tells a touch visitor what they tapped.
+  function setHighlightedCategory(id: string | null) {
+    chart?.querySelectorAll<SVGElement>('.chart-band').forEach((band) => {
+      const isMatch = band.dataset.category === id;
+      band.classList.toggle('is-dimmed', id !== null && !isMatch);
+      band.classList.toggle('is-highlighted', id !== null && isMatch);
+    });
+  }
+  chart?.querySelectorAll<HTMLElement>('[data-legend-category]').forEach((item) => {
+    const id = item.dataset.legendCategory ?? null;
+    item.addEventListener('pointerenter', () => setHighlightedCategory(id));
+    item.addEventListener('pointerleave', () => setHighlightedCategory(null));
+  });
 </script>
