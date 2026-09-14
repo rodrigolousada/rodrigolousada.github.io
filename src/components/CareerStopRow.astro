@@ -5,6 +5,7 @@ import { icons } from '../data/icons';
 import ProjectRow, { type ProjectDemo } from './ProjectRow.astro';
 import DialogCloseButton from './DialogCloseButton.astro';
 import ScaledLogo from './ScaledLogo.astro';
+import { readableTextColor } from '../data/contrast';
 
 interface Props {
   locale: Locale;
@@ -353,8 +354,16 @@ const moreProjects = stop.projects.slice(3);
                   >
                     {/* Below ~15% the segment isn't wide enough to fit "NN%" without it
                         clipping or overflowing into its neighbor — the `title` tooltip
-                        above still carries the exact number for those slivers. */}
-                    {value >= 15 && <span class="select-none text-[9px] font-semibold text-white">{value}%</span>}
+                        above still carries the exact number for those slivers. Text
+                        color isn't hardcoded white: Data Analytics' pale mint (and any
+                        future category color that light) would swallow white text
+                        whole, so `readableTextColor` picks black instead whenever the
+                        segment's own color is too light for white to read on it. */}
+                    {value >= 15 && (
+                      <span class="select-none text-[9px] font-semibold" style={`color:${readableTextColor(cat.color)}`}>
+                        {value}%
+                      </span>
+                    )}
                   </div>
                 );
               })}

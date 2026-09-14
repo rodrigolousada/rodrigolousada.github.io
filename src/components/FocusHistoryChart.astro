@@ -32,6 +32,17 @@ interface HistoryStop {
   logoInvert?: boolean;
   chipClass: string;
   period: string;
+  /** Set on a stop whose own first `focusByYear` entry is the same real
+   * calendar year as the *previous* (chronologically) stop's entry at this
+   * index — SINFO and this Master's thesis at Instituto de Telecomunicações
+   * ran concurrently for one year (SINFO's 2nd year, index 1). Rather than
+   * plot that shared year as two separate sequential x-axis columns
+   * (implying one ended before the other began), the points-flattening
+   * below folds this stop's first year into that shared point instead of
+   * giving it a new column of its own. Doesn't generalize to "any overlap
+   * anywhere": it only ever looks at the one stop immediately before this
+   * one, since that's the only overlap in this timeline today. */
+  overlapsPreviousStopAtYearIndex?: number;
   focus: Record<string, number>;
   /** One focus split per year this stop actually spanned (IBM's 4 years get
    * 4 entries, SINFO's 3 get 3, and so on), so a longer stop plots as more
@@ -58,18 +69,42 @@ const stops = ([...careerPath, ...careerPathMore] as unknown as HistoryStop[]).s
 // what actually drives the x-axis now: a 4-year stop contributes 4 of
 // these, a 2-year stop only 2, so spacing them evenly along x gives a
 // longer stop proportionally more width instead of the same one slot every
-// stop got when there was only ever one point per stop. It's still
-// "sequential eras", not true calendar dates (two stops that really
-// overlapped, like SINFO and Instituto de Telecomunicações, still plot
-// one after the other) — just at year-level granularity instead of
-// stop-level.
+// stop got when there was only ever one point per stop. Still "sequential
+// eras", not true calendar dates, for any stop that doesn't say otherwise
+// — the one known real overlap (SINFO and Instituto de Telecomunicações,
+// concurrent for one year) is handled explicitly below via
+// `overlapsPreviousStopAtYearIndex` rather than generally solved for.
 interface HistoryPoint {
   stopIndex: number;
   focus: Record<string, number>;
 }
-const points: HistoryPoint[] = stops.flatMap((stop, stopIndex) =>
-  (stop.focusByYear ?? [stop.focus]).map((focus) => ({ stopIndex, focus })),
-);
+const points: HistoryPoint[] = [];
+stops.forEach((stop, stopIndex) => {
+  const yearly = stop.focusByYear ?? [stop.focus];
+  yearly.forEach((focus, yearIndex) => {
+    // This year already got folded into the previous stop's matching year
+    // below (the `next.overlapsPreviousStopAtYearIndex === yearIndex`
+    // branch, run while processing that earlier stop) — don't also give it
+    // a column of its own.
+    if (yearIndex === 0 && stop.overlapsPreviousStopAtYearIndex !== undefined) return;
+    points.push({ stopIndex, focus });
+    const next = stops[stopIndex + 1];
+    if (next?.overlapsPreviousStopAtYearIndex === yearIndex) {
+      // The very next stop's first year is this same real calendar year
+      // (Rodrigo ran both at once) — merge it into the point just pushed
+      // instead of letting it start its own column. A plain average: there's
+      // no record of exactly how time actually split between the two that
+      // year, and this is a rare, one-year edge case, not something worth
+      // asking for a precise split over.
+      const theirFirstYear = (next.focusByYear ?? [next.focus])[0];
+      const merged: Record<string, number> = {};
+      new Set([...Object.keys(focus), ...Object.keys(theirFirstYear)]).forEach((key) => {
+        merged[key] = ((focus[key] ?? 0) + (theirFirstYear[key] ?? 0)) / 2;
+      });
+      points[points.length - 1].focus = merged;
+    }
+  });
+});
 
 // A 0–100 coordinate space either axis of the SVG can be read as: x is
 // "how far through the flattened year-points list" (evenly spaced) and y is
@@ -90,6 +125,16 @@ function yFor(value: number) {
   return PLOT_Y1 - (value / 100) * (PLOT_Y1 - PLOT_Y0);
 }
 
+// How many of `points` a stop actually owns a column of — its own
+// `focusByYear` length, minus one if its first year got folded into the
+// previous stop's segment instead (see `overlapsPreviousStopAtYearIndex`).
+// Instituto de Telecomunicações' 2 years read as owning only 1 column here;
+// its other one is inside SINFO's segment, at the shared point.
+function pointsOwnedBy(stop: HistoryStop): number {
+  const yearly = stop.focusByYear ?? [stop.focus];
+  return yearly.length - (stop.overlapsPreviousStopAtYearIndex !== undefined ? 1 : 0);
+}
+
 // The x-axis is a row of contiguous segments, one per stop, tiling
 // [PLOT_X0, PLOT_X1] edge to edge — not one floating tick per stop like
 // before `focusByYear` existed. With every stop now contributing a
@@ -106,7 +151,7 @@ function yFor(value: number) {
 const step = points.length > 1 ? (PLOT_X1 - PLOT_X0) / (points.length - 1) : 0;
 let pointCursor = 0;
 const segments = stops.map((stop, stopIndex) => {
-  const count = (stop.focusByYear ?? [stop.focus]).length;
+  const count = pointsOwnedBy(stop);
   const firstIdx = pointCursor;
   const lastIdx = pointCursor + count - 1;
   pointCursor += count;
@@ -119,6 +164,42 @@ const segments = stops.map((stop, stopIndex) => {
 // below it), so a boundary between two eras reads as a boundary wherever
 // you're looking, not just at the labels.
 const segmentBoundaries = segments.slice(1).map((seg) => seg.left);
+
+// Which point-to-point edges are a real career-stop change, as opposed to
+// a same-stop year-to-year edge (or the merged SINFO/IT point above, which
+// keeps SINFO's own `stopIndex` and so reads as same-stop too, deliberately
+// — see `overlapsPreviousStopAtYearIndex`). A stop's own progression really
+// did happen gradually, one year informing the next; starting a new job
+// didn't, it began on day one already at whatever mix that role actually
+// was. So the chart draws the former as a plain line between two points,
+// and the latter (below, `withOrgSteps`) as a hard step exactly on the
+// dashed boundary line, instead of one smooth diagonal implying a job
+// gradually turned into a different one.
+const stepIndices = new Set<number>();
+for (let i = 1; i < points.length; i++) {
+  if (points[i].stopIndex !== points[i - 1].stopIndex) stepIndices.add(i);
+}
+
+// Replaces the straight line into a `stepIndices` boundary with three
+// points instead of one: hold the previous value flat up to the boundary
+// (its x is exactly halfway between the two real points either side of
+// it, same x the dashed divider line above is drawn at), jump straight to
+// the new value, then continue flat until the next real point takes over.
+// Applied to both a band's top and base edge so the whole stack steps
+// together, not just its outline.
+function withOrgSteps(vertices: { x: number; y: number }[]): [number, number][] {
+  const path: [number, number][] = [];
+  vertices.forEach((v, i) => {
+    if (i > 0 && stepIndices.has(i)) {
+      const prev = vertices[i - 1];
+      const boundaryX = (prev.x + v.x) / 2;
+      path.push([boundaryX, prev.y]);
+      path.push([boundaryX, v.y]);
+    }
+    path.push([v.x, v.y]);
+  });
+  return path;
+}
 
 // Stacking order, bottom to top (so top to bottom, reading down from 100%,
 // it's Project Managing, Product Design, Sales, Social Media, Data
@@ -167,11 +248,12 @@ const gridlineValues = [0, 25, 50, 75, 100];
 // Each segment needs real room for its own period text without running
 // into its neighbor — on a phone-width dialog, letting segments size purely
 // off their `widthPct` share of whatever width the dialog happens to have
-// gives the narrowest stop (Klarna and Instituto de Telecomunicações, 2
-// points each) less space than their own label needs long before the wider
-// ones feel tight (a `truncate` on the label stops it from visibly bleeding
-// into the next segment, but everything still reads as a cramped pile-up
-// rather than a chart). So, same fix as the "Preferred Stack" diagram's own
+// gives the narrowest stop (Instituto de Telecomunicações, now down to a
+// single owned column since its other year lives inside SINFO's segment)
+// less space than their own label needs long before the wider ones feel
+// tight (a `truncate` on the label stops it from visibly bleeding into the
+// next segment, but everything still reads as a cramped pile-up rather
+// than a chart). So, same fix as the "Preferred Stack" diagram's own
 // overflow (TechStack.astro): work out the width the *narrowest* segment
 // actually needs and size the whole chart up from there, letting it scroll
 // horizontally below that floor rather than squeezing every segment down
@@ -227,15 +309,16 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
           <div class="sticky left-0 z-10 flex w-8 shrink-0 flex-col-reverse justify-between bg-[var(--color-surface)] py-1 text-right font-mono text-[9px] text-[var(--color-muted)]">
             {gridlineValues.map((v) => <span>{v}%</span>)}
           </div>
-          <!-- data-y0/data-y1/data-x/data-series hand the script below
-               everything it needs to recompute the stack in a different
-               order at runtime (pulling a hovered band to the baseline, see
-               that script's own comment) without duplicating the yFor/xFor
-               math or the raw per-point values in two places. This can't be
-               `define:vars`: the script uses real TS type annotations
-               further down, and define:vars forces a script to render
-               is:inline (unprocessed, no TS stripping) — same constraint
-               already documented in ImageLightbox.astro and
+          <!-- data-y0/data-y1/data-x/data-series/data-steps hand the script
+               below everything it needs to recompute the stack (including
+               its org-boundary steps, see `withOrgSteps` above) in a
+               different order at runtime (pulling a hovered band to the
+               baseline, see that script's own comment) without duplicating
+               the yFor/xFor math or the raw per-point values in two places.
+               This can't be `define:vars`: the script uses real TS type
+               annotations further down, and define:vars forces a script to
+               render is:inline (unprocessed, no TS stripping) — same
+               constraint already documented in ImageLightbox.astro and
                Organizations.astro for their own scripts. -->
           <svg
             viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
@@ -246,6 +329,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
             data-y1={PLOT_Y1}
             data-x={JSON.stringify(bands[0]?.points.map((p) => p.x) ?? [])}
             data-series={JSON.stringify(bands.map((b) => ({ id: b.id, values: b.points.map((p) => p.value) })))}
+            data-steps={JSON.stringify([...stepIndices])}
           >
             {gridlineValues.map((v) => (
               <line x1={PLOT_X0 - 3} x2={VIEW_WIDTH} y1={yFor(v)} y2={yFor(v)} stroke="var(--color-border)" stroke-width="0.3" />
@@ -254,14 +338,16 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
               // One closed shape per band: its top edge left to right, then
               // its base edge back right to left, which is what turns "a top
               // line and a base line" into one fillable polygon rather than
-              // two open ones. No per-point markers on top of it: the shape
-              // itself (and the kinks in its own top edge, one per point) is
-              // the thing to read, not the points that produced it.
-              const top = band.points.map((p) => `${p.x},${p.topY}`);
-              const base = band.points
+              // two open ones. No per-point markers beyond that: the shape
+              // itself (its steps at an org boundary, its kinks elsewhere,
+              // one per point) is the thing to read, not the points that
+              // produced it. `withOrgSteps` inserts the extra vertices for a
+              // hard org-change edge; every other edge passes through as a
+              // plain point-to-point line, unchanged.
+              const top = withOrgSteps(band.points.map((p) => ({ x: p.x, y: p.topY })));
+              const base = withOrgSteps(band.points.map((p) => ({ x: p.x, y: p.baseY })))
                 .slice()
-                .reverse()
-                .map((p) => `${p.x},${p.baseY}`);
+                .reverse();
               return (
                 // `data-tooltip`, not a native `<title>`: a browser's own
                 // title tooltip only shows after its own fixed hover delay
@@ -339,9 +425,13 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                      whoever needs it. Just the period underneath, so a
                      segment still says *which* era. `w-full truncate` in
                      case a locale's own period string ever outgrows even
-                     the narrowest segment (Klarna/Instituto de
-                     Telecomunicações, 2 points each) at the narrowest
-                     phone width — it never has yet. -->
+                     the narrowest segment (Instituto de Telecomunicações,
+                     down to a single owned column) at the narrowest phone
+                     width — it never has yet. Its own tick still shows its
+                     full "2018 – 2020" period even though only 2019/2020
+                     gets a column of its own here; 2018 is the shared point
+                     inside SINFO's segment instead (see
+                     `overlapsPreviousStopAtYearIndex`). -->
                 <span class="w-full truncate text-center text-[8px] leading-tight text-[var(--color-muted)]">{seg.stop.period}</span>
               </div>
             ))}
@@ -502,6 +592,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   let xs: number[] = [];
   let plotY0 = 0;
   let plotY1 = 0;
+  let stepIndices = new Set<number>();
   try {
     (JSON.parse(svg?.dataset.series ?? '[]') as CategorySeries[]).forEach((s) => {
       seriesById[s.id] = s.values;
@@ -509,6 +600,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     xs = JSON.parse(svg?.dataset.x ?? '[]') as number[];
     plotY0 = Number(svg?.dataset.y0 ?? 0);
     plotY1 = Number(svg?.dataset.y1 ?? 0);
+    stepIndices = new Set(JSON.parse(svg?.dataset.steps ?? '[]') as number[]);
   } catch {
     // Malformed data-* JSON would only happen from a hand-edited DOM; fail
     // quiet and leave the chart in its server-rendered (unreorderable, but
@@ -516,6 +608,26 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   }
   function yFor(value: number) {
     return plotY1 - (value / 100) * (plotY1 - plotY0);
+  }
+  // Same shape as `withOrgSteps` in the frontmatter above (see its own
+  // comment): flat up to a hard org-change boundary, a vertical jump right
+  // on it, flat again from there to the next real point. Kept in sync with
+  // that copy by construction, not just convention — both read the same
+  // `stepIndices` this script parsed from `data-steps`, computed once,
+  // server-side, from the same `points` list that produced everything else
+  // here.
+  function withOrgSteps(vertices: [number, number][]): [number, number][] {
+    const path: [number, number][] = [];
+    vertices.forEach(([x, y], i) => {
+      if (i > 0 && stepIndices.has(i)) {
+        const [prevX, prevY] = vertices[i - 1];
+        const boundaryX = (prevX + x) / 2;
+        path.push([boundaryX, prevY]);
+        path.push([boundaryX, y]);
+      }
+      path.push([x, y]);
+    });
+    return path;
   }
 
   const bandEls = [...(chart?.querySelectorAll<SVGPolygonElement>('.chart-band') ?? [])];
@@ -535,15 +647,17 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     order.forEach((id) => {
       const values = seriesById[id];
       if (!values) return;
-      const top: string[] = [];
-      const base: string[] = [];
+      const topRaw: [number, number][] = [];
+      const baseRaw: [number, number][] = [];
       values.forEach((value, i) => {
         const from = runningTop[i];
         const to = from + value;
         runningTop[i] = to;
-        top.push(`${xs[i]},${yFor(to)}`);
-        base.unshift(`${xs[i]},${yFor(from)}`);
+        topRaw.push([xs[i], yFor(to)]);
+        baseRaw.push([xs[i], yFor(from)]);
       });
+      const top = withOrgSteps(topRaw);
+      const base = withOrgSteps(baseRaw).slice().reverse();
       result[id] = [...top, ...base].join(' ');
     });
     return result;

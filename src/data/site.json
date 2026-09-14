@@ -760,6 +760,7 @@
         "logoScale": 0.85,
         "chipClass": "bg-white",
         "period": "2018 – 2020",
+        "overlapsPreviousStopAtYearIndex": 1,
         "role": "Thesis Researcher / Data Scientist",
         "kpis": [
           "48%+ decision accuracy",
@@ -2329,6 +2330,7 @@
         "logoScale": 0.85,
         "chipClass": "bg-white",
         "period": "2018 – 2020",
+        "overlapsPreviousStopAtYearIndex": 1,
         "role": "Investigador de Tese / Data Scientist",
         "kpis": [
           "Precisão de decisão superior a 48%",

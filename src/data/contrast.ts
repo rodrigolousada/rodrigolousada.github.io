@@ -21,6 +21,20 @@ export function contrastRatio(hexA: string, hexB: string): number {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+/** Picks black or white text for a label sitting on top of a `#rrggbb`
+ * background, using relative luminance directly rather than a full
+ * contrast-ratio comparison against both candidates: past roughly the
+ * halfway point between black and white, a color reads as "light" and
+ * needs black text over it. That's the simple version of the rule, and
+ * it's also the one that changes the least: a stricter ratio-optimizing
+ * version would flip several of this site's darker category colors
+ * (blue, orange, pink, ...) to black too, even though white already
+ * reads fine on them; only the genuinely pale ones (Data Analytics' mint,
+ * the one that prompted this) actually need to switch. */
+export function readableTextColor(hexBackground: string): '#000000' | '#ffffff' {
+  return relativeLuminance(hexBackground) > 0.5 ? '#000000' : '#ffffff';
+}
+
 /** Today's known --color-surface value, used only if the read below ever fails. */
 const FALLBACK_SURFACE_COLOR = '#131318';
 
