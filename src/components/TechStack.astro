@@ -410,8 +410,52 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.techPanel !== name));
   }
 
-  tabs.forEach((tab) => tab.addEventListener('click', () => selectTab(tab.dataset.techTab)));
+  // This is the one dialog on the site whose visible content changes shape
+  // while it's still open (switching tabs, typing a search) — every other
+  // sheet's `h-fit`/grid sizing (see the dialog's own comment) only ever
+  // has to get computed once, right when it opens, and never again. That
+  // turns out to matter: on a real iPhone, this sheet has been reported
+  // getting a little shorter each time its tabs are switched, and again
+  // just from pinch-zooming the page — two triggers that share nothing
+  // except both leaving WebKit's cached idea of this grid row's height
+  // stale rather than recomputed. Two earlier attempts at chasing the
+  // *cause* of that staleness (pinning a `dvh`-derived pixel height in JS,
+  // then switching the unit itself to `svh`) didn't stick, because neither
+  // actually forces WebKit to redo the computation — they only changed an
+  // input to it. This forces the redo directly instead: toggling the
+  // grid's own row-template property off and back on invalidates whatever
+  // WebKit had cached for it, so the next paint has to work it out fresh
+  // against the dialog's current content and clamp, regardless of what
+  // triggered the check. Run after every tab switch (the trigger we can
+  // see directly) and on every `visualViewport` resize — which, unlike a
+  // plain `window` resize, also fires for pinch-zoom, the on-screen
+  // keyboard, and the browser chrome animating, so it catches the rest of
+  // this bug's known triggers under one mechanism instead of chasing each
+  // individually again later. Coalesced to once per animation frame so a
+  // fast pinch gesture (many `resize` events in quick succession) forces
+  // at most one reflow rather than one per event.
+  let resyncScheduled = false;
+  function resyncSheetHeight() {
+    if (resyncScheduled) return;
+    resyncScheduled = true;
+    requestAnimationFrame(() => {
+      resyncScheduled = false;
+      if (!techDialog || !techDialog.hasAttribute('open')) return;
+      const prevRows = (techDialog as HTMLElement).style.gridTemplateRows;
+      (techDialog as HTMLElement).style.gridTemplateRows = 'none';
+      void (techDialog as HTMLElement).offsetHeight; // flush — forces the invalidation to actually take effect
+      (techDialog as HTMLElement).style.gridTemplateRows = prevRows;
+    });
+  }
+
+  tabs.forEach((tab) =>
+    tab.addEventListener('click', () => {
+      selectTab(tab.dataset.techTab);
+      resyncSheetHeight();
+    }),
+  );
   techDialog?.addEventListener('dialogopen', () => selectTab('search'));
+  (window.visualViewport ?? window).addEventListener('resize', resyncSheetHeight);
 
   // The "swipe to see more" hint above the preferred-stack diagram: only on
   // while there's actually more to see. `scrollWidth`/`clientWidth` both
@@ -488,5 +532,9 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
     });
 
     emptyMessage?.classList.toggle('hidden', anyVisible);
+    // Filtering changes this panel's content height too (fewer matches,
+    // shorter list) — same staleness risk as switching tabs, see
+    // `resyncSheetHeight`'s own comment above.
+    resyncSheetHeight();
   });
 </script>
