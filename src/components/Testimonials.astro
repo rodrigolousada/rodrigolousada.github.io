@@ -9,6 +9,7 @@ import { getSite, type Locale } from '../data/site';
 import { getUI } from '../data/ui';
 import { icons } from '../data/icons';
 import TestimonialCard from './TestimonialCard.astro';
+import DialogCloseButton from './DialogCloseButton.astro';
 
 interface Props {
   locale: Locale;
@@ -117,14 +118,7 @@ const certModalId = 'clifton-strengths-certificate';
     <div class="relative flex items-center justify-between border-b border-[var(--color-border)] px-6 pt-6 pb-4 sm:pt-4">
       <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
       <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{ui.testimonials.certificateHeading}</p>
-      <form method="dialog">
-        <button
-          aria-label={ui.common.close}
-          class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-        >
-          ✕
-        </button>
-      </form>
+      <DialogCloseButton label={ui.common.close} />
     </div>
     <div class="max-h-[calc(94svh-4rem)] overflow-y-auto p-6 sm:max-h-[calc(90vh-4rem)]">
       <img

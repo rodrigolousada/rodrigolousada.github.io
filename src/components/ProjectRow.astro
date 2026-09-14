@@ -4,6 +4,8 @@ import { getUI } from '../data/ui';
 import PhoneMockup, { type HandoffStep } from './PhoneMockup.astro';
 import IntentFlow, { type FlowStep, type FlowIntent } from './IntentFlow.astro';
 import TechPill from './TechPill.astro';
+import DialogCloseButton from './DialogCloseButton.astro';
+import ScaledLogo from './ScaledLogo.astro';
 import { icons } from '../data/icons';
 import { slugify } from '../data/slug';
 
@@ -24,6 +26,25 @@ interface NewsItem {
   url: string;
 }
 
+/** Shape of a project's interactive demo mockup. Exported because it's
+ * needed verbatim in two places: a project's own Props here, and a career
+ * stop's inline project list in CareerStopRow.astro (a project can be
+ * rendered standalone via this component or nested under its stop's own
+ * dialog) — hand-copying it there had already drifted into two separately
+ * maintained but supposedly-identical shapes. */
+export interface ProjectDemo {
+  mode?: string;
+  captions?: string[];
+  videos?: (string | null)[];
+  steps?: HandoffStep[];
+  /** mode="flow" only — a call-routing diagram (see IntentFlow.astro). */
+  intake?: FlowStep[];
+  router?: FlowStep;
+  intents?: FlowIntent[];
+  fallback?: FlowStep;
+  note?: string;
+}
+
 interface Props {
   locale: Locale;
   project: {
@@ -42,18 +63,7 @@ interface Props {
     myRole?: string;
     technologies: string[];
     achievements: string[];
-    demo?: {
-      mode?: string;
-      captions?: string[];
-      videos?: (string | null)[];
-      steps?: HandoffStep[];
-      /** mode="flow" only — a call-routing diagram (see IntentFlow.astro). */
-      intake?: FlowStep[];
-      router?: FlowStep;
-      intents?: FlowIntent[];
-      fallback?: FlowStep;
-      note?: string;
-    };
+    demo?: ProjectDemo;
     /** A static figure shown in the detail view (a diagram, a screenshot) — separate from the interactive `demo` mockup. Click-to-enlarge (ImageLightbox.astro) is automatic. */
     image?: {
       src: string;
@@ -118,12 +128,7 @@ function formatNewsDate(date: string) {
           ) : (
             badgeCompanies.map((c) => (
               <span class={`flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-bg)] ${c.logoFill ? '' : 'p-1'} ${c.chipClass}`}>
-                <img
-                  src={c.logo}
-                  alt={c.name}
-                  class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
-                  style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
-                />
+                <ScaledLogo src={c.logo} alt={c.name} invert={c.logoInvert} scale={c.logoScale} />
               </span>
             ))
           )
@@ -197,12 +202,7 @@ function formatNewsDate(date: string) {
             ) : (
               badgeCompanies.map((c) => (
                 <span class={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg ${c.logoFill ? '' : 'p-1.5'} ${c.chipClass}`}>
-                  <img
-                    src={c.logo}
-                    alt={c.name}
-                    class={`h-full w-full object-contain ${c.logoInvert ? 'brightness-0 invert' : ''}`}
-                    style={c.logoScale ? `transform: scale(${c.logoScale})` : undefined}
-                  />
+                  <ScaledLogo src={c.logo} alt={c.name} invert={c.logoInvert} scale={c.logoScale} />
                 </span>
               ))
             )
@@ -225,14 +225,7 @@ function formatNewsDate(date: string) {
               </svg>
             </button>
           )}
-          <form method="dialog">
-            <button
-              aria-label={ui.common.close}
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-            >
-              ✕
-            </button>
-          </form>
+          <DialogCloseButton label={ui.common.close} />
         </div>
       </div>
 

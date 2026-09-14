@@ -1,0 +1,36 @@
+---
+// The `<img>` at the center of every "company logo in a fixed-size chip"
+// spot on the site that shares this shape, with the same two escape
+// hatches: `invert` for a dark mark that doesn't otherwise read on this
+// chip's background, and `scale` for a logo whose source art renders
+// visually smaller than its neighbors at the same box height (see the
+// `logoScale`-family field docs on whichever Props interface passed it
+// in). The chip itself (its size, background, padding) stays owned by
+// whichever component places this one — CareerStopRow's row chip and
+// dialog header, ProjectRow's project badge and its own dialog badge,
+// FocusHistoryChart's axis tick — since those differ per context; only
+// this repeated `<img>` lived identically in all of them.
+//
+// Organizations.astro's own logo row is deliberately not built on this: it
+// bakes its scale into the image's actual height via a CSS custom
+// property, not `transform: scale()`, so the flex row's real layout box
+// stays in sync with the drawn size (see the comment there) — a different
+// tradeoff for a different layout, not an oversight.
+interface Props {
+  src: string;
+  alt: string;
+  invert?: boolean;
+  scale?: number;
+  /** Sizing classes for the image itself. Defaults to filling its container. */
+  class?: string;
+}
+
+const { src, alt, invert = false, scale, class: sizeClass = 'h-full w-full' } = Astro.props;
+---
+
+<img
+  src={src}
+  alt={alt}
+  class={`${sizeClass} object-contain ${invert ? 'brightness-0 invert' : ''}`}
+  style={scale ? `transform: scale(${scale})` : undefined}
+/>

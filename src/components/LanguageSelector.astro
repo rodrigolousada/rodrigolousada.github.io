@@ -5,6 +5,7 @@
 // today) there's nothing to pick between, so this renders nothing at all
 // rather than a selector with a single, disabled-feeling option.
 import { locales, defaultLocale, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
 import { getLanguageMeta, localePath } from '../data/languages';
 
 interface Props {
@@ -13,13 +14,14 @@ interface Props {
 
 const { locale } = Astro.props;
 const current = getLanguageMeta(locale);
+const ui = getUI(locale);
 ---
 
 {
   locales.length > 1 && (
     <details data-lang-select class="group/lang relative">
       <summary
-        aria-label={`Change language (current: ${current.label})`}
+        aria-label={ui.nav.changeLanguage.replace('{label}', current.label)}
         class="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-[var(--color-border)] px-2.5 py-1 text-sm text-[var(--color-text)] transition hover:border-[var(--color-accent)] [&::-webkit-details-marker]:hidden"
       >
         <span aria-hidden="true">{current.flag}</span>

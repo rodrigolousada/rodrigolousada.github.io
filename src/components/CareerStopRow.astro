@@ -2,9 +2,9 @@
 import { getSite, type Locale } from '../data/site';
 import { getUI } from '../data/ui';
 import { icons } from '../data/icons';
-import ProjectRow from './ProjectRow.astro';
-import type { HandoffStep } from './PhoneMockup.astro';
-import type { FlowStep, FlowIntent } from './IntentFlow.astro';
+import ProjectRow, { type ProjectDemo } from './ProjectRow.astro';
+import DialogCloseButton from './DialogCloseButton.astro';
+import ScaledLogo from './ScaledLogo.astro';
 
 interface Props {
   locale: Locale;
@@ -41,17 +41,7 @@ interface Props {
       myRole?: string;
       technologies: string[];
       achievements: string[];
-      demo?: {
-        mode?: string;
-        captions?: string[];
-        videos?: (string | null)[];
-        steps?: HandoffStep[];
-        intake?: FlowStep[];
-        router?: FlowStep;
-        intents?: FlowIntent[];
-        fallback?: FlowStep;
-        note?: string;
-      };
+      demo?: ProjectDemo;
       news?: { title: string; source: string; date: string; url: string }[];
       /** External link to the project itself (thesis PDF, publication, live app, etc.). */
       url?: string;
@@ -110,12 +100,7 @@ const moreProjects = stop.projects.slice(3);
     >
       <div class={`flex min-w-0 flex-1 items-center gap-4 ${stop.hidden ? 'select-none blur-[3px]' : ''}`}>
         <div class={`flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1.5 ${stop.chipClass}`}>
-          <img
-            src={stop.logo}
-            alt={`${stop.org} logo`}
-            class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-            style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
-          />
+          <ScaledLogo src={stop.logo} alt={`${stop.org} logo`} invert={stop.logoInvert} scale={stop.logoScale} />
         </div>
 
         <div class="min-w-0 flex-1">
@@ -224,14 +209,12 @@ const moreProjects = stop.projects.slice(3);
       <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
         <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
         <div class={`relative flex h-28 items-center justify-center overflow-hidden sm:h-24 ${stop.chipClass}`}>
-          <img
+          <ScaledLogo
             src={stop.logo}
             alt={`${stop.org} logo`}
-            class={`h-10 w-auto object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-            style={(() => {
-              const scale = stop.headerLogoScale ?? stop.logoScale;
-              return scale ? `transform: scale(${scale})` : undefined;
-            })()}
+            class="h-10 w-auto"
+            invert={stop.logoInvert}
+            scale={stop.headerLogoScale ?? stop.logoScale}
           />
           <form method="dialog" class="absolute right-3 top-3">
             <button
@@ -368,6 +351,9 @@ const moreProjects = stop.projects.slice(3);
                     style={`width:${value}%; background-color:${cat.color}; margin-right:${ci === arr.length - 1 ? 0 : '2px'};`}
                     title={`${cat.label}: ${value}%`}
                   >
+                    {/* Below ~15% the segment isn't wide enough to fit "NN%" without it
+                        clipping or overflowing into its neighbor — the `title` tooltip
+                        above still carries the exact number for those slivers. */}
                     {value >= 15 && <span class="select-none text-[9px] font-semibold text-white">{value}%</span>}
                   </div>
                 );
@@ -405,7 +391,7 @@ const moreProjects = stop.projects.slice(3);
                     <button
                       type="button"
                       data-badge-open={stop.credlyBadges!.indexOf(badge)}
-                      aria-label={`View ${badge.name} credential`}
+                      aria-label={ui.careerStop.viewBadgeCredential.replace('{name}', badge.name)}
                       class="group/badge flex flex-col items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-center transition hover:-translate-y-0.5 hover:border-[var(--color-accent)]"
                     >
                       <img
@@ -457,14 +443,7 @@ const moreProjects = stop.projects.slice(3);
           <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
             <span data-badge-index>1</span> / {stop.credlyBadges.length}
           </p>
-          <form method="dialog">
-            <button
-              aria-label={ui.common.close}
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-            >
-              ✕
-            </button>
-          </form>
+          <DialogCloseButton label={ui.common.close} />
         </div>
         <div class="flex items-center gap-3 p-6">
           <button

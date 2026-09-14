@@ -36,9 +36,9 @@ export function openStop(stopEl: HTMLElement, projectEl: HTMLElement | null = nu
 
   scrollToStop(stopEl, 600);
   // Start the pulse once the scroll has actually settled, not at the same
-  // moment it starts moving — lit up while the page is still sliding into
-  // place it was mostly spent (and unnoticed) by the time anyone could
-  // look at it.
+  // moment it starts moving — lighting up while the page is still sliding
+  // into place meant the highlight was mostly spent (and unnoticed) by the
+  // time anyone could actually look at it.
   const highlightTarget = stopEl.querySelector<HTMLElement>(':scope > button') ?? stopEl;
   setTimeout(() => {
     highlightTarget.classList.add('scroll-highlight');

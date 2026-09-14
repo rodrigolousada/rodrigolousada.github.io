@@ -2,10 +2,13 @@
   "en": {
     "nav": {
       "openMenu": "Open menu",
-      "closeMenu": "Close menu"
+      "closeMenu": "Close menu",
+      "changeLanguage": "Change language (current: {label})"
     },
     "common": {
       "close": "Close",
+      "play": "Play",
+      "pause": "Pause",
       "showMore": "Show more",
       "comingSoon": "Coming soon",
       "view": "View →",
@@ -17,7 +20,8 @@
     "hero": {
       "viewProjects": "View projects",
       "getInTouch": "Get in touch",
-      "downloadCv": "Download CV"
+      "downloadCv": "Download CV",
+      "showInfoFor": "Show info for {name}"
     },
     "technologies": {
       "heading": "TECHNOLOGIES",
@@ -51,7 +55,8 @@
       "viewOnCredly": "View on Credly →",
       "previousBadge": "Previous badge",
       "nextBadge": "Next badge",
-      "seeFullProfileOnCredly": "See full profile on Credly →"
+      "seeFullProfileOnCredly": "See full profile on Credly →",
+      "viewBadgeCredential": "View {name} credential"
     },
     "project": {
       "sideProject": "Side project",
@@ -130,10 +135,13 @@
   "pt": {
     "nav": {
       "openMenu": "Abrir menu",
-      "closeMenu": "Fechar menu"
+      "closeMenu": "Fechar menu",
+      "changeLanguage": "Mudar de idioma (atual: {label})"
     },
     "common": {
       "close": "Fechar",
+      "play": "Reproduzir",
+      "pause": "Pausar",
       "showMore": "Ver mais",
       "comingSoon": "Brevemente",
       "view": "Ver →",
@@ -145,7 +153,8 @@
     "hero": {
       "viewProjects": "Ver projetos",
       "getInTouch": "Entrar em contacto",
-      "downloadCv": "Transferir CV"
+      "downloadCv": "Transferir CV",
+      "showInfoFor": "Mostrar informação sobre {name}"
     },
     "technologies": {
       "heading": "TECNOLOGIAS",
@@ -179,7 +188,8 @@
       "viewOnCredly": "Ver no Credly →",
       "previousBadge": "Distintivo anterior",
       "nextBadge": "Distintivo seguinte",
-      "seeFullProfileOnCredly": "Ver perfil completo no Credly →"
+      "seeFullProfileOnCredly": "Ver perfil completo no Credly →",
+      "viewBadgeCredential": "Ver credencial de {name}"
     },
     "project": {
       "sideProject": "Projeto paralelo",

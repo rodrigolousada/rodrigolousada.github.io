@@ -34,9 +34,17 @@ const ui = getUI(locale);
   <div id="card-grid" class="mt-8 grid grid-cols-1 gap-5 [perspective:1200px] sm:grid-cols-2">
     <!-- Personal card -->
     <div class="card-slot [transform-style:preserve-3d] transition-transform duration-700 ease-out">
-    <button
-      type="button"
-      class="flip-card group relative aspect-[1.75/1] w-full cursor-pointer text-left [transform-style:preserve-3d] transition-transform duration-700 ease-out"
+    <!-- `role="button"`, not a real `<button>`: the front face holds actual
+         `<a>` links (mail/phone/LinkedIn), and nesting interactive content
+         inside a `<button>` is invalid HTML, browsers and screen readers
+         handle it inconsistently. `tabindex="0"` plus the keydown handler
+         below (Enter/Space) restores native-button keyboard behavior; the
+         `<a>` clicks already stop propagation so they don't also trigger
+         the flip. -->
+    <div
+      role="button"
+      tabindex="0"
+      class="flip-card group relative aspect-[1.75/1] w-full cursor-pointer text-left [transform-style:preserve-3d] transition-transform duration-700 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
       aria-label={ui.contact.flipPersonalCard}
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
@@ -82,14 +90,17 @@ const ui = getUI(locale);
         <p class="mt-1 font-mono text-xs uppercase tracking-widest text-blue-100">{contact.personal.backSubtitle}</p>
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-white/50">{ui.contact.clickToRotate}</span>
       </div>
-    </button>
+    </div>
     </div>
 
     <!-- Klarna card -->
     <div class="card-slot [transform-style:preserve-3d] transition-transform duration-700 ease-out">
-    <button
-      type="button"
-      class="flip-card group relative aspect-[1.75/1] w-full cursor-pointer text-left [transform-style:preserve-3d] transition-transform duration-700 ease-out"
+    <!-- See the personal card above for why this is `role="button"` on a
+         `<div>` rather than a real `<button>`. -->
+    <div
+      role="button"
+      tabindex="0"
+      class="flip-card group relative aspect-[1.75/1] w-full cursor-pointer text-left [transform-style:preserve-3d] transition-transform duration-700 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
       aria-label={ui.contact.flipKlarnaCard}
     >
       <div class="absolute inset-0 overflow-hidden rounded-2xl bg-white shadow-xl [backface-visibility:hidden]">
@@ -125,7 +136,7 @@ const ui = getUI(locale);
         <img src={contact.klarna.logo} alt="Klarna" class="h-16 w-auto" />
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-neutral-600/70">{ui.contact.clickToRotate}</span>
       </div>
-    </button>
+    </div>
     </div>
   </div>
 </section>
@@ -233,11 +244,21 @@ const ui = getUI(locale);
   });
 
   // Manual click-to-flip only makes sense once the cards have settled face-up.
+  function toggleFlip(card: HTMLElement) {
+    if (!inView) return;
+    const flipped = card.dataset.flipped === 'true';
+    setFlipped(card, !flipped);
+  }
+
   flipCards.forEach((card) => {
-    card.addEventListener('click', () => {
-      if (!inView) return;
-      const flipped = card.dataset.flipped === 'true';
-      setFlipped(card, !flipped);
+    card.addEventListener('click', () => toggleFlip(card));
+    // The card is a `role="button"` div, not a real `<button>` (see the
+    // markup comment above), so Enter/Space activation isn't free: wire it
+    // up by hand to keep it keyboard-operable.
+    card.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      toggleFlip(card);
     });
   });
 </script>

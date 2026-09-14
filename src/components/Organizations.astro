@@ -166,6 +166,7 @@ const jumpUi = {
 
 <script>
   import { openStop } from '../scripts/careerJump';
+  import { wireTogglePopups } from '../scripts/togglePopup';
 
   // Translated copy for the jump-confirm popup below, read back off the
   // section's own `data-jump-ui` attribute (see the frontmatter's `jumpUi`)
@@ -185,56 +186,10 @@ const jumpUi = {
     document.querySelector('[data-jump-ui]')?.getAttribute('data-jump-ui') ?? '{}'
   );
 
-  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-study-toggle]');
-  const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-study-close]');
-  // Whichever trigger opened the currently-visible popup, so Escape/close
-  // can hand focus back to it — otherwise a keyboard user's focus would be
-  // left on a now-hidden close button with nothing announcing where it went.
-  let lastTrigger: HTMLButtonElement | null = null;
-
-  function closeAll(restoreFocus = false) {
-    document.querySelectorAll<HTMLElement>('.study-popup').forEach((popup) => {
-      popup.classList.add('hidden');
-    });
-    toggles.forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
-    if (restoreFocus) lastTrigger?.focus();
-    lastTrigger = null;
-  }
-
-  toggles.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.studyToggle;
-      if (!id) return;
-      const popup = document.getElementById(id);
-      const wasOpen = popup ? !popup.classList.contains('hidden') : false;
-      closeAll();
-      if (popup && !wasOpen) {
-        popup.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-        lastTrigger = btn;
-        // Move focus into the popup itself (its close button, always
-        // present) so a keyboard/screen-reader user actually lands on the
-        // content that just appeared, instead of it opening silently
-        // somewhere off in the page while focus stays on the marker.
-        popup.querySelector<HTMLButtonElement>('[data-study-close]')?.focus();
-      }
-    });
-  });
-
-  closeButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeAll(true);
-    });
-  });
-
-  document.addEventListener('click', () => closeAll());
-  // These are plain divs, not native <dialog>, so Escape does nothing for
-  // them unless wired up explicitly — every other overlay on the site gets
-  // this for free from the browser.
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAll(true);
+  wireTogglePopups({
+    toggleAttr: 'data-study-toggle',
+    closeAttr: 'data-study-close',
+    popupClass: 'study-popup',
   });
 
   // Cross-links: "Worked at" / "Clients" logos here and the testimonial in

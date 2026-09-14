@@ -95,14 +95,23 @@ const jsonLd = {
          render-blocking cross-origin round-trip to Google's server on a
          cold cache. -->
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+    <!-- The `<` escape below is the standard guard for inline JSON: without
+         it, a literal "</script>" inside any interpolated site.json field
+         (unlikely today, but not something JSON.stringify itself rules out)
+         would close this tag early and let whatever followed be parsed as
+         HTML instead of JSON-LD. -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+      is:inline
+    />
   </head>
   <body class="font-sans antialiased">
     <AmbientBackground />
     <slot />
     <EngagementPrompt locale={locale} />
     <ProjectDeepLink />
-    <ImageLightbox />
+    <ImageLightbox locale={locale} />
   </body>
 </html>
 

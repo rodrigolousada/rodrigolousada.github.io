@@ -106,13 +106,14 @@ in `docs/HANDOVER.md`.
    marks (IBM, AWS, Docker, OpenAI) were removed from that project after
    takedown requests — for those, render a text-only badge instead of
    guessing at an unofficial mark.
-8. **Known open gaps** (ask Rodrigo, don't fabricate): CourtKit needs a
-   one-line description of what it does before it can be added as a side
-   project; the IT/Master Thesis project needs its actual URL; no
-   standalone Montepio pelican icon mark was found online (current wordmark
-   used as-is in the small chip contexts); LinkedIn content wasn't checked
-   (authenticated site, no scraping access — Rodrigo would need to paste
-   relevant text directly).
+8. **Known open gaps** (ask Rodrigo, don't fabricate): CourtKit is fully
+   written up in site.json but still `hidden: true` pending real Apple
+   Watch/iPhone screen-recording footage and an App Store link (see
+   `docs/LAUNCH_CHECKLIST.md`); the IT/Master Thesis project needs its
+   actual URL; no standalone Montepio pelican icon mark was found online
+   (current wordmark used as-is in the small chip contexts); LinkedIn
+   content wasn't checked (authenticated site, no scraping access, Rodrigo
+   would need to paste relevant text directly).
 9. **Before merging to `master`** (going live on GitHub Pages), flip the
    repo's Settings → Pages → Source to "GitHub Actions" — it's currently
    set to deploy from a branch (leftover from the old Jekyll-style site).

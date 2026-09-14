@@ -7,6 +7,8 @@
 // owning a copy of this data.
 import { getSite, type Locale } from '../data/site';
 import { getUI } from '../data/ui';
+import DialogCloseButton from './DialogCloseButton.astro';
+import ScaledLogo from './ScaledLogo.astro';
 
 interface Props {
   locale: Locale;
@@ -204,14 +206,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
           <h3 class="text-base font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
           <p class="mt-1 text-xs text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
         </div>
-        <form method="dialog">
-          <button
-            aria-label={ui.common.close}
-            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
-          >
-            ✕
-          </button>
-        </form>
+        <DialogCloseButton label={ui.common.close} shrink />
       </div>
 
       <!-- Scrolls horizontally below `chartMinWidthRem` (see its own comment)
@@ -312,14 +307,11 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                 style={`width:${seg.widthPct}%`}
               >
                 <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${seg.stop.chipClass}`}>
-                  <img
+                  <ScaledLogo
                     src={seg.stop.logo}
                     alt={seg.stop.org}
-                    class={`h-full w-full object-contain ${seg.stop.logoInvert ? 'brightness-0 invert' : ''}`}
-                    style={(() => {
-                      const scale = seg.stop.tickLogoScale ?? seg.stop.logoScale;
-                      return scale ? `transform: scale(${scale})` : undefined;
-                    })()}
+                    invert={seg.stop.logoInvert}
+                    scale={seg.stop.tickLogoScale ?? seg.stop.logoScale}
                   />
                 </div>
                 <!-- No org name spelled out here — the logo above is

@@ -8,6 +8,15 @@
 // ProjectDeepLink's share button. Nests on top of whatever project/career-
 // stop/testimonial dialogs are already open underneath it; native <dialog>
 // stacking handles that for free.
+import { type Locale } from '../data/site';
+import { getUI } from '../data/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = getUI(locale);
 ---
 
 <dialog
@@ -17,7 +26,9 @@
   <button
     type="button"
     data-lightbox-playpause
-    aria-label="Pause"
+    data-pause-label={ui.common.pause}
+    data-play-label={ui.common.play}
+    aria-label={ui.common.pause}
     hidden
     class="fixed right-16 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
   >
@@ -26,7 +37,7 @@
   <button
     type="button"
     data-lightbox-close
-    aria-label="Close"
+    aria-label={ui.common.close}
     class="fixed right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
   >
     ✕
@@ -89,7 +100,7 @@
         if (playPauseBtn) {
           playPauseBtn.hidden = false;
           playPauseBtn.textContent = '⏸';
-          playPauseBtn.setAttribute('aria-label', 'Pause');
+          playPauseBtn.setAttribute('aria-label', playPauseBtn.dataset.pauseLabel ?? 'Pause');
         }
       } else {
         video?.classList.add('hidden');
@@ -147,12 +158,12 @@
     video?.addEventListener('play', () => {
       if (!playPauseBtn) return;
       playPauseBtn.textContent = '⏸';
-      playPauseBtn.setAttribute('aria-label', 'Pause');
+      playPauseBtn.setAttribute('aria-label', playPauseBtn.dataset.pauseLabel ?? 'Pause');
     });
     video?.addEventListener('pause', () => {
       if (!playPauseBtn) return;
       playPauseBtn.textContent = '▶';
-      playPauseBtn.setAttribute('aria-label', 'Play');
+      playPauseBtn.setAttribute('aria-label', playPauseBtn.dataset.playLabel ?? 'Play');
     });
   }
 </script>

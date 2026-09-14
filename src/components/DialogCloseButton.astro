@@ -1,0 +1,33 @@
+---
+// The "✕" button that closes the nearest open <dialog>, wrapped in its own
+// `method="dialog"` <form> so the browser handles the actual closing for
+// free (no JS listener needed) — used at the top of every content dialog on
+// the site (career stops, projects, the focus-history chart, testimonials,
+// tech stack, the engagement prompt). Extracted here because this exact
+// markup had been hand-copied into seven files; a shared tweak (spacing,
+// hover feel) no longer has to be made seven times in sync.
+//
+// Not used by the two dialogs whose header banner is a photo/brand color
+// instead of the dialog's own surface (CareerStopRow's stop header,
+// GameCartridge's cartridge art) — those need a light-on-dark treatment,
+// and their two `bg-black/NN` opacities already differ from each other by
+// design, so folding them into one shared "dark" variant here would either
+// need a third prop just for two call sites or silently flatten one of them
+// to match the other.
+interface Props {
+  label: string;
+  /** Match the wrapping row's shrink behavior when it's a flex container that would otherwise squeeze this button — most dialogs don't need it. */
+  shrink?: boolean;
+}
+
+const { label, shrink = false } = Astro.props;
+---
+
+<form method="dialog">
+  <button
+    aria-label={label}
+    class={`flex h-7 w-7 ${shrink ? 'shrink-0 ' : ''}items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125`}
+  >
+    ✕
+  </button>
+</form>

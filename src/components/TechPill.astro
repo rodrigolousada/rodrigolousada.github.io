@@ -12,11 +12,10 @@
 // pills also survive the "All Technologies" search filter (see TechStack's
 // script) so someone can highlight the ones they like while still narrowing
 // the list down.
-import fs from 'node:fs';
-import path from 'node:path';
 import { techIcons } from '../data/techIcons';
 import { techAliases } from '../data/techAliases';
 import { getUI } from '../data/ui';
+import { getSurfaceColor, contrastRatio } from '../data/contrast';
 import type { Locale } from '../data/site';
 
 interface Props {
@@ -42,36 +41,15 @@ const searchTokens = [name, ...(techAliases[name] ?? [])].map(normalize).join(' 
 // the pill's own background to read once the white backing circle is gone —
 // swap those for the theme's muted text color instead of guessing per-icon
 // exceptions. Judged by actual contrast against the pill background (WCAG
-// contrast ratio), not raw brightness — a moderately dark but saturated
-// color (Datadog purple, Terraform violet) still reads fine on this
-// background and should keep its real color; only near-invisible ones
-// (contrast well under the "graphical object" 3:1 baseline) get swapped.
-//
-// Read straight from global.css's --color-surface rather than a hand-copied
-// hex literal, so retheming the surface color can't silently desync this
-// contrast check from what the pill actually renders on. Resolved from the
-// project root (where `astro dev`/`astro build` always run), not this
-// component's own file — a relative `import.meta.url` path breaks once this
-// component gets bundled somewhere else under `dist/` during a production
-// build. Falls back to today's known value if the file or token is ever
-// missing/renamed, so a build never breaks over it.
-let PILL_BG = '#131318';
-try {
-  const globalCss = fs.readFileSync(path.join(process.cwd(), 'src/styles/global.css'), 'utf-8');
-  PILL_BG = globalCss.match(/--color-surface:\s*(#[0-9a-fA-F]{3,8})/)?.[1] ?? PILL_BG;
-} catch {
-  // Keep the fallback above.
-}
-function relativeLuminance(hex: string) {
-  const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((h) => parseInt(h, 16) / 255);
-  const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
-  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
-}
-function contrastRatio(hexA: string, hexB: string) {
-  const [la, lb] = [relativeLuminance(hexA), relativeLuminance(hexB)];
-  const [lighter, darker] = la > lb ? [la, lb] : [lb, la];
-  return (lighter + 0.05) / (darker + 0.05);
-}
+// contrast ratio, see src/data/contrast.ts), not raw brightness — a
+// moderately dark but saturated color (Datadog purple, Terraform violet)
+// still reads fine on this background and should keep its real color; only
+// near-invisible ones get swapped. The cutoff below (1.8) is deliberately
+// under WCAG's 3:1 "graphical object" baseline: it's tuned empirically
+// against this actual icon set to catch only the genuinely hard-to-read
+// colors, not merely suboptimal ones, since 3:1 would swap several brand
+// colors that read fine in practice.
+const PILL_BG = getSurfaceColor();
 const iconColor = icon && contrastRatio(icon.color, PILL_BG) < 1.8 ? 'var(--color-muted)' : icon?.color;
 const iconSize = icon?.sizePx ?? 18;
 ---
