@@ -15,6 +15,8 @@ interface Props {
     title: string;
     logo: string;
     logoScale?: number;
+    /** Overrides `logoScale` for the dialog's own header banner only, where the logo sits alone at a bigger size and unclipped — a multiplier tuned for the small chip elsewhere can read as oversized there. Falls back to `logoScale` when unset. */
+    headerLogoScale?: number;
     logoInvert?: boolean;
     chipClass: string;
     period: string;
@@ -226,7 +228,10 @@ const moreProjects = stop.projects.slice(3);
             src={stop.logo}
             alt={`${stop.org} logo`}
             class={`h-10 w-auto object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-            style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+            style={(() => {
+              const scale = stop.headerLogoScale ?? stop.logoScale;
+              return scale ? `transform: scale(${scale})` : undefined;
+            })()}
           />
           <form method="dialog" class="absolute right-3 top-3">
             <button

@@ -25,6 +25,8 @@ interface HistoryStop {
   slug?: string;
   logo: string;
   logoScale?: number;
+  /** Overrides `logoScale` for this chart's own x-axis tick only, where the chip is smaller and tighter than the career-stop row it's otherwise shared with — a multiplier tuned for that bigger chip can under-fill this one. Falls back to `logoScale` when unset. */
+  tickLogoScale?: number;
   logoInvert?: boolean;
   chipClass: string;
   period: string;
@@ -254,7 +256,10 @@ const chartMinWidthRem =
                   src={stop.logo}
                   alt={stop.org}
                   class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
-                  style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+                  style={(() => {
+                    const scale = stop.tickLogoScale ?? stop.logoScale;
+                    return scale ? `transform: scale(${scale})` : undefined;
+                  })()}
                 />
               </div>
               <!-- No org name spelled out here — the logo above is already
