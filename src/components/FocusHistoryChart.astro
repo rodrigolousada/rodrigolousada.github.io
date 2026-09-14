@@ -474,14 +474,17 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
       <!-- Same order as the stack itself (technical group first, then the
            people/business one), so "why is this one at the bottom" has an
            answer right below it. `data-legend-category` is read by the
-           script below to dim every band but this one on hover, so a
-           visitor can pick one color out of an eight-way stack without
-           having to trace it by eye first. -->
+           script below, which supports picking more than one at once (see
+           its own comment): hovering previews one, clicking toggles it on
+           persistently, and any number can be clicked at the same time.
+           `legend-swatch`/`legend-label` are hooks for that script's CSS
+           (the `:hover` state and the `is-clicked` class it toggles),
+           not styled directly here. -->
       <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-[var(--color-border)] pt-4">
         {bands.map((band) => (
           <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
-            <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
-            <span class="text-[11px] text-[var(--color-muted)]">{band.label}</span>
+            <span class="legend-swatch h-2 w-2 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+            <span class="legend-label text-[11px] text-[var(--color-muted)]">{band.label}</span>
           </div>
         ))}
       </div>
@@ -511,9 +514,10 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     color: var(--color-accent);
   }
 
-  /* Legend hover -> chart highlight (see the script below): dim every band
-     but the hovered category's, and nudge that one to full opacity so it
-     visibly lifts off the rest instead of just leaving everyone else alone. */
+  /* Legend hover/click -> chart highlight (see the script below): dim
+     every band except whichever ones are active (clicked, or previewed by
+     a hover), and nudge those to full opacity so they visibly lift off
+     the rest instead of just leaving everyone else alone. */
   .chart-band {
     transition: opacity 150ms ease;
   }
@@ -523,8 +527,31 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   .chart-band.is-highlighted {
     fill-opacity: 1;
   }
+  /* Legend items are genuinely clickable now (toggle a category on/off,
+     any number at once), so the pointer should say so. */
   .legend-item {
-    cursor: default;
+    cursor: pointer;
+  }
+  /* Hover feedback lives in plain CSS, not the script's JS state: it's
+     purely about *this* legend item, doesn't need to survive the pointer
+     leaving, and this way it can never drift out of sync with the
+     pointer's real position. `is-clicked` (below) is the persistent
+     counterpart, toggled by the script since it has to survive the
+     pointer leaving entirely. */
+  .legend-item:hover .legend-label {
+    color: var(--color-text);
+  }
+  /* A clicked-on category reads as "on" even with the pointer nowhere
+     near it: a ring around its swatch (echoing the swatch's own shape
+     rather than adding new iconography) plus the same brightened label
+     `:hover` above uses, so a category looks the same whether it's
+     currently being hovered or was clicked earlier and just sits there. */
+  .legend-item.is-clicked .legend-swatch {
+    box-shadow: 0 0 0 2px var(--color-text);
+  }
+  .legend-item.is-clicked .legend-label {
+    color: var(--color-text);
+    font-weight: 600;
   }
 </style>
 
@@ -596,24 +623,32 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   });
   chart?.addEventListener('close', hideTooltip);
 
-  // Legend hover -> dim every `.chart-band` except the hovered category's,
-  // *and* pull that band down to the baseline (base 0%) by re-stacking the
-  // whole chart with it first in the order. A band buried in the middle of
-  // an eight-way stack has a wavy top *and* a wavy base, both shaped by
-  // whatever's below it. Only its thickness is actually "its" data; sitting
-  // it on the baseline instead makes its own top edge the only wavy line
-  // left, so its real shape (not everyone else's) is what you're reading.
-  // Everything else keeps its existing relative order, just shifted up to
-  // make room, so nothing else visibly reshuffles past what the new base
-  // forces.
+  // Legend hover/click -> dim every `.chart-band` except whichever ones are
+  // active, *and* pull the active ones down to the baseline (base 0%) by
+  // re-stacking the whole chart with them first in the order. A band
+  // buried in the middle of an eight-way stack has a wavy top *and* a wavy
+  // base, both shaped by whatever's below it. Only its thickness is
+  // actually "its" data; sitting it on the baseline instead makes its own
+  // top edge the only wavy line left, so its real shape (not everyone
+  // else's) is what you're reading. Everything inactive keeps its existing
+  // relative order, just shifted up to make room.
   //
-  // A click pins the reorder+highlight so it survives the pointer leaving
-  // (to read a chart with the mouse off to the side, or on a touch device
-  // where there's no hover at all): reclicking the pinned category, or
-  // clicking a different one, is the only way to change it while a pin is
-  // active — plain hover is ignored until then, see the `pinnedCategory`
-  // guard below. Closing the dialog always clears the pin; reopening it
-  // should never surprise anyone with yesterday's selection still active.
+  // Two ways a category becomes active, and they compose:
+  // - Clicking toggles it in `clickedCategories` persistently (survives
+  //   the pointer leaving, for reading with the mouse off to the side, or
+  //   on a touch device with no hover at all) — reclicking the same one
+  //   removes it, clicking a different one *adds* it rather than
+  //   replacing the click, so any number can be clicked on at once (all
+  //   three data-adjacent categories together, say).
+  // - Hovering previews one more on top of whatever's already clicked,
+  //   for as long as the pointer stays over that legend item; it's not
+  //   added to `clickedCategories` and disappears the moment the pointer
+  //   leaves, unless a click had already put it there too. It's always
+  //   last in the stacking order among the active set (`currentOrder`
+  //   below appends it after every clicked one), so it visibly sits above
+  //   the clicked categories rather than wherever it'd otherwise land.
+  // Closing the dialog always clears both; reopening it should never
+  // surprise anyone with yesterday's selection still active.
   interface CategorySeries {
     id: string;
     values: number[];
@@ -741,40 +776,63 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     animationFrame = requestAnimationFrame(step);
   }
 
-  let pinnedCategory: string | null = null;
-  function setActiveCategory(id: string | null) {
+  // Persistent (survives the pointer leaving) and transient (only while
+  // actually hovered) halves of "what's active" — see the big comment
+  // above for how they combine. Order matters for both: insertion order
+  // for clicks (earliest click sits deepest/first in the active group),
+  // and the hovered preview always goes last, appended in `currentOrder`
+  // below rather than tracked as part of `clickedCategories` itself.
+  let clickedCategories: string[] = [];
+  let hoveredCategory: string | null = null;
+
+  function currentOrder(): string[] {
+    const order = [...clickedCategories];
+    if (hoveredCategory !== null && !order.includes(hoveredCategory)) order.push(hoveredCategory);
+    return order;
+  }
+
+  function applyActiveState() {
+    const active = currentOrder();
     bandEls.forEach((band) => {
-      const isMatch = band.dataset.category === id;
-      band.classList.toggle('is-dimmed', id !== null && !isMatch);
-      band.classList.toggle('is-highlighted', id !== null && isMatch);
+      const isActive = active.includes(band.dataset.category ?? '');
+      band.classList.toggle('is-dimmed', active.length > 0 && !isActive);
+      band.classList.toggle('is-highlighted', isActive);
     });
-    const order = id ? [id, ...defaultOrder.filter((catId) => catId !== id)] : defaultOrder;
-    animateBandsTo(id ? computeBandPoints(order) : defaultPoints, 400);
+    const order = active.length > 0 ? [...active, ...defaultOrder.filter((id) => !active.includes(id))] : defaultOrder;
+    animateBandsTo(active.length > 0 ? computeBandPoints(order) : defaultPoints, 400);
   }
 
   chart?.querySelectorAll<HTMLElement>('[data-legend-category]').forEach((item) => {
-    const id = item.dataset.legendCategory ?? null;
+    const id = item.dataset.legendCategory ?? '';
     item.addEventListener('pointerenter', () => {
-      if (pinnedCategory === null) setActiveCategory(id);
+      hoveredCategory = id;
+      applyActiveState();
     });
     item.addEventListener('pointerleave', () => {
-      if (pinnedCategory === null) setActiveCategory(null);
+      hoveredCategory = null;
+      applyActiveState();
     });
     item.addEventListener('click', () => {
-      pinnedCategory = pinnedCategory === id ? null : id;
-      // Re-apply as a plain hover state when unpinning: the pointer is
-      // still over this item (a click can't happen without it), so falling
-      // straight back to "nothing active" would flicker off then rely on a
-      // pointerleave that hasn't fired yet to explain why.
-      setActiveCategory(pinnedCategory ?? id);
+      const index = clickedCategories.indexOf(id);
+      if (index === -1) {
+        clickedCategories.push(id);
+      } else {
+        // Reclicking an already-clicked category turns it back off — the
+        // one piece of this that isn't additive.
+        clickedCategories.splice(index, 1);
+      }
+      item.classList.toggle('is-clicked', index === -1);
+      applyActiveState();
     });
   });
-  // Snap back to the default, unpinned layout the instant the dialog
-  // closes (no animation: it's already invisible) so reopening it later
-  // never shows a leftover reorder from the last visit.
+  // Snap back to nothing clicked or hovered the instant the dialog closes
+  // (no animation: it's already invisible) so reopening it later never
+  // shows yesterday's selection still active.
   chart?.addEventListener('close', () => {
-    pinnedCategory = null;
+    clickedCategories = [];
+    hoveredCategory = null;
     animateBandsTo(defaultPoints, 0);
     bandEls.forEach((band) => band.classList.remove('is-dimmed', 'is-highlighted'));
+    chart?.querySelectorAll('.legend-item.is-clicked').forEach((item) => item.classList.remove('is-clicked'));
   });
 </script>
