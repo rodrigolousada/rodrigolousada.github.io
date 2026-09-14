@@ -161,28 +161,6 @@ const jsonLd = {
     dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]').forEach((el) => {
       el.scrollTop = 0;
     });
-
-    // Pin a mobile bottom sheet's `max-h-[94dvh]` to a fixed pixel value for
-    // as long as it stays open, instead of leaving it live. `dvh` tracks the
-    // mobile browser's address bar live, and that bar can re-animate from
-    // something as small as a tap moving focus inside the sheet — noticeable
-    // on the "All Technologies" sheet, where switching its Search/Preferred
-    // Stack tabs kept nudging it to a slightly different height each time
-    // instead of holding still. Freezing it to whatever `dvh` resolved to
-    // right when the sheet opened keeps the intent (use as much of the
-    // screen as the address bar's current state allows) without the jitter
-    // every later tap could otherwise cause. Only on mobile — a
-    // `[data-sheet-handle]` hidden past `sm:` means this is the centered
-    // desktop card instead, sized off a plain (non-dynamic) `vh` that was
-    // never subject to this in the first place.
-    const handle = dialog.querySelector<HTMLElement>('[data-sheet-handle]');
-    if (handle && getComputedStyle(handle).display !== 'none') {
-      dialog.style.maxHeight = `${window.innerHeight * 0.94}px`;
-    }
-  });
-
-  document.addEventListener('dialogclose', (e) => {
-    (e.target as HTMLElement).style.maxHeight = '';
   });
 </script>
 
@@ -378,20 +356,53 @@ const jsonLd = {
     // `<dialog>` element itself (its `overflow-y` comes out `auto` by
     // default once it's showing modal, no class needed), so that's just as
     // much a target here as any inner one.
+    //
+    // The 60px distance threshold alone still wasn't enough, though: a hard,
+    // stressed flick — the kind thrown out repeatedly just to climb a long
+    // list back to the top faster — can carry enough momentum to overshoot
+    // past it in the bounce, even though nothing about it was meant as a
+    // dismiss. What actually tells the two apart isn't how far the bounce
+    // reaches, it's whether it *stays* there: an inertial overshoot is still
+    // in motion, so `scroll` keeps firing every frame as it springs back on
+    // its own, whereas someone genuinely pulling the sheet down and holding
+    // it produces no new `scroll` events at all while their finger sits
+    // still. So this no longer dismisses the instant the threshold is
+    // crossed — it starts a timer, cancelled and restarted by every further
+    // `scroll` event, and only follows through once a full second has
+    // passed with the box still that far past the top and nothing having
+    // reset the clock in between. Rapid repeated swipes up therefore never
+    // mis-fire it, no matter how far any one of them overshoots — each new
+    // one wipes the previous one's clock before it could ever finish.
     const OVERSCROLL_DISMISS_PX = 60;
+    const OVERSCROLL_HOLD_MS = 1000;
     let overscrollDismissing = false;
+    const overscrollHoldTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
     const overscrollTargets = new Set<HTMLElement>([dialog, ...dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]')]);
     overscrollTargets.forEach((scrollEl) => {
       scrollEl.addEventListener('scroll', () => {
+        const pending = overscrollHoldTimers.get(scrollEl);
+        if (pending !== undefined) {
+          clearTimeout(pending);
+          overscrollHoldTimers.delete(scrollEl);
+        }
         if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
-        overscrollDismissing = true;
-        dialog!.style.transition = 'transform 0.2s ease-out';
-        dialog!.style.transform = `translateY(100%)`;
-        setTimeout(() => dialog!.close(), 200);
+        overscrollHoldTimers.set(
+          scrollEl,
+          setTimeout(() => {
+            overscrollHoldTimers.delete(scrollEl);
+            if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
+            overscrollDismissing = true;
+            dialog!.style.transition = 'transform 0.2s ease-out';
+            dialog!.style.transform = `translateY(100%)`;
+            setTimeout(() => dialog!.close(), 200);
+          }, OVERSCROLL_HOLD_MS),
+        );
       });
     });
     dialog.addEventListener('dialogclose', () => {
       overscrollDismissing = false;
+      overscrollHoldTimers.forEach((t) => clearTimeout(t));
+      overscrollHoldTimers.clear();
     });
   });
 </script>

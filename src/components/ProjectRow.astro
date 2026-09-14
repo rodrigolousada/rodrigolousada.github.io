@@ -157,8 +157,9 @@ function formatNewsDate(date: string) {
        header rather than pushed above it as its own strip, back to the
        original m-auto/92vw-40rem/all-corners centered card at sm:, h-fit
        throughout for shrink-to-content instead of stretch-to-fill,
-       max-h-[94dvh] to leave just a sliver of backdrop rather than a full
-       15%, and the quick-swipe-anywhere dismiss wired up in Layout.astro).
+       max-h-[94svh] (svh, not dvh — see CareerStopRow's dialog for why) to
+       leave just a sliver of backdrop rather than a full 15%, and the
+       quick-swipe-anywhere dismiss wired up in Layout.astro).
        This one's the concrete case that comment's "stacked" note means:
        it only ever opens from inside a still-open CareerStopRow dialog, so
        swiping it away — from the handle or anywhere else on it — reveals
@@ -171,7 +172,7 @@ function formatNewsDate(date: string) {
   {!project.hidden && (
   <dialog
     id={modalId}
-    class="mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+    class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
   >
     <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
       <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>

@@ -107,11 +107,12 @@ const certModalId = 'clifton-strengths-certificate';
      CareerStopRow's dialog for the full bottom-sheet rationale (the
      mx-3/w-[calc(...)] side-margin trick, the [data-sheet-handle] grab bar
      floating on top of the header itself with no separate wrapper needed
-     here, and the quick-swipe-anywhere dismiss wired up in Layout.astro). -->
+     here, and the quick-swipe-anywhere dismiss wired up in Layout.astro).
+     max-h-[94svh], not dvh — see CareerStopRow's dialog for why. -->
 {about.certificateImage && (
   <dialog
     id={certModalId}
-    class="mx-3 mb-0 mt-auto max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[90vh] sm:w-[min(92vw,30rem)] sm:rounded-xl sm:border"
+    class="mx-3 mb-0 mt-auto max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[90vh] sm:w-[min(92vw,30rem)] sm:rounded-xl sm:border"
   >
     <div class="relative flex items-center justify-between border-b border-[var(--color-border)] px-6 pt-6 pb-4 sm:pt-4">
       <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
@@ -125,7 +126,7 @@ const certModalId = 'clifton-strengths-certificate';
         </button>
       </form>
     </div>
-    <div class="max-h-[calc(94dvh-4rem)] overflow-y-auto p-6 sm:max-h-[calc(90vh-4rem)]">
+    <div class="max-h-[calc(94svh-4rem)] overflow-y-auto p-6 sm:max-h-[calc(90vh-4rem)]">
       <img
         src={about.certificateImage}
         alt="Official Gallup CliftonStrengths certificate"

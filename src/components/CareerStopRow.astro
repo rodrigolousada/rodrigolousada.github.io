@@ -184,11 +184,22 @@ const moreProjects = stop.projects.slice(3);
          stop sizes to its own content and a long one still clamps at the cap
          and scrolls, exactly as before.
 
-         max-h-[94dvh], not the tighter 85 the very first pass used: there's
+         max-h-[94svh], not the tighter 85 the very first pass used: there's
          no real reason to leave 15% of the screen as bare backdrop when the
          content could use that room instead — a sliver at the top (~6%) is
          plenty to still read as "a sheet over the page" rather than a
          full-screen takeover.
+
+         svh, not dvh: `dvh` tracks the mobile browser's address bar live as
+         it hides/shows, and that bar can re-animate from things well short
+         of an obvious scroll — a tap moving focus inside the sheet was
+         enough, noticeable on "All Technologies" as its Search/Preferred
+         Stack tabs nudging the sheet a little shorter with every switch
+         instead of holding still. `svh` is pinned to the smallest possible
+         viewport (chrome fully expanded) and never recomputes after
+         layout, so it can't jitter — the sheet gives up a little of the
+         extra room `dvh` could reach when the chrome happens to be hidden,
+         in exchange for never visibly moving on its own.
 
          Not rendered at all when stop.hidden — same reasoning as a hidden
          project's dialog (ProjectRow.astro): the stop's real KPIs/projects
@@ -196,7 +207,7 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+      class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
     >
       <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
         <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>

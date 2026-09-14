@@ -178,11 +178,24 @@ const connectors: (BusConnector | GroupedConnector)[] = allRows.slice(0, -1).map
      the search narrows it down to a couple of pills: `h-auto` left the
      card at its full height with a big empty gap below a short result set.
 
-     max-h-[94dvh], not the tighter 85 the very first pass used — see
-     CareerStopRow's dialog for why. -->
+     max-h-[94svh], not the tighter 85 the very first pass used — see
+     CareerStopRow's dialog for why.
+
+     svh, not dvh: this is the sheet that actually surfaced the difference.
+     `dvh` tracks the mobile browser's address bar live, and something about
+     switching between the Search and Preferred Stack tabs here — on a real
+     iPhone only, never reproduced in desktop/emulated Chrome — kept
+     re-triggering that bar's animation, nudging this dialog a little
+     shorter with every switch instead of holding still (a first attempt at
+     pinning the resolved height in JS at open time didn't fully stop it,
+     which points at something re-deriving the value later rather than only
+     at open). `svh` sidesteps the whole class of bug instead of chasing the
+     exact trigger further: it's pinned to the smallest possible viewport up
+     front and never recomputes after layout, so there's nothing left able
+     to jitter regardless of what's causing the bar to move. -->
 <dialog
   id={modalId}
-  class="open:grid mx-3 mb-0 mt-auto h-fit max-h-[94dvh] w-[calc(100%-1.5rem)] max-w-none grid-rows-[auto_minmax(0,1fr)] rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border"
+  class="open:grid mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none grid-rows-[auto_minmax(0,1fr)] rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,54rem)] sm:rounded-xl sm:border"
 >
   <div>
     <div class="relative flex items-center justify-between border-b border-[var(--color-border)] px-6 pt-6 pb-4 sm:pt-4">
