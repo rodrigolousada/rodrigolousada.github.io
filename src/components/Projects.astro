@@ -3,6 +3,7 @@ import { getSite, type Locale } from '../data/site';
 import { getUI } from '../data/ui';
 import CareerStopRow from './CareerStopRow.astro';
 import GameCartridge from './GameCartridge.astro';
+import FocusHistoryChart from './FocusHistoryChart.astro';
 import { icons } from '../data/icons';
 
 interface Props {
@@ -86,6 +87,11 @@ const moreSideProjects = sideProjects.slice(4);
       </div>
     </details>
   </div>
+
+  <!-- One shared dialog for every stop's "Focus this era" button above,
+       rather than each stop rendering its own copy of the same
+       all-stops-at-once chart — see FocusHistoryChart.astro. -->
+  <FocusHistoryChart locale={locale} />
 
   <div class="mt-14">
     <h3 class="mb-1 text-sm font-medium tracking-wide text-[var(--color-muted)]">

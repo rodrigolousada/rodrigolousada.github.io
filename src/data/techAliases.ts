@@ -12,6 +12,7 @@ export const techAliases: Record<string, string[]> = {
   PostgreSQL: ['Postgres'],
   AWS: ['Amazon Web Services'],
   'GenAI / LLMs': ['GenAI', 'Generative AI', 'LLMs', 'LLM'],
+  'IBM Watson': ['IBM Watson Assistant', 'IBM Watson Assistant for Voice'],
   'Three.js': ['ThreeJS'],
   'D3.js': ['D3JS', 'D3'],
   'scikit-learn': ['sklearn', 'SciKit Learn'],

@@ -66,6 +66,16 @@ const { stop, modalId, showLine = true, locale } = Astro.props;
 const { focusCategories } = getSite(locale);
 const ui = getUI(locale);
 
+// Highest-percentage area first, always — a fixed category order (the data's
+// own key order) made two stops that share the same categories read
+// differently just because one happened to type "pm" before "swe" and the
+// other didn't. Sorting is the only thing that moves: each segment and its
+// legend swatch still pull `cat.color` from `focusCategories`, so a
+// category's color stays its own no matter where the sort puts it.
+const sortedFocus = focusCategories
+  .filter((cat) => (stop.focus[cat.id] ?? 0) > 0)
+  .sort((a, b) => (stop.focus[b.id] ?? 0) - (stop.focus[a.id] ?? 0));
+
 // Same "first N, then Show more" pattern as the career timeline and side
 // projects grid in Projects.astro — a stop with a long project list (e.g.
 // six at IBM Consulting) made the modal itself scroll for a while just to
@@ -319,13 +329,31 @@ const moreProjects = stop.projects.slice(3);
             </details>
           )}
 
-          <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-            {ui.careerStop.focusThisEra}
-          </p>
-          <div class="flex h-5 w-full overflow-hidden rounded-full bg-[var(--color-border)]">
-            {focusCategories
-              .filter((cat) => (stop.focus[cat.id] ?? 0) > 0)
-              .map((cat, ci, arr) => {
+          <!-- The whole block is one button: bar, percentages and legend are
+               plain divs/spans underneath (nothing else in here is itself
+               interactive), so wrapping them is valid and gives "see the
+               trend" a much bigger, more obvious target than a small text
+               link off to the side would. Opens the shared history chart
+               (FocusHistoryChart.astro, rendered once in Projects.astro) via
+               a DOM event carrying this stop's slug, rather than each stop
+               owning its own copy of that dialog. -->
+          <button
+            type="button"
+            data-open-focus-chart={stop.slug}
+            class="group/focus mt-8 block w-full rounded-lg text-left"
+            aria-label={ui.careerStop.viewFocusHistory}
+          >
+            <p class="mb-3 flex items-center justify-between gap-2 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+              {ui.careerStop.focusThisEra}
+              <span class="flex items-center gap-1 normal-case tracking-normal text-[var(--color-muted)] opacity-0 transition group-hover/focus:opacity-100 group-focus-visible/focus:opacity-100">
+                <svg viewBox="0 0 20 20" class="h-3 w-3 fill-current">
+                  <path d={icons.trendUp} />
+                </svg>
+                {ui.careerStop.viewFocusHistory}
+              </span>
+            </p>
+            <div class="flex h-5 w-full overflow-hidden rounded-full bg-[var(--color-border)] ring-1 ring-transparent transition group-hover/focus:ring-[var(--color-accent)]/50">
+              {sortedFocus.map((cat, ci, arr) => {
                 const value = stop.focus[cat.id] ?? 0;
                 const rounding =
                   (ci === 0 ? 'rounded-l-full ' : '') + (ci === arr.length - 1 ? 'rounded-r-full' : '');
@@ -339,92 +367,205 @@ const moreProjects = stop.projects.slice(3);
                   </div>
                 );
               })}
-          </div>
-          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
-            {focusCategories
-              .filter((cat) => (stop.focus[cat.id] ?? 0) > 0)
-              .map((cat) => (
+            </div>
+            <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
+              {sortedFocus.map((cat) => (
                 <div class="flex items-center gap-1.5">
                   <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${cat.color};`} />
-                  <span class="text-[11px] text-[var(--color-muted)]">{cat.label}</span>
+                  <span class="text-[11px] text-[var(--color-muted)]">
+                    {cat.label} · {stop.focus[cat.id] ?? 0}%
+                  </span>
                 </div>
               ))}
-          </div>
-
-          {stop.credlyBadges && stop.credlyBadges.length > 0 && (
-            <div>
-              <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-                {ui.careerStop.badges}
-              </p>
-              {(() => {
-                const highlighted = stop.credlyBadges!.filter((b) => b.highlight);
-                const rest = stop.credlyBadges!.filter((b) => !b.highlight);
-                return (
-                  <>
-                    {highlighted.length > 0 && (
-                      <div class="mb-3 flex flex-wrap gap-3">
-                        {highlighted.map((badge) => (
-                          <a
-                            href={badge.url ?? stop.credlyProfileUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`View ${badge.name} credential`}
-                            title={badge.name}
-                            class="transition hover:scale-105"
-                          >
-                            <img
-                              src={badge.img}
-                              alt={badge.name}
-                              loading="lazy"
-                              width="80"
-                              height="80"
-                              class="h-20 w-20 object-contain drop-shadow-[0_0_10px_var(--color-accent-dim)]"
-                            />
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                    {rest.length > 0 && (
-                      <div class="flex flex-wrap gap-2">
-                        {rest.map((badge) => (
-                          <a
-                            href={badge.url ?? stop.credlyProfileUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`View ${badge.name} credential`}
-                            title={badge.name}
-                            class="transition hover:scale-105"
-                          >
-                            <img
-                              src={badge.img}
-                              alt={badge.name}
-                              loading="lazy"
-                              width="40"
-                              height="40"
-                              class="h-10 w-10 object-contain opacity-80"
-                            />
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
-              {stop.credlyProfileUrl && (
-                <a
-                  href={stop.credlyProfileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="mt-2 inline-block text-xs text-[var(--color-accent)] underline underline-offset-4"
-                >
-                  {ui.careerStop.seeAllBadgesOnCredly}
-                </a>
-              )}
             </div>
-          )}
+          </button>
+
+          {stop.credlyBadges && stop.credlyBadges.length > 0 && (() => {
+            // Most-important-first, not every badge in a wall: `highlight`
+            // already marks the handful actually worth calling out (set per
+            // badge in site.json) — show only those as cards here, and push
+            // the rest (23 at IBM, most of them intro-level completion
+            // badges) behind "Browse all", where they're still one click
+            // away rather than gone. A stop with nothing flagged falls back
+            // to its first four so this never renders an empty showcase.
+            const featured = stop.credlyBadges!.filter((b) => b.highlight);
+            const showcased = featured.length > 0 ? featured : stop.credlyBadges!.slice(0, 4);
+            return (
+              <div data-badge-gallery={`${modalId}-badges`}>
+                <p class="mb-3 mt-8 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                  {ui.careerStop.badges}
+                </p>
+                <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                  {showcased.map((badge) => (
+                    <button
+                      type="button"
+                      data-badge-open={stop.credlyBadges!.indexOf(badge)}
+                      aria-label={`View ${badge.name} credential`}
+                      class="group/badge flex flex-col items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 text-center transition hover:-translate-y-0.5 hover:border-[var(--color-accent)]"
+                    >
+                      <img
+                        src={badge.img}
+                        alt={badge.name}
+                        loading="lazy"
+                        width="64"
+                        height="64"
+                        class="h-16 w-16 object-contain drop-shadow-[0_0_10px_var(--color-accent-dim)]"
+                      />
+                      <span class="line-clamp-2 text-[10px] leading-tight text-[var(--color-muted)] transition group-hover/badge:text-[var(--color-text)]">
+                        {badge.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                {stop.credlyBadges!.length > showcased.length && (
+                  <button
+                    type="button"
+                    data-badge-open="0"
+                    class="mt-3 inline-flex items-center gap-1 text-xs text-[var(--color-accent)] underline underline-offset-4"
+                  >
+                    {ui.careerStop.browseAllBadges.replace('{count}', String(stop.credlyBadges!.length))}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </dialog>
     )}
+
+    <!-- The badge "carousel": one small dialog per stop, opened at whichever
+         index was clicked (a showcase card, or "Browse all" at 0) and
+         navigable with ‹ › or the left/right arrow keys. Every click here —
+         showcase card or nav arrow — only ever changes what this dialog
+         shows; the outbound Credly link only fires when "View on Credly"
+         itself is clicked, which is the whole point of routing badges
+         through this instead of linking straight out from the main sheet. -->
+    {!stop.hidden && stop.credlyBadges && stop.credlyBadges.length > 0 && (
+      <dialog
+        id={`${modalId}-badges`}
+        data-badges={JSON.stringify(stop.credlyBadges)}
+        data-profile-url={stop.credlyProfileUrl}
+        class="m-auto w-[min(92vw,26rem)] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+      >
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3">
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+            <span data-badge-index>1</span> / {stop.credlyBadges.length}
+          </p>
+          <form method="dialog">
+            <button
+              aria-label={ui.common.close}
+              class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+            >
+              ✕
+            </button>
+          </form>
+        </div>
+        <div class="flex items-center gap-3 p-6">
+          <button
+            type="button"
+            data-badge-prev
+            aria-label={ui.careerStop.previousBadge}
+            class="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+          >
+            ‹
+          </button>
+          <div class="flex flex-1 flex-col items-center gap-3">
+            <img data-badge-img class="h-36 w-36 object-contain drop-shadow-[0_0_14px_var(--color-accent-dim)]" alt="" />
+            <p data-badge-name class="text-center text-sm font-medium text-[var(--color-text)]" />
+            <a
+              data-badge-link
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 text-xs text-[var(--color-accent)] underline underline-offset-4"
+            >
+              {ui.careerStop.viewOnCredly}
+            </a>
+          </div>
+          <button
+            type="button"
+            data-badge-next
+            aria-label={ui.careerStop.nextBadge}
+            class="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition hover:border-[var(--color-accent)]"
+          >
+            ›
+          </button>
+        </div>
+        {stop.credlyProfileUrl && (
+          <a
+            href={stop.credlyProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block border-t border-[var(--color-border)] px-5 py-3 text-center text-xs text-[var(--color-muted)] underline underline-offset-4 transition hover:text-[var(--color-accent)]"
+          >
+            {ui.careerStop.seeFullProfileOnCredly}
+          </a>
+        )}
+      </dialog>
+    )}
   </div>
 </div>
+
+<script>
+  // Wires up every badge gallery on the page (one per career stop with
+  // credlyBadges) in one pass — each `[data-badge-gallery]` names its own
+  // dialog by id, so this scales to any number of stops without per-stop
+  // script duplication.
+  document.querySelectorAll<HTMLElement>('[data-badge-gallery]').forEach((gallery) => {
+    const dialogId = gallery.dataset.badgeGallery;
+    const dialog = dialogId && document.getElementById(dialogId);
+    if (!(dialog instanceof HTMLDialogElement)) return;
+
+    const badges: { name: string; img: string; url?: string }[] = JSON.parse(dialog.dataset.badges ?? '[]');
+    const profileUrl = dialog.dataset.profileUrl;
+    const img = dialog.querySelector<HTMLImageElement>('[data-badge-img]');
+    const nameEl = dialog.querySelector<HTMLElement>('[data-badge-name]');
+    const indexEl = dialog.querySelector<HTMLElement>('[data-badge-index]');
+    const linkEl = dialog.querySelector<HTMLAnchorElement>('[data-badge-link]');
+    let current = 0;
+
+    function render() {
+      const badge = badges[current];
+      if (!badge || !img) return;
+      img.src = badge.img;
+      img.alt = badge.name;
+      if (nameEl) nameEl.textContent = badge.name;
+      if (indexEl) indexEl.textContent = String(current + 1);
+      // Falls back to the stop's own Credly profile when a badge has no
+      // individually-shareable URL of its own — still opens on Credly, just
+      // at the profile rather than the one credential.
+      const href = badge.url ?? profileUrl;
+      if (linkEl) {
+        if (href) {
+          linkEl.href = href;
+          linkEl.hidden = false;
+        } else {
+          linkEl.hidden = true;
+        }
+      }
+    }
+
+    gallery.querySelectorAll<HTMLButtonElement>('[data-badge-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        current = Number(btn.dataset.badgeOpen ?? 0);
+        render();
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('[data-badge-prev]')?.addEventListener('click', () => {
+      current = (current - 1 + badges.length) % badges.length;
+      render();
+    });
+    dialog.querySelector('[data-badge-next]')?.addEventListener('click', () => {
+      current = (current + 1) % badges.length;
+      render();
+    });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') current = (current - 1 + badges.length) % badges.length;
+      else if (e.key === 'ArrowRight') current = (current + 1) % badges.length;
+      else return;
+      render();
+    });
+  });
+</script>

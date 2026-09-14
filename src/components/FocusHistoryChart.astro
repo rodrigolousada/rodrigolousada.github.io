@@ -1,0 +1,263 @@
+---
+// Shared "Focus areas over the years" line chart: one dialog for the whole
+// page (not one per career stop) since it plots every stop's focus split on
+// the same axes. Rendered once by Projects.astro; opened from any stop's
+// "Focus this era" button (CareerStopRow.astro) via a `data-open-focus-chart`
+// click, delegated to here rather than each stop owning a copy of this data.
+import { getSite, type Locale } from '../data/site';
+import { getUI } from '../data/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+// site.json infers a distinct literal type per career stop (each one's own
+// object shape), so a stop that happens to omit `logoScale`/`logoInvert`
+// altogether — most of them, both are rare overrides — produces a union
+// where the property isn't there at all on that member, not just optional.
+// That's fine one stop at a time (CareerStopRow's own Props type structurally
+// accepts any of them), but reading `.logoScale` off an *array* of mixed
+// stops needs one common shape to read it through, hence this cast rather
+// than using `careerPath`'s inferred type directly.
+interface HistoryStop {
+  org: string;
+  slug?: string;
+  logo: string;
+  logoScale?: number;
+  logoInvert?: boolean;
+  chipClass: string;
+  period: string;
+  focus: Record<string, number>;
+}
+
+const { locale } = Astro.props;
+const { careerPath, careerPathMore, focusCategories } = getSite(locale);
+const ui = getUI(locale);
+
+// The timeline above lists stops newest-first; a chart "over the years"
+// reads left to right, oldest first, so this reverses it once here rather
+// than asking every consumer of this order to remember to.
+const stops = ([...careerPath, ...careerPathMore] as unknown as HistoryStop[]).slice().reverse();
+
+// A 0–100 coordinate space either axis of the SVG can be read as: x is
+// "which stop, in order" (evenly spaced — there's one focus split per stop,
+// not per calendar year, so spacing stops by their actual year gaps would
+// imply precision this data doesn't have) and y is "percent of that stop's
+// time". PLOT_* insets leave room for the 0/25/50/75/100 gridline labels
+// (left) and a little breathing room (right/top) without the plotted points
+// ever touching the chart's own edge.
+const VIEW_WIDTH = 100;
+const VIEW_HEIGHT = 45;
+const PLOT_X0 = 8;
+const PLOT_X1 = 96;
+const PLOT_Y0 = 4;
+const PLOT_Y1 = 40;
+
+function xFor(i: number) {
+  return stops.length <= 1 ? (PLOT_X0 + PLOT_X1) / 2 : PLOT_X0 + (i / (stops.length - 1)) * (PLOT_X1 - PLOT_X0);
+}
+function yFor(value: number) {
+  return PLOT_Y1 - (value / 100) * (PLOT_Y1 - PLOT_Y0);
+}
+
+// One polyline per category, skipping a category that's 0% at every single
+// stop — an all-zero flat line along the bottom is noise, not information.
+const lines = focusCategories
+  .map((cat) => {
+    const points = stops.map((stop, i) => ({
+      x: xFor(i),
+      y: yFor(stop.focus[cat.id] ?? 0),
+      value: stop.focus[cat.id] ?? 0,
+    }));
+    return { ...cat, points, everUsed: points.some((p) => p.value > 0) };
+  })
+  .filter((line) => line.everUsed);
+
+const gridlineValues = [0, 25, 50, 75, 100];
+
+// Each x-axis tick needs real room for its own org name + period without
+// running into its neighbor — on a phone-width dialog, spreading 4+ stops
+// evenly across the available width alone gives each one less space than
+// its own label needs (a `truncate` on the label stops it from visibly
+// bleeding into the next tick, but everything still reads as a cramped
+// pile-up rather than a chart). So, same fix as the "Preferred Stack"
+// diagram's own overflow (TechStack.astro): work out the width this
+// actually needs from the data (one tick-width per stop, plus the gaps
+// between) and let it scroll horizontally below that, rather than
+// squeezing ticks down to illegible to force a fit.
+const TICK_MIN_REM = 4.5;
+const TICK_GAP_REM = 0.5;
+const AXIS_LABEL_COL_REM = 2.5; // the percent column (`w-8`) plus the `gap-2` beside it
+const chartMinWidthRem =
+  AXIS_LABEL_COL_REM + stops.length * TICK_MIN_REM + Math.max(0, stops.length - 1) * TICK_GAP_REM;
+---
+
+<dialog
+  id="focus-history-chart"
+  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,42rem)] sm:rounded-xl sm:border"
+>
+  <!-- Bottom sheet on mobile, centered card at sm: and up — see
+       CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor,
+       the mx-3/w-[calc(...)] side margins, svh over dvh, h-fit over h-auto).
+       This one gets its own `overflow-y-auto` (most of this pattern's
+       dialogs don't need it, their content already fits the cap) since the
+       chart, its x-axis row and the legend together can run past 94svh on a
+       short phone in landscape — scrolling the sheet itself beats clipping
+       the legend or squeezing the chart down to illegible. -->
+  <div class="relative">
+    <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
+    <div class="p-6 pt-8 sm:pt-6">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-base font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
+          <p class="mt-1 text-xs text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
+        </div>
+        <form method="dialog">
+          <button
+            aria-label={ui.common.close}
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] text-[var(--color-text)] transition hover:brightness-125"
+          >
+            ✕
+          </button>
+        </form>
+      </div>
+
+      <!-- Scrolls horizontally below `chartMinWidthRem` (see its own comment)
+           rather than squeezing every tick down to fit whatever width the
+           dialog happens to have — same "widen it, don't shrink the
+           content" fix as the Preferred Stack diagram's own overflow. -->
+      <div class="mt-6 overflow-x-auto">
+      <div class="mx-auto" style={`min-width: ${chartMinWidthRem}rem`}>
+        <div class="flex gap-2">
+          <!-- Percent axis: a plain fixed-width column, not baked into the
+               SVG's own viewBox — keeping it separate means the SVG's
+               x=0..100 maps 1:1 to "stop 0..last stop" with no left inset to
+               account for elsewhere. Fixed at `w-8` rather than left to size
+               itself to its own five short labels, because the x-axis row
+               below needs to know that same width up front to line its own
+               ticks up with the SVG beside it (`self-stretch`, the flex
+               default here, is what makes its height match the SVG's own
+               aspect-ratio-driven height rather than just what 5 labels need). -->
+          <div class="sticky left-0 z-10 flex w-8 shrink-0 flex-col-reverse justify-between bg-[var(--color-surface)] py-1 text-right font-mono text-[9px] text-[var(--color-muted)]">
+            {gridlineValues.map((v) => <span>{v}%</span>)}
+          </div>
+          <svg
+            viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+            preserveAspectRatio="none"
+            class="block min-w-0 flex-1"
+            style={`aspect-ratio: ${VIEW_WIDTH} / ${VIEW_HEIGHT}; height: auto;`}
+          >
+            {gridlineValues.map((v) => (
+              <line x1={PLOT_X0 - 3} x2={VIEW_WIDTH} y1={yFor(v)} y2={yFor(v)} stroke="var(--color-border)" stroke-width="0.3" />
+            ))}
+            {lines.map((line) => (
+              <>
+                <polyline
+                  points={line.points.map((p) => `${p.x},${p.y}`).join(' ')}
+                  fill="none"
+                  stroke={line.color}
+                  stroke-width="0.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                {line.points.map((p) => (
+                  <circle cx={p.x} cy={p.y} r="1.1" fill={line.color}>
+                    <title>{`${line.label}: ${p.value}%`}</title>
+                  </circle>
+                ))}
+              </>
+            ))}
+          </svg>
+        </div>
+
+        <!-- x-axis: one tick per stop, absolutely positioned at the same
+             percentage `xFor()` used for that stop's points above — a plain
+             flex row can't guarantee that (unequal-width logo+label ticks
+             under `justify-between` land their centers inset from the true
+             0%/100% edges by half their own width, not exactly on them),
+             centering each tick on its own point is what a translateX(-50%)
+             absolute position gets for free regardless of label width. The
+             `pl-[2.5rem]` (the percent column's own `w-8` plus the `gap-2`
+             beside it above) is what makes this row's own 0%..100% start
+             exactly under the SVG rather than under the percent labels too. -->
+        <div class="relative mt-2 h-14 pl-[2.5rem]">
+          {stops.map((stop, i) => (
+            <div
+              data-axis-stop={stop.slug}
+              title={`${stop.org} · ${stop.period}`}
+              class="axis-tick absolute top-0 flex w-16 -translate-x-1/2 flex-col items-center gap-1 rounded-md px-0.5 transition"
+              style={`left:${xFor(i)}%`}
+            >
+              <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${stop.chipClass}`}>
+                <img
+                  src={stop.logo}
+                  alt=""
+                  class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
+                  style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
+                />
+              </div>
+              <!-- `w-full truncate` on each: adjacent ticks sit as little as
+                   ~35px apart at the narrowest phone width, so a full org
+                   name ("Instituto de Telecomunicações") or "2024 – Present"
+                   left to wrap or overflow at will bled into the neighboring
+                   tick's own text instead of just clipping to an ellipsis —
+                   the `title` above carries the untruncated pair for anyone
+                   who taps and holds or hovers. -->
+              <span class="w-full truncate text-center text-[9px] leading-tight text-[var(--color-text)]">{stop.org}</span>
+              <span class="w-full truncate text-center text-[8px] leading-tight text-[var(--color-muted)]">{stop.period}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      </div>
+
+      <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-[var(--color-border)] pt-4">
+        {lines.map((line) => (
+          <div class="flex items-center gap-1.5">
+            <span class="h-2 w-2 shrink-0 rounded-sm" style={`background-color:${line.color};`} />
+            <span class="text-[11px] text-[var(--color-muted)]">{line.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* The tick for whichever stop the chart was opened from — set via
+     [data-open-focus-chart] below, cleared whenever the dialog isn't
+     showing that stop's tick highlighted. Plain CSS class rather than an
+     inline style so it can be toggled with one classList call per open. */
+  .axis-tick.is-current {
+    background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
+  .axis-tick.is-current span {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  // Delegated so it doesn't matter how many `[data-open-focus-chart]`
+  // buttons exist across however many career stops render on the page —
+  // one listener here, rather than each CareerStopRow wiring its own copy
+  // of "open the (single, shared) chart dialog".
+  document.addEventListener('click', (e) => {
+    const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-open-focus-chart]');
+    if (!trigger) return;
+    const dialog = document.getElementById('focus-history-chart');
+    if (!(dialog instanceof HTMLDialogElement)) return;
+
+    const slug = trigger.dataset.openFocusChart;
+    const current = slug ? dialog.querySelector<HTMLElement>(`[data-axis-stop="${slug}"]`) : null;
+    dialog.querySelectorAll<HTMLElement>('[data-axis-stop]').forEach((tick) => {
+      tick.classList.toggle('is-current', tick === current);
+    });
+    dialog.showModal();
+    // The chart can be wider than the dialog (see `chartMinWidthRem`) and
+    // scrolls horizontally — without this, opening the chart from a stop
+    // near the right edge (Klarna, say) shows its own highlighted tick only
+    // after the visitor thinks to scroll for it.
+    current?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  });
+</script>

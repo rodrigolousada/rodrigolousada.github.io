@@ -40,6 +40,14 @@ Simple Icons (CC0). Design is dark-theme-only, tokens in
 projects, side-project cartridges) uses native `<dialog>` + `showModal()` —
 no JS modal library.
 
+**Hard rule: no em dashes (—) in copy.** Anything a visitor reads — `site.json`
+content, `ui.json` chrome strings, any hardcoded JSX text in a component —
+gets rephrased instead: a period for two independent clauses, parentheses or
+a comma for an aside, a colon to introduce something. Code comments (`//`,
+`<!-- -->`, JSDoc) are exempt — this repo's own comments lean on em dashes
+constantly and that's fine, the rule is about what ships to a reader, not
+about how the code explains itself.
+
 The rest of this file (below) is process notes for running this repo as a
 multi-agent Claude Code session — worktree hygiene, verification tooling,
 failure modes hit so far. It's not about the site's architecture; that's

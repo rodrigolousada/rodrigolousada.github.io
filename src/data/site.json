@@ -197,7 +197,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Present",
-        "role": "Full-stack engineer, rotating as an individual contributor across DevOps, Backend, Frontend, Full-Stack, Mobile, Product, and AI teams — joined Klarna to stay on the edge of AI adoption while deepening technical foundations, leading small initiatives along the way",
+        "role": "Full-stack engineer, rotating as an individual contributor across DevOps, Backend, Frontend, Full-Stack, Mobile, Product, and AI teams. Joined Klarna to stay on the edge of AI adoption while deepening technical foundations, leading small initiatives along the way",
         "kpis": [
           "Cut the time for Klarna users to accept a friend's invite and act on it from over a minute to 5–6 seconds",
           "Took the internal Knowledge Platform's search bar from near-zero to ~90% successful queries",
@@ -375,7 +375,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
         "period": "2020 – 2024",
-        "role": "Consulting Lead, running 2 concurrent teams — one on chatbots, one co-creating GenAI initiatives from the ground up when GenAI was first emerging — each staffed with 4–6 developers. Also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing.",
+        "role": "Consulting Lead, running 2 concurrent teams (one on chatbots, one co-creating GenAI initiatives from the ground up when GenAI was first emerging), each staffed with 4–6 developers. Also contributed to pre-sales demos and MVPs for prospective clients (incl. Galp, Generali, Millennium BCP) and supported IBM proposal writing.",
         "kpis": [
           "Doubled FTE savings",
           "70% workload cut via automation",
@@ -440,7 +440,7 @@
             "myRole": "Analyst → Developer & Data Analyst → Developer & Data Engineer → Consulting Lead & PM",
             "demo": {
               "mode": "flow",
-              "note": "Built on the old intent + entity orchestration — IBM Watson Assistant for Voice",
+              "note": "Built on the old intent + entity orchestration: IBM Watson Assistant for Voice",
               "intake": [
                 { "label": "Incoming call", "detail": "Routed in from Banco Montepio's contact-center IVR" },
                 { "label": "Caller triage", "detail": "Work out who is calling and route them to the right flow" },
@@ -783,7 +783,7 @@
             "image": {
               "src": "/img/projects/thesis-architecture.png",
               "alt": "System architecture diagram: Data, Logic, and Presentation layers",
-              "caption": "Fig. 3.1 — General view of the system, from the thesis",
+              "caption": "Fig. 3.1: General view of the system, from the thesis",
               "background": "light"
             }
           }
@@ -1340,6 +1340,78 @@
         {
           "name": "Excel",
           "category": "Infra & Tools"
+        },
+        {
+          "name": "Swift",
+          "category": "Languages"
+        },
+        {
+          "name": "SQL",
+          "category": "Languages"
+        },
+        {
+          "name": "Bootstrap",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "SwiftUI",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "Swift Charts",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "WatchConnectivity",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "React Query",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "Zod",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "Pydantic",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "WebGL",
+          "category": "Frameworks & Libraries"
+        },
+        {
+          "name": "Matplotlib",
+          "category": "AI & Data Science"
+        },
+        {
+          "name": "XGBoost",
+          "category": "AI & Data Science"
+        },
+        {
+          "name": "Zipline",
+          "category": "AI & Data Science"
+        },
+        {
+          "name": "LangSmith",
+          "category": "AI & Data Science"
+        },
+        {
+          "name": "Playwright",
+          "category": "Infra & Tools"
+        },
+        {
+          "name": "Cursor",
+          "category": "Infra & Tools"
+        },
+        {
+          "name": "AppsFlyer",
+          "category": "Infra & Tools"
+        },
+        {
+          "name": "Raspberry Pi",
+          "category": "Infra & Tools"
         }
       ],
       "preferredStack": {
@@ -1671,7 +1743,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-pink-500/30 via-fuchsia-500/10 to-transparent",
         "period": "2024 – Presente",
-        "role": "Engenheiro full-stack, com passagem como contribuidor individual por equipas de DevOps, Backend, Frontend, Full-Stack, Mobile, Produto e IA — juntou-se à Klarna para estar na vanguarda da adoção de IA enquanto aprofunda os fundamentos técnicos, liderando pequenas iniciativas pelo caminho",
+        "role": "Engenheiro full-stack, com passagem como contribuidor individual por equipas de DevOps, Backend, Frontend, Full-Stack, Mobile, Produto e IA. Juntou-se à Klarna para estar na vanguarda da adoção de IA enquanto aprofunda os fundamentos técnicos, liderando pequenas iniciativas pelo caminho",
         "kpis": [
           "Reduziu de mais de um minuto para 5–6 segundos o tempo para os utilizadores da Klarna aceitarem o convite de um amigo e agirem sobre ele",
           "Levou a barra de pesquisa da Knowledge Platform interna de quase 0% para cerca de 90% de queries bem-sucedidas",
@@ -1849,7 +1921,7 @@
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent",
         "period": "2020 – 2024",
-        "role": "Consulting Lead, a gerir 2 equipas em simultâneo — uma de chatbots, outra a co-criar iniciativas de GenAI de raiz quando a GenAI estava a emergir — cada uma com 4 a 6 developers. Contribuiu também para demos de pré-venda e MVPs para potenciais clientes (incl. Galp, Generali, Millennium BCP) e apoiou a redação de propostas da IBM.",
+        "role": "Consulting Lead, a gerir 2 equipas em simultâneo (uma de chatbots, outra a co-criar iniciativas de GenAI de raiz quando a GenAI estava a emergir), cada uma com 4 a 6 developers. Contribuiu também para demos de pré-venda e MVPs para potenciais clientes (incl. Galp, Generali, Millennium BCP) e apoiou a redação de propostas da IBM.",
         "kpis": [
           "Duplicou a poupança em FTEs",
           "70% de redução da carga de trabalho através de automação",
@@ -1914,7 +1986,7 @@
             "myRole": "Analista → Developer & Analista de Dados → Developer & Engenheiro de Dados → Consulting Lead & PM",
             "demo": {
               "mode": "flow",
-              "note": "Construído sobre a antiga orquestração de intenções e entidades — IBM Watson Assistant for Voice",
+              "note": "Construído sobre a antiga orquestração de intenções e entidades: IBM Watson Assistant for Voice",
               "intake": [
                 { "label": "Chamada recebida", "detail": "Encaminhada a partir do IVR do contact center do Banco Montepio" },
                 { "label": "Triagem do interlocutor", "detail": "Perceber quem está a ligar e encaminhar para o fluxo certo" },
@@ -2257,7 +2329,7 @@
             "image": {
               "src": "/img/projects/thesis-architecture.png",
               "alt": "Diagrama da arquitetura do sistema: camadas de Dados, Lógica e Apresentação",
-              "caption": "Fig. 3.1 — Vista geral do sistema, retirada da tese",
+              "caption": "Fig. 3.1: Vista geral do sistema, retirada da tese",
               "background": "light"
             }
           }
@@ -2813,6 +2885,78 @@
         },
         {
           "name": "Excel",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Swift",
+          "category": "Linguagens"
+        },
+        {
+          "name": "SQL",
+          "category": "Linguagens"
+        },
+        {
+          "name": "Bootstrap",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "SwiftUI",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "Swift Charts",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "WatchConnectivity",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "React Query",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "Zod",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "Pydantic",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "WebGL",
+          "category": "Frameworks e Bibliotecas"
+        },
+        {
+          "name": "Matplotlib",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "XGBoost",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "Zipline",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "LangSmith",
+          "category": "IA e Ciência de Dados"
+        },
+        {
+          "name": "Playwright",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Cursor",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "AppsFlyer",
+          "category": "Infraestrutura e Ferramentas"
+        },
+        {
+          "name": "Raspberry Pi",
           "category": "Infraestrutura e Ferramentas"
         }
       ],
