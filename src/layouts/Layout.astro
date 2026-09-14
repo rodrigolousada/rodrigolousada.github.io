@@ -360,49 +360,80 @@ const jsonLd = {
     // The 60px distance threshold alone still wasn't enough, though: a hard,
     // stressed flick — the kind thrown out repeatedly just to climb a long
     // list back to the top faster — can carry enough momentum to overshoot
-    // past it in the bounce, even though nothing about it was meant as a
-    // dismiss. What actually tells the two apart isn't how far the bounce
-    // reaches, it's whether it *stays* there: an inertial overshoot is still
-    // in motion, so `scroll` keeps firing every frame as it springs back on
-    // its own, whereas someone genuinely pulling the sheet down and holding
-    // it produces no new `scroll` events at all while their finger sits
-    // still. So this no longer dismisses the instant the threshold is
-    // crossed — it starts a timer, cancelled and restarted by every further
-    // `scroll` event, and only follows through once a full second has
-    // passed with the box still that far past the top and nothing having
-    // reset the clock in between. Rapid repeated swipes up therefore never
-    // mis-fire it, no matter how far any one of them overshoots — each new
-    // one wipes the previous one's clock before it could ever finish.
+    // past it in the very same bounce that brought it to the top, even
+    // though nothing about it was meant as a dismiss.
+    //
+    // What actually tells the two apart isn't the pull itself, it's what
+    // came immediately before it: a fling that carries straight through the
+    // top and into overscroll is still one continuous motion, so the
+    // `scroll` events leading into it are only milliseconds apart; someone
+    // who scrolls up, actually reaches the top, and stops moving there
+    // produces no `scroll` events at all while they're paused — real
+    // silence, not just a slower fling. So instead of judging the pull's own
+    // depth or duration, this watches the *gap before* it: the moment the
+    // box first goes negative after having been at/above the top, it checks
+    // how long it had been since the previous `scroll` event on this box.
+    // Only a gap of a full second or more "arms" this particular excursion
+    // below the top as a real dismiss attempt — armed or not, that state
+    // then holds for as long as the box stays negative (so a slow drag that
+    // takes several small `scroll` events to cross -60px doesn't have to
+    // re-qualify at every step), and clears the moment it comes back up to
+    // the top so the next excursion has to earn it again on its own. A rapid
+    // sequence of swipe-up-then-bounce cycles therefore never arms, no
+    // matter how deep any single bounce goes — but scroll to the top, stop
+    // for a beat, then swipe down again, and that fresh pull past -60px
+    // closes it immediately, no extra holding required.
+    //
+    // The initial state (right after the dialog opens, before any scrolling
+    // has happened at all) counts as already having rested at the top long
+    // enough — so a sheet can still be swiped away the instant it opens, the
+    // same as it always could; the gate only ever kicks in once there's
+    // been real scrolling to climb back up from.
     const OVERSCROLL_DISMISS_PX = 60;
-    const OVERSCROLL_HOLD_MS = 1000;
+    const OVERSCROLL_REST_MS = 1000;
     let overscrollDismissing = false;
-    const overscrollHoldTimers = new Map<HTMLElement, ReturnType<typeof setTimeout>>();
     const overscrollTargets = new Set<HTMLElement>([dialog, ...dialog.querySelectorAll<HTMLElement>('[class*="overflow-y-auto"]')]);
     overscrollTargets.forEach((scrollEl) => {
+      let prevScrollTop = 0;
+      let lastEventAt = performance.now() - OVERSCROLL_REST_MS;
+      let armed = false;
+
       scrollEl.addEventListener('scroll', () => {
-        const pending = overscrollHoldTimers.get(scrollEl);
-        if (pending !== undefined) {
-          clearTimeout(pending);
-          overscrollHoldTimers.delete(scrollEl);
+        const now = performance.now();
+        const current = scrollEl.scrollTop;
+
+        if (prevScrollTop >= 0 && current < 0) {
+          // Just dipped below the top — decide right now, once, whether
+          // this excursion follows a real pause or is a continuation of
+          // whatever motion was already happening.
+          armed = now - lastEventAt >= OVERSCROLL_REST_MS;
+        } else if (current >= 0) {
+          // Back at (or never left) the top — nothing to arm.
+          armed = false;
         }
-        if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
-        overscrollHoldTimers.set(
-          scrollEl,
-          setTimeout(() => {
-            overscrollHoldTimers.delete(scrollEl);
-            if (overscrollDismissing || scrollEl.scrollTop > -OVERSCROLL_DISMISS_PX) return;
-            overscrollDismissing = true;
-            dialog!.style.transition = 'transform 0.2s ease-out';
-            dialog!.style.transform = `translateY(100%)`;
-            setTimeout(() => dialog!.close(), 200);
-          }, OVERSCROLL_HOLD_MS),
-        );
+        // else: still within the same below-top excursion — leave `armed`
+        // as this excursion already decided, regardless of this event's own
+        // gap from the last.
+
+        if (armed && !overscrollDismissing && current <= -OVERSCROLL_DISMISS_PX) {
+          overscrollDismissing = true;
+          dialog!.style.transition = 'transform 0.2s ease-out';
+          dialog!.style.transform = `translateY(100%)`;
+          setTimeout(() => dialog!.close(), 200);
+        }
+
+        prevScrollTop = current;
+        lastEventAt = now;
+      });
+
+      dialog.addEventListener('dialogopen', () => {
+        prevScrollTop = 0;
+        lastEventAt = performance.now() - OVERSCROLL_REST_MS;
+        armed = false;
       });
     });
     dialog.addEventListener('dialogclose', () => {
       overscrollDismissing = false;
-      overscrollHoldTimers.forEach((t) => clearTimeout(t));
-      overscrollHoldTimers.clear();
     });
   });
 </script>
