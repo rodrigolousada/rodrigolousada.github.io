@@ -100,17 +100,20 @@ const bands = orderedCategories
 
 const gridlineValues = [0, 25, 50, 75, 100];
 
-// Each x-axis tick needs real room for its own org name + period without
-// running into its neighbor — on a phone-width dialog, spreading 4+ stops
-// evenly across the available width alone gives each one less space than
-// its own label needs (a `truncate` on the label stops it from visibly
-// bleeding into the next tick, but everything still reads as a cramped
-// pile-up rather than a chart). So, same fix as the "Preferred Stack"
-// diagram's own overflow (TechStack.astro): work out the width this
-// actually needs from the data (one tick-width per stop, plus the gaps
-// between) and let it scroll horizontally below that, rather than
-// squeezing ticks down to illegible to force a fit.
-const TICK_MIN_REM = 4.5;
+// Each x-axis tick needs real room for its own period text without running
+// into its neighbor — on a phone-width dialog, spreading 4+ stops evenly
+// across the available width alone gives each one less space than its own
+// label needs (a `truncate` on the label stops it from visibly bleeding
+// into the next tick, but everything still reads as a cramped pile-up
+// rather than a chart). So, same fix as the "Preferred Stack" diagram's
+// own overflow (TechStack.astro): work out the width this actually needs
+// from the data (one tick-width per stop, plus the gaps between) and let
+// it scroll horizontally below that, rather than squeezing ticks down to
+// illegible to force a fit. Narrower than it needed to be when a tick also
+// carried its own org name in full (the logo alone identifies the company
+// now) — just "2024 – Present" itself, the longest period string across
+// both locales, is what sets the floor.
+const TICK_MIN_REM = 5;
 const TICK_GAP_REM = 0.5;
 const AXIS_LABEL_COL_REM = 2.5; // the percent column (`w-8`) plus the `gap-2` beside it
 const chartMinWidthRem =
@@ -193,7 +196,14 @@ const chartMinWidthRem =
                     fill-opacity="0.82"
                     stroke="var(--color-surface)"
                     stroke-width="0.3"
-                  />
+                  >
+                    {/* Hovering anywhere in the fill, not just one of the
+                        boundary dots below, names which area this band is —
+                        a wide flat stretch of color with nothing else on it
+                        had no way to tell what it was without hunting for a
+                        dot right on its edge. */}
+                    <title>{band.label}</title>
+                  </polygon>
                   {band.points.map((p) => (
                     <circle cx={p.x} cy={p.topY} r="0.7" fill="var(--color-surface)" stroke={band.color} stroke-width="0.5">
                       <title>{`${band.label}: ${p.value}%`}</title>
@@ -225,30 +235,30 @@ const chartMinWidthRem =
              *margin* actually shrinks the box itself, so the box this
              percentage resolves against is already exactly as wide as the
              SVG beside it above. -->
-        <div class="relative mt-2 h-14 ml-[2.5rem]">
+        <div class="relative mt-2 h-11 ml-[2.5rem]">
           {stops.map((stop, i) => (
             <div
               data-axis-stop={stop.slug}
               title={`${stop.org} · ${stop.period}`}
-              class="axis-tick absolute top-0 flex w-16 -translate-x-1/2 flex-col items-center gap-1 rounded-md px-0.5 transition"
+              class="axis-tick absolute top-0 flex w-20 -translate-x-1/2 flex-col items-center gap-1 rounded-md px-0.5 transition"
               style={`left:${xFor(i)}%`}
             >
               <div class={`flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${stop.chipClass}`}>
                 <img
                   src={stop.logo}
-                  alt=""
+                  alt={stop.org}
                   class={`h-full w-full object-contain ${stop.logoInvert ? 'brightness-0 invert' : ''}`}
                   style={stop.logoScale ? `transform: scale(${stop.logoScale})` : undefined}
                 />
               </div>
-              <!-- `w-full truncate` on each: adjacent ticks sit as little as
-                   ~35px apart at the narrowest phone width, so a full org
-                   name ("Instituto de Telecomunicações") or "2024 – Present"
-                   left to wrap or overflow at will bled into the neighboring
-                   tick's own text instead of just clipping to an ellipsis —
-                   the `title` above carries the untruncated pair for anyone
-                   who taps and holds or hovers. -->
-              <span class="w-full truncate text-center text-[9px] leading-tight text-[var(--color-text)]">{stop.org}</span>
+              <!-- No org name spelled out here — the logo above is already
+                   the company, and the timeline elsewhere on the page (and
+                   the `title` above, for a hover or a long-press) already
+                   carries the name in full for whoever needs it. Just the
+                   period underneath, so a tick still says *which* era.
+                   `w-full truncate` in case a locale's own period string
+                   ever runs long enough to threaten the ~35px gap between
+                   ticks at the narrowest phone width — it never has yet. -->
               <span class="w-full truncate text-center text-[8px] leading-tight text-[var(--color-muted)]">{stop.period}</span>
             </div>
           ))}
