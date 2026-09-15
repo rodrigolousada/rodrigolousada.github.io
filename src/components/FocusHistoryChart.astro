@@ -424,8 +424,6 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
                   points={[...top, ...base].join(' ')}
                   fill={band.color}
                   fill-opacity="0.82"
-                  stroke="var(--color-surface)"
-                  stroke-width="0.3"
                   data-tooltip={band.label}
                   data-category={band.id}
                   data-mode="detailed"
@@ -449,8 +447,6 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
                   points={[...top, ...base].join(' ')}
                   fill={band.color}
                   fill-opacity="0.82"
-                  stroke="var(--color-surface)"
-                  stroke-width="0.3"
                   data-tooltip={band.label}
                   data-category={band.id}
                   data-mode="grouped"
@@ -539,13 +535,26 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
            (the `:hover` state and the `is-clicked` class it toggles),
            not styled directly here. `data-legend-group` is what the view
            toggle alongside it shows/hides between (only one group is ever
-           visible at once; the other stays in the DOM, just `hidden`). The
+           visible at once; the other stays in the DOM, just invisible). The
            toggle sits right beside whichever legend is showing, not up in
            the header, since it's the legend's own labels that change
-           meaning between the two modes. -->
+           meaning between the two modes.
+
+           The two groups are stacked in the same grid cell (`[grid-area:1/1]`
+           on both) rather than laid out one-after-another with the other
+           `hidden`: detailed has 8 items (usually 2 lines at this width),
+           grouped has 2 (1 line), so swapping between them the ordinary way
+           changed how tall this row was, which made the whole dialog resize
+           and visibly jump on every toggle click. Stacking them means the
+           row's height is always however much the *taller* of the two
+           needs, whichever is actually showing — toggled by `invisible`
+           (keeps the layout box, unlike `hidden`'s `display:none`) plus
+           `pointer-events-none` so the off-screen one's items can't be
+           hovered/clicked (see the script below, which sets these instead
+           of `.hidden`). -->
       <div class="mt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-border)] pt-3">
-        <div class="flex flex-1 flex-wrap gap-x-3 gap-y-1">
-          <div data-legend-group="detailed" class="flex flex-wrap gap-x-3 gap-y-1">
+        <div class="grid flex-1">
+          <div data-legend-group="detailed" class="col-start-1 row-start-1 flex flex-wrap gap-x-3 gap-y-1">
             {bands.map((band) => (
               <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
                 <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
@@ -555,9 +564,9 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
           </div>
           <!-- Grouped view's own 2-item legend, same markup/classes as the
                detailed one above so it picks up the same hover/click
-               styling — starts `hidden`, since the chart itself opens in
+               styling — starts `invisible`, since the chart itself opens in
                detailed mode. -->
-          <div data-legend-group="grouped" class="flex flex-wrap gap-x-3 gap-y-1" hidden>
+          <div data-legend-group="grouped" class="col-start-1 row-start-1 flex flex-wrap gap-x-3 gap-y-1 invisible pointer-events-none">
             {groupedBands.map((band) => (
               <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
                 <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
@@ -600,10 +609,16 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
   /* The segment for whichever stop the chart was opened from — set via
      [data-open-focus-chart] below, cleared whenever the dialog isn't
      showing that stop's segment highlighted. Plain CSS class rather than an
-     inline style so it can be toggled with one classList call per open. */
+     inline style so it can be toggled with one classList call per open.
+     `inset`: this segment can be the last (or, in principle, first) one in
+     the row, flush against the scrollable chart wrapper's own edge with no
+     slack to spare — an outward ring there gets silently clipped by that
+     ancestor's overflow instead of rendering past the segment's edge. Inset
+     draws the ring inside the segment's own box instead, which is always
+     within bounds regardless of which edges it happens to touch. */
   .axis-segment.is-current {
     background: color-mix(in srgb, var(--color-accent) 15%, transparent);
-    box-shadow: 0 0 0 1px var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
   }
   .axis-segment.is-current span {
     color: var(--color-accent);
@@ -1000,19 +1015,28 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
   // (not animate — these are two different shapes with a different number
   // of bands entirely, not a reorder of the same ones) both back to their
   // own resting stack. `data-view` on the `<svg>` is what the CSS above
-  // actually keys the show/hide off of; the legend groups toggle their own
-  // `hidden` directly since they're plain HTML elements.
+  // actually keys the show/hide off of. The legend groups are stacked in
+  // the same grid cell (see their own markup comment) so the row's height
+  // never changes between them — `setLegendVisible` toggles `invisible`/
+  // `pointer-events-none` instead of `hidden`, which would drop the
+  // inactive one out of the grid's sizing entirely and bring back the
+  // resize-on-toggle jump this was built to avoid.
   const viewToggleButtons = [...(chart?.querySelectorAll<HTMLButtonElement>('[data-focus-view]') ?? [])];
   const detailedLegend = chart?.querySelector<HTMLElement>('[data-legend-group="detailed"]');
   const groupedLegend = chart?.querySelector<HTMLElement>('[data-legend-group="grouped"]');
+
+  function setLegendVisible(el: HTMLElement | null | undefined, visible: boolean) {
+    el?.classList.toggle('invisible', !visible);
+    el?.classList.toggle('pointer-events-none', !visible);
+  }
 
   function switchView(mode: ViewMode) {
     if (mode === viewMode) return;
     resetActiveState();
     viewMode = mode;
     viewToggleButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.focusView === mode)));
-    if (detailedLegend) detailedLegend.hidden = mode !== 'detailed';
-    if (groupedLegend) groupedLegend.hidden = mode !== 'grouped';
+    setLegendVisible(detailedLegend, mode === 'detailed');
+    setLegendVisible(groupedLegend, mode === 'grouped');
     svg?.setAttribute('data-view', mode);
     animateBandsTo(bandElsFor(mode), defaultPointsFor(mode), 0);
   }
@@ -1031,8 +1055,8 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
     resetActiveState();
     viewMode = 'detailed';
     viewToggleButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.focusView === 'detailed')));
-    if (detailedLegend) detailedLegend.hidden = false;
-    if (groupedLegend) groupedLegend.hidden = true;
+    setLegendVisible(detailedLegend, true);
+    setLegendVisible(groupedLegend, false);
     svg?.setAttribute('data-view', 'detailed');
     animateBandsTo(detailedBandEls, detailedDefaultPoints, 0);
   });
