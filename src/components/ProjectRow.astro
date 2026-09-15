@@ -292,7 +292,7 @@ function formatNewsDate(date: string) {
               data-lightbox-alt={project.image.alt}
               class="block w-full cursor-zoom-in"
             >
-              <img src={project.image.src} alt={project.image.alt} class="mx-auto max-h-80 w-auto object-contain" />
+              <img src={project.image.src} alt={project.image.alt} loading="lazy" class="mx-auto max-h-80 w-auto object-contain" />
             </button>
             {project.image.caption && (
               <figcaption

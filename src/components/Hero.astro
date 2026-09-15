@@ -141,6 +141,9 @@ const cities = hero.cities.flatMap((city, i) => {
       <img
         src={hero.photo}
         alt={hero.name}
+        width="64"
+        height="64"
+        fetchpriority="high"
         class="h-16 w-16 rounded-full object-cover ring-2 ring-[var(--color-accent)]/40"
       />
       <div>

@@ -39,7 +39,7 @@
     },
     "hero": {
       "name": "Rodrigo Lousada",
-      "photo": "/img/profile.jpg",
+      "photo": "/img/profile.webp",
       "roleLine": "Software Engineer @ Klarna · Berlin, Germany",
       "headline": "I lead developers that ship",
       "stats": [
@@ -83,7 +83,7 @@
         "Voicebots"
       ],
       "lookingFor": "Engineering Manager or Tech Lead roles, based in Berlin/EU or fully remote.",
-      "certificateImage": "/img/certificates/clifton-strengths-certificate.jpg",
+      "certificateImage": "/img/certificates/clifton-strengths-certificate.webp",
       "strengths": [
         {
           "name": "Achiever",
@@ -119,7 +119,7 @@
       },
       "ibm": {
         "name": "IBM",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent"
       },
@@ -131,7 +131,7 @@
       },
       "bankinter": {
         "name": "Bankinter",
-        "logo": "/img/bankinter-icon.png",
+        "logo": "/img/bankinter-icon.webp",
         "chipClass": "bg-white",
         "logoFill": true
       },
@@ -376,7 +376,7 @@
       {
         "org": "IBM Consulting",
         "title": "Tech Consulting Lead",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "logoScale": 0.85,
         "headerLogoScale": 0.8,
         "logoInvert": true,
@@ -796,7 +796,7 @@
             "urlStyle": "paper",
             "urlSource": "IST Thesis",
             "image": {
-              "src": "/img/projects/thesis-architecture.png",
+              "src": "/img/projects/thesis-architecture.webp",
               "alt": "System architecture diagram: Data, Logic, and Presentation layers",
               "caption": "Fig. 3.1: General view of the system, from the thesis",
               "background": "light"
@@ -851,7 +851,7 @@
               "Oversaw end-to-end coordination of the 26th edition"
             ],
             "image": {
-              "src": "/img/sinfo-26.jpg",
+              "src": "/img/sinfo-26.webp",
               "alt": "SINFO 26 event poster: schedule, speakers, and sponsors for the 2019 edition"
             }
           },
@@ -875,7 +875,7 @@
               "10x social media engagement on 10k+ follower accounts"
             ],
             "image": {
-              "src": "/img/sinfo-25.jpg",
+              "src": "/img/sinfo-25.webp",
               "alt": "SINFO 25 event poster: schedule, speakers, and sponsors for the 2018 edition"
             }
           },
@@ -897,7 +897,7 @@
               "Secured €5,650 in sponsorship from 16 companies"
             ],
             "image": {
-              "src": "/img/sinfo-24.jpg",
+              "src": "/img/sinfo-24.webp",
               "alt": "SINFO 24 event poster: schedule, speakers, and sponsors for the 2017 edition"
             }
           }
@@ -934,7 +934,7 @@
         ],
         "shellColor": "bg-orange-600",
         "labelColor": "bg-neutral-900",
-        "screenshot": "/img/side-projects/courtkit.jpg",
+        "screenshot": "/img/side-projects/courtkit.webp",
         "deviceDemo": {
           "watch": {
             "caption": "Add Apple Watch recording"
@@ -974,7 +974,7 @@
         "demoLabel": "Play the live demo",
         "shellColor": "bg-emerald-600",
         "labelColor": "bg-emerald-50",
-        "screenshot": "/img/side-projects/space-invaders.jpg"
+        "screenshot": "/img/side-projects/space-invaders.webp"
       },
       {
         "title": "Nobel Prizes",
@@ -990,7 +990,7 @@
         "demoLabel": "Open the live dashboard",
         "shellColor": "bg-indigo-600",
         "labelColor": "bg-indigo-50",
-        "screenshot": "/img/side-projects/nobel-prizes.jpg"
+        "screenshot": "/img/side-projects/nobel-prizes.webp"
       }
     ],
     "speaking": {
@@ -1006,13 +1006,13 @@
       ],
       "talks": [
         {
-          "photo": "/img/IT talk.JPG",
+          "photo": "/img/it-talk.webp",
           "caption": "MoE Trading Simulator",
           "placeholder": true,
           "rotate": -4
         },
         {
-          "photo": "/img/ISCTE Talk.JPG",
+          "photo": "/img/iscte-talk.webp",
           "caption": "GitHub 101 Lecture",
           "placeholder": true,
           "rotate": 3
@@ -1025,7 +1025,7 @@
       "engagementDelaySeconds": 600,
       "personal": {
         "name": "Rodrigo Lousada",
-        "photo": "/img/profile.jpg",
+        "photo": "/img/profile.webp",
         "tagline": "Open to EM / Tech Lead roles",
         "stripColor": "bg-blue-600",
         "backColor": "bg-blue-600",
@@ -1051,7 +1051,7 @@
       },
       "klarna": {
         "name": "Rodrigo Lousada",
-        "photo": "/img/profile.jpg",
+        "photo": "/img/profile.webp",
         "tagline": "Software Engineer · Referrals & Deals",
         "stripColor": "bg-[#ffb3c7]",
         "backColor": "bg-[#ffb3c7]",
@@ -1075,7 +1075,7 @@
       },
       {
         "name": "IBM",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "category": "worked",
         "scrollTo": "ibm-consulting"
       },
@@ -1088,7 +1088,7 @@
       },
       {
         "name": "Banco Montepio",
-        "logo": "/img/montepio-logo-horizontal.png",
+        "logo": "/img/montepio-logo-horizontal.webp",
         "category": "client",
         "scrollToCompany": "montepio",
         "scrollTo": "ibm-consulting"
@@ -1109,7 +1109,7 @@
       },
       {
         "name": "Instituto Superior Técnico",
-        "logo": "/img/ist-logo.png",
+        "logo": "/img/ist-logo.webp",
         "logoScale": 1.3,
         "category": "studied",
         "program": "BSc & MSc, Computer Science and Engineering",
@@ -1124,7 +1124,7 @@
       },
       {
         "name": "Humboldt-Universität zu Berlin",
-        "logo": "/img/humboldt-logo.png",
+        "logo": "/img/humboldt-logo.webp",
         "logoScale": 1.6,
         "category": "studied",
         "program": "Erasmus exchange semester"
@@ -1137,7 +1137,7 @@
       },
       {
         "name": "AESE Business School",
-        "logo": "/img/aese-logo.png",
+        "logo": "/img/aese-logo.webp",
         "logoScale": 1.3,
         "category": "studied",
         "program": "Executive education programme"
@@ -1155,9 +1155,9 @@
         "name": "António Pedro Cerejeira",
         "role": "IBM Senior Manager, Service Line Director",
         "initials": "APC",
-        "photo": "/img/apc_photo.png",
+        "photo": "/img/apc_photo.webp",
         "scrollTo": "ibm-consulting",
-        "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
+        "letterImage": "/img/testimonial/apc-recommendation-letter.webp",
         "company": "IBM Consulting"
       }
     ],
@@ -1609,7 +1609,7 @@
     },
     "hero": {
       "name": "Rodrigo Lousada",
-      "photo": "/img/profile.jpg",
+      "photo": "/img/profile.webp",
       "roleLine": "Engenheiro de Software @ Klarna · Berlim, Alemanha",
       "headline": "Lidero equipas de engenharia que entregam",
       "stats": [
@@ -1653,7 +1653,7 @@
         "Voicebots"
       ],
       "lookingFor": "Funções de Engineering Manager ou Tech Lead, em Berlim/UE ou em regime totalmente remoto.",
-      "certificateImage": "/img/certificates/clifton-strengths-certificate.jpg",
+      "certificateImage": "/img/certificates/clifton-strengths-certificate.webp",
       "strengths": [
         {
           "name": "Realizador",
@@ -1689,7 +1689,7 @@
       },
       "ibm": {
         "name": "IBM",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "logoInvert": true,
         "chipClass": "bg-gradient-to-br from-sky-500/30 via-blue-500/10 to-transparent"
       },
@@ -1701,7 +1701,7 @@
       },
       "bankinter": {
         "name": "Bankinter",
-        "logo": "/img/bankinter-icon.png",
+        "logo": "/img/bankinter-icon.webp",
         "chipClass": "bg-white",
         "logoFill": true
       },
@@ -1946,7 +1946,7 @@
       {
         "org": "IBM Consulting",
         "title": "Líder de Consultoria Tecnológica",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "logoScale": 0.85,
         "headerLogoScale": 0.8,
         "logoInvert": true,
@@ -2366,7 +2366,7 @@
             "urlStyle": "paper",
             "urlSource": "Tese do IST",
             "image": {
-              "src": "/img/projects/thesis-architecture.png",
+              "src": "/img/projects/thesis-architecture.webp",
               "alt": "Diagrama da arquitetura do sistema: camadas de Dados, Lógica e Apresentação",
               "caption": "Fig. 3.1: Vista geral do sistema, retirada da tese",
               "background": "light"
@@ -2412,7 +2412,7 @@
             "tldr": "Coordenou a 26.ª edição do SINFO, a conferência tecnológica anual organizada por estudantes do IST, supervisionando as equipas de voluntários de ponta a ponta.",
             "description": "Como Coordenador, supervisionou o SINFO 26 (2019) de ponta a ponta: recrutando e liderando equipas de voluntários pelas várias comissões da conferência, após 2 anos anteriores à frente da comunicação e das redes sociais do evento.",
             "image": {
-              "src": "/img/sinfo-26.jpg",
+              "src": "/img/sinfo-26.webp",
               "alt": "Cartaz do SINFO 26: programa, oradores e patrocinadores da edição de 2019"
             },
             "technologies": [
@@ -2433,7 +2433,7 @@
             "tldr": "Liderou a equipa de Redes Sociais e Comunicação na 25.ª edição do SINFO, impulsionando patrocínios e engagement.",
             "description": "Como Líder da equipa de Redes Sociais e Comunicação, geriu o contacto com oradores e patrocinadores e aumentou o engagement nas contas de redes sociais do SINFO, cocriando novos formatos de conteúdo com a equipa de Multimédia.",
             "image": {
-              "src": "/img/sinfo-25.jpg",
+              "src": "/img/sinfo-25.webp",
               "alt": "Cartaz do SINFO 25: programa, oradores e patrocinadores da edição de 2018"
             },
             "technologies": [
@@ -2457,7 +2457,7 @@
             "tldr": "Geriu a comunicação e as redes sociais na 24.ª edição do SINFO, fazendo crescer todos os canais e angariando patrocinadores.",
             "description": "Como Gestor de Comunicação e Redes Sociais, produziu conteúdo diário nas contas do SINFO e fez a angariação de oradores e patrocinadores para a 24.ª edição da conferência.",
             "image": {
-              "src": "/img/sinfo-24.jpg",
+              "src": "/img/sinfo-24.webp",
               "alt": "Cartaz do SINFO 24: programa, oradores e patrocinadores da edição de 2017"
             },
             "technologies": [
@@ -2504,7 +2504,7 @@
         ],
         "shellColor": "bg-orange-600",
         "labelColor": "bg-neutral-900",
-        "screenshot": "/img/side-projects/courtkit.jpg",
+        "screenshot": "/img/side-projects/courtkit.webp",
         "deviceDemo": {
           "watch": {
             "caption": "Adicionar vídeo do Apple Watch"
@@ -2544,7 +2544,7 @@
         "demoLabel": "Ver a demo ao vivo",
         "shellColor": "bg-emerald-600",
         "labelColor": "bg-emerald-50",
-        "screenshot": "/img/side-projects/space-invaders.jpg"
+        "screenshot": "/img/side-projects/space-invaders.webp"
       },
       {
         "title": "Nobel Prizes",
@@ -2560,7 +2560,7 @@
         "demoLabel": "Abrir o painel ao vivo",
         "shellColor": "bg-indigo-600",
         "labelColor": "bg-indigo-50",
-        "screenshot": "/img/side-projects/nobel-prizes.jpg"
+        "screenshot": "/img/side-projects/nobel-prizes.webp"
       }
     ],
     "speaking": {
@@ -2576,13 +2576,13 @@
       ],
       "talks": [
         {
-          "photo": "/img/IT talk.JPG",
+          "photo": "/img/it-talk.webp",
           "caption": "MoE Trading Simulator",
           "placeholder": true,
           "rotate": -4
         },
         {
-          "photo": "/img/ISCTE Talk.JPG",
+          "photo": "/img/iscte-talk.webp",
           "caption": "Palestra GitHub 101",
           "placeholder": true,
           "rotate": 3
@@ -2595,7 +2595,7 @@
       "engagementDelaySeconds": 600,
       "personal": {
         "name": "Rodrigo Lousada",
-        "photo": "/img/profile.jpg",
+        "photo": "/img/profile.webp",
         "tagline": "Aberto a funções de EM / Tech Lead",
         "stripColor": "bg-blue-600",
         "backColor": "bg-blue-600",
@@ -2621,7 +2621,7 @@
       },
       "klarna": {
         "name": "Rodrigo Lousada",
-        "photo": "/img/profile.jpg",
+        "photo": "/img/profile.webp",
         "tagline": "Software Engineer · Referrals & Deals",
         "stripColor": "bg-[#ffb3c7]",
         "backColor": "bg-[#ffb3c7]",
@@ -2645,7 +2645,7 @@
       },
       {
         "name": "IBM",
-        "logo": "/img/ibm-logo.png",
+        "logo": "/img/ibm-logo.webp",
         "category": "worked",
         "scrollTo": "ibm-consulting"
       },
@@ -2658,7 +2658,7 @@
       },
       {
         "name": "Banco Montepio",
-        "logo": "/img/montepio-logo-horizontal.png",
+        "logo": "/img/montepio-logo-horizontal.webp",
         "category": "client",
         "scrollToCompany": "montepio",
         "scrollTo": "ibm-consulting"
@@ -2679,7 +2679,7 @@
       },
       {
         "name": "Instituto Superior Técnico",
-        "logo": "/img/ist-logo.png",
+        "logo": "/img/ist-logo.webp",
         "logoScale": 1.3,
         "category": "studied",
         "program": "Licenciatura e Mestrado em Engenharia Informática e de Computadores",
@@ -2694,7 +2694,7 @@
       },
       {
         "name": "Humboldt-Universität zu Berlin",
-        "logo": "/img/humboldt-logo.png",
+        "logo": "/img/humboldt-logo.webp",
         "logoScale": 1.6,
         "category": "studied",
         "program": "Semestre de intercâmbio Erasmus"
@@ -2707,7 +2707,7 @@
       },
       {
         "name": "AESE Business School",
-        "logo": "/img/aese-logo.png",
+        "logo": "/img/aese-logo.webp",
         "logoScale": 1.3,
         "category": "studied",
         "program": "Programa de formação executiva"
@@ -2725,9 +2725,9 @@
         "name": "António Pedro Cerejeira",
         "role": "Senior Manager da IBM, Diretor de Service Line",
         "initials": "APC",
-        "photo": "/img/apc_photo.png",
+        "photo": "/img/apc_photo.webp",
         "scrollTo": "ibm-consulting",
-        "letterImage": "/img/testimonial/apc-recommendation-letter.jpg",
+        "letterImage": "/img/testimonial/apc-recommendation-letter.webp",
         "company": "IBM Consulting"
       }
     ],

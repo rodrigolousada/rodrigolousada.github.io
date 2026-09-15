@@ -81,6 +81,15 @@ const jsonLd = {
     <meta property="og:image" content={`${site.site.url}${site.hero.photo}`} />
     <meta name="twitter:card" content="summary" />
 
+    <!-- Hero's own photo is the page's LCP (largest contentful paint)
+         candidate on most viewports — it's the first real image in the
+         DOM and above the fold everywhere. Preloading it (rather than
+         waiting for the browser's preload scanner to reach Hero.astro's
+         own <img>, several sections down in the HTML) shaves the one
+         round-trip that actually gates LCP. Safe to hardcode `as="image"`
+         since it's always a raster file (webp), never swapped for an SVG. -->
+    <link rel="preload" as="image" href={site.hero.photo} fetchpriority="high" />
+
     <!-- Fonts (Inter, Space Grotesk, Source Serif 4, Press Start 2P) are
          self-hosted — see src/styles/fonts.css for why (removes a GDPR-
          relevant request to Google on every page load) and how. It's
@@ -107,6 +116,15 @@ const jsonLd = {
     />
   </head>
   <body class="font-sans antialiased">
+    <!-- Center-out loading bar (styles + keyframes in global.css). First
+         thing in <body> so it paints before AmbientBackground's blobs or
+         anything in `<slot />` — a plain element with a pure-CSS animation,
+         it doesn't wait on this file's own scripts, Hero's photo, or
+         anything else to show up. The script right below removes it once
+         `load` fires; see there for why `load` and not `DOMContentLoaded`. -->
+    <div id="page-loading-bar" class="page-loading-bar" aria-hidden="true">
+      <span class="page-loading-bar__pulse"></span>
+    </div>
     <AmbientBackground />
     <slot />
     <EngagementPrompt locale={locale} />
@@ -114,6 +132,33 @@ const jsonLd = {
     <ImageLightbox locale={locale} />
   </body>
 </html>
+
+<script>
+  // Hides the center-out loading bar (`#page-loading-bar`, right after
+  // <body> above; styles/keyframes in global.css) once the page has
+  // actually finished loading. `load`, not `DOMContentLoaded` — this
+  // should stay up through image/font/video fetches, not disappear the
+  // moment the HTML itself is parsed. `data-loaded` (rather than removing
+  // the element outright) just triggers the opacity transition already
+  // defined in CSS; the bar is `pointer-events: none` either way, so
+  // leaving it in the DOM costs nothing.
+  //
+  // No `prefers-reduced-motion` branching needed here — that's handled
+  // entirely in CSS (see the media query next to the keyframes), same
+  // split as `FocusHistoryChart.astro`'s `REDUCED_MOTION` constant for a
+  // JS-driven animation vs. this one, which never leaves CSS.
+  //
+  // The `readyState` check covers the (rare) case this script only starts
+  // running once `load` has already fired — e.g. a bfcache restore, or a
+  // slow-to-parse page where by the time this runs everything is already
+  // in — since no future 'load' event would come to hide the bar otherwise.
+  const loadingBar = document.getElementById('page-loading-bar');
+  if (loadingBar) {
+    const hideLoadingBar = () => loadingBar.setAttribute('data-loaded', '');
+    if (document.readyState === 'complete') hideLoadingBar();
+    else window.addEventListener('load', hideLoadingBar, { once: true });
+  }
+</script>
 
 <script>
   // Intercept plain same-page anchor links site-wide (nav, "Get in touch"

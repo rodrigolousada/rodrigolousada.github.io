@@ -94,6 +94,7 @@ const jumpUi = {
                     src={org.logo}
                     alt={org.name}
                     title={org.program ? undefined : org.name}
+                    loading="lazy"
                     class={`h-[calc(1rem*var(--logo-scale))] w-auto object-contain opacity-40 grayscale transition group-hover:opacity-90 sm:h-[calc(1.75rem*var(--logo-scale))] ${org.alreadyWhite ? '' : 'invert'}`}
                     style={`--logo-scale: ${org.logoScale ?? 1};`}
                   />

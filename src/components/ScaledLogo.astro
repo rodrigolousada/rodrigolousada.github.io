@@ -31,6 +31,7 @@ const { src, alt, invert = false, scale, class: sizeClass = 'h-full w-full' } = 
 <img
   src={src}
   alt={alt}
+  loading="lazy"
   class={`${sizeClass} object-contain ${invert ? 'brightness-0 invert' : ''}`}
   style={scale ? `transform: scale(${scale})` : undefined}
 />

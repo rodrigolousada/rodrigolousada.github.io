@@ -135,6 +135,73 @@ dialog[open] {
   touch-action: none;
 }
 
+/* Center-out loading bar, shown from the very first paint (it's a plain
+   element with no JS dependency, so it's up before Astro's own inline
+   redirect script above it even runs) until the page's `load` event fires
+   (see the script right after this element in Layout.astro). A classic
+   MPA site with no <ClientRouter/> (checked: astro.config.mjs has no view
+   transitions) means every navigation is a full reload, so this is the
+   only "is the page ready yet" signal a visitor gets, full stop, not just
+   on the very first visit. `z-[60]` clears Nav's sticky header (`z-50`);
+   native <dialog>s render in the browser's own top layer regardless of
+   z-index, so this never has to out-rank those. */
+.page-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.page-loading-bar[data-loaded] {
+  opacity: 0;
+}
+
+.page-loading-bar__pulse {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent);
+  transform: translateX(-50%) scaleX(0);
+  animation: page-loading-pulse 1.1s ease-in-out infinite;
+}
+
+/* Grows from a hairline at the center out to both edges, fades, then
+   repeats — deliberately not a left-to-right progress fill, since there's
+   no real byte-count progress to report on a static site anyway. */
+@keyframes page-loading-pulse {
+  0% {
+    transform: translateX(-50%) scaleX(0);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* Static hairline instead of the animated pulse: still visible for as
+   long as the page is loading (and still removed the same way once it
+   is), just without the growing motion. */
+@media (prefers-reduced-motion: reduce) {
+  .page-loading-bar__pulse {
+    animation: none;
+    transform: translateX(-50%) scaleX(0.4);
+    opacity: 0.8;
+  }
+}
+
 /* Small "confirm before we scroll you away" balloon shown by the
    cross-link jump logic in Organizations.astro. */
 .jump-confirm-popup {

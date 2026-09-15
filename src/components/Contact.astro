@@ -51,7 +51,7 @@ const ui = getUI(locale);
         <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.personal.stripColor}`}></div>
         <div class="flex h-full flex-col py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
-            <img src={contact.personal.photo} alt={contact.personal.name} class="h-12 w-12 rounded-md object-cover" />
+            <img src={contact.personal.photo} alt={contact.personal.name} width="48" height="48" loading="lazy" class="h-12 w-12 rounded-md object-cover" />
             <div>
               <p class="text-lg font-semibold">{contact.personal.name}</p>
               <p class="text-xs text-neutral-500">{contact.personal.tagline}</p>
@@ -107,7 +107,7 @@ const ui = getUI(locale);
         <div class={`absolute inset-y-0 left-0 w-2.5 ${contact.klarna.stripColor}`}></div>
         <div class="flex h-full flex-col py-6 pl-8 pr-6 text-neutral-900">
           <div class="flex items-center gap-3">
-            <img src={contact.klarna.photo} alt={contact.klarna.name} class="h-12 w-12 rounded-md object-cover" />
+            <img src={contact.klarna.photo} alt={contact.klarna.name} width="48" height="48" loading="lazy" class="h-12 w-12 rounded-md object-cover" />
             <div>
               <p class="text-lg font-semibold">{contact.klarna.name}</p>
               <p class="text-xs text-neutral-500">{contact.klarna.tagline}</p>
@@ -133,7 +133,7 @@ const ui = getUI(locale);
       </div>
 
       <div class={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)] ${contact.klarna.backColor}`}>
-        <img src={contact.klarna.logo} alt="Klarna" class="h-16 w-auto" />
+        <img src={contact.klarna.logo} alt="Klarna" loading="lazy" class="h-16 w-auto" />
         <span class="absolute bottom-2 right-3 font-mono text-[10px] text-neutral-600/70">{ui.contact.clickToRotate}</span>
       </div>
     </div>

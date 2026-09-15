@@ -12,7 +12,7 @@ version if this drifts; update both when something here gets resolved.
 ## Content Rodrigo needs to provide
 
 - [ ] **Profile picture.** `hero.photo` / `contact.personal.photo`
-      (`public/img/profile.jpg`) is still the original photo from the old
+      (`public/img/profile.webp`) is still the original photo from the old
       site. A replacement was mentioned as coming but hasn't landed in
       `public/img/` yet.
 - [ ] **CourtKit demo footage.** The Apple Watch + iPhone frames are built
