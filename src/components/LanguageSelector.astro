@@ -10,9 +10,15 @@ import { getLanguageMeta, localePath } from '../data/languages';
 
 interface Props {
   locale: Locale;
+  /** Opens the option list upward instead of down. The desktop top-bar's
+   * copy of this (Nav.astro) has the whole page below it and keeps the
+   * default; the mobile nav panel's copy sits `mt-auto`-pinned to the
+   * bottom of a fixed, viewport-height slide-in panel, so a downward
+   * dropdown there has nowhere to go but off the bottom of the screen. */
+  dropUp?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, dropUp = false } = Astro.props;
 const current = getLanguageMeta(locale);
 const ui = getUI(locale);
 ---
@@ -29,7 +35,7 @@ const ui = getUI(locale);
           <path d="M7 10l5 5 5-5z" />
         </svg>
       </summary>
-      <ul class="absolute right-0 z-50 mt-2 w-40 overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-lg">
+      <ul class={`absolute right-0 z-50 w-40 overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-lg ${dropUp ? 'bottom-full mb-2' : 'mt-2'}`}>
         {locales.map((loc) => {
           const meta = getLanguageMeta(loc);
           return (
