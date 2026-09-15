@@ -323,25 +323,7 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
     <div class="p-5 pt-7 sm:pt-5">
       <div class="flex items-start justify-between gap-3">
         <h3 class="text-sm font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
-        <div class="flex shrink-0 items-center gap-2">
-          <!-- Detailed (all 8 categories) vs. grouped (technical vs.
-               people/business, see `GROUPED_CATEGORIES` above) view toggle.
-               A segmented pair rather than one label-swapping button so
-               both options and which one is active are visible at once,
-               not just discoverable by clicking. `data-focus-view` is read
-               by the script below (`switchView`), which shows/hides the
-               matching `data-mode` polygons and `data-legend-group` legend
-               instead of this being two entirely separate charts. -->
-          <div class="flex items-center gap-0.5 rounded-full border border-[var(--color-border)] p-0.5 text-[10px]" role="group" aria-label={ui.careerStop.focusViewToggleLabel}>
-            <button type="button" data-focus-view="detailed" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="true">
-              {ui.careerStop.focusViewByCategory}
-            </button>
-            <button type="button" data-focus-view="grouped" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="false">
-              {ui.careerStop.focusViewGrouped}
-            </button>
-          </div>
-          <DialogCloseButton label={ui.common.close} shrink />
-        </div>
+        <DialogCloseButton label={ui.common.close} shrink />
       </div>
 
       <!-- Scrolls horizontally below `chartMinWidthRem` (see its own comment)
@@ -507,13 +489,13 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
              land the segments between them under the exact same x the
              chart above draws its bands at. -->
         <div class="relative mt-1 ml-[2.5rem]">
-          <div class="flex h-9">
+          <div class="flex h-10">
             <div style={`width:${PLOT_X0}%`} aria-hidden="true"></div>
             {segments.map((seg, i) => (
               <div
                 data-axis-stop={seg.stop.slug}
                 title={`${seg.stop.org} · ${seg.stop.period}`}
-                class={`axis-segment flex min-w-0 flex-col items-center gap-1 px-1 pt-0.5 transition ${i > 0 ? 'border-l border-[var(--color-border)]' : ''}`}
+                class={`axis-segment flex min-w-0 flex-col items-center gap-1 px-1 py-0.5 transition ${i > 0 ? 'border-l border-[var(--color-border)]' : ''}`}
                 style={`width:${seg.widthPct}%`}
               >
                 <div class={`flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded p-0.5 ${seg.stop.chipClass}`}>
@@ -556,26 +538,50 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
            `legend-swatch`/`legend-label` are hooks for that script's CSS
            (the `:hover` state and the `is-clicked` class it toggles),
            not styled directly here. `data-legend-group` is what the view
-           toggle above shows/hides between (only one group is ever visible
-           at once; the other stays in the DOM, just `hidden`). -->
-      <div data-legend-group="detailed" class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3">
-        {bands.map((band) => (
-          <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
-            <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
-            <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
+           toggle alongside it shows/hides between (only one group is ever
+           visible at once; the other stays in the DOM, just `hidden`). The
+           toggle sits right beside whichever legend is showing, not up in
+           the header, since it's the legend's own labels that change
+           meaning between the two modes. -->
+      <div class="mt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-border)] pt-3">
+        <div class="flex flex-1 flex-wrap gap-x-3 gap-y-1">
+          <div data-legend-group="detailed" class="flex flex-wrap gap-x-3 gap-y-1">
+            {bands.map((band) => (
+              <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
+                <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+                <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <!-- Grouped view's own 2-item legend, same markup/classes as the
-           detailed one above so it picks up the same hover/click styling —
-           starts `hidden`, since the chart itself opens in detailed mode. -->
-      <div data-legend-group="grouped" class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3" hidden>
-        {groupedBands.map((band) => (
-          <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
-            <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
-            <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
+          <!-- Grouped view's own 2-item legend, same markup/classes as the
+               detailed one above so it picks up the same hover/click
+               styling — starts `hidden`, since the chart itself opens in
+               detailed mode. -->
+          <div data-legend-group="grouped" class="flex flex-wrap gap-x-3 gap-y-1" hidden>
+            {groupedBands.map((band) => (
+              <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
+                <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+                <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        <!-- Detailed (all 8 categories) vs. grouped (technical vs.
+             people/business, see `GROUPED_CATEGORIES` above) view toggle.
+             A segmented pair rather than one label-swapping button so both
+             options and which one is active are visible at once, not just
+             discoverable by clicking. `data-focus-view` is read by the
+             script below (`switchView`), which shows/hides the matching
+             `data-mode` polygons and `data-legend-group` legend instead of
+             this being two entirely separate charts. -->
+        <div class="flex shrink-0 items-center gap-0.5 rounded-full border border-[var(--color-border)] p-0.5 text-[10px]" role="group" aria-label={ui.careerStop.focusViewToggleLabel}>
+          <button type="button" data-focus-view="detailed" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="true">
+            {ui.careerStop.focusViewByCategory}
+          </button>
+          <button type="button" data-focus-view="grouped" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="false">
+            {ui.careerStop.focusViewGrouped}
+          </button>
+        </div>
       </div>
     </div>
 
