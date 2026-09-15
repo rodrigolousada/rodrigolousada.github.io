@@ -308,7 +308,7 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
 
 <dialog
   id="focus-history-chart"
-  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[78vh] sm:w-[min(92vw,36rem)] sm:rounded-xl sm:border"
+  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,46rem)] sm:rounded-xl sm:border"
 >
   <!-- Bottom sheet on mobile, centered card at sm: and up — see
        CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor,
@@ -322,10 +322,7 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
     <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
     <div class="p-5 pt-7 sm:pt-5">
       <div class="flex items-start justify-between gap-3">
-        <div>
-          <h3 class="text-sm font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
-          <p class="mt-0.5 text-[11px] text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
-        </div>
+        <h3 class="text-sm font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
         <div class="flex shrink-0 items-center gap-2">
           <!-- Detailed (all 8 categories) vs. grouped (technical vs.
                people/business, see `GROUPED_CATEGORIES` above) view toggle.

@@ -49,7 +49,6 @@
       "focusThisEra": "Focus this era",
       "viewFocusHistory": "See how this shifted across every stop →",
       "focusHistoryHeading": "Focus areas over the years",
-      "focusHistorySubtitle": "How time split across areas at each stop, stacked with the hands-on technical skills first, then the more people- and business-facing ones.",
       "focusViewToggleLabel": "Chart grouping",
       "focusViewByCategory": "By category",
       "focusViewGrouped": "Grouped",
@@ -187,7 +186,6 @@
       "focusThisEra": "Foco desta era",
       "viewFocusHistory": "Ver como isto mudou ao longo de cada etapa →",
       "focusHistoryHeading": "Áreas de foco ao longo dos anos",
-      "focusHistorySubtitle": "Como o tempo se dividiu por área em cada etapa, empilhado primeiro pelas competências técnicas e depois pelas mais viradas para pessoas e negócio.",
       "focusViewToggleLabel": "Agrupamento do gráfico",
       "focusViewByCategory": "Por categoria",
       "focusViewGrouped": "Agrupado",
@@ -274,8 +272,7 @@
       "linkCopied": "Link copiado!",
       "dismiss": "Talvez mais tarde"
     }
-  }
-,
+  },
   "es": {
     "nav": {
       "openMenu": "Abrir menú",
@@ -326,7 +323,6 @@
       "focusThisEra": "Enfoque en esta etapa",
       "viewFocusHistory": "Ver cómo esto cambió en cada etapa →",
       "focusHistoryHeading": "Áreas de enfoque a lo largo de los años",
-      "focusHistorySubtitle": "Cómo se repartió el tiempo entre áreas en cada etapa, apiladas primero con las competencias técnicas prácticas y después con las más orientadas a personas y negocio.",
       "focusViewToggleLabel": "Agrupación del gráfico",
       "focusViewByCategory": "Por categoría",
       "focusViewGrouped": "Agrupado",
@@ -464,7 +460,6 @@
       "focusThisEra": "Fokus dieser Ära",
       "viewFocusHistory": "Sehen Sie, wie sich das über jede Station hinweg verändert hat →",
       "focusHistoryHeading": "Fokusbereiche im Laufe der Jahre",
-      "focusHistorySubtitle": "Wie sich die Zeit an jeder Station auf die Bereiche verteilte, zunächst gestapelt mit den praktischen technischen Fähigkeiten, danach mit den stärker personen- und geschäftsorientierten.",
       "focusViewToggleLabel": "Diagrammgruppierung",
       "focusViewByCategory": "Nach Kategorie",
       "focusViewGrouped": "Gruppiert",
