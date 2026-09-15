@@ -265,4 +265,271 @@
       "dismiss": "Talvez mais tarde"
     }
   }
+,
+  "es": {
+    "nav": {
+      "openMenu": "Abrir menú",
+      "closeMenu": "Cerrar menú",
+      "changeLanguage": "Cambiar idioma (actual: {label})"
+    },
+    "common": {
+      "close": "Cerrar",
+      "play": "Reproducir",
+      "pause": "Pausar",
+      "showMore": "Ver más",
+      "comingSoon": "Próximamente",
+      "view": "Ver →",
+      "technologies": "Tecnologías y Habilidades",
+      "achievements": "Logros",
+      "shareProject": "Copiar enlace a este proyecto",
+      "linkCopied": "¡Enlace copiado!"
+    },
+    "hero": {
+      "viewProjects": "Ver proyectos",
+      "getInTouch": "Ponte en contacto",
+      "downloadCv": "Descargar CV",
+      "showInfoFor": "Mostrar información de {name}"
+    },
+    "technologies": {
+      "heading": "TECNOLOGÍAS",
+      "viewMore": "Ver más →",
+      "allTechnologies": "Todas las Tecnologías",
+      "search": "Buscar",
+      "preferredStack": "Stack preferido",
+      "searchPlaceholder": "Buscar tecnologías…",
+      "noMatches": "Ninguna tecnología coincide con tu búsqueda.",
+      "notWiredIn": "(no integrado)",
+      "or": "o",
+      "highlight": "Destacar {name}",
+      "scrollForMore": "Desliza para ver más →"
+    },
+    "projects": {
+      "heading": "PROYECTOS",
+      "whatsNext": "¿Qué sigue?",
+      "letsTalk": "Hablemos →",
+      "sideProjectsHeading": "PROYECTOS PARALELOS",
+      "clickToLoad": "Haz clic en un cartucho para cargarlo."
+    },
+    "careerStop": {
+      "kpis": "KPIs",
+      "projectsHeading": "Proyectos",
+      "focusThisEra": "Enfoque en esta etapa",
+      "viewFocusHistory": "Ver cómo esto cambió en cada etapa →",
+      "focusHistoryHeading": "Áreas de enfoque a lo largo de los años",
+      "focusHistorySubtitle": "Cómo se repartió el tiempo entre áreas en cada etapa, apiladas primero con las competencias técnicas prácticas y después con las más orientadas a personas y negocio.",
+      "badges": "Distintivos",
+      "browseAllBadges": "Ver todos los {count} distintivos →",
+      "viewOnCredly": "Ver en Credly →",
+      "previousBadge": "Distintivo anterior",
+      "nextBadge": "Distintivo siguiente",
+      "seeFullProfileOnCredly": "Ver perfil completo en Credly →",
+      "viewBadgeCredential": "Ver credencial de {name}"
+    },
+    "project": {
+      "sideProject": "Proyecto paralelo",
+      "backToCareerStop": "Volver a la etapa profesional",
+      "back": "← Volver",
+      "confidential": "Confidencial",
+      "myRole": "Mi rol: ",
+      "read": "Leer",
+      "readArrow": "Leer →",
+      "viewArrow": "Ver →",
+      "news": "Noticias",
+      "readTheArticle": "Leer el artículo →"
+    },
+    "cartridge": {
+      "demo": "Demo",
+      "favoriteModules": "Módulos Favoritos",
+      "getTheApp": "Obtener la aplicación",
+      "scanToDownload": "Escanea para descargar {title}",
+      "viewOnGithub": "Ver en GitHub →",
+      "notOpenSource": "Este proyecto todavía no es de código abierto",
+      "addFootage": "[{label} próximamente]",
+      "insert": "Insertar →"
+    },
+    "organizations": {
+      "heading": "ASOCIADO CON",
+      "worked": "Trabajó en",
+      "client": "Clientes",
+      "studied": "Estudió en",
+      "jumpToTimeline": "Ir a {name} en la cronología",
+      "showDetailsFor": "Mostrar detalles de {name}",
+      "grade": "Nota: {grade}",
+      "checkProjectsWith": "Consulta los proyectos que hice con {label}:",
+      "checkWorkAt": "Consulta mi trabajo en {label}:",
+      "jumpToProject": "Ir a {name} →",
+      "jumpHere": "Ir aquí →",
+      "cancel": "Cancelar",
+      "thisPartOfTimeline": "esta parte de la cronología",
+      "projectFallback": "proyecto"
+    },
+    "speaking": {
+      "heading": "CHARLAS",
+      "inviteMeToSpeak": "Invítame a dar una charla →"
+    },
+    "contact": {
+      "heading": "PONTE EN CONTACTO",
+      "downloadCv": "Descargar mi CV",
+      "flipPersonalCard": "Girar tarjeta personal",
+      "flipKlarnaCard": "Girar tarjeta de Klarna",
+      "clickToRotate": "haz clic para girar ↻"
+    },
+    "testimonials": {
+      "heading": "LO QUE DICEN",
+      "cliftonStrengths": "Mis Clifton Strengths",
+      "seeCertificate": "Ver certificado →",
+      "certificateHeading": "Certificado CliftonStrengths"
+    },
+    "testimonialCard": {
+      "readFullLetter": "Leer la carta completa →",
+      "recommendationLetter": "Carta de recomendación",
+      "signatureBlurred": "Firma difuminada por privacidad. Con gusto comparto el original si se solicita.",
+      "writtenDuringMyTimeAt": "Escrita durante mi etapa en {company} →"
+    },
+    "phoneMockup": {
+      "placeholder": "Marcador de posición: añadir grabación real",
+      "placeholderSteps": "Marcador de posición: añadir grabación real para cada paso"
+    },
+    "engagement": {
+      "heading": "¿Sigues por aquí?",
+      "message": "Llevas un rato explorando, ¿quieres reservar 15 minutos en mi calendario, o compartir esto con alguien a quien le pueda resultar útil?",
+      "bookCall": "Reservar 15 min →",
+      "share": "Compartir este sitio",
+      "linkCopied": "¡Enlace copiado!",
+      "dismiss": "Quizás más tarde"
+    }
+  },
+  "de": {
+    "nav": {
+      "openMenu": "Menü öffnen",
+      "closeMenu": "Menü schließen",
+      "changeLanguage": "Sprache ändern (aktuell: {label})"
+    },
+    "common": {
+      "close": "Schließen",
+      "play": "Abspielen",
+      "pause": "Pausieren",
+      "showMore": "Mehr anzeigen",
+      "comingSoon": "Demnächst",
+      "view": "Ansehen →",
+      "technologies": "Technologien und Fähigkeiten",
+      "achievements": "Erfolge",
+      "shareProject": "Link zu diesem Projekt kopieren",
+      "linkCopied": "Link kopiert!"
+    },
+    "hero": {
+      "viewProjects": "Projekte ansehen",
+      "getInTouch": "Kontakt aufnehmen",
+      "downloadCv": "Lebenslauf herunterladen",
+      "showInfoFor": "Informationen zu {name} anzeigen"
+    },
+    "technologies": {
+      "heading": "TECHNOLOGIEN",
+      "viewMore": "Mehr anzeigen →",
+      "allTechnologies": "Alle Technologien",
+      "search": "Suchen",
+      "preferredStack": "Bevorzugter Stack",
+      "searchPlaceholder": "Technologien durchsuchen…",
+      "noMatches": "Keine Technologien entsprechen Ihrer Suche.",
+      "notWiredIn": "(nicht integriert)",
+      "or": "oder",
+      "highlight": "{name} hervorheben",
+      "scrollForMore": "Wischen, um mehr zu sehen →"
+    },
+    "projects": {
+      "heading": "PROJEKTE",
+      "whatsNext": "Was kommt als Nächstes?",
+      "letsTalk": "Lassen Sie uns sprechen →",
+      "sideProjectsHeading": "NEBENPROJEKTE",
+      "clickToLoad": "Klicken Sie auf eine Kassette, um sie zu laden."
+    },
+    "careerStop": {
+      "kpis": "KPIs",
+      "projectsHeading": "Projekte",
+      "focusThisEra": "Fokus dieser Ära",
+      "viewFocusHistory": "Sehen Sie, wie sich das über jede Station hinweg verändert hat →",
+      "focusHistoryHeading": "Fokusbereiche im Laufe der Jahre",
+      "focusHistorySubtitle": "Wie sich die Zeit an jeder Station auf die Bereiche verteilte, zunächst gestapelt mit den praktischen technischen Fähigkeiten, danach mit den stärker personen- und geschäftsorientierten.",
+      "badges": "Abzeichen",
+      "browseAllBadges": "Alle {count} Abzeichen ansehen →",
+      "viewOnCredly": "Auf Credly ansehen →",
+      "previousBadge": "Vorheriges Abzeichen",
+      "nextBadge": "Nächstes Abzeichen",
+      "seeFullProfileOnCredly": "Vollständiges Profil auf Credly ansehen →",
+      "viewBadgeCredential": "{name}-Zertifikat ansehen"
+    },
+    "project": {
+      "sideProject": "Nebenprojekt",
+      "backToCareerStop": "Zurück zur Karrierestation",
+      "back": "← Zurück",
+      "confidential": "Vertraulich",
+      "myRole": "Meine Rolle: ",
+      "read": "Lesen",
+      "readArrow": "Lesen →",
+      "viewArrow": "Ansehen →",
+      "news": "Neuigkeiten",
+      "readTheArticle": "Den Artikel lesen →"
+    },
+    "cartridge": {
+      "demo": "Demo",
+      "favoriteModules": "Lieblingsmodule",
+      "getTheApp": "App herunterladen",
+      "scanToDownload": "Scannen, um {title} herunterzuladen",
+      "viewOnGithub": "Auf GitHub ansehen →",
+      "notOpenSource": "Dieses Projekt ist noch nicht Open Source",
+      "addFootage": "[{label} demnächst]",
+      "insert": "Einlegen →"
+    },
+    "organizations": {
+      "heading": "VERBUNDEN MIT",
+      "worked": "Gearbeitet bei",
+      "client": "Kunden",
+      "studied": "Studiert an",
+      "jumpToTimeline": "Zu {name} in der Zeitleiste springen",
+      "showDetailsFor": "Details zu {name} anzeigen",
+      "grade": "Note: {grade}",
+      "checkProjectsWith": "Sehen Sie sich die Projekte an, die ich mit {label} umgesetzt habe:",
+      "checkWorkAt": "Sehen Sie sich meine Arbeit bei {label} an:",
+      "jumpToProject": "Zu {name} springen →",
+      "jumpHere": "Hierher springen →",
+      "cancel": "Abbrechen",
+      "thisPartOfTimeline": "diesen Teil der Zeitleiste",
+      "projectFallback": "Projekt"
+    },
+    "speaking": {
+      "heading": "VORTRÄGE",
+      "inviteMeToSpeak": "Laden Sie mich zu einem Vortrag ein →"
+    },
+    "contact": {
+      "heading": "KONTAKT AUFNEHMEN",
+      "downloadCv": "Meinen Lebenslauf herunterladen",
+      "flipPersonalCard": "Persönliche Karte umdrehen",
+      "flipKlarnaCard": "Klarna-Karte umdrehen",
+      "clickToRotate": "klicken zum Drehen ↻"
+    },
+    "testimonials": {
+      "heading": "WAS ANDERE SAGEN",
+      "cliftonStrengths": "Meine Clifton Strengths",
+      "seeCertificate": "Zertifikat ansehen →",
+      "certificateHeading": "CliftonStrengths-Zertifikat"
+    },
+    "testimonialCard": {
+      "readFullLetter": "Den vollständigen Brief lesen →",
+      "recommendationLetter": "Empfehlungsschreiben",
+      "signatureBlurred": "Unterschrift aus Datenschutzgründen unkenntlich gemacht. Das Original teile ich gerne auf Anfrage.",
+      "writtenDuringMyTimeAt": "Verfasst während meiner Zeit bei {company} →"
+    },
+    "phoneMockup": {
+      "placeholder": "Platzhalter: echtes Filmmaterial hinzufügen",
+      "placeholderSteps": "Platzhalter: echtes Filmmaterial für jeden Schritt hinzufügen"
+    },
+    "engagement": {
+      "heading": "Noch da?",
+      "message": "Sie stöbern schon eine Weile hier. Möchten Sie sich 15 Minuten in meinem Kalender sichern, oder dies an jemanden weiterleiten, der es nützlich finden könnte?",
+      "bookCall": "15 Min. buchen →",
+      "share": "Diese Seite teilen",
+      "linkCopied": "Link kopiert!",
+      "dismiss": "Vielleicht später"
+    }
+  }
 }
