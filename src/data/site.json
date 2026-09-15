@@ -4225,7 +4225,7 @@
       {
         "title": "Space Invaders",
         "subtitle": "Recreación en 3D · Three.js",
-        "description": "Una recreación en 3D de Space Invaders construida con Three.js para la asignatura de Computación Gráfica en el IST. Múltiples vistas de cámara (cenital, en perspectiva, desde la nave), sombreado Gouraud/Phong alternable, iluminación dinámica de sol y foco, y un modo de depuración en wireframe. Obtuvo 19.50/20 en todas las entregas.",
+        "description": "Una recreación en 3D de Space Invaders construida con Three.js para la asignatura de Computación Gráfica en el IST. Múltiples vistas de cámara (cenital, en perspectiva, desde la nave), sombreado Gouraud/Phong alternable, iluminación dinámica de sol y foco, y un modo de depuración en wireframe. Obtuvo 19,50/20 en todas las entregas.",
         "technologies": [
           "JavaScript",
           "Three.js",
@@ -5916,7 +5916,7 @@
       {
         "title": "Space Invaders",
         "subtitle": "3D-Neuauflage · Three.js",
-        "description": "Eine 3D-Neuauflage von Space Invaders, gebaut mit Three.js für den Kurs Computergrafik am IST. Mehrere Kameraansichten (Vogelperspektive, perspektivisch, Schiffssicht), umschaltbares Gouraud/Phong-Shading, dynamische Sonnen- und Scheinwerferbeleuchtung sowie ein Wireframe-Debug-Modus. Erzielte 19.50/20 bei allen Abgaben.",
+        "description": "Eine 3D-Neuauflage von Space Invaders, gebaut mit Three.js für den Kurs Computergrafik am IST. Mehrere Kameraansichten (Vogelperspektive, perspektivisch, Schiffssicht), umschaltbares Gouraud/Phong-Shading, dynamische Sonnen- und Scheinwerferbeleuchtung sowie ein Wireframe-Debug-Modus. Erzielte 19,50/20 bei allen Abgaben.",
         "technologies": [
           "JavaScript",
           "Three.js",
