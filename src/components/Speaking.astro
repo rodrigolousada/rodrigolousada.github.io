@@ -44,7 +44,7 @@ const ui = getUI(locale);
             style={`transform: rotate(${talk.rotate ?? 0}deg);`}
           >
             {talk.photo ? (
-              <img src={talk.photo} alt={talk.caption} class="aspect-square w-full object-cover" />
+              <img src={talk.photo} alt={talk.caption} loading="lazy" class="aspect-square w-full object-cover" />
             ) : (
               <div class="flex aspect-square w-full items-center justify-center border border-dashed border-neutral-300 bg-neutral-100">
                 <svg viewBox="0 0 24 24" class="h-7 w-7 fill-current text-neutral-300">
