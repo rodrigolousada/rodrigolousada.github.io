@@ -250,33 +250,65 @@ const bands = orderedCategories
   })
   .filter((band) => band.everUsed);
 
+// A second, coarser reading of the same data: the same technical/people-
+// business split `CATEGORY_ORDER` already groups the eight categories
+// into, just collapsed down to two actual bands instead of eight, for
+// whoever wants "how did the *balance* between hands-on and people-facing
+// work shift" without the finer-grained detail. Toggled client-side (see
+// the script below) rather than a second chart, so it's the same axes,
+// same org-boundary steps, same everything except which stacking is drawn.
+const GROUPED_CATEGORIES = [
+  { id: 'technical', label: ui.careerStop.focusGroupTechnical, color: '#38bdf8', ids: ['swe', 'de', 'ds', 'analytics'] },
+  { id: 'peopleBusiness', label: ui.careerStop.focusGroupPeopleBusiness, color: '#f59e0b', ids: ['social', 'sales', 'design', 'pm'] },
+];
+const runningTopGrouped = points.map(() => 0);
+const groupedBands = GROUPED_CATEGORIES.map((group) => {
+  const bandPoints = points.map((point, i) => {
+    const value = group.ids.reduce((sum, id) => sum + (point.focus[id] ?? 0), 0);
+    const base = runningTopGrouped[i];
+    const top = base + value;
+    runningTopGrouped[i] = top;
+    return { x: xFor(i), baseY: yFor(base), topY: yFor(top), value };
+  });
+  return { id: group.id, label: group.label, color: group.color, points: bandPoints };
+});
+
 const gridlineValues = [0, 25, 50, 75, 100];
 
-// Each segment needs real room for its own period text without running
-// into its neighbor — on a phone-width dialog, letting segments size purely
-// off their `widthPct` share of whatever width the dialog happens to have
-// gives the narrowest stop (Instituto de Telecomunicações, now down to a
-// single owned column since its other year lives inside SINFO's segment)
-// less space than their own label needs long before the wider ones feel
-// tight (a `truncate` on the label stops it from visibly bleeding into the
-// next segment, but everything still reads as a cramped pile-up rather
-// than a chart). So, same fix as the "Preferred Stack" diagram's own
-// overflow (TechStack.astro): work out the width the *narrowest* segment
-// actually needs and size the whole chart up from there, letting it scroll
-// horizontally below that floor rather than squeezing every segment down
-// to illegible to force a fit. `TICK_MIN_REM` is narrower than it needed to
-// be when a segment also carried its own org name in full (the logo alone
-// identifies the company now) — just "2024 – Present" itself, the longest
-// period string across both locales, is what sets the floor.
-const TICK_MIN_REM = 5;
+// Each segment needs a little real room of its own so the narrowest one
+// doesn't feel squeezed against its neighbor — same fix as the "Preferred
+// Stack" diagram's own overflow (TechStack.astro): work out the width the
+// *narrowest* segment actually needs and size the whole chart up from
+// there, letting it scroll horizontally below that floor rather than
+// squeezing every segment down to illegible to force a fit.
+//
+// `TICK_MIN_REM` used to be sized to fit a segment's own period text in
+// full ("2024 – Present", the longest string across both locales) without
+// truncating — but with segments now weighted by point-count (see
+// `pointsOwnedBy`), a stop that owns only a small share of the x-axis
+// (Instituto de Telecomunicações, down to a single column since its other
+// year lives inside SINFO's segment) needs the *whole chart* scaled up by
+// however much its own tiny percentage falls short of that floor, which
+// blows the chart width up far past what one narrow segment's label
+// actually warrants. `TICK_MIN_REM` is sized just for a segment's own
+// content instead (the logo chip plus its padding, `pointsOwnedBy`-
+// independent) — its period label still truncates gracefully (`w-full
+// truncate` below) if a genuinely narrow segment can't fit it, and the
+// segment's own `title` always carries the untruncated "Org · period" text
+// for a hover or long-press. `CHART_MAX_WIDTH_REM` is a second, hard
+// backstop on top of that: however narrow a future segment's share ever
+// gets, the chart never demands more than this to read comfortably inside
+// the dialog without scrolling.
+const TICK_MIN_REM = 2.5;
+const CHART_MAX_WIDTH_REM = 40;
 const AXIS_LABEL_COL_REM = 2.5; // the percent column (`w-8`) plus the `gap-2` beside it
 const minSegmentWidthPct = Math.min(...segments.map((seg) => seg.widthPct));
-const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minSegmentWidthPct;
+const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minSegmentWidthPct);
 ---
 
 <dialog
   id="focus-history-chart"
-  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[78vh] sm:w-[min(90vw,34rem)] sm:rounded-xl sm:border"
+  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[78vh] sm:w-[min(92vw,36rem)] sm:rounded-xl sm:border"
 >
   <!-- Bottom sheet on mobile, centered card at sm: and up — see
        CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor,
@@ -294,7 +326,25 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
           <h3 class="text-sm font-bold text-[var(--color-text)]">{ui.careerStop.focusHistoryHeading}</h3>
           <p class="mt-0.5 text-[11px] text-[var(--color-muted)]">{ui.careerStop.focusHistorySubtitle}</p>
         </div>
-        <DialogCloseButton label={ui.common.close} shrink />
+        <div class="flex shrink-0 items-center gap-2">
+          <!-- Detailed (all 8 categories) vs. grouped (technical vs.
+               people/business, see `GROUPED_CATEGORIES` above) view toggle.
+               A segmented pair rather than one label-swapping button so
+               both options and which one is active are visible at once,
+               not just discoverable by clicking. `data-focus-view` is read
+               by the script below (`switchView`), which shows/hides the
+               matching `data-mode` polygons and `data-legend-group` legend
+               instead of this being two entirely separate charts. -->
+          <div class="flex items-center gap-0.5 rounded-full border border-[var(--color-border)] p-0.5 text-[10px]" role="group" aria-label={ui.careerStop.focusViewToggleLabel}>
+            <button type="button" data-focus-view="detailed" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="true">
+              {ui.careerStop.focusViewByCategory}
+            </button>
+            <button type="button" data-focus-view="grouped" class="focus-view-btn rounded-full px-2 py-1 font-medium whitespace-nowrap" aria-pressed="false">
+              {ui.careerStop.focusViewGrouped}
+            </button>
+          </div>
+          <DialogCloseButton label={ui.common.close} shrink />
+        </div>
       </div>
 
       <!-- Scrolls horizontally below `chartMinWidthRem` (see its own comment)
@@ -358,8 +408,11 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
             data-y0={PLOT_Y0}
             data-y1={PLOT_Y1}
             data-x={JSON.stringify(bands[0]?.points.map((p) => p.x) ?? [])}
-            data-series={JSON.stringify(bands.map((b) => ({ id: b.id, values: b.points.map((p) => p.value) })))}
+            data-series={JSON.stringify(
+              [...bands, ...groupedBands].map((b) => ({ id: b.id, values: b.points.map((p) => p.value) }))
+            )}
             data-steps={JSON.stringify([...stepIndices])}
+            data-view="detailed"
           >
             {gridlineValues.map((v) => (
               <line x1={PLOT_X0 - 3} x2={VIEW_WIDTH} y1={yFor(v)} y2={yFor(v)} stroke="var(--color-border)" stroke-width="0.3" />
@@ -396,6 +449,32 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
                   stroke-width="0.3"
                   data-tooltip={band.label}
                   data-category={band.id}
+                  data-mode="detailed"
+                  class="chart-band"
+                />
+              );
+            })}
+            {/* The same shapes, collapsed to the two-band technical/people-
+                business grouping (see `GROUPED_CATEGORIES` above) — hidden
+                by default (CSS keyed off the `<svg>`'s own `data-view`, set
+                below) until the header's "Grouped" toggle switches to it.
+                Same `withOrgSteps`/polygon-closing approach as the detailed
+                bands just above, just over `groupedBands` instead of `bands`. */}
+            {groupedBands.map((band) => {
+              const top = withOrgSteps(band.points.map((p) => ({ x: p.x, y: p.topY })));
+              const base = withOrgSteps(band.points.map((p) => ({ x: p.x, y: p.baseY })))
+                .slice()
+                .reverse();
+              return (
+                <polygon
+                  points={[...top, ...base].join(' ')}
+                  fill={band.color}
+                  fill-opacity="0.82"
+                  stroke="var(--color-surface)"
+                  stroke-width="0.3"
+                  data-tooltip={band.label}
+                  data-category={band.id}
+                  data-mode="grouped"
                   class="chart-band"
                 />
               );
@@ -479,9 +558,22 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
            persistently, and any number can be clicked at the same time.
            `legend-swatch`/`legend-label` are hooks for that script's CSS
            (the `:hover` state and the `is-clicked` class it toggles),
-           not styled directly here. -->
-      <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3">
+           not styled directly here. `data-legend-group` is what the view
+           toggle above shows/hides between (only one group is ever visible
+           at once; the other stays in the DOM, just `hidden`). -->
+      <div data-legend-group="detailed" class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3">
         {bands.map((band) => (
+          <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
+            <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
+            <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
+          </div>
+        ))}
+      </div>
+      <!-- Grouped view's own 2-item legend, same markup/classes as the
+           detailed one above so it picks up the same hover/click styling —
+           starts `hidden`, since the chart itself opens in detailed mode. -->
+      <div data-legend-group="grouped" class="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-border)] pt-3" hidden>
+        {groupedBands.map((band) => (
           <div class="legend-item flex items-center gap-1.5" data-legend-category={band.id}>
             <span class="legend-swatch h-1.5 w-1.5 shrink-0 rounded-sm" style={`background-color:${band.color};`} />
             <span class="legend-label text-[10px] text-[var(--color-muted)]">{band.label}</span>
@@ -512,6 +604,18 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   }
   .axis-segment.is-current span {
     color: var(--color-accent);
+  }
+
+  /* Only one of the two view modes' polygons is ever visible — driven by
+     `data-view` on the `<svg>` itself (toggled by `switchView` in the
+     script below), not a `hidden` attribute on each polygon: `hidden`'s
+     IDL property is defined on `HTMLElement`, and while modern browsers
+     also expose it on `SVGElement` through the shared mixin this file
+     already relies on for `.dataset` on each polygon, a plain CSS
+     attribute selector needs no such assumption either way. */
+  svg[data-view='detailed'] .chart-band[data-mode='grouped'],
+  svg[data-view='grouped'] .chart-band[data-mode='detailed'] {
+    display: none;
   }
 
   /* Legend hover/click -> chart highlight (see the script below): dim
@@ -552,6 +656,22 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   .legend-item.is-clicked .legend-label {
     color: var(--color-text);
     font-weight: 600;
+  }
+
+  /* Detailed/grouped view toggle: the inactive option reads as a plain
+     muted label (same treatment idle nav links get elsewhere on the
+     page), the active one gets a filled pill so which mode is showing is
+     obvious without reading either label. */
+  .focus-view-btn {
+    color: var(--color-muted);
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+  .focus-view-btn[aria-pressed='true'] {
+    background: var(--color-accent);
+    color: var(--color-bg);
   }
 </style>
 
@@ -695,17 +815,35 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     return path;
   }
 
-  const bandEls = [...(chart?.querySelectorAll<SVGPolygonElement>('.chart-band') ?? [])];
+  // Two independent sets of bands sharing one `<svg>` (detailed: all eight
+  // categories; grouped: the two-band technical/people-business collapse,
+  // see `GROUPED_CATEGORIES` in the frontmatter above) — only one is ever
+  // visible at a time (CSS keyed off the `<svg>`'s own `data-view`, see
+  // `switchView` below), but both stay in the DOM so switching between
+  // them is just a visibility flip, not a re-render.
+  type ViewMode = 'detailed' | 'grouped';
+  const detailedBandEls = [...(chart?.querySelectorAll<SVGPolygonElement>('.chart-band[data-mode="detailed"]') ?? [])];
+  const groupedBandEls = [...(chart?.querySelectorAll<SVGPolygonElement>('.chart-band[data-mode="grouped"]') ?? [])];
+  function bandElsFor(mode: ViewMode): SVGPolygonElement[] {
+    return mode === 'detailed' ? detailedBandEls : groupedBandEls;
+  }
   // The order the server rendered them in, read back off the DOM rather
-  // than re-deriving CATEGORY_ORDER here, so this script never has to be
-  // kept in sync with that array by hand.
-  const defaultOrder = bandEls.map((el) => el.dataset.category ?? '').filter(Boolean);
+  // than re-deriving CATEGORY_ORDER/GROUPED_CATEGORIES here, so this script
+  // never has to be kept in sync with those arrays by hand.
+  const detailedDefaultOrder = detailedBandEls.map((el) => el.dataset.category ?? '').filter(Boolean);
+  const groupedDefaultOrder = groupedBandEls.map((el) => el.dataset.category ?? '').filter(Boolean);
+  function defaultOrderFor(mode: ViewMode): string[] {
+    return mode === 'detailed' ? detailedDefaultOrder : groupedDefaultOrder;
+  }
 
   // One category's points string for a given stacking order: same "top
   // edge left to right, then base edge back right to left" shape the
   // server built, just computed here so it can run again with a different
   // order. Returns every band's string at once since stacking one band
   // depends on the running total of every band already placed under it.
+  // Mode-agnostic: `order` is whatever ids should stack together (all
+  // eight, or just the two grouped ones), and `seriesById` (below) already
+  // holds both sets under their own ids.
   function computeBandPoints(order: string[]): Record<string, string> {
     const runningTop = xs.map(() => 0);
     const result: Record<string, string> = {};
@@ -727,7 +865,11 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     });
     return result;
   }
-  const defaultPoints = computeBandPoints(defaultOrder);
+  const detailedDefaultPoints = computeBandPoints(detailedDefaultOrder);
+  const groupedDefaultPoints = computeBandPoints(groupedDefaultOrder);
+  function defaultPointsFor(mode: ViewMode): Record<string, string> {
+    return mode === 'detailed' ? detailedDefaultPoints : groupedDefaultPoints;
+  }
 
   function parsePoints(str: string): number[][] {
     return str
@@ -741,11 +883,14 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   // Interpolates every band's polygon from wherever it currently is to its
   // points in `target` — x never changes between stacking orders (only
   // which category owns which vertical slice does), so this only has to
-  // ease each vertex's y, not solve a general shape-morph.
-  function animateBandsTo(target: Record<string, string>, durationMs: number) {
+  // ease each vertex's y, not solve a general shape-morph. `els` is
+  // whichever mode's bands are being animated (detailed or grouped, never
+  // both at once — the other mode's bands sit hidden and static until
+  // `switchView` brings them back).
+  function animateBandsTo(els: SVGPolygonElement[], target: Record<string, string>, durationMs: number) {
     if (animationFrame !== null) cancelAnimationFrame(animationFrame);
     if (REDUCED_MOTION || durationMs === 0) {
-      bandEls.forEach((el) => {
+      els.forEach((el) => {
         const id = el.dataset.category ?? '';
         if (target[id]) el.setAttribute('points', target[id]);
       });
@@ -753,7 +898,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     }
     const from: Record<string, number[][]> = {};
     const to: Record<string, number[][]> = {};
-    bandEls.forEach((el) => {
+    els.forEach((el) => {
       const id = el.dataset.category ?? '';
       if (!target[id]) return;
       from[id] = parsePoints(el.getAttribute('points') ?? '');
@@ -763,7 +908,7 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
     const step = (now: number) => {
       const t = Math.min(1, (now - start) / durationMs);
       const eased = 1 - (1 - t) ** 3; // ease-out cubic
-      bandEls.forEach((el) => {
+      els.forEach((el) => {
         const id = el.dataset.category ?? '';
         const a = from[id];
         const b = to[id];
@@ -784,6 +929,12 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
   // below rather than tracked as part of `clickedCategories` itself.
   let clickedCategories: string[] = [];
   let hoveredCategory: string | null = null;
+  // Which of the two views is currently showing — the legend hover/click
+  // logic below always acts on *this* mode's bands, never both, since only
+  // one is ever visible. Starts, and always resets to, 'detailed': see
+  // `switchView`'s own comment for why reopening the dialog shouldn't
+  // remember a grouped view from last time either.
+  let viewMode: ViewMode = 'detailed';
 
   function currentOrder(): string[] {
     const order = [...clickedCategories];
@@ -793,13 +944,28 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
 
   function applyActiveState() {
     const active = currentOrder();
+    const bandEls = bandElsFor(viewMode);
     bandEls.forEach((band) => {
       const isActive = active.includes(band.dataset.category ?? '');
       band.classList.toggle('is-dimmed', active.length > 0 && !isActive);
       band.classList.toggle('is-highlighted', isActive);
     });
+    const defaultOrder = defaultOrderFor(viewMode);
     const order = active.length > 0 ? [...active, ...defaultOrder.filter((id) => !active.includes(id))] : defaultOrder;
-    animateBandsTo(active.length > 0 ? computeBandPoints(order) : defaultPoints, 400);
+    animateBandsTo(bandEls, active.length > 0 ? computeBandPoints(order) : defaultPointsFor(viewMode), 400);
+  }
+
+  // Clears whatever's clicked/hovered/highlighted right now, with no
+  // animation (used when switching view modes or closing the dialog,
+  // never while a mode is actually being looked at) — both modes' bands
+  // get cleared together since a stale highlight on the mode you're
+  // switching *away* from would otherwise still be sitting there,
+  // dimmed/highlighted, the next time you switch back to it.
+  function resetActiveState() {
+    clickedCategories = [];
+    hoveredCategory = null;
+    chart?.querySelectorAll('.legend-item.is-clicked').forEach((item) => item.classList.remove('is-clicked'));
+    [...detailedBandEls, ...groupedBandEls].forEach((band) => band.classList.remove('is-dimmed', 'is-highlighted'));
   }
 
   chart?.querySelectorAll<HTMLElement>('[data-legend-category]').forEach((item) => {
@@ -825,14 +991,46 @@ const chartMinWidthRem = AXIS_LABEL_COL_REM + (TICK_MIN_REM * VIEW_WIDTH) / minS
       applyActiveState();
     });
   });
-  // Snap back to nothing clicked or hovered the instant the dialog closes
-  // (no animation: it's already invisible) so reopening it later never
-  // shows yesterday's selection still active.
+
+  // Detailed/grouped toggle (see the header buttons and their own
+  // comment): swap which mode's polygons and legend are visible, and snap
+  // (not animate — these are two different shapes with a different number
+  // of bands entirely, not a reorder of the same ones) both back to their
+  // own resting stack. `data-view` on the `<svg>` is what the CSS above
+  // actually keys the show/hide off of; the legend groups toggle their own
+  // `hidden` directly since they're plain HTML elements.
+  const viewToggleButtons = [...(chart?.querySelectorAll<HTMLButtonElement>('[data-focus-view]') ?? [])];
+  const detailedLegend = chart?.querySelector<HTMLElement>('[data-legend-group="detailed"]');
+  const groupedLegend = chart?.querySelector<HTMLElement>('[data-legend-group="grouped"]');
+
+  function switchView(mode: ViewMode) {
+    if (mode === viewMode) return;
+    resetActiveState();
+    viewMode = mode;
+    viewToggleButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.focusView === mode)));
+    if (detailedLegend) detailedLegend.hidden = mode !== 'detailed';
+    if (groupedLegend) groupedLegend.hidden = mode !== 'grouped';
+    svg?.setAttribute('data-view', mode);
+    animateBandsTo(bandElsFor(mode), defaultPointsFor(mode), 0);
+  }
+
+  viewToggleButtons.forEach((btn) => {
+    btn.addEventListener('click', () => switchView(btn.dataset.focusView === 'grouped' ? 'grouped' : 'detailed'));
+  });
+
+  // Snap back to nothing clicked/hovered, and back to the detailed view,
+  // the instant the dialog closes (no animation: it's already invisible)
+  // so reopening it later never shows yesterday's selection or grouping
+  // still active. Written out directly rather than calling `switchView`
+  // (which no-ops if already in detailed mode) since this has to run
+  // unconditionally regardless of whichever mode was active when closed.
   chart?.addEventListener('close', () => {
-    clickedCategories = [];
-    hoveredCategory = null;
-    animateBandsTo(defaultPoints, 0);
-    bandEls.forEach((band) => band.classList.remove('is-dimmed', 'is-highlighted'));
-    chart?.querySelectorAll('.legend-item.is-clicked').forEach((item) => item.classList.remove('is-clicked'));
+    resetActiveState();
+    viewMode = 'detailed';
+    viewToggleButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.focusView === 'detailed')));
+    if (detailedLegend) detailedLegend.hidden = false;
+    if (groupedLegend) groupedLegend.hidden = true;
+    svg?.setAttribute('data-view', 'detailed');
+    animateBandsTo(detailedBandEls, detailedDefaultPoints, 0);
   });
 </script>
