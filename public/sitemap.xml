@@ -5,7 +5,8 @@
   per locale in src/data/site.json — see src/data/languages.ts for how each
   locale's path is derived (default locale unprefixed at "/", every other
   locale at "/<locale>/"). Add a <url> block (and its hreflang alternates in
-  every existing block) if a new locale is ever added there.
+  every existing block, plus this same locale list in src/layouts/Layout.astro's
+  OG_LOCALE map) if a new locale is ever added there.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -13,10 +14,32 @@
     <loc>https://rodrigolousada.me/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rodrigolousada.me/es/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://rodrigolousada.me/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodrigolousada.me/" />
   </url>
   <url>
     <loc>https://rodrigolousada.me/pt/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rodrigolousada.me/es/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://rodrigolousada.me/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodrigolousada.me/" />
+  </url>
+  <url>
+    <loc>https://rodrigolousada.me/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rodrigolousada.me/es/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://rodrigolousada.me/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodrigolousada.me/" />
+  </url>
+  <url>
+    <loc>https://rodrigolousada.me/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodrigolousada.me/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://rodrigolousada.me/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://rodrigolousada.me/es/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://rodrigolousada.me/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodrigolousada.me/" />
   </url>
 </urlset>

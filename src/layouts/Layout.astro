@@ -22,11 +22,30 @@ const resolvedDescription = description ?? site.site.description;
 // below — built once here so that script never has to guess a URL shape.
 const localePaths = Object.fromEntries(locales.map((loc) => [loc, localePath(loc, defaultLocale)]));
 
+// og:locale wants "language_TERRITORY", not the bare two-letter codes this
+// site otherwise uses everywhere (URLs, <html lang>, hreflang). No visitor
+// ever sees these values, they're only read by link-preview crawlers
+// (Facebook/LinkedIn/Slack/iMessage), so a plausible default territory per
+// language is fine even though the site itself isn't country-specific.
+const OG_LOCALE: Record<string, string> = { en: 'en_US', pt: 'pt_PT', es: 'es_ES', de: 'de_DE' };
+const ogLocale = OG_LOCALE[locale] ?? 'en_US';
+const ogLocaleAlternates = locales.filter((loc) => loc !== locale).map((loc) => OG_LOCALE[loc] ?? loc);
+
+// One shared card image (not per-locale): it's a portrait of Rodrigo plus
+// his name/role/headline/stats, none of which changes meaning enough
+// between languages to justify rendering and maintaining four separate
+// PNGs. See public/img/og-image.png's own generation notes for how it's
+// built. 1200x630 is the widely-supported "large image" size for Twitter/X,
+// Facebook, LinkedIn, Slack and iMessage link previews alike.
+const ogImage = `${site.site.url}/img/og-image.png`;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: site.hero.name,
   jobTitle: site.site.jobTitle,
+  description: site.site.description,
+  image: `${site.site.url}${site.hero.photo}`,
   url: site.site.url,
   email: `mailto:${site.site.email}`,
   sameAs: [site.site.github, site.site.linkedin],
@@ -64,22 +83,43 @@ const jsonLd = {
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0a0d" />
 
     <title>{resolvedTitle}</title>
     <meta name="description" content={resolvedDescription} />
+    <meta name="author" content={site.hero.name} />
 
     <link rel="canonical" href={Astro.url.href} />
-    {locales.length > 1 &&
-      locales.map((loc) => (
-        <link rel="alternate" hreflang={loc} href={`${site.site.url}${localePath(loc, defaultLocale)}`} />
-      ))}
+    {locales.length > 1 && (
+      <>
+        {locales.map((loc) => (
+          <link rel="alternate" hreflang={loc} href={`${site.site.url}${localePath(loc, defaultLocale)}`} />
+        ))}
+        {/* Tells a crawler which language to fall back to for a visitor
+            whose own language isn't one of the alternates above — same
+            role as the sitemap's own x-default entry (see sitemap.xml). */}
+        <link rel="alternate" hreflang="x-default" href={`${site.site.url}${localePath(defaultLocale, defaultLocale)}`} />
+      </>
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content={site.hero.name} />
+    <meta property="og:locale" content={ogLocale} />
+    {ogLocaleAlternates.map((loc) => (
+      <meta property="og:locale:alternate" content={loc} />
+    ))}
     <meta property="og:title" content={resolvedTitle} />
     <meta property="og:description" content={resolvedDescription} />
-    <meta property="og:image" content={`${site.site.url}${site.hero.photo}`} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={resolvedTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={resolvedTitle} />
+    <meta name="twitter:description" content={resolvedDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={resolvedTitle} />
 
     <!-- Hero's own photo is the page's LCP (largest contentful paint)
          candidate on most viewports — it's the first real image in the
