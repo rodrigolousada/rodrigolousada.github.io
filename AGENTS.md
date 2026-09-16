@@ -132,7 +132,7 @@ in `docs/HANDOVER.md`.
     a `/p/<key>/` preview page automatically** (see
     `src/data/shareableProjects.ts`), **but not a dedicated share-card
     image** — that step is manual and easy to forget. It quietly falls
-    back to `public/img/og/default.png` rather than breaking, so nothing
+    back to `public/img/og/default.jpg` rather than breaking, so nothing
     is urgent, but a project shared around without ever getting its own
     card just looks generic forever. See `public/img/og/README.md` for
     the (short) steps to generate one.

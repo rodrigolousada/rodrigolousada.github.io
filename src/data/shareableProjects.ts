@@ -24,7 +24,7 @@ export interface ShareableProject {
   /** One shared 1200x630 card for every locale, not four — see
    * public/img/og/README.md for how it was built and how to add one for a
    * project that doesn't have one yet (any shareable project missing here
-   * quietly falls back to public/img/og/default.png, a generic "look at
+   * quietly falls back to public/img/og/default.jpg, a generic "look at
    * this cool project" card, rather than a broken image — see cardImage
    * below). */
   image: string;
@@ -35,10 +35,10 @@ export interface ShareableProject {
 }
 
 /** A dedicated card is opt-in per project (add its key here once
- * public/img/og/<key>.png exists — see the README there) precisely so
+ * public/img/og/<key>.jpg exists — see the README there) precisely so
  * un-hiding a project or adding a new one can never produce a broken image:
  * anything not yet in this set falls back to DEFAULT_IMAGE below instead. */
-const DEFAULT_IMAGE = '/img/og/default.png';
+const DEFAULT_IMAGE = '/img/og/default.jpg';
 
 function cardImage(key: string): string {
   const KNOWN = new Set([
@@ -48,7 +48,11 @@ function cardImage(key: string): string {
     'side.space-invaders',
     'side.nobel-prizes',
   ]);
-  return KNOWN.has(key) ? `/img/og/${key}.png` : DEFAULT_IMAGE;
+  // JPEG, not PNG: these cards are photo-and-gradient graphics a
+  // link-preview crawler fetches synchronously on first share (see
+  // public/img/og/README.md), so the ~65-70% size cut from a quality-85
+  // JPEG directly shortens that fetch with no visible quality loss.
+  return KNOWN.has(key) ? `/img/og/${key}.jpg` : DEFAULT_IMAGE;
 }
 
 /** Leading clause of a longer description, for use as a meta description

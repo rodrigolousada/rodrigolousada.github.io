@@ -24,16 +24,16 @@
 
 <script>
   import { openStop, openSideProject } from '../scripts/careerJump';
-  import { locales, defaultLocale } from '../data/site';
 
-  // Same "first path segment, if it's a real non-default locale" rule
-  // src/data/languages.ts's `localePath` encodes the other way around
-  // (locale -> path). Falls back to the default locale for "/" itself, same
-  // as everywhere else on the site that resolves a locale from the URL.
+  // Layout.astro already knows its own page's locale at build time and
+  // stamps the resulting prefix onto <html data-locale-prefix>, so this
+  // just reads it back rather than importing ../data/site to re-derive it
+  // client-side — that module's `locales`/`defaultLocale` exports drag the
+  // entire site.json (every locale's full text content) into whatever
+  // bundle imports them, which was bloating this one by ~160KB for two
+  // constants a share button doesn't otherwise need.
   function currentLocalePrefix(): string {
-    const segment = window.location.pathname.split('/').filter(Boolean)[0];
-    const isLocale = segment && (locales as readonly string[]).includes(segment);
-    return isLocale && segment !== defaultLocale ? `/${segment}` : '';
+    return document.documentElement.dataset.localePrefix ?? '';
   }
 
   function buildShareUrl(key: string): string {

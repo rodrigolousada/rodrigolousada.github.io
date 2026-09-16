@@ -22,6 +22,16 @@ const resolvedDescription = description ?? site.site.description;
 // below — built once here so that script never has to guess a URL shape.
 const localePaths = Object.fromEntries(locales.map((loc) => [loc, localePath(loc, defaultLocale)]));
 
+// Same shape as localePath() above, minus the trailing slash — this is the
+// prefix ProjectDeepLink.astro's share button prepends to "/p/<key>/".
+// Computed here (server-side, already knows its own page's locale) and read
+// off this <html> tag's dataset client-side, specifically so that script
+// never has to import ../data/site for it: that module pulls in the whole
+// of site.json (every locale's full text content) just to read two small
+// constants, which was bloating that one client bundle by ~160KB for
+// nothing a share button needs.
+const localePrefix = locale === defaultLocale ? '' : `/${locale}`;
+
 // og:locale wants "language_TERRITORY", not the bare two-letter codes this
 // site otherwise uses everywhere (URLs, <html lang>, hreflang). No visitor
 // ever sees these values, they're only read by link-preview crawlers
@@ -34,10 +44,14 @@ const ogLocaleAlternates = locales.filter((loc) => loc !== locale).map((loc) => 
 // One shared card image (not per-locale): it's a portrait of Rodrigo plus
 // his name/role/headline/stats, none of which changes meaning enough
 // between languages to justify rendering and maintaining four separate
-// PNGs. See public/img/og-image.png's own generation notes for how it's
+// copies. See public/img/og-image.jpg's own generation notes for how it's
 // built. 1200x630 is the widely-supported "large image" size for Twitter/X,
-// Facebook, LinkedIn, Slack and iMessage link previews alike.
-const ogImage = `${site.site.url}/img/og-image.png`;
+// Facebook, LinkedIn, Slack and iMessage link previews alike. JPEG, not
+// PNG: a link-preview crawler fetches this synchronously on first share
+// (see the README in public/img/og/), so a ~100KB JPEG at quality 85 loses
+// nothing visible on a photo-plus-gradient card like this one but lands 3x
+// faster than the ~330KB lossless PNG this used to be.
+const ogImage = `${site.site.url}/img/og-image.jpg`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -57,7 +71,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} data-locale-prefix={localePrefix}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
