@@ -201,7 +201,17 @@ const moreProjects = stop.projects.slice(3);
 
          Not rendered at all when stop.hidden — same reasoning as a hidden
          project's dialog (ProjectRow.astro): the stop's real KPIs/projects
-         shouldn't reach the page's HTML unopened. -->
+         shouldn't reach the page's HTML unopened.
+
+         The content wrapper below is `p-6 pb-12`, not a flat `p-6`: the
+         <dialog> itself is what scrolls (a native <dialog>'s UA stylesheet
+         already gives it `overflow-y: auto`, nothing extra needed here), and
+         a flat p-6 left the last thing in it (the badge grid, most often)
+         sitting flush against the sheet's bottom edge the moment you'd
+         scrolled all the way down, or on a stop short enough to never need
+         scrolling at all. The same doubled bottom padding is on ProjectRow's
+         and GameCartridge's own content wrapper for the identical reason,
+         since they're the same sheet pattern. -->
     {!stop.hidden && (
     <dialog
       id={modalId}
@@ -227,7 +237,7 @@ const moreProjects = stop.projects.slice(3);
           </form>
         </div>
 
-        <div class="p-6">
+        <div class="p-6 pb-12">
           <div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
             <span class="text-sm font-medium text-[var(--color-text)]">{stop.org}</span>
             <span class="text-sm text-[var(--color-muted)]">· {stop.period}</span>
