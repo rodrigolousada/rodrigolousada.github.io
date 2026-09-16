@@ -24,8 +24,9 @@ export interface ShareableProject {
   /** One shared 1200x630 card for every locale, not four — see
    * public/img/og/README.md for how it was built and how to add one for a
    * project that doesn't have one yet (any shareable project missing here
-   * quietly falls back to the sitewide card in getProjectImage below,
-   * rather than a broken image). */
+   * quietly falls back to public/img/og/default.png, a generic "look at
+   * this cool project" card, rather than a broken image — see cardImage
+   * below). */
   image: string;
   /** Per-locale <title>/description text for this project's own preview
    * page, keyed the same way every other per-locale lookup on this site is
@@ -33,11 +34,13 @@ export interface ShareableProject {
   byLocale: Record<Locale, { title: string; description: string }>;
 }
 
-/** The image is optional per project (falls back to the sitewide card) since
- * a freshly un-hidden project won't have one yet until someone regenerates
- * public/img/og/ (see the README there) — better a generic thumbnail for a
- * few days than a 404'd one. */
-function cardImage(key: string): string | undefined {
+/** A dedicated card is opt-in per project (add its key here once
+ * public/img/og/<key>.png exists — see the README there) precisely so
+ * un-hiding a project or adding a new one can never produce a broken image:
+ * anything not yet in this set falls back to DEFAULT_IMAGE below instead. */
+const DEFAULT_IMAGE = '/img/og/default.png';
+
+function cardImage(key: string): string {
   const KNOWN = new Set([
     'ibm-consulting.m-a-r-i-a',
     'instituto-de-telecomunicacoes.ml-trading-simulator-spy-options',
@@ -45,7 +48,7 @@ function cardImage(key: string): string | undefined {
     'side.space-invaders',
     'side.nobel-prizes',
   ]);
-  return KNOWN.has(key) ? `/img/og/${key}.png` : undefined;
+  return KNOWN.has(key) ? `/img/og/${key}.png` : DEFAULT_IMAGE;
 }
 
 /** Leading clause of a longer description, for use as a meta description
@@ -81,7 +84,7 @@ export function getShareableProjects(): ShareableProject[] {
         if (!key) return; // hidden project, no share button, no page
         const entry = byKey.get(key) ?? {
           key,
-          image: cardImage(key) ?? '/img/og-image.png',
+          image: cardImage(key),
           byLocale: {} as Record<Locale, { title: string; description: string }>,
         };
         entry.byLocale[locale] = {
@@ -97,7 +100,7 @@ export function getShareableProjects(): ShareableProject[] {
       if (!key) return;
       const entry = byKey.get(key) ?? {
         key,
-        image: cardImage(key) ?? '/img/og-image.png',
+        image: cardImage(key),
         byLocale: {} as Record<Locale, { title: string; description: string }>,
       };
       entry.byLocale[locale] = {

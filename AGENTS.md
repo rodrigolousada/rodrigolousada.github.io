@@ -128,3 +128,11 @@ in `docs/HANDOVER.md`.
     `astro preview stop` when done with a server, and if a URL that used
     to work stops responding, check `ps aux | grep astro` /
     `lsof -i :4321` for a stray process before assuming something broke.
+11. **Un-hiding a project (or adding a new one) gets it a share button and
+    a `/p/<key>/` preview page automatically** (see
+    `src/data/shareableProjects.ts`), **but not a dedicated share-card
+    image** — that step is manual and easy to forget. It quietly falls
+    back to `public/img/og/default.png` rather than breaking, so nothing
+    is urgent, but a project shared around without ever getting its own
+    card just looks generic forever. See `public/img/og/README.md` for
+    the (short) steps to generate one.

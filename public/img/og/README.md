@@ -5,13 +5,25 @@ decides what's shareable: any non-`hidden` career-stop or side project),
 named after its own `?p=` share key with dots kept as-is
 (`ibm-consulting.m-a-r-i-a.png`, `side.magic-mirror.png`, ...). Used as the
 `og:image`/`twitter:image` on that project's own `/p/<key>/` preview page
-(see `src/layouts/ShareRedirect.astro`) instead of falling back to the
-sitewide `og-image.png`.
+(see `src/layouts/ShareRedirect.astro`).
+
+`default.png` is the fallback for any shareable project not named in the
+`KNOWN` set below ("Look at this cool project from Rodrigo", no
+project-specific details baked into the image since it's shared across
+whichever projects land here). **This is the rule to keep in mind:**
+un-hiding a project, or adding a brand-new one, automatically gives it a
+share button and a `/p/<key>/` page the moment `hidden` is false/absent —
+nobody has to remember a separate step for that to work. What's easy to
+forget is the *dedicated* card: skip the steps below and the project's
+preview quietly (and correctly) uses `default.png` instead of a broken
+image, so nothing breaks, but every shared link for it looks the same
+generic way until someone comes back and does this.
 
 Not generated at build time (no headless browser step in CI) — built once,
-by hand, and committed as static assets, same as the sitewide card. To add
-one for a project that doesn't have one yet (a newly un-hidden project, or
-a new one entirely):
+by hand, and committed as static assets, same as the sitewide card
+(`public/img/og-image.png`, used only on the homepage itself, never as a
+project fallback — that's `default.png`'s job). To add a dedicated one for
+a project that doesn't have one yet:
 
 1. Pick an accent color and, for a career project, its company logo (see
    `logoInvert`/`chipClass` on the owning stop in `site.json` for whether
@@ -26,5 +38,5 @@ a new one entirely):
    after a `--window-size=1200,630` capture).
 3. Save it here as `<share-key>.png` and add that key to the `KNOWN` set in
    `src/data/shareableProjects.ts`'s `cardImage()` — until it's in that set,
-   the project's preview page keeps using the sitewide card rather than a
+   the project's preview page keeps using `default.png` rather than a
    broken image link.
