@@ -7,7 +7,7 @@ import TechPill from './TechPill.astro';
 import DialogCloseButton from './DialogCloseButton.astro';
 import ScaledLogo from './ScaledLogo.astro';
 import { icons } from '../data/icons';
-import { slugify } from '../data/slug';
+import { careerProjectShareKey } from '../data/shareKey';
 
 interface Company {
   name: string;
@@ -93,9 +93,7 @@ const companyMap = getSite(locale).companies as unknown as Record<string, Compan
 const badgeCompanies = (project.companies ?? []).map((id) => companyMap[id]);
 const newsItems = project.news ?? [];
 const ui = getUI(locale);
-const shareKey = project.hidden
-  ? undefined
-  : `${stopSlug ?? 'side'}.${slugify(project.shortName ?? project.name)}`;
+const shareKey = careerProjectShareKey(stopSlug, project);
 
 // Region-qualified, not just the bare locale code: 'pt' alone leaves the
 // specific dialect (Brazilian vs. European) up to the runtime's default,

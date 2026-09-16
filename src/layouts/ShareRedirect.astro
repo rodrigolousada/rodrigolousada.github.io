@@ -1,0 +1,103 @@
+---
+// The page a project's own share link (ProjectDeepLink.astro's
+// `buildShareUrl`) actually points to. It exists purely so a link-preview
+// crawler (Slack, iMessage, WhatsApp, LinkedIn, Discord, X, ...) — which
+// reads a page's raw <head> and never runs JavaScript — sees THIS project's
+// own title/description/image instead of the sitewide homepage card, which
+// is all a `?p=<key>` query param on the homepage itself could ever offer
+// (the homepage is one static file; a query string can't change which meta
+// tags a non-JS crawler reads off it).
+//
+// A real visitor never actually reads this page: the inline script below
+// fires a synchronous `location.replace` to the homepage's own `?p=<key>`
+// deep link (see ProjectDeepLink.astro's resolver) before the body even
+// paints, same trick as Layout.astro's own preferred-locale redirect. The
+// <main> content below is only for a no-JS visitor and, incidentally,
+// whatever a crawler's own text preview shows past the meta tags.
+//
+// Deliberately its own tiny layout rather than Layout.astro: this page has
+// no nav, hero, or any of the homepage's own interactive chrome to carry,
+// and reusing Layout.astro would mean either dragging all of that in for a
+// page nobody looks at, or unpicking Layout.astro into pieces this doesn't
+// need. Keeping the two <head> blocks in sync by hand (title/description/
+// canonical/og:*/twitter:*, `theme-color`, favicons) is the one real cost.
+import { getSite, defaultLocale, type Locale } from '../data/site';
+import { localePath } from '../data/languages';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  image: string;
+  /** Where the homepage should open this project from: the exact `?p=<key>`
+   * value ProjectDeepLink.astro's resolver already knows how to open. */
+  shareKey: string;
+}
+
+const { locale, title, description, image, shareKey } = Astro.props;
+const site = getSite(locale);
+const resolvedTitle = `${title} · ${site.hero.name}`;
+const homeHref = `${localePath(locale, defaultLocale)}?p=${encodeURIComponent(shareKey)}`;
+const ogImage = image.startsWith('http') ? image : `${site.site.url}${image}`;
+const canonicalHref = `${site.site.url}${homeHref}`;
+
+const OG_LOCALE: Record<string, string> = { en: 'en_US', pt: 'pt_PT', es: 'es_ES', de: 'de_DE' };
+const ogLocale = OG_LOCALE[locale] ?? 'en_US';
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fires before anything paints, same as Layout.astro's own preferred-
+         locale redirect — a real browser never sees the <main> below. A
+         crawler (no JS) reads straight past this and stops at the meta tags
+         it came for. -->
+    <script is:inline define:vars={{ homeHref }}>
+      location.replace(homeHref);
+    </script>
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a0a0d" />
+
+    <title>{resolvedTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.hero.name} />
+    <!-- This page duplicates a project's real content (it lives in a modal
+         on the homepage) on purpose, purely to give a crawler somewhere
+         with static per-project meta tags to read — not meant to be indexed
+         or ranked as a page of its own, hence noindex here and its absence
+         from sitemap.xml. `follow` so the homepage link right below still
+         passes through normally. -->
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonicalHref} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content={site.hero.name} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:title" content={resolvedTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={resolvedTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={resolvedTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={resolvedTitle} />
+  </head>
+  <body style="background:#0a0a0d;color:#e8e8ec;font-family:ui-sans-serif,system-ui,sans-serif;">
+    <main style="max-width:32rem;margin:4rem auto;padding:0 1.5rem;text-align:center;">
+      <h1 style="font-size:1.25rem;font-weight:700;">{title}</h1>
+      <p style="color:#8b8b96;margin-top:0.5rem;">{description}</p>
+      <p style="margin-top:1.5rem;">
+        <a href={homeHref} style="color:#38bdf8;">Continue to {site.site.url.replace('https://', '')}</a>
+      </p>
+    </main>
+  </body>
+</html>

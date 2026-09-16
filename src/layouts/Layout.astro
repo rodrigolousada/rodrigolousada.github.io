@@ -69,12 +69,19 @@ const jsonLd = {
          Accept-Language/navigator.language sniffing anywhere. Inline and
          synchronous, as early in <head> as possible, so a redirect (rare —
          only fires for a non-English preference) happens before anything
-         has rendered, rather than as a flash of English first. -->
+         has rendered, rather than as a flash of English first.
+
+         `location.search` carries forward too, not just the hash: a
+         project's own `/p/<key>/` preview page (ShareRedirect.astro)
+         redirects here with `?p=<key>` still attached, and dropping it here
+         would silently swap that deep link for a bare homepage in whichever
+         language this visitor last picked — the exact case ProjectDeepLink.astro's
+         own resolver depends on this query string surviving to run at all. -->
     <script is:inline define:vars={{ localePaths, locale }}>
       try {
         const preferred = localStorage.getItem('preferredLocale');
         const target = preferred && preferred !== locale ? localePaths[preferred] : null;
-        if (target) location.replace(target + location.hash);
+        if (target) location.replace(target + location.search + location.hash);
       } catch {
         // localStorage unavailable (private mode, disabled, etc) — falls
         // back to whatever locale this page actually is, i.e. English.

@@ -1,0 +1,22 @@
+---
+// A dedicated, statically-built preview/redirect page for every shareable
+// project, at the default locale (English, unprefixed) — see
+// src/pages/[locale]/p/[key].astro for every other language, and
+// ShareRedirect.astro (the layout doing the actual work here) for why this
+// exists at all instead of just the homepage's own `?p=<key>` deep link.
+import ShareRedirect from '../../layouts/ShareRedirect.astro';
+import { getShareableProjects } from '../../data/shareableProjects';
+import { defaultLocale } from '../../data/site';
+
+export function getStaticPaths() {
+  return getShareableProjects().map((project) => ({
+    params: { key: project.key },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { title, description } = project.byLocale[defaultLocale];
+---
+
+<ShareRedirect locale={defaultLocale} title={title} description={description} image={project.image} shareKey={project.key} />

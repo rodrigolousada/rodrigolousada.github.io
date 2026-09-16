@@ -5,7 +5,7 @@ import TechPill from './TechPill.astro';
 import { icons } from '../data/icons';
 import { getUI } from '../data/ui';
 import type { Locale } from '../data/site';
-import { slugify } from '../data/slug';
+import { sideProjectShareKey } from '../data/shareKey';
 
 interface Props {
   project: {
@@ -39,7 +39,7 @@ interface Props {
 
 const { project, modalId, locale } = Astro.props;
 const ui = getUI(locale);
-const shareKey = project.hidden ? undefined : `side.${slugify(project.title)}`;
+const shareKey = sideProjectShareKey(project);
 
 const qrCodeSvg = project.appDownloadUrl && !project.hidden
   ? await QRCode.toString(project.appDownloadUrl, { type: 'svg', margin: 1 })

@@ -3,24 +3,41 @@
 //
 // 1. Every project (work or side) renders a small share-icon corner button
 //    (ProjectRow.astro / GameCartridge.astro, `[data-share-key]`) — clicking
-//    it copies (or hands to the OS share sheet) a link straight back to
-//    that project.
-// 2. On load, a URL carrying `?p=<key>` finds the matching project and
-//    opens it with the exact same scroll-and-reveal sequence as clicking
-//    through from the "Associated with" logos (see careerJump.ts).
+//    it copies (or hands to the OS share sheet) a link to that project's own
+//    `/p/<key>/` preview page (src/pages/p/[key].astro and
+//    src/pages/[locale]/p/[key].astro) rather than straight back to this
+//    homepage — that page exists purely so a link-preview crawler (which
+//    reads a page's static <head> and never runs JS) sees this specific
+//    project's own title/description/thumbnail instead of the sitewide
+//    homepage card. See ShareRedirect.astro for the full rationale.
+// 2. On load, a URL carrying `?p=<key>` finds the matching project and opens
+//    it with the exact same scroll-and-reveal sequence as clicking through
+//    from the "Associated with" logos (see careerJump.ts) — this is what a
+//    project's `/p/<key>/` page immediately redirects a real visitor to,
+//    and it's kept working standalone too, for any link out there from
+//    before that page existed.
 //
-// One component so both halves of the round trip — the link a share button
-// produces, and what opening that link does — stay obviously in sync.
+// One component so all three halves of the round trip — the link a share
+// button produces, the static page that link lands on, and what opening the
+// `?p=` it redirects to actually does — stay obviously in sync.
 ---
 
 <script>
   import { openStop, openSideProject } from '../scripts/careerJump';
+  import { locales, defaultLocale } from '../data/site';
+
+  // Same "first path segment, if it's a real non-default locale" rule
+  // src/data/languages.ts's `localePath` encodes the other way around
+  // (locale -> path). Falls back to the default locale for "/" itself, same
+  // as everywhere else on the site that resolves a locale from the URL.
+  function currentLocalePrefix(): string {
+    const segment = window.location.pathname.split('/').filter(Boolean)[0];
+    const isLocale = segment && (locales as readonly string[]).includes(segment);
+    return isLocale && segment !== defaultLocale ? `/${segment}` : '';
+  }
 
   function buildShareUrl(key: string): string {
-    const url = new URL(window.location.href);
-    url.hash = '';
-    url.searchParams.set('p', key);
-    return url.toString();
+    return `${window.location.origin}${currentLocalePrefix()}/p/${encodeURIComponent(key)}/`;
   }
 
   document.addEventListener('click', (e) => {

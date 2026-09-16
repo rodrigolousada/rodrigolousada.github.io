@@ -1,0 +1,21 @@
+---
+// Every non-default-locale version of a project's own share/preview page —
+// the default locale (English) gets the unprefixed src/pages/p/[key].astro
+// instead. See ShareRedirect.astro for what this page actually does.
+import ShareRedirect from '../../../layouts/ShareRedirect.astro';
+import { getShareableProjects } from '../../../data/shareableProjects';
+import { locales, defaultLocale, type Locale } from '../../../data/site';
+
+export function getStaticPaths() {
+  const projects = getShareableProjects();
+  return locales
+    .filter((locale) => locale !== defaultLocale)
+    .flatMap((locale) => projects.map((project) => ({ params: { locale, key: project.key }, props: { project } })));
+}
+
+const locale = Astro.params.locale as Locale;
+const { project } = Astro.props;
+const { title, description } = project.byLocale[locale];
+---
+
+<ShareRedirect locale={locale} title={title} description={description} image={project.image} shareKey={project.key} />
