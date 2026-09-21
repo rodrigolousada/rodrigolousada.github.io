@@ -142,12 +142,23 @@ const moreProjects = stop.projects.slice(3);
          both `top` and `bottom` to 0 (the UA stylesheet's
          `dialog:modal { inset-block: 0 }`), so an auto top margin against a
          fixed bottom edge absorbs all the leftover space above instead of
-         splitting it, which is exactly bottom-anchor. `mx-3` +
-         `w-[calc(100%-1.5rem)]` (rather than a plain `w-full`) leaves a
-         small gap on either side instead of running the sheet edge-to-edge —
-         the margin and the width add back up to the full inset:0 box, so it
-         still spans the same space, just with breathing room left and right
-         instead of touching the screen's sides. `rounded-t-2xl` (no bottom
+         splitting it, which is exactly bottom-anchor. `inset-x-3` (left AND
+         right pushed in from the UA's `inset:0`) + a bare `w-auto`, not
+         `mx-3` + `w-[calc(100%-1.5rem)]` as this looked at first: with the
+         UA stylesheet's `inset:0` fixing both edges, having `margin` AND an
+         explicit `width` both also fight for that same horizontal space is
+         over-constrained CSS, and Chrome and Safari don't resolve that the
+         same way — Chrome quietly does what you'd expect, Safari drops the
+         margin and renders the sheet edge-to-edge instead, full width, on
+         every real iPhone (confirmed on a physical device, invisible in any
+         Chromium-based testing, this repo's only option for "run the site
+         and look at it" up to this point). Moving the inset onto the edges
+         themselves and leaving width to resolve on its own has only one
+         answer regardless of engine, so there's nothing left to disagree
+         about. `sm:inset-x-0` puts it back to the UA's own default at that
+         breakpoint, since the centered desktop popup (`sm:m-auto` + an
+         explicit width, no competing inset) is the one combination every
+         engine already agrees on. `rounded-t-2xl` (no bottom
          rounding — it's still flush with the screen edge underneath)
          completes the sheet look. A `[data-sheet-handle]` grab bar (wired up
          generically in Layout.astro, styled in global.css's `.sheet-handle`)
@@ -215,7 +226,7 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+      class="inset-x-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:inset-x-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
     >
       <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
         <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>

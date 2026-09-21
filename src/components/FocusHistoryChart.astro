@@ -308,11 +308,13 @@ const chartMinWidthRem = Math.min(CHART_MAX_WIDTH_REM, AXIS_LABEL_COL_REM + (TIC
 
 <dialog
   id="focus-history-chart"
-  class="mx-3 mb-0 mt-auto h-fit max-h-[94svh] w-[calc(100%-1.5rem)] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,46rem)] sm:rounded-xl sm:border"
+  class="inset-x-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none overflow-y-auto rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:inset-x-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(94vw,46rem)] sm:rounded-xl sm:border"
 >
   <!-- Bottom sheet on mobile, centered card at sm: and up — see
        CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor,
-       the mx-3/w-[calc(...)] side margins, svh over dvh, h-fit over h-auto).
+       inset-x-3/w-auto for the side margins (not mx-3/w-[calc(...)], which
+       Safari and Chrome resolve differently), svh over dvh, h-fit over
+       h-auto).
        This one gets its own `overflow-y-auto` (most of this pattern's
        dialogs don't need it, their content already fits the cap) since the
        chart, its x-axis row and the legend together can run past 94svh on a
