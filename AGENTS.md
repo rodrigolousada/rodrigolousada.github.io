@@ -136,3 +136,36 @@ in `docs/HANDOVER.md`.
     is urgent, but a project shared around without ever getting its own
     card just looks generic forever. See `public/img/og/README.md` for
     the (short) steps to generate one.
+12. **This repo's only "run the site and look at it" option is a
+    Chromium-based headless/automated browser — there is no way to open
+    real Safari or an iOS simulator from here.** That's invisible until it
+    isn't: every bottom-sheet `<dialog>` (career stop, project,
+    side-project, focus-history chart) rendered perfectly across every
+    check this tooling can do, and still shipped full-width edge-to-edge
+    on a real iPhone, twice, before the actual fix. Two real, narrow CSS
+    gotchas found the hard way, both invisible to Chrome:
+    - A `<dialog>` shown via `showModal()` gets `inset: 0` from the
+      browser's own stylesheet. Also setting `margin` **and** an explicit
+      `width` on that same element is over-constrained CSS with more than
+      one spec-legal resolution — Chrome resolves it one way, Safari
+      another (drops the margin, dialog goes edge-to-edge). Only one of
+      {margin, width} should ever be explicit on an inset:0 box; let the
+      other resolve on its own.
+    - Tailwind v4's `inset-x-*`/`inset-y-*` utilities compile to the
+      **logical** `inset-inline`/`inset-block` properties, not physical
+      `left`/`right`/`top`/`bottom`. Fine almost everywhere, but a logical
+      property on a `<dialog>` in the browser's top layer is a narrow
+      enough combination that it silently did nothing on that same real
+      iPhone. Prefer the physical `left-*`/`right-*` utilities on anything
+      dialog/top-layer-related on this site.
+
+    **Still unconfirmed**: the current fix (`left-3 right-3` +
+    `sm:left-0 sm:right-0`, commit `51df4b2`) is deployed and verified
+    correct in Chrome DevTools at real iPhone widths, but Rodrigo hadn't
+    yet confirmed it on his actual phone as of this writing. If it's
+    somehow *still* wrong, the next step isn't another guess — it's
+    getting real Safari eyes on it, e.g. Safari's remote Web Inspector
+    (Mac + Settings > Safari > Advanced > "Show features for web
+    developers" on the iPhone, then Mac Safari's Develop menu > [the
+    iPhone] > the page) to read the dialog's actual computed styles
+    directly, the same way `getComputedStyle` was used in Chrome here.
