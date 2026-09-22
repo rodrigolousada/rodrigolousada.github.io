@@ -142,7 +142,7 @@ const moreProjects = stop.projects.slice(3);
          both `top` and `bottom` to 0 (the UA stylesheet's
          `dialog:modal { inset-block: 0 }`), so an auto top margin against a
          fixed bottom edge absorbs all the leftover space above instead of
-         splitting it, which is exactly bottom-anchor. `inset-x-3` (left AND
+         splitting it, which is exactly bottom-anchor. `left-3 right-3` (left AND
          right pushed in from the UA's `inset:0`) + a bare `w-auto`, not
          `mx-3` + `w-[calc(100%-1.5rem)]` as this looked at first: with the
          UA stylesheet's `inset:0` fixing both edges, having `margin` AND an
@@ -155,7 +155,7 @@ const moreProjects = stop.projects.slice(3);
          and look at it" up to this point). Moving the inset onto the edges
          themselves and leaving width to resolve on its own has only one
          answer regardless of engine, so there's nothing left to disagree
-         about. `sm:inset-x-0` puts it back to the UA's own default at that
+         about. `sm:left-0 sm:right-0` puts it back to the UA's own default at that
          breakpoint, since the centered desktop popup (`sm:m-auto` + an
          explicit width, no competing inset) is the one combination every
          engine already agrees on. `rounded-t-2xl` (no bottom
@@ -226,7 +226,7 @@ const moreProjects = stop.projects.slice(3);
     {!stop.hidden && (
     <dialog
       id={modalId}
-      class="inset-x-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:inset-x-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+      class="left-3 right-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:left-0 sm:right-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
     >
       <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
         <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>

@@ -155,7 +155,7 @@ function formatNewsDate(date: string) {
 
   <!-- A bottom sheet on mobile, a compact centered card at sm: and up — see
        CareerStopRow's dialog for the full rationale (mt-auto bottom-anchor +
-       inset-x-3/w-auto for the side margins (not mx-3/w-[calc(...)], which
+       left-3 right-3/w-auto for the side margins (not mx-3/w-[calc(...)], which
        Safari and Chrome resolve differently) + rounded-t-2xl + the
        [data-sheet-handle] drag-to-dismiss grab bar floating on top of the
        header rather than pushed above it as its own strip, back to the
@@ -176,7 +176,7 @@ function formatNewsDate(date: string) {
   {!project.hidden && (
   <dialog
     id={modalId}
-    class="inset-x-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:inset-x-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
+    class="left-3 right-3 mb-0 mt-auto h-fit w-auto max-h-[94svh] max-w-none rounded-t-2xl border-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-0 text-[var(--color-text)] backdrop:bg-black/60 backdrop:backdrop-blur-sm sm:left-0 sm:right-0 sm:m-auto sm:max-h-[85vh] sm:w-[min(92vw,40rem)] sm:rounded-xl sm:border"
   >
     <div class="relative overflow-hidden rounded-t-2xl sm:rounded-xl">
       <div data-sheet-handle class="sheet-handle absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/40 sm:hidden" aria-hidden="true"></div>
