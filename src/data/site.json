@@ -929,11 +929,12 @@
           "poster": "https://court-kit.vercel.app/videos/courtkit-launch.jpg",
           "label": "CourtKit launch video: logging shots on Apple Watch, then seeing your accuracy by zone on iPhone"
         },
-        "subtitle": "Watch-first basketball training app",
-        "description": "A Watch-first basketball training app: the Apple Watch app captures shooting drills, timed and clocked drills, and live game stats through a 14-spot interactive court diagram, while the iPhone app reviews it all with a shooting heat map, trend charts, and searchable history. Built entirely in SwiftUI with bidirectional sync between Watch and iPhone via WatchConnectivity.",
+        "subtitle": "Basketball training · Apple Watch",
+        "description": "Track a whole basketball practice from your wrist: pick one of 11 court zones and log each make or miss with Double Tap or a swipe, run timed drills, or keep a full stat line in games. Every session is recorded as an Apple Health workout, and the iPhone shows where you shoot best, judged against a par for your level instead of NBA numbers. Built in SwiftUI, with a Watch/iPhone sync that queues changes while the devices are apart and resolves conflicts by the latest edit.",
         "technologies": [
           "Swift",
           "SwiftUI",
+          "HealthKit",
           "WatchConnectivity",
           "Swift Charts"
         ],
@@ -2504,11 +2505,12 @@
           "poster": "https://court-kit.vercel.app/videos/courtkit-launch.jpg",
           "label": "Vídeo de lançamento do CourtKit: registar lançamentos no Apple Watch e depois ver a precisão por zona no iPhone"
         },
-        "subtitle": "App de treino de basquetebol, pensada primeiro para o Watch",
-        "description": "Uma app de treino de basquetebol pensada primeiro para o Apple Watch: a app do Watch regista exercícios de lançamento, exercícios cronometrados e estatísticas de jogo em tempo real através de um diagrama interativo do campo com 14 posições, enquanto a app do iPhone revê tudo com um mapa de calor de lançamentos, gráficos de tendência e histórico pesquisável. Construída inteiramente em SwiftUI, com sincronização bidirecional entre o Watch e o iPhone via WatchConnectivity.",
+        "subtitle": "Treino de basquetebol · Apple Watch",
+        "description": "Regista um treino inteiro de basquetebol a partir do pulso: escolhe uma das 11 zonas do campo e marca cada lançamento convertido ou falhado com Double Tap ou um deslize, faz exercícios cronometrados, ou acompanha a tua linha estatística completa em jogo. Cada sessão fica registada como um treino no Apple Health, e o iPhone mostra de onde lanças melhor, comparando com uma referência para o teu nível em vez de números da NBA. Construída em SwiftUI, com uma sincronização entre Watch e iPhone que guarda as alterações enquanto os dispositivos estão afastados e resolve conflitos pela edição mais recente.",
         "technologies": [
           "Swift",
           "SwiftUI",
+          "HealthKit",
           "WatchConnectivity",
           "Swift Charts"
         ],
@@ -4201,11 +4203,12 @@
           "poster": "https://court-kit.vercel.app/videos/courtkit-launch.jpg",
           "label": "Vídeo de lanzamiento de CourtKit: registrar tiros en el Apple Watch y luego ver tu precisión por zona en el iPhone"
         },
-        "subtitle": "App de entrenamiento de baloncesto pensada primero para el Watch",
-        "description": "Una app de entrenamiento de baloncesto pensada primero para el Apple Watch: la app del Watch registra ejercicios de tiro, ejercicios cronometrados y estadísticas de partido en vivo mediante un diagrama interactivo de cancha con 14 posiciones, mientras que la app de iPhone lo revisa todo con un mapa de calor de tiros, gráficos de tendencia e historial buscable. Construida enteramente en SwiftUI, con sincronización bidireccional entre el Watch y el iPhone vía WatchConnectivity.",
+        "subtitle": "Entrenamiento de baloncesto · Apple Watch",
+        "description": "Registra un entrenamiento completo de baloncesto desde la muñeca: elige una de las 11 zonas de la cancha y marca cada acierto o fallo con Double Tap o un deslizamiento, haz ejercicios cronometrados o lleva tu línea estadística completa en partido. Cada sesión queda registrada como un entrenamiento en Apple Health, y el iPhone muestra desde dónde tiras mejor, comparado con una referencia para tu nivel en lugar de cifras de la NBA. Construida en SwiftUI, con una sincronización entre Watch y iPhone que guarda los cambios mientras los dispositivos están separados y resuelve conflictos por la edición más reciente.",
         "technologies": [
           "Swift",
           "SwiftUI",
+          "HealthKit",
           "WatchConnectivity",
           "Swift Charts"
         ],
@@ -5897,11 +5900,12 @@
           "poster": "https://court-kit.vercel.app/videos/courtkit-launch.jpg",
           "label": "CourtKit-Launch-Video: Würfe auf der Apple Watch erfassen, dann die Trefferquote nach Zone auf dem iPhone sehen"
         },
-        "subtitle": "Basketball-Trainings-App, zuerst für die Watch entwickelt",
-        "description": "Eine Basketball-Trainings-App, zuerst für die Apple Watch entwickelt: Die Watch-App erfasst Wurfübungen, zeitgesteuerte Übungen und Live-Spielstatistiken über ein interaktives Spielfelddiagramm mit 14 Positionen, während die iPhone-App alles mit einer Wurf-Heatmap, Trenddiagrammen und durchsuchbarem Verlauf auswertet. Vollständig in SwiftUI gebaut, mit bidirektionaler Synchronisierung zwischen Watch und iPhone über WatchConnectivity.",
+        "subtitle": "Basketballtraining · Apple Watch",
+        "description": "Ein ganzes Basketballtraining vom Handgelenk aus erfassen: Wähle eine von 11 Spielfeldzonen und halte jeden Treffer oder Fehlwurf per Double Tap oder Wischgeste fest, absolviere zeitgesteuerte Übungen oder führe im Spiel deine komplette Statistik. Jede Session wird als Apple-Health-Workout aufgezeichnet, und das iPhone zeigt, von wo du am besten triffst, gemessen an einem Richtwert für dein Niveau statt an NBA-Zahlen. Gebaut in SwiftUI, mit einer Synchronisierung zwischen Watch und iPhone, die Änderungen zwischenspeichert, solange die Geräte getrennt sind, und Konflikte nach der letzten Änderung auflöst.",
         "technologies": [
           "Swift",
           "SwiftUI",
+          "HealthKit",
           "WatchConnectivity",
           "Swift Charts"
         ],
