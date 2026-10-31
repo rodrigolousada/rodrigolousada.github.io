@@ -1,6 +1,6 @@
 ---
 import QRCode from 'qrcode';
-import DeviceDuo from './DeviceDuo.astro';
+// import DeviceDuo from './DeviceDuo.astro'; — see the commented-out deviceDemo block in the modal
 import TechPill from './TechPill.astro';
 import { icons } from '../data/icons';
 import { getUI } from '../data/ui';
@@ -26,6 +26,10 @@ interface Props {
     };
     /** Link to download the app (App Store, TestFlight, etc). Once set, a QR code is generated automatically. */
     appDownloadUrl?: string;
+    /** A single landscape demo video (e.g. a launch trailer), played inline with native controls. `label` is its aria-label. */
+    video?: { src: string; poster?: string; label: string };
+    /** Pre-launch waitlist signup page. Rendered as a "Join the waitlist" button; drop it once appDownloadUrl is set. */
+    waitlistUrl?: string;
     /** Real screenshot of the project, shown as the cartridge's box-art label and in the modal. */
     screenshot?: string;
     /** Short favorites/config list shown as bullets (e.g. MagicMirror² modules). */
@@ -194,12 +198,30 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
           </>
         )}
 
+        {project.video && (
+          <>
+            <p class="mb-2 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.cartridge.demo}</p>
+            <video
+              src={project.video.src}
+              poster={project.video.poster}
+              aria-label={project.video.label}
+              class="aspect-video w-full rounded-lg border-2 border-[var(--color-border)] bg-black"
+              controls
+              playsinline
+              preload="none"
+            />
+          </>
+        )}
+
+        {/* Hidden until real CourtKit Watch/iPhone recordings exist — uncomment
+            (and the DeviceDuo import above) to bring the device frames back.
         {project.deviceDemo && (
           <>
             <p class="mb-3 mt-5 text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">{ui.cartridge.demo}</p>
             <DeviceDuo watch={project.deviceDemo.watch} phone={project.deviceDemo.phone} />
           </>
         )}
+        */}
 
         {project.demoPlaceholders && project.demoPlaceholders.length > 0 && (
           <>
@@ -250,6 +272,17 @@ const qrCodeSvg = project.appDownloadUrl && !project.hidden
               <span class="text-sm font-medium text-[var(--color-text)]">{ui.cartridge.scanToDownload.replace('{title}', project.title)}</span>
             </a>
           </>
+        )}
+
+        {project.waitlistUrl && (
+          <a
+            href={project.waitlistUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 flex items-center justify-center gap-2 rounded-lg border border-[var(--color-accent)] p-3 text-sm font-medium text-[var(--color-accent)] transition hover:bg-[var(--color-accent)]/10"
+          >
+            {ui.cartridge.joinWaitlist}
+          </a>
         )}
 
         {project.repoUrl ? (
